@@ -37,9 +37,8 @@ HEADERS += statusmonitor.h \
     error.h \
     ids_string.h
 
-INCLUDEPATH += ../../../../../../workspace/3rdparty/libusb-1.0.22/libusb \
-                            ../../../../../../workspace/linux/cups-2.0.2
+INCLUDEPATH += ../libs ../libs/cups-2.2.8
 
-unix:!macx: LIBS += -L$${PWD} -lusb-1.0  -lcups
+unix:!macx: LIBS += -L$${PWD}/../libs -lusb-1.0  -lcups
 
 macx: LIBS += -L/Volumes/work/software/libusb -lusb-1.0 -lcups

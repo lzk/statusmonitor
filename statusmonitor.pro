@@ -6,3 +6,4 @@ SUBDIRS += \
             tomcat \
     testfinger
 
+#first unzip libs/cups*.zip
