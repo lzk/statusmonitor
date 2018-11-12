@@ -26,7 +26,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableWidget_printers">
+        <widget class="QListWidget" name="listWidget_printers">
          <property name="minimumSize">
           <size>
            <width>200</width>
@@ -42,11 +42,11 @@
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
-         <column>
+         <item>
           <property name="text">
-           <string>打印机名称</string>
+           <string>NJHX Printer</string>
           </property>
-         </column>
+         </item>
         </widget>
        </item>
        <item>
@@ -88,7 +88,7 @@
             </size>
            </property>
            <property name="title">
-            <string>打印状态：</string>
+            <string> 状态</string>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
@@ -106,7 +106,7 @@
                </size>
               </property>
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/image/Status_normal.bmp&quot;/&gt;  节电中&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;节电中&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -137,7 +137,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="image.qrc">:/image/printer.png</pixmap>
+            <pixmap resource="image.qrc">:/image/NORMAL.bmp</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -187,7 +187,7 @@
           </size>
          </property>
          <property name="title">
-          <string>墨量</string>
+          <string>碳粉量</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_11">
           <item>
@@ -320,7 +320,7 @@
                  <string/>
                 </property>
                 <property name="pixmap">
-                 <pixmap resource="image.qrc">:/image/y_unknown.png</pixmap>
+                 <pixmap resource="image.qrc">:/image/y50.png</pixmap>
                 </property>
                 <property name="scaledContents">
                  <bool>true</bool>

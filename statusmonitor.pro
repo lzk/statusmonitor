@@ -1,9 +1,11 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-         statusmonitor \
-             hornet \
-            tomcat \
-    testfinger
+    toec \
+    hornet \
+    tomcat \
+    testfinger \
+#    test \
+#    sms
 
 #first unzip libs/cups*.zip

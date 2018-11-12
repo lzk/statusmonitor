@@ -57,5 +57,6 @@
         <file>image/y80.png</file>
         <file>image/y90.png</file>
         <file>image/y100.png</file>
+        <file>image/NORMAL.bmp</file>
     </qresource>
 </RCC>

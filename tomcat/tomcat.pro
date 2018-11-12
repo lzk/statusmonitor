@@ -4,7 +4,6 @@
 #
 #-------------------------------------------------
 
-include(../statusmonitor.pri)
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -14,7 +13,12 @@ TEMPLATE = app
 
 DEFINES += "TOMCAT=1"
 
+include(../toec/toec.pri)
+include(../common/common.pri)
+include("../statusmonitor/statusmonitor.pri")
+
 SOURCES += \
+    main.cpp \
         mainwindow.cpp \
     enterpassword.cpp \
     changepassword.cpp \
@@ -33,3 +37,11 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     image.qrc
 
+SOURCES += \
+    worker.cpp \
+    uinterface.cpp \
+    uiconfig.cpp
+
+HEADERS  += worker.h \
+    uinterface.h \
+    uiconfig.h

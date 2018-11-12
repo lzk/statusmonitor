@@ -1,13 +1,14 @@
 #include "serverthread.h"
-#include "log.h"
-
 #include <unistd.h>
-ServerThread::ServerThread(QObject *parent)
+#include "jkinterface.h"
+ServerThread::ServerThread(const char* server_path ,QObject *parent)
     : QThread(parent)
 {
     m_trans_back = false;
     abort = false;
     m_result = "ok";
+    trans_server.createServer(server_path);
+    start();
 }
 
 ServerThread::~ServerThread()

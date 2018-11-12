@@ -2,13 +2,13 @@
 #define SERVERTHREAD_H
 
 #include <QThread>
-#include "trans.h"
+#include "jkinterface.h"
 
 class ServerThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit ServerThread(QObject *parent = NULL);
+    explicit ServerThread(const char* server_path ,QObject *parent = NULL);
     ~ServerThread();
 
     void run();

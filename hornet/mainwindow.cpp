@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QTableWidget>
+#include <QListWidget>
 #include "uinterface.h"
 #include <QDateTime>
 #include <unistd.h>
@@ -18,19 +18,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(app_name);
 //    setWindowIcon(QIcon(":/image/app_icon.png"));
-#ifdef TOMCAT
-    this->setFixedSize(500 ,380);
-#endif
-#ifdef HORNET
+
     this->setFixedSize(700 ,480);
-#endif
+
     ui->statusUpdate_groupBox->hide();
 
     createSysTray();
 
+
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
-    gUInterface->setCmd(DataStruct::CMD_GetDefaultPrinter);
-    gUInterface->setCmd(DataStruct::CMD_GetPrinters);
+
+    gUInterface->setCmd(UIConfig::CMD_GetPrinters);
+//    gUInterface->setCmd(UIConfig::CMD_GetDefaultPrinter);
+//    gUInterface->setTimer(6);
 }
 
 MainWindow::~MainWindow()
@@ -111,47 +111,39 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::cmdResult(int cmd,int result ,QVariant data)
 {
     switch(cmd){
-    case DataStruct::CMD_GetDefaultPrinter:{
+    case UIConfig::CMD_GetDefaultPrinter:{
         if(!result){
             QString default_printer = data.toString();
             setcurrentPrinter(default_printer);
         }
     }
         break;
-    case DataStruct::CMD_GetStatus:{
+    case UIConfig::CMD_GetStatus:{
         PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
         PrinterStatus_struct& status = printerInfo.status;
+        LOGLOG("update status of %s" ,printerInfo.printer.name);
         if(!result){
-            LOGLOG("get status success:%d" ,status.PrinterStatus);
+            LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
         }else{//get status fail
             LOGLOG("get printer status fail!");
             memset(&status ,-1 ,sizeof(status));
 //                status.PrinterStatus = -1;
         }
-        LOGLOG("update status of %s" ,printerInfo.printer.name);
         if(!current_printer.compare(printerInfo.printer.name)){
             updateToner(status.TonelStatusLevelC ,status.TonelStatusLevelM ,status.TonelStatusLevelY ,status.TonelStatusLevelK);
             updateStatus(status);
         }
-#ifdef TOMCAT
         updateOtherStatus(printerInfo.printer.name ,status);
-#endif
     }
         break;
 
-    case DataStruct::CMD_GetPrinters:{
+    case UIConfig::CMD_GetPrinters:{
         if(!result){
             updatePrinter(data);
         }
     }
         break;
 
-    case DataStruct::CMD_GetJobs:{
-        if(!result){
-            updateJobHistory(data);
-        }
-    }
-        break;
     default:
         break;
     }
@@ -162,7 +154,7 @@ void MainWindow::setcurrentPrinter(const QString& str)
     current_printer = str;
     gUInterface->setcurrentPrinter(str);
     setWindowTitle(app_name + " - " + str);
-    gUInterface->setCmd(DataStruct::CMD_GetStatus ,current_printer);
+    gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
 }
 
 void MainWindow::on_checkBox_clicked()
@@ -175,72 +167,9 @@ void MainWindow::on_checkBox_clicked()
     }
 }
 
-void MainWindow::on_tabWidget_currentChanged(int index)
+void MainWindow::on_listWidget_printers_itemDoubleClicked(QListWidgetItem *item)
 {
-    switch (index) {
-    case 0:
-    case 1:
-        gUInterface->setCmd(DataStruct::CMD_GetStatus ,current_printer);
-        break;
-    case 2:
-#if !TEST
-        gUInterface->setCmd(DataStruct::CMD_GetJobs ,current_printer);
-#else
-    {
-        ui->tableWidget_jobs->setRowCount(1);
-        QTableWidgetItem* item;
-        item = new QTableWidgetItem(tr("%1").arg(QString("TOEC_Printer")));
-        ui->tableWidget_jobs->setItem(0 ,0 ,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("TOEC")));
-        ui->tableWidget_jobs->setItem(0 ,1,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("TOEC User")));
-        ui->tableWidget_jobs->setItem(0 ,2,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("toec.txt")));
-        ui->tableWidget_jobs->setItem(0 ,3,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("1")));
-        ui->tableWidget_jobs->setItem(0 ,4,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("1")));
-        ui->tableWidget_jobs->setItem(0 ,5,item);
-        item = new QTableWidgetItem(tr("%1").arg(QDateTime::currentDateTime().toString()));
-        ui->tableWidget_jobs->setItem(0 ,6,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("是")));
-        ui->tableWidget_jobs->setItem(0 ,7,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("成功")));
-        ui->tableWidget_jobs->setItem(0 ,8,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("否")));
-        ui->tableWidget_jobs->setItem(0 ,9,item);
-
-    }
-#endif
-        break;
-    case 3:
-#if !TEST
-        gUInterface->setCmd(DataStruct::CMD_GetPrinters);
-#else
-    {
-        ui->tableWidget_printers->setRowCount(1);
-        QTableWidgetItem* item;
-        item = new QTableWidgetItem(tr("%1").arg(QString("TOEC_Printer")));
-        ui->tableWidget_printers->setItem(0 ,0 ,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("节电中")));
-        ui->tableWidget_printers->setItem(0 ,1,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("TOEC Printer")));
-        ui->tableWidget_printers->setItem(0 ,2,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("192.168.2.20")));
-        ui->tableWidget_printers->setItem(0 ,3,item);
-
-    }
-#endif
-        break;
-    default:
-        break;
-    }
-}
-
-void MainWindow::on_tableWidget_printers_itemDoubleClicked(QTableWidgetItem *item)
-{
-    int row = item->row();
-    setcurrentPrinter(ui->tableWidget_printers->item(row ,0)->text());
+    setcurrentPrinter(item->text());
 }
 
 void MainWindow::updateToner(int c ,int m ,int y ,int k)
@@ -373,25 +302,6 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
     ui->label_tonerM->setPixmap(QPixmap(m_uri));
     ui->label_tonerY->setPixmap(QPixmap(y_uri));
     ui->label_tonerK->setPixmap(QPixmap(k_uri));
-}
-
-QString MainWindow::get_connect_to(const char* printer_uri)
-{
-    char buffer[1024];
-    if(!StatusMonitor::resolve_uri(printer_uri ,buffer ,sizeof(buffer)))
-        return QString();
-    LOGLOG("resolved uri is:%s" ,buffer);
-    int dclass =StatusMonitor::getPrinterClass(buffer);
-    QString str;
-    switch (dclass) {
-    case DCLASS_usb:
-        str = "usb";
-        break;
-    default:
-        str = "net";
-        break;
-    }
-    return str;
 }
 
 QString MainWindow::get_Status_string(const PrinterStatus_struct& status)
@@ -593,86 +503,25 @@ void MainWindow::updatePrinter(const QVariant& data)
 {
     printerInfos = data.value<QList<PrinterInfo_struct> >();
     PrinterInfo_struct printerInfo;
-    int base = 0;
-    ui->tableWidget_printers->setRowCount(printerInfos.length());
+
     printers.clear();
+    ui->listWidget_printers->clear();
     for(int i = 0 ;i < printerInfos.length() ;i++){
         printerInfo = printerInfos.at(i);
         printers << printerInfo.printer.name;
-        QTableWidgetItem* item;
-        item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printerInfo.printer.name)));
-        ui->tableWidget_printers->setItem(i ,base+0 ,item);
-#ifdef TOMCAT
-//        item = new QTableWidgetItem(tr("%1").arg(get_Status_string(printerInfo.status)));
-//        ui->tableWidget_printers->setItem(i ,base+1,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printerInfo.printer.makeAndModel)));
-        ui->tableWidget_printers->setItem(i ,base+2,item);
-        item = new QTableWidgetItem(tr("%1").arg(get_connect_to(printerInfo.printer.deviceUri)));
-        ui->tableWidget_printers->setItem(i ,base+3,item);
-        gUInterface->setCmd(DataStruct::CMD_GetStatus ,printerInfo.printer.name);
-#endif
+
+        ui->listWidget_printers->addItem(printerInfo.printer.name);
+    }
+    if(printers.contains(current_printer)){
+        ui->listWidget_printers->setCurrentRow(printers.indexOf(current_printer));
+    }else{
+        setcurrentPrinter(printers.first());
     }
 }
 
-void MainWindow::updateOtherStatus(const QString& printer ,const PrinterStatus_struct& status)
+void MainWindow::updateOtherStatus(const QString&  ,const PrinterStatus_struct& )
 {
-    int base = 0;
-    PrinterInfo_struct printerInfo;
-    for(int i = 0 ;i < printerInfos.length() ;i++){
-        printerInfo = printerInfos.at(i);
-        if(printer.compare(printerInfo.printer.name)){
-            continue;
-        }
-        printerInfo.status = status;
-        QTableWidgetItem* item;
-//        item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printerInfo.printer.name)));
-//        ui->tableWidget_printers->setItem(i ,base+0 ,item);
-        item = new QTableWidgetItem(tr("%1").arg(get_Status_string(status)));
-        ui->tableWidget_printers->setItem(i ,base+1,item);
-//        item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printerInfo.printer.makeAndModel)));
-//        ui->tableWidget_printers->setItem(i ,base+2,item);
-//        item = new QTableWidgetItem(tr("%1").arg(get_connect_to(printerInfo.printer.deviceUri)));
-//        ui->tableWidget_printers->setItem(i ,base+3,item);
-    }
 
 }
 
-void MainWindow::updateJobHistory(const QVariant& data)
-{
-#ifdef TOMCAT
-    int base = 0;
-    QStringList job_history = data.toStringList();
-    ui->tableWidget_jobs->setRowCount(job_history.length());
-    base = 0;
-    for(int i = 0 ;i < job_history.length() ;i++){
-        QString str = job_history.at(i);
-        QStringList columns = str.split(",");
-        if(columns.length() < 11)
-            break;
-        qDebug()<<"columns:"<<columns;
-        QTableWidgetItem* item;
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(1)));
-        ui->tableWidget_jobs->setItem(i ,base+0 ,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(2)));
-        ui->tableWidget_jobs->setItem(i ,base+1,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(3)));
-        ui->tableWidget_jobs->setItem(i ,base+2,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(4)));
-        ui->tableWidget_jobs->setItem(i ,base+3,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(5)));
-        ui->tableWidget_jobs->setItem(i ,base+4,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(6)));
-        ui->tableWidget_jobs->setItem(i ,base+5,item);
-        QDateTime datetime;
-        datetime.setTime_t(QString(columns.at(7)).toLong());
-        item = new QTableWidgetItem(tr("%1").arg(datetime.toString()));
-        ui->tableWidget_jobs->setItem(i ,base+6,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(8)==QString("1")?"是":"否"));
-        ui->tableWidget_jobs->setItem(i ,base+7,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(9)==QString("1")?"成功":"失败"));
-        ui->tableWidget_jobs->setItem(i ,base+8,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(10)==QString("1")?"是":"否"));
-        ui->tableWidget_jobs->setItem(i ,base+9,item);
-    }
-#endif
-}
+

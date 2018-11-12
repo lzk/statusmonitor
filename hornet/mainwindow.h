@@ -3,20 +3,21 @@
 
 #include <QMainWindow>
 #include <QVariant>
-#include "DataStruct.h"
+#include "uiconfig.h"
 #include <QSystemTrayIcon>
 
 class QMenu;
 class QAction;
+class QDialog;
 namespace Ui {
 class MainWindow;
 }
-class QTableWidgetItem;
+class QListWidgetItem;
 class QCloseEvent;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+    
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -27,17 +28,17 @@ protected:
 private slots:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
 
-    void on_tabWidget_currentChanged(int index);
-
-    void on_tableWidget_printers_itemDoubleClicked(QTableWidgetItem *item);
-
     void on_checkBox_clicked();
 
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
     void messageClicked();
+
+    void on_listWidget_printers_itemDoubleClicked(QListWidgetItem *item);
+
 private:
     Ui::MainWindow *ui;
+    QDialog* dialog;
 
     QString current_printer;
 
@@ -54,11 +55,8 @@ private:
 
     void updatePrinter(const QVariant& data);
 
-    void updateJobHistory(const QVariant& data);
 
     QString get_Status_string(const PrinterStatus_struct& status);
-
-    QString get_connect_to(const char* printer_uri);
 
 //    QAction *minimizeAction;
 //    QAction *maximizeAction;

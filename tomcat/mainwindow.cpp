@@ -32,10 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
-    connect(gUInterface ,SIGNAL(client_cmd(QString)) ,this ,SLOT(client_cmd(QString)));
 
-    gUInterface->setCmd(DataStruct::CMD_GetDefaultPrinter);
-    gUInterface->setCmd(DataStruct::CMD_GetPrinters);
+    gUInterface->setCmd(UIConfig::CMD_GetPrinters);
+    gUInterface->setCmd(UIConfig::CMD_GetDefaultPrinter);
+//    gUInterface->setTimer(6);
 }
 
 MainWindow::~MainWindow()
@@ -119,24 +119,24 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::cmdResult(int cmd,int result ,QVariant data)
 {
     switch(cmd){
-    case DataStruct::CMD_GetDefaultPrinter:{
+    case UIConfig::CMD_GetDefaultPrinter:{
         if(!result){
             QString default_printer = data.toString();
             setcurrentPrinter(default_printer);
         }
     }
         break;
-    case DataStruct::CMD_GetStatus:{
+    case UIConfig::CMD_GetStatus:{
         PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
         PrinterStatus_struct& status = printerInfo.status;
+        LOGLOG("update status of %s" ,printerInfo.printer.name);
         if(!result){
-            LOGLOG("get status success:%d" ,status.PrinterStatus);
+            LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
         }else{//get status fail
             LOGLOG("get printer status fail!");
             memset(&status ,-1 ,sizeof(status));
 //                status.PrinterStatus = -1;
         }
-        LOGLOG("update status of %s" ,printerInfo.printer.name);
         if(!current_printer.compare(printerInfo.printer.name)){
             updateToner(status.TonelStatusLevelC ,status.TonelStatusLevelM ,status.TonelStatusLevelY ,status.TonelStatusLevelK);
             updateStatus(status);
@@ -147,14 +147,14 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
     }
         break;
 
-    case DataStruct::CMD_GetPrinters:{
+    case UIConfig::CMD_GetPrinters:{
         if(!result){
             updatePrinter(data);
         }
     }
         break;
 
-    case DataStruct::CMD_GetJobs:{
+    case UIConfig::CMD_GetJobs:{
         if(!result){
             updateJobHistory(data);
         }
@@ -170,7 +170,7 @@ void MainWindow::setcurrentPrinter(const QString& str)
     current_printer = str;
     gUInterface->setcurrentPrinter(str);
     setWindowTitle(app_name + " - " + str);
-    gUInterface->setCmd(DataStruct::CMD_GetStatus ,current_printer);
+    gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
 }
 
 void MainWindow::on_checkBox_clicked()
@@ -191,7 +191,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     switch (index) {
     case 0:
     case 1:
-        gUInterface->setCmd(DataStruct::CMD_GetStatus ,current_printer);
+        gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
         break;
     case 2:
 #if !TEST
@@ -201,7 +201,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         QVariant sys_password;
         appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
         if(!password.compare(sys_password.toString())){
-            gUInterface->setCmd(DataStruct::CMD_GetJobs ,current_printer);
+            gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer);
         }
     }
 #endif
@@ -235,7 +235,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         break;
     case 3:
 #if !TEST
-        gUInterface->setCmd(DataStruct::CMD_GetPrinters);
+        gUInterface->setCmd(UIConfig::CMD_GetPrinters);
 #else
     {
         ui->tableWidget_printers->setRowCount(1);
@@ -393,25 +393,6 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
     ui->label_tonerM->setPixmap(QPixmap(m_uri));
     ui->label_tonerY->setPixmap(QPixmap(y_uri));
     ui->label_tonerK->setPixmap(QPixmap(k_uri));
-}
-
-QString MainWindow::get_connect_to(const char* printer_uri)
-{
-    char buffer[1024];
-    if(!StatusMonitor::resolve_uri(printer_uri ,buffer ,sizeof(buffer)))
-        return QString();
-    LOGLOG("resolved uri is:%s" ,buffer);
-    int dclass =StatusMonitor::getPrinterClass(buffer);
-    QString str;
-    switch (dclass) {
-    case DCLASS_usb:
-        str = "usb";
-        break;
-    default:
-        str = "net";
-        break;
-    }
-    return str;
 }
 
 QString MainWindow::get_Status_string(const PrinterStatus_struct& status)
@@ -627,9 +608,9 @@ void MainWindow::updatePrinter(const QVariant& data)
 //        ui->tableWidget_printers->setItem(i ,base+1,item);
         item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printerInfo.printer.makeAndModel)));
         ui->tableWidget_printers->setItem(i ,base+2,item);
-        item = new QTableWidgetItem(tr("%1").arg(get_connect_to(printerInfo.printer.deviceUri)));
+        item = new QTableWidgetItem(tr("%1").arg(printerInfo.printer.connectTo));
         ui->tableWidget_printers->setItem(i ,base+3,item);
-//        gUInterface->setCmd(DataStruct::CMD_GetStatus ,printerInfo.printer.name);
+//        gUInterface->setCmd(UIConfig::CMD_GetStatus ,printerInfo.printer.name);
 #endif
     }
     ui->tableWidget_printers->setColumnHidden(1 ,true);
@@ -720,10 +701,9 @@ QString changePassword(const QString& password = "1234ABCD");
 void MainWindow::on_pushButton_changePassword_clicked()
 {
 #ifdef TOMCAT
-    QString password = changePassword();
     QVariant sys_password;
     appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
-    LOGLOG("sys password:%s" ,sys_password.toString().toLatin1().constData());
+    QString password = changePassword(sys_password.toString());
     if(password.compare(sys_password.toString())){
         sys_password.setValue(password);
         appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")) ,true);
@@ -731,17 +711,3 @@ void MainWindow::on_pushButton_changePassword_clicked()
 #endif
 }
 
-#include <QSettings>
-bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultValue ,bool set)
-{
-    bool result = true;
-    QSettings settings;
-    settings.setDefaultFormat(QSettings::NativeFormat);
-    if(set){
-        settings.setValue(key ,value);
-        LOGLOG("set key %s value:%s" ,key.toLatin1().constData() ,settings.value(key ,defaultValue).toString().toLatin1().constData());
-    }else{
-        value = settings.value(key ,defaultValue);
-    }
-    return result;
-}

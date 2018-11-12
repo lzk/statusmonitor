@@ -1,17 +1,8 @@
 #ifndef STATUSMONITOR_H
 #define STATUSMONITOR_H
 
-#include "api_libcups.h"
-#include "fingermanager.h"
-#include "log.h"
+#include "jkinterface.h"
 #include "error.h"
-
-enum{
-    DCLASS_unknown,
-    DCLASS_usb,
-    DCLASS_network
-};
-
 typedef
 struct PrinterStatus_struct
 {
@@ -44,17 +35,14 @@ public:
     StatusMonitor();
 
     int getPrinters(CALLBACK_getPrinterInfo ,void*);
-    int getJobs(CALLBACK_getJob ,void*,const char* printer = 0 ,const char* which = 0 ,const char* users = 0);
-    static int getPrinterStatus(const char* name ,PrinterStatus_struct* ps);
-    static int getPrinterClass(const char* device_uri);
-    const char* getDefaultPrinter();
-    static int resolve_uri(const char* device_uri ,char* buffer ,int bufsize);
-
-    int getJobHistory(CALLBACK_getJobHistory callback,void* para);
+    static int getPrinterStatus(const char* printer ,PrinterStatus_struct* ps);
+    static int getDeviceStatus(DeviceIO* device ,PrinterStatus_struct* ps);
 
     static bool AnyTonerReachLevel1(const PrinterStatus_struct& m_PrinterStatus);
     static bool IsNonDellTonerMode(const PrinterStatus_struct& m_PrinterStatus);
     static bool OnlyColorTonerEmpty(const PrinterStatus_struct& m_PrinterStatus);
+
+private:
 };
 
 #endif // STATUSMONITOR_H
