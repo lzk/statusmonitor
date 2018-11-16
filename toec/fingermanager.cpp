@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-const char* ui_server_path = "/tmp/.tomcat.domain";
+const char* ui_server_path = "/tmp/tomcat.domain";
 FingerManager::FingerManager()
 {
 
@@ -41,7 +41,15 @@ int FingerManager::checkFinger(const char* server_path ,int jobid)
         char buffer[256];
         strcpy(buffer ,"check");
         ret = tc.writeThenRead(buffer ,sizeof(buffer));
-        if(strcmp(buffer ,"ok")){
+        if(!strcmp(buffer ,"ok")){
+            ret = 0;
+            isFingerChecked = 1;
+            printerResult = 1;
+        }else if(!strcmp(buffer ,"cancel")){
+            ret = -2;
+            isFingerChecked = 0;
+            printerResult = 0;
+        }else{
             ret = -1;
             isFingerChecked = 0;
             printerResult = 0;

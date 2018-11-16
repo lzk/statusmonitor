@@ -19,17 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(app_name);
 //    setWindowIcon(QIcon(":/image/app_icon.png"));
-#ifdef TOMCAT
+
     this->setFixedSize(500 ,380);
     dialog = new CheckFingerDialog();
-#endif
-#ifdef HORNET
-    this->setFixedSize(700 ,480);
-#endif
+    connect(dialog ,SIGNAL(rejected()) ,this ,SLOT(dialog_canceled()));
     ui->statusUpdate_groupBox->hide();
 
     createSysTray();
-
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
@@ -38,11 +34,16 @@ MainWindow::MainWindow(QWidget *parent) :
 //    gUInterface->setTimer(6);
 }
 
+
+void MainWindow::dialog_canceled()
+{
+    LOGLOG("\ntest dialog cancel\n");
+    client_cmd_result("cancel");
+}
+
 MainWindow::~MainWindow()
 {
-#ifdef TOMCAT
     delete dialog;
-#endif
     delete ui;
 }
 
@@ -141,9 +142,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
             updateToner(status.TonelStatusLevelC ,status.TonelStatusLevelM ,status.TonelStatusLevelY ,status.TonelStatusLevelK);
             updateStatus(status);
         }
-#ifdef TOMCAT
         updateOtherStatus(printerInfo.printer.name ,status);
-#endif
     }
         break;
 
@@ -182,10 +181,9 @@ void MainWindow::on_checkBox_clicked()
         gUInterface->setTimer();
     }
 }
-#ifdef TOMCAT
+
 QString getEnterPassword();
 bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultValue ,bool set = false);
-#endif
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
     switch (index) {
@@ -195,7 +193,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         break;
     case 2:
 #if !TEST
-#ifdef TOMCAT
     {
         QString password = getEnterPassword();
         QVariant sys_password;
@@ -204,7 +201,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer);
         }
     }
-#endif
 #else
     {
         ui->tableWidget_jobs->setRowCount(1);
@@ -526,10 +522,8 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     else {
         toner_text = QString();
     }
-#ifdef TOMCAT
-    ui->textEdit_toner->setText(toner_text);
-#endif
 
+    ui->textEdit_toner->setText(toner_text);
 
     bool showDetail;
     const PrinterStatus_struct *ps = &status;
@@ -603,7 +597,7 @@ void MainWindow::updatePrinter(const QVariant& data)
         QTableWidgetItem* item;
         item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printerInfo.printer.name)));
         ui->tableWidget_printers->setItem(i ,base+0 ,item);
-#ifdef TOMCAT
+
 //        item = new QTableWidgetItem(tr("%1").arg(get_Status_string(printerInfo.status)));
 //        ui->tableWidget_printers->setItem(i ,base+1,item);
         item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printerInfo.printer.makeAndModel)));
@@ -611,7 +605,6 @@ void MainWindow::updatePrinter(const QVariant& data)
         item = new QTableWidgetItem(tr("%1").arg(printerInfo.printer.connectTo));
         ui->tableWidget_printers->setItem(i ,base+3,item);
 //        gUInterface->setCmd(UIConfig::CMD_GetStatus ,printerInfo.printer.name);
-#endif
     }
     ui->tableWidget_printers->setColumnHidden(1 ,true);
 }
@@ -641,7 +634,6 @@ void MainWindow::updateOtherStatus(const QString& printer ,const PrinterStatus_s
 
 void MainWindow::updateJobHistory(const QVariant& data)
 {
-#ifdef TOMCAT
     int base = 0;
     QStringList job_history = data.toStringList();
     ui->tableWidget_jobs->setRowCount(job_history.length());
@@ -676,31 +668,25 @@ void MainWindow::updateJobHistory(const QVariant& data)
         item = new QTableWidgetItem(tr("%1").arg(columns.at(10)==QString("1")?"是":"否"));
         ui->tableWidget_jobs->setItem(i ,base+9,item);
     }
-#endif
 }
 
 void MainWindow::client_cmd(const QString &s)
 {
-#ifdef TOMCAT
     LOGLOG("client cmd:%s" ,s.toLatin1().constData());
     if(!s.compare("check")){
         dialog->exec();
     }else if(!s.compare("checked")){
-        dialog->hide();
+        dialog->close();
     }else if(!s.compare("timeout")){
-        dialog->hide();
+        dialog->close();
     }else{
-        dialog->hide();
+        dialog->close();
     }
-#endif
 }
 
-#ifdef TOMCAT
 QString changePassword(const QString& password = "1234ABCD");
-#endif
 void MainWindow::on_pushButton_changePassword_clicked()
 {
-#ifdef TOMCAT
     QVariant sys_password;
     appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
     QString password = changePassword(sys_password.toString());
@@ -708,6 +694,5 @@ void MainWindow::on_pushButton_changePassword_clicked()
         sys_password.setValue(password);
         appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")) ,true);
     }
-#endif
 }
 

@@ -28,6 +28,9 @@ protected:
 public slots:
     void client_cmd(const QString &s);
 
+signals:
+    void client_cmd_result(const QString& s);
+
 private slots:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
 
@@ -42,6 +45,7 @@ private slots:
     void messageClicked();
     void on_pushButton_changePassword_clicked();
 
+    void dialog_canceled();
 private:
     Ui::MainWindow *ui;
     QDialog* dialog;

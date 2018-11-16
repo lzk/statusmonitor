@@ -5,7 +5,7 @@ SUBDIRS += \
     hornet \
     tomcat \
     testfinger \
-#    test \
-#    sms
+    test \
+    cpath
 
 #first unzip libs/cups*.zip

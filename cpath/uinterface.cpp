@@ -1,6 +1,5 @@
 #include "uinterface.h"
 #include "worker.h"
-#include "uiconfig.h"
 UInterface::UInterface(QObject *parent) :
     QObject(parent)
   ,timeval(0)
@@ -44,6 +43,7 @@ void UInterface::setTimer(int timeVal)
 
 void UInterface::timerOut()
 {
+    cmdToWorker(UIConfig::CMD_GetPrinters);
     cmdToWorker(UIConfig::CMD_GetStatus ,current_printer);
 }
 

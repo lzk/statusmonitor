@@ -17,6 +17,7 @@ CheckFingerDialog::CheckFingerDialog(QWidget *parent) :
     QMovie *movie = new QMovie(":/image/timg.gif");
     ui->label_gif->setMovie(movie);
     movie->start();
+
 }
 
 CheckFingerDialog::~CheckFingerDialog()

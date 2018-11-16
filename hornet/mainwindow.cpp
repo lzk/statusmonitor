@@ -435,9 +435,6 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     else {
         toner_text = QString();
     }
-#ifdef TOMCAT
-    ui->textEdit_toner->setText(toner_text);
-#endif
 
 
     bool showDetail;

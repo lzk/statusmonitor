@@ -5,13 +5,11 @@
 #include <QObject>
 #include <QMetaType>
 
-#define SERVER_PATH "/tmp/tomcat.domain"
+#define SERVER_PATH "/tmp/test.domain"
 
 Q_DECLARE_METATYPE(PrinterInfo_struct)
 Q_DECLARE_METATYPE(QList<PrinterInfo_struct>)
-#ifdef TOMCAT
-Q_DECLARE_METATYPE(QList<Job_struct>)
-#endif
+
 
 #include "smconfig.h"
 class UIConfig : public QObject ,SMConfig{
@@ -25,9 +23,6 @@ public:
         CMD_GetDefaultPrinter,
         CMD_GetPrinters,
         CMD_GetStatus,
-#ifdef TOMCAT
-        CMD_GetJobs,
-#endif
     };
     Q_ENUMS(CmdType)
 };

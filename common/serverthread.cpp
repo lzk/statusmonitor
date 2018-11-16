@@ -4,7 +4,7 @@
 ServerThread::ServerThread(const char* server_path ,QObject *parent)
     : QThread(parent)
 {
-    m_trans_back = false;
+    m_trans_back = 0;
     abort = false;
     m_result = "ok";
     trans_server.createServer(server_path);
@@ -30,10 +30,21 @@ int callback_Server(void* para,char* buffer,int bufsize)
         }
         memset(buffer ,0 ,bufsize);
         strcpy(buffer ,st->result().toLatin1().constData());
-        if(timeout)
+
+        switch (st->trans_back()) {
+        case 0:
+            if(timeout)
+                st->send_cmd("timeout");
+            break;
+        case 1:
             st->send_cmd("checked");
-        else
-            st->send_cmd("timeout");
+            break;
+        case 2:
+//            st->send_cmd("cancel");//no need close dialog again.
+            break;
+        default:
+            break;
+        }
     }
     return 0;
 }
@@ -49,8 +60,11 @@ void ServerThread::run()
 
 void ServerThread::cmd_result(const QString &result)
 {
+    m_result = result;
     if(!result.compare("ok")){
-        m_trans_back = true;
+        m_trans_back = 1;
+    }else if(!result.compare("cancel")){
+        m_trans_back = 2;
     }
 }
 

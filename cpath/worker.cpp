@@ -26,7 +26,9 @@ void Worker::cmdFromUi(int cmd ,QVariant data)
 
     switch (cmd) {
     case UIConfig::CMD_GetDefaultPrinter:{
-        QString default_printer(m_statusMonitor.getDefaultPrinter());
+        QString default_printer;
+        if(!printers.isEmpty())
+            default_printer= printers.first();
         value.setValue(default_printer);
         cmdResult(cmd ,0 ,value);
     }
@@ -37,15 +39,6 @@ void Worker::cmdFromUi(int cmd ,QVariant data)
         cmdResult(cmd ,0 ,value);
         break;
 
-#ifdef TOMCAT
-    case UIConfig::CMD_GetJobs:{
-        getJobs();
-        value.setValue(jobs);
-        cmdResult(cmd ,0 ,value);
-    }
-        break;
-#endif
-
     case UIConfig::CMD_GetStatus:{
         QString printer_name = data.toString();
         Printer_struct* printer = NULL;
@@ -55,14 +48,15 @@ void Worker::cmdFromUi(int cmd ,QVariant data)
                 break;
             }
         }
-        PrinterInfo_struct printerInfo;
-        strcpy(printerInfo.printer.name ,printer_name.toLocal8Bit().constData());
-//        sprintf(printerInfo.printer.name ,"%s",printer_name.toLocal8Bit().constData());
-        PrinterStatus_struct* status = &printerInfo.status;
-        device = deviceManager.getDevice(printer->deviceUri);
-        LOGLOG("update status of device:%s" ,printer->deviceUri);
-        int result = m_statusMonitor.getDeviceStatus(device ,status);
-        value.setValue(printerInfo);
+        int result = -1;
+        if(printer){
+            PrinterInfo_struct printerInfo;
+            strcpy(printerInfo.printer.name ,printer->name);
+            PrinterStatus_struct* status = &printerInfo.status;
+            result = m_statusMonitor.getPrinterStatus(printer->name ,status);
+            value.setValue(printerInfo);
+
+        }
         cmdResult(cmd ,result ,value);
     }
         break;
@@ -96,23 +90,3 @@ void Worker::getPrinters()
     printers_detail.clear();
     m_statusMonitor.getPrinters(callback_getPrinters ,(void*)this);
 }
-
-#ifdef TOMCAT
-void Worker::setJobs(const char* str)
-{
-    LOGLOG("job:%s" ,str);
-    jobs << QString(str);
-}
-
-void callback_getJobs(void*para ,const char* str)
-{
-    Worker* worker = (Worker*)para;
-    worker->setJobs(str);
-}
-
-void Worker::getJobs()
-{
-    jobs.clear();
-    m_tomcat.getJobHistory(callback_getJobs ,this);
-}
-#endif

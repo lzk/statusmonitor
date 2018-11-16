@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.connect(&thread_server ,SIGNAL(client_cmd(QString)) ,&w ,SLOT(client_cmd(QString)));
+    w.connect(&w ,SIGNAL(client_cmd_result(QString)) ,&thread_server ,SLOT(cmd_result(QString)));
 
     QStringList arguments = QCoreApplication::arguments();
     if(!arguments.contains("-hide"))

@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QMetaType>
 
-#define SERVER_PATH "/tmp/.hornet.domain"
+#define SERVER_PATH "/tmp/hornet.domain"
 
 Q_DECLARE_METATYPE(PrinterInfo_struct)
 Q_DECLARE_METATYPE(QList<PrinterInfo_struct>)

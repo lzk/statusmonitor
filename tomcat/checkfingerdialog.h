@@ -15,6 +15,7 @@ public:
     explicit CheckFingerDialog(QWidget *parent = 0);
     ~CheckFingerDialog();
 
+
 private:
     Ui::CheckFingerDialog *ui;
 };

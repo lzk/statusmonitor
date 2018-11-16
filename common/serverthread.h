@@ -14,7 +14,7 @@ public:
     void run();
     void send_cmd(const QString&);
     const QString& result(){return m_result;}
-    bool trans_back(){return m_trans_back;}
+    int trans_back(){return m_trans_back;}
 signals:
     void client_cmd(const QString &s);
 public slots:
@@ -23,7 +23,7 @@ public slots:
 private:
     Trans_Server trans_server;
     QString m_result;
-    bool m_trans_back;
+    int m_trans_back;
     bool abort;
 };
 

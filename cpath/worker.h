@@ -15,9 +15,6 @@ public:
     explicit Worker(QObject *parent = 0);
     ~Worker();
     void setPrinters(PrinterInfo_struct* ps);
-#ifdef TOMCAT
-    void setJobs(const char* str);
-#endif
     DeviceIO* getDevice(const char* device_uri);
     
 signals:
@@ -26,6 +23,7 @@ signals:
 public slots:
     void cmdFromUi(int cmd ,QVariant data = QVariant());
     void getPrinters();
+
 
 private:
     int cmd_status;

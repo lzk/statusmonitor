@@ -2,7 +2,7 @@
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
-    LOGLOG("hornet found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
+    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
     return true;
 }
 
@@ -15,10 +15,10 @@ void UIConfig::initConfig()
 {
     //config status server thread
 //    filepath = "/tmp/.hornet";
-    statusKey = "hornet/status/";
-    printersKey = "hornet/printerlist/";
+    statusKey = "test/status/";
+    printersKey = "test/printerlist/";
 //    lockfile = "/tmp/.hornet";
 
-    //config hornet supported printer model
+    //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;
 }

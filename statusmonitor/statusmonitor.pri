@@ -1,11 +1,6 @@
 INCLUDEPATH += $${PWD}
 #LIBS += -L$${OUT_PWD}/../statusmonitor -lstatusmonitor
 
-LIBS += -L$${PWD}/../libs -lusb-1.0  -lcups
-
-macx: LIBS += -L/Volumes/work/software/libusb
-
-
 SOURCES += \
     $${PWD}/statusmonitor.cpp \
     $${PWD}/error.c \
