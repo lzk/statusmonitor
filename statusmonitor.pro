@@ -1,10 +1,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    toec \
-    hornet \
-    tomcat \
-    testfinger \
     test \
     cpath
 
