@@ -109,8 +109,9 @@ struct PrinterList_para_struct
     void* para;
 };
 
-static void getPrinterList(void* para ,Printer_struct* ps)
+static int getPrinterList(void* para ,Printer_struct* ps)
 {
+    int ret = 1;
     if(isDeviceSupported && isDeviceSupported(ps)){
 
         struct PrinterList_para_struct* pl_para = (struct PrinterList_para_struct*) para;
@@ -123,9 +124,10 @@ static void getPrinterList(void* para ,Printer_struct* ps)
     //    }
 
         if(pl_para->callback){
-            pl_para->callback(pl_para->para ,&pis);
+            ret = pl_para->callback(pl_para->para ,&pis);
         }
     }
+    return ret;
 }
 
 int StatusMonitor::getPrinters(CALLBACK_getPrinterInfo callback,void* para)

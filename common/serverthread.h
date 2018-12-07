@@ -4,6 +4,7 @@
 #include <QThread>
 #include "jkinterface.h"
 
+class ClientThread;
 class ServerThread : public QThread
 {
     Q_OBJECT
@@ -12,19 +13,15 @@ public:
     ~ServerThread();
 
     void run();
-    void send_cmd(const QString&);
-    const QString& result(){return m_result;}
-    int trans_back(){return m_trans_back;}
 signals:
-    void client_cmd(const QString &s);
-public slots:
-    void cmd_result(const QString &s);
+    void client_connect(int fd);
+    void client_cmd(const QString &s ,void* para);
 
 private:
     Trans_Server trans_server;
-    QString m_result;
-    int m_trans_back;
     bool abort;
+
+    friend class ClientThread;
 };
 
 #endif // SERVERTHREAD_H

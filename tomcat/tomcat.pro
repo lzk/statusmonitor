@@ -22,12 +22,16 @@ SOURCES += \
         mainwindow.cpp \
     enterpassword.cpp \
     changepassword.cpp \
-    checkfingerdialog.cpp
+    checkfingerdialog.cpp \
+    fingerhandler.cpp \
+    clientthread.cpp
 
 HEADERS  += mainwindow.h \
     enterpassword.h \
     changepassword.h \
-    checkfingerdialog.h
+    checkfingerdialog.h \
+    fingerhandler.h \
+    clientthread.h
 
 FORMS    += mainwindow.ui \
     enterpassword.ui \
@@ -40,8 +44,10 @@ RESOURCES += \
 SOURCES += \
     worker.cpp \
     uinterface.cpp \
-    uiconfig.cpp
+    uiconfig.cpp \
+    appserver.cpp
 
 HEADERS  += worker.h \
     uinterface.h \
-    uiconfig.h
+    uiconfig.h \
+    appserver.h

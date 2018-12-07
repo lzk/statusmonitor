@@ -52,7 +52,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -126,7 +126,7 @@
            </size>
           </property>
           <property name="pixmap">
-           <pixmap resource="../hornet/image.qrc">:/image/printer.png</pixmap>
+           <pixmap resource="image.qrc">:/image/printer.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -181,7 +181,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="../hornet/image.qrc">:/image/k0.png</pixmap>
+                  <pixmap resource="image.qrc">:/image/k0.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
@@ -217,7 +217,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="../hornet/image.qrc">:/image/c100.png</pixmap>
+                  <pixmap resource="image.qrc">:/image/c100.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
@@ -253,7 +253,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="../hornet/image.qrc">:/image/m_unknown.png</pixmap>
+                  <pixmap resource="image.qrc">:/image/m_unknown.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
@@ -289,7 +289,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="../hornet/image.qrc">:/image/y5.png</pixmap>
+                  <pixmap resource="image.qrc">:/image/y5.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
@@ -649,7 +649,6 @@ p, li { white-space: pre-wrap; }
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../hornet/image.qrc"/>
   <include location="image.qrc"/>
  </resources>
  <connections/>

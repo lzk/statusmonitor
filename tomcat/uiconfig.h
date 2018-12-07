@@ -5,7 +5,11 @@
 #include <QObject>
 #include <QMetaType>
 
+#ifdef QT_NO_DEBUG
+#define SERVER_PATH "/var/spool/cups/tmp/tomcat.domain"
+#else
 #define SERVER_PATH "/tmp/tomcat.domain"
+#endif
 
 Q_DECLARE_METATYPE(PrinterInfo_struct)
 Q_DECLARE_METATYPE(QList<PrinterInfo_struct>)

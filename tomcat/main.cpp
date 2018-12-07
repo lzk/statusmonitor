@@ -5,9 +5,9 @@
 UInterface* gUInterface;
 #include <sys/wait.h>
 #include "uiconfig.h"
-#include "serverthread.h"
 #include "commonapi.h"
-#include "statusthread.h"
+//#include "statusthread.h"
+#include "appserver.h"
 
 void quit(int)
 {
@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
     }
     UIConfig::initConfig();
 
-    ServerThread thread_server(SERVER_PATH);
-    StatusThread statusThread;
+//    ServerThread thread_server(SERVER_PATH);
+//    StatusThread statusThread;
 
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11
@@ -33,22 +33,25 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/image/app_icon.png"));
 
+    AppServer* app_server = new AppServer(SERVER_PATH);
+
 #if QT_VERSION_MAJOR < 5
         QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
         QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));
 #endif
 
-    UInterface uinterface;
-    gUInterface = &uinterface;
+    gUInterface = new UInterface;
 //    qRegisterMetaType<QVariant>("QVariant");
 
-    MainWindow w;
-    w.connect(&thread_server ,SIGNAL(client_cmd(QString)) ,&w ,SLOT(client_cmd(QString)));
-    w.connect(&w ,SIGNAL(client_cmd_result(QString)) ,&thread_server ,SLOT(cmd_result(QString)));
+    MainWindow* w = new MainWindow;
 
     QStringList arguments = QCoreApplication::arguments();
     if(!arguments.contains("-hide"))
-        w.show();
+        w->show();
     
-    return a.exec();
+    int ret = a.exec();
+    delete app_server;
+    delete gUInterface;
+    delete w;
+    return ret;
 }

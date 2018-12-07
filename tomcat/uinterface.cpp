@@ -22,7 +22,6 @@ UInterface::UInterface(QObject *parent) :
 
 UInterface::~UInterface()
 {
-
     thread.quit();
     thread.wait();
 }

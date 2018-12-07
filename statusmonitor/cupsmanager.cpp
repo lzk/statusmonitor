@@ -11,14 +11,15 @@ struct PrinterList_para_struct
     void* para;
 };
 
-static void getPrinterList(void* para ,Printer_struct* ps)
+static int getPrinterList(void* para ,Printer_struct* ps)
 {
+    int ret = 1;
     struct PrinterList_para_struct* pl_para = (struct PrinterList_para_struct*) para;
 
     if(pl_para->callback){
-        pl_para->callback(pl_para->para ,ps);
+        ret = pl_para->callback(pl_para->para ,ps);
     }
-
+    return ret;
 }
 
 int CupsManager::getPrinters(CALLBACK_getPrinter callback,void* para)

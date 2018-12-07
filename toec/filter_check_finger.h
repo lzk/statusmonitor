@@ -5,6 +5,15 @@
 extern "C" {
 #endif
 
+enum{
+    Checked_Result_OK,
+    Checked_Result_Disable,
+    Checked_Result_Fail,
+    Checked_Result_Cancel,
+    Checked_Result_invalidJobid,
+    Checked_Result_timeout,
+};
+
 int checkFinger(int jobid);
 
 #ifdef __cplusplus

@@ -9,7 +9,7 @@
 #include <QMenu>
 #include <QCloseEvent>
 //#include <QMessageBox>
-#include "checkfingerdialog.h"
+#include "commonapi.h"
 #define TEST 0
 static const QString app_name = QString::fromUtf8("打印机状态监视器");
 MainWindow::MainWindow(QWidget *parent) :
@@ -21,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
 //    setWindowIcon(QIcon(":/image/app_icon.png"));
 
     this->setFixedSize(500 ,380);
-    dialog = new CheckFingerDialog();
-    connect(dialog ,SIGNAL(rejected()) ,this ,SLOT(dialog_canceled()));
     ui->statusUpdate_groupBox->hide();
 
     createSysTray();
@@ -32,18 +30,15 @@ MainWindow::MainWindow(QWidget *parent) :
     gUInterface->setCmd(UIConfig::CMD_GetPrinters);
     gUInterface->setCmd(UIConfig::CMD_GetDefaultPrinter);
 //    gUInterface->setTimer(6);
-}
 
-
-void MainWindow::dialog_canceled()
-{
-    LOGLOG("\ntest dialog cancel\n");
-    client_cmd_result("cancel");
+    QVariant value;
+    appSettings("record" ,value ,QVariant(false));
+    record_printlist = value.toBool();
+    ui->checkBox_record->setChecked(record_printlist);
 }
 
 MainWindow::~MainWindow()
 {
-    delete dialog;
     delete ui;
 }
 
@@ -183,7 +178,6 @@ void MainWindow::on_checkBox_clicked()
 }
 
 QString getEnterPassword();
-bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultValue ,bool set = false);
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
     switch (index) {
@@ -670,19 +664,6 @@ void MainWindow::updateJobHistory(const QVariant& data)
     }
 }
 
-void MainWindow::client_cmd(const QString &s)
-{
-    LOGLOG("client cmd:%s" ,s.toLatin1().constData());
-    if(!s.compare("check")){
-        dialog->exec();
-    }else if(!s.compare("checked")){
-        dialog->close();
-    }else if(!s.compare("timeout")){
-        dialog->close();
-    }else{
-        dialog->close();
-    }
-}
 
 QString changePassword(const QString& password = "1234ABCD");
 void MainWindow::on_pushButton_changePassword_clicked()
@@ -696,3 +677,17 @@ void MainWindow::on_pushButton_changePassword_clicked()
     }
 }
 
+void MainWindow::on_checkBox_record_clicked()
+{
+    QString password = getEnterPassword();
+    QVariant sys_password;
+    appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
+    if(!password.compare(sys_password.toString())){
+        QVariant value;
+        record_printlist = ui->checkBox_record->isChecked();
+        value.setValue(record_printlist);
+        appSettings("record" ,value ,QVariant(false) ,true);
+    }else{
+        ui->checkBox_record->setChecked(record_printlist);
+    }
+}

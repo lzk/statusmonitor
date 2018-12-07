@@ -12,9 +12,8 @@ public:
     int getJobHistory(CALLBACK_getJobHistory callback,void* para);
 
     int job_id;
-    int isFingerEnable;
-    int isFingerChecked;
-    int printerResult;
+    int check_result;
+    const char* server_path;
 };
 
 #endif // FINGERMANAGER_H

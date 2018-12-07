@@ -4,13 +4,14 @@
 #include "error.h"
 #include "smconfig.h"
 
-static void callback_getPrinters(void* para,Printer_struct* ps)
+static int callback_getPrinters(void* para,Printer_struct* ps)
 {
     StatusThread* st = (StatusThread*)para;
     if(isDeviceSupported && isDeviceSupported(ps)){
         st->printers << *ps;
         st->printerlist << ps->name;
     }
+    return st->abort ?0 :1;
 }
 
 StatusThread::StatusThread(QObject *parent)
@@ -18,7 +19,6 @@ StatusThread::StatusThread(QObject *parent)
 {
     abort = false;
     statusmanager.clearFile();
-    start();
 }
 
 StatusThread::~StatusThread()
@@ -43,6 +43,8 @@ void StatusThread::run()
         statusmanager.savePrintersToFile(printerlist);
 
         foreach (Printer_struct printer, printers) {
+            if (abort)
+                return;
             device = devicemanager.getDevice(printer.deviceUri);
             result = getStatusFromDevice(device ,&status);
             if(result){

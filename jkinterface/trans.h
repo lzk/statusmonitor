@@ -9,7 +9,8 @@ public:
     Trans_Server();
     ~Trans_Server();
     int createServer(const char* server_path = 0);
-    int readThenWrite(CALLBACK_Server callback ,void* para);
+    int readThenWrite(int fd ,CALLBACK_Server callback ,void* para);
+    int any_client_connected();
 
 private:
     int listen_fd;

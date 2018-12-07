@@ -46,7 +46,10 @@ int select_fd(int fd)
         return -2;//time out
 //        fprintf(stderr, "no socket ready for read within %d secs\n", SELECT_TIMEOUT);
     }
-    return 0;
+    if(FD_ISSET(fd ,&readfds)){
+        return 0;
+    }
+    return -3;
 }
 
 Trans_Server::Trans_Server()
@@ -81,12 +84,12 @@ int Trans_Server::createServer(const char* server_path)
     }
 
     //in case of 'address already in use' error message
-//    int yes = 1;
-//    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))) {
-//        return -1;
-//    }
+    int yes = 1;
+    if (setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))) {
+        return -1;
+    }
 
-    setSockNonBlock(listen_fd);
+//    setSockNonBlock(listen_fd);
 
     // set srv_addr param
     srv_addr.sun_family=AF_UNIX;
@@ -117,17 +120,16 @@ int Trans_Server::createServer(const char* server_path)
     return listen_fd;
 }
 
-int Trans_Server::readThenWrite(CALLBACK_Server callback ,void* para)
+int Trans_Server::any_client_connected()
 {
     if(listen_fd < 0){
         return -1;
     }
 
-    int res = select_fd(listen_fd);
-    if(res < 0)
-        return res;
+    if(select_fd(listen_fd))
+        return -1;
 
-    int com_fd;
+    int com_fd = -1;
     socklen_t len;
     struct sockaddr_un clt_addr;
 
@@ -135,7 +137,15 @@ int Trans_Server::readThenWrite(CALLBACK_Server callback ,void* para)
     len=sizeof(clt_addr);
     com_fd=accept(listen_fd,(struct sockaddr*)&clt_addr,&len);
     if(com_fd<0){
-        LOGLOG("cannot accept requst");
+//        LOGLOG("cannot accept requst,%d" ,com_fd);
+        return -1;
+    }
+    return com_fd;
+}
+
+int Trans_Server::readThenWrite(int com_fd ,CALLBACK_Server callback ,void* para)
+{
+    if(com_fd < 0){
         return -1;
     }
 

@@ -23,13 +23,8 @@ public:
     ~MainWindow();
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    void closeEvent(QCloseEvent *event);// override;
 
-public slots:
-    void client_cmd(const QString &s);
-
-signals:
-    void client_cmd_result(const QString& s);
 
 private slots:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
@@ -45,10 +40,10 @@ private slots:
     void messageClicked();
     void on_pushButton_changePassword_clicked();
 
-    void dialog_canceled();
+    void on_checkBox_record_clicked();
+
 private:
     Ui::MainWindow *ui;
-    QDialog* dialog;
 
     QString current_printer;
 
@@ -77,6 +72,8 @@ private:
     QMenu *trayIconMenu;
     void createSysTray();
 
+    bool record_printlist;
+//    QString password;
 };
 
 #endif // MAINWINDOW_H
