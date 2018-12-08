@@ -6,9 +6,9 @@
 #include <QMetaType>
 
 #ifdef QT_NO_DEBUG
-#define SERVER_PATH "/var/spool/cups/tmp/tomcat.domain"
+#define SERVER_PATH "/var/spool/cups/tmp/tjgd1zsm.domain"
 #else
-#define SERVER_PATH "/tmp/tomcat.domain"
+#define SERVER_PATH "/tmp/tjgd1zsm.domain"
 #endif
 
 Q_DECLARE_METATYPE(PrinterInfo_struct)

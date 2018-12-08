@@ -4,8 +4,8 @@
 static bool _isDeviceSupported(Printer_struct* ps)
 {
     LOGLOG("tomcat found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
-    if(!QString(ps->makeAndModel).startsWith("Lenovo M7208W"))
-//    if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
+//    if(!QString(ps->makeAndModel).startsWith("Lenovo M7208W"))
+    if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
         return false;
     return true;
 }

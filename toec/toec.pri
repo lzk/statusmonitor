@@ -1,7 +1,7 @@
 INCLUDEPATH += $${PWD}/../toec \
                $${PWD}/../jkinterface
 
-LIBS += -L$${OUT_PWD}/../toec -ltoec
+LIBS += -L$${OUT_PWD}/../toec -ltjgd1z
 
 macx: LIBS += -L/Volumes/work/software/libusb
 

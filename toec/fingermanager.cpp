@@ -7,9 +7,9 @@
 #include <string.h>
 #include <unistd.h>
 #ifdef QT_NO_DEBUG
-#define SERVER_PATH "/var/spool/cups/tmp/tomcat.domain"
+#define SERVER_PATH "/var/spool/cups/tmp/tjgd1zsm.domain"
 #else
-#define SERVER_PATH "/tmp/tomcat.domain"
+#define SERVER_PATH "/tmp/tjgd1zsm.domain"
 #endif
 const char* ui_server_path = SERVER_PATH;
 FingerManager::FingerManager()
@@ -73,6 +73,7 @@ void callback_getJob(void* para,Job_struct* js)
 
 int FingerManager::checkFinger(const char* server_path ,int jobid)
 {
+    LOGLOG("libtoec: start check finger job id:%d" ,job_id);
     this->job_id = jobid;
     this->server_path = server_path;
     check_result = Checked_Result_invalidJobid;
@@ -85,16 +86,22 @@ int FingerManager::getJobHistory(CALLBACK_getJobHistory callback,void* para)
     char str[1024];
     int length;
     FILE* stream = fopen(job_history_file_name ,"r");
-    if(!stream)
+    if(!stream){
+        LOGLOG("can not open job history file");
         return -1;
+        }
     fseek(stream,0,SEEK_SET);
     while(!feof(stream)){
         memset(str ,0 ,sizeof(str));
         if(NULL != fgets(str,size_t(str),stream)){
             //replace fgets last \n to 0
+            LOGLOG("job history:%s" ,str);
             length = strlen(str);
             str[length - 1] = 0;
             callback(para ,str);
+        }else{
+            LOGLOG("can not get job history");
+            break;
         }
     }
     fclose(stream);

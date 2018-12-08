@@ -102,7 +102,6 @@ void Worker::getPrinters()
     m_statusMonitor.getPrinters(callback_getPrinters ,(void*)this);
 }
 
-#ifdef TOMCAT
 void Worker::setJobs(const char* str)
 {
     LOGLOG("job:%s" ,str);
@@ -120,4 +119,4 @@ void Worker::getJobs()
     jobs.clear();
     m_tomcat.getJobHistory(callback_getJobs ,this);
 }
-#endif
+

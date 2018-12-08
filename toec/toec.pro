@@ -6,7 +6,7 @@
 
 QT       -= core gui
 
-TARGET = toec
+TARGET = tjgd1z
 TEMPLATE = lib
 
 DEFINES += TOEC_LIBRARY
