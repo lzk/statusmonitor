@@ -71,11 +71,13 @@ DeviceIO* Worker::getDevice(const char* device_uri)
     device = deviceManager.getDevice(device_uri);
     return device;
 }
-void callback_getPrinters(void* para,PrinterInfo_struct* ps)
+
+int callback_getPrinters(void* para,PrinterInfo_struct* ps)
 {
     Worker* worker = (Worker*)para;
     strcpy(ps->printer.connectTo ,worker->getDevice(ps->printer.deviceUri)->getDeviceAddress());
     worker->setPrinters(ps);
+    return 1;
 }
 
 void Worker::setPrinters(PrinterInfo_struct* ps)

@@ -27,7 +27,7 @@ typedef struct PrinterInfo_struct
     Printer_struct printer;
 }
     PrinterInfo_struct;
-typedef void (*CALLBACK_getPrinterInfo)(void* ,PrinterInfo_struct*);
+typedef int (*CALLBACK_getPrinterInfo)(void* ,PrinterInfo_struct*);
 class StatusMonitor
 {
     

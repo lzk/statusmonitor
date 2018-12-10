@@ -24,7 +24,9 @@ int main(int argc, char *argv[])
     UIConfig::initConfig();
 
     ServerThread thread_server(SERVER_PATH);
+    thread_server.start();
     StatusThread statusThread;
+    statusThread.start();
 
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11
