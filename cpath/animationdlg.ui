@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AnimationDlg</class>
+ <widget class="QDialog" name="AnimationDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="bt_back">
+   <property name="geometry">
+    <rect>
+     <x>181</x>
+     <y>669</y>
+     <width>34</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	border-image: url(:/Images/AnimationControl/leftNormal.tif);
+}
+QPushButton::hover{
+	border-image: url(:/Images/AnimationControl/leftHover.tif);
+}
+QPushButton::Pressed{
+	border-image: url(:/Images/AnimationControl/leftPress.tif);
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btCancel">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>750</y>
+     <width>111</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+border-image:url(:/Images/Btn_Gray.png);
+}
+QPushButton:hover{
+	border-image:url(:/Images/Btn_Gray.png);
+	color:green;
+}
+QPushButton:pressed{
+	border-image: url(:/Images/Btn_Gray_Pressed.png);
+	color:white;
+}</string>
+   </property>
+   <property name="text">
+    <string>取消</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="bt_next">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>669</y>
+     <width>34</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{	
+	border-image: url(:/Images/AnimationControl/rightNormal.tif);
+}
+QPushButton::hover{
+	border-image: url(:/Images/AnimationControl/rightHover.tif);
+}
+QPushButton::Pressed{
+	border-image: url(:/Images/AnimationControl/rightPress.tif);
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>720</y>
+     <width>291</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>下次不再弹出该提示框</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_msg1">
+   <property name="geometry">
+    <rect>
+     <x>213</x>
+     <y>570</y>
+     <width>211</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>21</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>温馨提示 ：</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="bt_pause_play">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>660</y>
+     <width>44</width>
+     <height>44</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{	
+	border-image: url(:/Images/AnimationControl/pauseNormal.tif);
+}
+QPushButton::hover{	
+	border-image: url(:/Images/AnimationControl/pauseHover.tif);
+}
+QPushButton::Pressed{
+	border-image: url(:/Images/AnimationControl/pausePress.tif);
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_msg2">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>610</y>
+     <width>361</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>如果1分钟之内不进行操作，任务将会自动取消</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btOK">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>750</y>
+     <width>111</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	border-image:url(:/Images/Btn_Green.png);
+	color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+	border-image:url(:/Images/Btn_Green.png);
+	color:brack;
+}
+QPushButton:pressed{
+border-image:url(:/Images/Btn_Green_Pressed.png);
+color: rgb(255, 255, 255);
+}
+</string>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

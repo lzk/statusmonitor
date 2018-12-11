@@ -1,24 +1,670 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>850</width>
+    <height>640</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <property name="styleSheet">
+   <string notr="true">#centralWidget{
+background-image: url(:Images/background.png);
+}
+
+#Copy,#Scan,#Setting{
+	border-color:black;
+    border-style:solid;
+    border-top-width:1px;
+	border-bottom-width:2px;
+	border-right-width:1px;
+}
+#Copy{
+border-left-width:1px;
+}
+#Scan,#Setting{
+border-left-width:0px;
+}
+
+</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QStackedWidget" name="totalStackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>850</width>
+      <height>640</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <widget class="QWidget" name="mainWidget">
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: transparent;</string>
+     </property>
+     <widget class="TabStackedWidget" name="tabStackedWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>850</width>
+        <height>640</height>
+       </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>640</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: transparent;</string>
+      </property>
+      <widget class="QWidget" name="page">
+       <property name="styleSheet">
+        <string notr="true">background-color: transparent;</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="page_1"/>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>60</y>
+        <width>27</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/Images/LED_Gray.png);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QWidget" name="tabImgButton" native="true">
+      <property name="geometry">
+       <rect>
+        <x>197</x>
+        <y>154</y>
+        <width>350</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#PrintImgBtn,#CopyImgBtn,#ScanImgBtn,#SettingImgBtn{
+	background-repeat:no-repeat;
+	background-position:bottom center;
+	border-top-left-radius:50px;
+	border-top-right-radius:50px;
+}</string>
+      </property>
+      <widget class="QPushButton" name="CopyImgBtn">
+       <property name="geometry">
+        <rect>
+         <x>6</x>
+         <y>0</y>
+         <width>111</width>
+         <height>77</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/Images/btnCopy.tif);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ScanImgBtn">
+       <property name="geometry">
+        <rect>
+         <x>117</x>
+         <y>0</y>
+         <width>111</width>
+         <height>77</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/Images/btnScan.tif);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="SettingImgBtn">
+       <property name="geometry">
+        <rect>
+         <x>227</x>
+         <y>0</y>
+         <width>111</width>
+         <height>77</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/Images/btnSetting.tif);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="loginButton">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>60</y>
+        <width>33</width>
+        <height>39</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/Images/Logon_Normal.png);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QWidget" name="deviceMsgWidget" native="true">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>290</y>
+        <width>194</width>
+        <height>301</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <kerning>true</kerning>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#deviceMsgWidget{
+background-image: url(:/Images/PrinterMsgBackground.png);
+}</string>
+      </property>
+      <widget class="QProgressBar" name="mofenProgressBar">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>190</y>
+         <width>121</width>
+         <height>18</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QProgressBar{
+color:black;
+border:3px groove white;
+border-radius:9px;
+background-image:url();
+background-color:lightgray;
+
+}
+QProgressBar::chunk{
+background-color:gray;
+border-radius:5px;
+}</string>
+       </property>
+       <property name="value">
+        <number>24</number>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>55</y>
+         <width>154</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/Images/InputBackground.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>120</y>
+         <width>154</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/Images/InputBackground.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>30</y>
+         <width>20</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/Images/Status_RefreshEnable.tif);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>164</y>
+         <width>62</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image:url();</string>
+       </property>
+       <property name="text">
+        <string>墨粉</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_6">
+       <property name="geometry">
+        <rect>
+         <x>29</x>
+         <y>129</y>
+         <width>133</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: white;
+border-width:0px;
+border-style:solid;
+border-radius:5px;
+background-color: rgb(110, 110, 110);
+background-image:url();</string>
+       </property>
+       <property name="text">
+        <string>离线</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>30</y>
+         <width>31</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image:url();</string>
+       </property>
+       <property name="text">
+        <string>机型</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>100</y>
+         <width>62</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image:url();</string>
+       </property>
+       <property name="text">
+        <string>设备状态</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_9">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>190</y>
+         <width>20</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">image: url(:/Images/shopCart_Disable.tif);
+background-image:url();</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="deviceNameBox">
+       <property name="geometry">
+        <rect>
+         <x>28</x>
+         <y>63</y>
+         <width>135</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox#deviceNameBox {
+background-image: url();
+background-color: qlineargradient(x1:0,y1:0,x2:0,y2:0.25,stop:0#E0E0E0,stop:1#FFFFFF);
+border:0px solid white;
+border-radius: 5px;
+}
+
+QComboBox::drop-down {
+	border:none;
+}
+
+QComboBox:down-arrow {
+	image: url(:/Images/arrowdown.png);
+}
+</string>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>-1</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_10">
+       <property name="geometry">
+        <rect>
+         <x>21</x>
+         <y>220</y>
+         <width>151</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image:url();</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tabButton" native="true">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>202</x>
+        <y>238</y>
+        <width>334</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>334</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>334</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: transparent;
+border-radius:7px;</string>
+      </property>
+      <widget class="QPushButton" name="Copy">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>111</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(99, 99, 99);
+color: rgb(255, 255, 255);
+border-top-right-radius:0px;
+border-bottom-right-radius:0px;</string>
+       </property>
+       <property name="text">
+        <string>复印</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Scan">
+       <property name="geometry">
+        <rect>
+         <x>111</x>
+         <y>0</y>
+         <width>111</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-radius:0px;
+background-color: rgb(255, 255, 255);
+/*
+QPushButton{
+border-radius:0px;
+background-color: rgb(255, 255, 255);color:black;
+}
+
+QPushButton::Pressed{
+border-radius:0px;
+background-color: rgb(0, 0, 0);
+color:green;;
+}
+
+QPushButton::disabled{
+border-radius:0px;
+background-color: while;
+color:gray;
+}*/</string>
+       </property>
+       <property name="text">
+        <string>扫描</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Setting">
+       <property name="geometry">
+        <rect>
+         <x>222</x>
+         <y>0</y>
+         <width>112</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-top-left-radius:0px;
+background-color: rgb(255, 255, 255);
+border-bottom-left-radius:0px;</string>
+       </property>
+       <property name="text">
+        <string>设置</string>
+       </property>
+      </widget>
+     </widget>
+     <zorder>tabStackedWidget</zorder>
+     <zorder>tabImgButton</zorder>
+     <zorder>deviceMsgWidget</zorder>
+     <zorder>tabButton</zorder>
+     <zorder>loginButton</zorder>
+     <zorder>pushButton</zorder>
+    </widget>
+    <widget class="QWidget" name="memberCenterPage">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <widget class="MemberCenterWidget" name="memberCenterWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>850</width>
+        <height>640</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TabStackedWidget</class>
+   <extends>QStackedWidget</extends>
+   <header>tabstackedwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MemberCenterWidget</class>
+   <extends>QWidget</extends>
+   <header>membercenterwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
