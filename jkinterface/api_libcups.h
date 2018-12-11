@@ -15,7 +15,7 @@ struct Printer_struct{
     bool isDefault;
 }
 Printer_struct;
-typedef void (*CALLBACK_getPrinters)(void* ,Printer_struct*);
+typedef int (*CALLBACK_getPrinters)(void* ,Printer_struct*);
 
 typedef enum 		/**** Job states ****/
 {

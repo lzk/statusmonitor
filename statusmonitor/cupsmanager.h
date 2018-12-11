@@ -2,7 +2,7 @@
 #define CUPSMANAGER_H
 
 #include "api_libcups.h"
-typedef void (*CALLBACK_getPrinter)(void* ,Printer_struct*);
+typedef int (*CALLBACK_getPrinter)(void* ,Printer_struct*);
 
 class CupsManager
 {

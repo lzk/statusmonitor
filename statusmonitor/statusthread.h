@@ -19,9 +19,9 @@ public:
     QList<Printer_struct> printers;
     QStringList printerlist;
 
-private:
     bool abort;
 
+private:
     CupsManager cupsmanager;
     StatusManager statusmanager;
     DeviceManager devicemanager;
