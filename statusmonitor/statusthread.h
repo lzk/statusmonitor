@@ -19,11 +19,12 @@ public:
     QList<Printer_struct> printers;
     QStringList printerlist;
 
-private:
     bool abort;
-    DeviceManager devicemanager;
+
+private:
     CupsManager cupsmanager;
     StatusManager statusmanager;
+    DeviceManager devicemanager;
 };
 
 #endif // STATUSTHREAD_H

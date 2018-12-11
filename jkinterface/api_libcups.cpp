@@ -528,7 +528,9 @@ int cups_get_printers(CALLBACK_getPrinters callback ,void* para)
 //       httpSeparateURI(HTTP_URI_CODING_ALL, device_uri, pp->scheme, sizeof(pp->scheme),
 //                       pp->username, sizeof(pp->username), pp->hostname, sizeof(pp->hostname), &pp->port,
 //               pp->resource, sizeof(pp->resource));
-       callback(para ,pp);
+       if(!callback(para ,pp)){
+           break;
+       }
    }
    cupsFreeDests(num_dests, dests);
    return ret;

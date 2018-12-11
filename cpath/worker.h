@@ -7,7 +7,7 @@
 #include "statusmonitor.h"
 #include "serverthread.h"
 #include "devicemanager.h"
-
+#include "lshell.h"
 class Worker : public QObject
 {
     Q_OBJECT
@@ -21,18 +21,19 @@ signals:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
     
 public slots:
-    void cmdFromUi(int cmd ,QVariant data = QVariant());
+    void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void getPrinters();
-
 
 private:
     int cmd_status;
     QStringList printers;
+    DeviceIO* device;
     QList<PrinterInfo_struct> printers_detail;
-//    QList<Job_struct> jobs;
+    LShell* lshell;
     StatusMonitor m_statusMonitor;
     DeviceManager deviceManager;
-    DeviceIO* device;
+
+    Printer_struct* get_printer(const QString& printer_name);//get printer exist in system
 };
 
 #endif // WORKER_H

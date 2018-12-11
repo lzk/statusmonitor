@@ -11,10 +11,11 @@ public:
         Type_net,
     };
 
-    DeviceIO(){}
+    DeviceIO():
+        ifdelay(1){}
     virtual ~DeviceIO(){}
     virtual int type() = 0;
-    virtual int open(int port = 0) = 0;
+    virtual int open(int port = 9100) = 0;
     virtual int close(void) = 0;
     virtual int write(char *buffer, int bufsize) = 0;
     virtual int read(char *buffer, int bufsize) = 0;
@@ -22,25 +23,12 @@ public:
     virtual int getDeviceId(char *buffer, int bufsize) = 0;
     virtual const char* getDeviceAddress() = 0;
 
-    virtual int open(const char* url ,int port = 0){
-        int ret;
-        ret = resolveUrl(url);
-        if(!ret)
-            ret = open(port);
-        return ret;
-    }
-
-    virtual int resolveUrl(const char* url){
-        int ret = -1;
-        if(url){
-            strcpy(device_uri ,url);
-            ret = 0;
-        }
-        return ret;
-    }
-
+    virtual int open(const char* url ,int port = 9100);
+    virtual int resolveUrl(const char* url);
+    virtual int writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize);
 protected:
     char device_uri[256];
+    int ifdelay;
 };
 
 #endif // DEVICEIO_H
