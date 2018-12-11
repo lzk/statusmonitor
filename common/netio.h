@@ -11,7 +11,7 @@ public:
     ~NetIO();
 
     virtual int type();
-    virtual int open(int port = 0);
+    virtual int open(int port = 9100);
 //    virtual int open(const char* url ,int port = 0);
     virtual int close(void);
     virtual int write(char *buffer, int bufsize);

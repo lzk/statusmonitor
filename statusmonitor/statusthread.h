@@ -21,9 +21,10 @@ public:
 
 private:
     bool abort;
-    DeviceManager devicemanager;
+
     CupsManager cupsmanager;
     StatusManager statusmanager;
+    DeviceManager devicemanager;
 };
 
 #endif // STATUSTHREAD_H

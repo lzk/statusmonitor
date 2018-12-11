@@ -13,7 +13,8 @@ SOURCES += \
     $${PWD}/api_libcups.cpp \
     $${PWD}/log.cpp \
     $${PWD}/trans.cpp \
-    $$PWD/jkconfig.cpp
+    $$PWD/jkconfig.cpp \
+    $$PWD/deviceio.cpp
 
 
 HEADERS += \

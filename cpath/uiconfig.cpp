@@ -2,7 +2,7 @@
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
-    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
+//    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
     return true;
 }
 

@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    test \
-    cpath
+    cpath \
+    test_cpath
 
 #first unzip libs/cups*.zip

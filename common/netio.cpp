@@ -4,6 +4,7 @@
 #include <QUrl>
 #include "api_libcups.h"
 #include "log.h"
+#include <QDebug>
 QHostAddress get_ip_address(const QString& host)
 {
     QHostAddress hostAddress;
@@ -21,7 +22,7 @@ QHostAddress get_ip_address(const QString& host)
         }
         if(!found)
             hostAddress = info.addresses().first();
-//        qDebug()<<"host name:" << host << "addresses:" <<info.addresses();
+        qDebug()<<"host name:" << host << "addresses:" <<info.addresses();
     }
     return hostAddress;
 }
@@ -29,7 +30,7 @@ QHostAddress get_ip_address(const QString& host)
 NetIO::NetIO():
     tcpSocket(NULL)
 {
-
+    ifdelay = 0;
 }
 NetIO::~NetIO()
 {
@@ -108,6 +109,29 @@ int NetIO::read(char *buffer, int bufsize)
     if(!tcpSocket)
         return -1;
     int bytesAvailable;
+    do{
+        bytesAvailable = tcpSocket->bytesAvailable();
+        if(bytesAvailable < bufsize){
+            LOGLOG("not enough bytesAvailable:%d,buffer size:%d",bytesAvailable ,bufsize);
+            if(!tcpSocket->waitForReadyRead(10)){
+                return -1;
+            }
+        }else{
+            break;
+        }
+    }
+    while(1);
+    LOGLOG("bytesAvailable:%d,buffer size:%d",bytesAvailable ,bufsize);
+    int ret;
+    ret = tcpSocket->read(buffer ,bufsize);
+    return ret;
+}
+#if 0
+int NetIO::read(char *buffer, int bufsize)
+{
+    if(!tcpSocket)
+        return -1;
+    int bytesAvailable;
 #if 0
     do{
         bytesAvailable = tcpSocket->bytesAvailable();
@@ -152,7 +176,7 @@ int NetIO::read(char *buffer, int bufsize)
     return numReadTotal;
 #endif
 }
-
+#endif
 int NetIO::getDeviceId(char *buffer, int bufsize)
 {
     return snmpGetDeviceID(device_uri ,buffer ,bufsize);

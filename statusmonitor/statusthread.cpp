@@ -43,6 +43,8 @@ void StatusThread::run()
         statusmanager.savePrintersToFile(printerlist);
 
         foreach (Printer_struct printer, printers) {
+            if (abort)
+                return;
             device = devicemanager.getDevice(printer.deviceUri);
             result = getStatusFromDevice(device ,&status);
             if(result){
