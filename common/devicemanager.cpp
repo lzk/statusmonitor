@@ -2,8 +2,16 @@
 #include "jkinterface.h"
 DeviceManager::DeviceManager()
     :device(NULL)
+    ,usbIO(new UsbIO)
+    ,netIO(new NetIO)
 {
 
+}
+
+DeviceManager::~DeviceManager()
+{
+    delete usbIO;
+    delete netIO;
 }
 
 DeviceIO* DeviceManager::getDevice(const char* device_uri)
@@ -11,11 +19,11 @@ DeviceIO* DeviceManager::getDevice(const char* device_uri)
     int type = getDeviceType(device_uri);
     switch (type) {
     case DeviceIO::Type_usb:
-        device = &usbIO;
+        device = usbIO;
         break;
 
     case DeviceIO::Type_net:
-        device = &netIO;
+        device = netIO;
         break;
 
     default:

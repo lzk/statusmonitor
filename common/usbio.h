@@ -23,7 +23,6 @@ public:
 
 private:
     UsbApi* usb;
-    UsbApi usbapi;
 
 private:
     int inPipeRef;

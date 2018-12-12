@@ -8,14 +8,15 @@ class DeviceManager
 {
 public:
     DeviceManager();
+    ~DeviceManager();
     DeviceIO* getDevice(const char* uri);
 
     static int getDeviceType(const char* uri);
 private:
     DeviceIO* device;
+    UsbIO* usbIO;
+    NetIO* netIO;
     QString device_uri;
-    UsbIO usbIO;
-    NetIO netIO;
 };
 
 #endif // DEVICEMANAGER_H

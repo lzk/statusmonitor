@@ -4,7 +4,7 @@
 #include "log.h"
 //vid:0x0550 pid:0x0175
 UsbIO::UsbIO()
-    :usb(&usbapi)
+    :usb(new UsbApi)
     ,pid(-1)
     ,vid(-1)
     ,interface(0)
@@ -16,6 +16,7 @@ UsbIO::UsbIO()
 UsbIO::~UsbIO()
 {
     usb->exit();
+    delete usb;
 }
 
 int UsbIO::type()

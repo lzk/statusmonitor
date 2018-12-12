@@ -16,6 +16,7 @@ static int callback_getPrinters(void* para,Printer_struct* ps)
 
 StatusThread::StatusThread(QObject *parent)
     : QThread(parent)
+    ,devicemanager(new DeviceManager)
 {
     abort = false;
     statusmanager.clearFile();
@@ -25,6 +26,7 @@ StatusThread::~StatusThread()
 {
     abort = true;
     wait();
+    delete devicemanager;
 }
 
 void StatusThread::run()
@@ -45,7 +47,7 @@ void StatusThread::run()
         foreach (Printer_struct printer, printers) {
             if (abort)
                 return;
-            device = devicemanager.getDevice(printer.deviceUri);
+            device = devicemanager->getDevice(printer.deviceUri);
             result = getStatusFromDevice(device ,&status);
             if(result){
                 LOGLOG("get status from device %s:fail!" ,printer.name);
