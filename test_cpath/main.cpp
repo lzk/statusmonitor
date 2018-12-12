@@ -23,10 +23,10 @@ int main(int argc, char *argv[])
     }
     UIConfig::initConfig();
 
-    ServerThread thread_server(SERVER_PATH);
-    thread_server.start();
-    StatusThread statusThread;
-    statusThread.start();
+    ServerThread* thread_server = new ServerThread(SERVER_PATH);
+    thread_server->start();
+    StatusThread* statusThread = new StatusThread;
+    statusThread->start();
 
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11
@@ -40,8 +40,7 @@ int main(int argc, char *argv[])
         QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));
 #endif
 
-    UInterface uinterface;
-    gUInterface = &uinterface;
+    gUInterface = new UInterface;
 
     MainWindow w;
 
@@ -49,5 +48,9 @@ int main(int argc, char *argv[])
     if(!arguments.contains("-hide"))
         w.show();
     
-    return a.exec();
+    int ret = a.exec();
+    delete thread_server;
+    delete statusThread;
+    delete gUInterface;
+    return ret;
 }

@@ -22,9 +22,9 @@ public:
     bool abort;
 
 private:
-    CupsManager cupsmanager;
+    DeviceManager* devicemanager;
     StatusManager statusmanager;
-    DeviceManager devicemanager;
+    CupsManager cupsmanager;
 };
 
 #endif // STATUSTHREAD_H
