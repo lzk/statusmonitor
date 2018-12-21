@@ -6,7 +6,7 @@ UInterface* gUInterface;
 #include <sys/wait.h>
 #include "uiconfig.h"
 #include "commonapi.h"
-//#include "statusthread.h"
+#include "statusthread.h"
 #include "appserver.h"
 
 void quit(int)
@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
     UIConfig::initConfig();
 
 //    ServerThread thread_server(SERVER_PATH);
-//    StatusThread statusThread;
+    StatusThread statusThread;
+    statusThread.start();
 
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11

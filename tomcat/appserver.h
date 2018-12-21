@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QThread>
-class FingerHandler;
+//class FingerHandler;
 class ServerThread;
 class AppServer : public QObject
 {
@@ -17,7 +17,7 @@ public slots:
     void client_connect(int fd);
 
 private:
-    FingerHandler* finger_handler;
+//    FingerHandler* finger_handler;
     ServerThread* thread_server;
     QThread thread;
 

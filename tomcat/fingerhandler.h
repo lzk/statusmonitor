@@ -2,11 +2,12 @@
 #define FINGERHANDLER_H
 
 #include <QObject>
+class ClientThread;
 class FingerHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit FingerHandler(QObject *parent = 0);
+    explicit FingerHandler(ClientThread *_cth);
     void active_current_jobid_window();
 
 signals:
@@ -15,10 +16,12 @@ signals:
     void active_window(int jobid);
 
 public slots:
-    void check_finger(int jobid);
+    void check_finger(const QString& cmd);
+    void cancel();
 
 private:
     int jobid;
+    ClientThread* cth;
 };
 
 #endif // FINGERHANDLER_H

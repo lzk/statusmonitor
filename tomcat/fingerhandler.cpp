@@ -4,22 +4,41 @@
 #include <QThread>
 #include "jkinterface.h"
 #include "clientthread.h"
-FingerHandler::FingerHandler(QObject *parent)
-    : QObject(parent)
+#include <QUrl>
+#if QT_VERSION_MAJOR > 4
+#include <QUrlQuery>
+#endif
+FingerHandler::FingerHandler(ClientThread *_cth)
+    : cth(_cth)
     ,jobid(0)
 {
 
 }
 
-void FingerHandler::check_finger(int jobid)
+void FingerHandler::cancel()
 {
+    LOGLOG("cancel finger check");
+}
+
+void FingerHandler::check_finger(const QString& cmd)
+{
+    QUrl url(cmd);
+    QString printer = url.host();
+    int jobid;
+#if QT_VERSION_MAJOR > 4
+    jobid = QUrlQuery(QUrl(url)).queryItemValue("jobid").toInt();
+#else
+    jobid = QUrl(url).queryItemValue("jobid").toInt();
+#endif
+    char uri[256];
+    cups_get_device_uri(printer.toLatin1().constData() ,uri);
     LOGLOG("finger handler check %d begin" ,jobid);
     this->jobid = jobid;
     start_check_finger(jobid);
     int result;
     result = finger_isEnabled() ?Checked_Result_OK :Checked_Result_Disable;
     if(!result){
-        ClientThread* cth = static_cast<ClientThread* >(sender());
+//        ClientThread* cth = static_cast<ClientThread* >(sender());
         if(!cth)
             return;
         while(true){
@@ -35,7 +54,7 @@ void FingerHandler::check_finger(int jobid)
                 break;
             }
 
-            if(!finger_check()){
+            if(!finger_check(uri)){
                 result = Checked_Result_Fail;
 //                check_finger_result(jobid ,result);
             }else{

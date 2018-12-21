@@ -8,24 +8,15 @@ class ClientThread :public QThread
 {
     Q_OBJECT
 public:
-    explicit ClientThread(ServerThread* _server ,int _fd ,QObject *parent = NULL)
-        :QThread(parent)
-          ,server(_server)
-    ,fd(_fd){
-
-    }
-    ~ClientThread(){
-//        quit();
-        wait();
-    }
+    explicit ClientThread(ServerThread* _server ,int _fd ,QObject *parent = NULL);
     void run();
     const QString& result(){return m_result;}
     int trans_back(){return m_trans_back;}
     void send_cmd(const QString& cmd);
-    void check_finger(int jobid);
+    void check_finger(const QString& cmd);
 
 signals:
-    void signal_check_finger(int jobid);
+    void signal_check_finger(const QString& cmd);
     void client_cmd(const QString &s ,void* para);
     void delete_dialog();
 
@@ -44,7 +35,9 @@ public:
 
     bool m_cancel;
     bool m_timeout;
+    FingerHandler* finger_handler;
 
     friend class FingerHandler;
+
 };
 #endif // CLIENTTHREAD_H

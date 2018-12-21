@@ -38,6 +38,7 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
 #endif
 //    setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowTitle(printer_name + QString("-%1").arg(jobid));
+    start_check_finger(jobid);
 }
 
 CheckFingerDialog::~CheckFingerDialog()
@@ -53,7 +54,7 @@ void CheckFingerDialog::cancel_and_delete()
 
 void CheckFingerDialog::timeout()
 {
-    raise();
+//    raise();
     time_val --;
     ui->label_timeval->setText(QString("%1").arg(time_val));
     if(!time_val){
@@ -70,7 +71,7 @@ void CheckFingerDialog::start_check_finger(int jobid)
     movie = new QMovie(":/image/timg.gif");
     ui->label_gif->setMovie(movie);
     movie->start();
-    raise();
+//    raise();
 }
 
 void CheckFingerDialog::active_window(int jobid)

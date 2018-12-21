@@ -23,6 +23,8 @@ public:
 private:
     DeviceManager devicemanager;
     CupsManager cupsmanager;
+
+public:
     StatusManager statusmanager;
 };
 

@@ -1,7 +1,7 @@
 #include "clientthread.h"
 #include <unistd.h>
 #include "jkinterface.h"
-
+#include "fingerhandler.h"
 #include <QUrl>
 #if QT_VERSION_MAJOR > 4
 #include <QUrlQuery>
@@ -32,6 +32,7 @@ int callback_Server(void* para,char* buffer,int bufsize)
     int timeout = 4000;
     if(!cmd.compare("check")){
         wt->send_cmd(buffer);
+        wt->check_finger(buffer);
         while (!wt->trans_back() && !wt->m_cancel && !wt->m_timeout && timeout --) {
             usleep(10000);
         }
@@ -47,6 +48,18 @@ int callback_Server(void* para,char* buffer,int bufsize)
         strcpy(buffer ,wt->result().toLatin1().constData());
     }
     return 0;
+}
+
+ClientThread::ClientThread(ServerThread* _server ,int _fd ,QObject *parent)
+        :QThread(parent)
+          ,server(_server)
+    ,fd(_fd)
+{
+    finger_handler = new FingerHandler(this);
+    finger_handler->moveToThread(this);
+    connect(this ,SIGNAL(finished()) ,finger_handler ,SLOT(deleteLater()));
+    connect(this ,SIGNAL(signal_check_finger(QString)) ,finger_handler ,SLOT(check_finger(QString)) ,Qt::DirectConnection);
+    connect(finger_handler ,SIGNAL(check_finger_result(int,int)) ,this ,SLOT(check_finger_result(int ,int)) ,Qt::DirectConnection);
 }
 
 void ClientThread::run(){
@@ -86,7 +99,6 @@ void ClientThread::check_finger_result(int jobid ,int result)
     }
     LOGLOG("result of jobid %d:%s" ,jobid ,m_result.toLatin1().constData());
     delete_dialog();
-    delete this;
 }
 
 void ClientThread::send_cmd(const QString& cmd)
@@ -98,21 +110,24 @@ void ClientThread::send_cmd(const QString& cmd)
     server->client_cmd(cmd ,(void*)this);
 }
 
-
-void ClientThread::check_finger(int jobid)
+void ClientThread::check_finger(const QString& cmd)
 {
-    signal_check_finger(jobid);
+    signal_check_finger(cmd);
+//    finger_handler->check_finger(cmd);
 }
+
 void ClientThread::cancel(int jobid)
 {
     m_result = "cancel";
     m_cancel = true;
+    finger_handler->cancel();
 }
 
 void ClientThread::timeout(int jobid)
 {
     m_result = "timeout";
     m_timeout = true;
+    finger_handler->cancel();
 }
 
 void ClientThread::client_cmd_result(const QString &s)

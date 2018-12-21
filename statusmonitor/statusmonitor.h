@@ -35,6 +35,7 @@ public:
     StatusMonitor();
 
     int getPrinters(CALLBACK_getPrinterInfo ,void*);
+//    int getPrinters(CALLBACK_getPrinters ,void*);
     static int getPrinterStatus(const char* printer ,PrinterStatus_struct* ps);
     static int getDeviceStatus(DeviceIO* device ,PrinterStatus_struct* ps);
 
