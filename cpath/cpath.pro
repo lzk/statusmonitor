@@ -61,9 +61,7 @@ HEADERS += \
         mainwindow.h \
     jsonparser/FlexLexer.h \
     jsonparser/json_parser.hh \
-    jsonparser/json_parser.yy \
     jsonparser/json_scanner.h \
-    jsonparser/json_scanner.yy \
     jsonparser/location.hh \
     jsonparser/parser.h \
     jsonparser/parser_p.h \
@@ -122,9 +120,18 @@ FORMS += \
 
 
 RESOURCES += \
-    resource.qrc
+    resource.qrc \
+    translation.qrc
 
 DISTFILES += \
     MemberCenter/merchantJson \
     MemberCenter/StationJson \
-    jsonparser/CMakeLists.txt
+    jsonparser/CMakeLists.txt \
+    jsonparser/json_parser.yy \
+    jsonparser/json_scanner.yy \
+    translations/vop.en.qm \
+    translations/vop.zh_CN.qm \
+
+
+TRANSLATIONS = translations/vop.en.ts  \
+                translations/vop.zh_CN.ts

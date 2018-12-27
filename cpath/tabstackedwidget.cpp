@@ -1,6 +1,8 @@
 #include "tabstackedwidget.h"
 #include "ui_tabstackedwidget.h"
 #include "qdebug.h"
+#include "mainwindow.h"
+#include "animationdlg.h"
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
@@ -22,6 +24,9 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     ui->mark3_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
     ui->mark4_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
 
+    //init Param_Copy
+    this->setDefault_Copy();
+
     selectState = "QPushButton{border-image: url(:/Images/Btn_Green.png);color:white;}";
     selectHover = "QPushButton::hover{color:black;}";
     selectPressed = "QPushButton::pressed{border-image: url(:/Images/Btn_Green_Pressed.png);color:white;}";
@@ -30,12 +35,7 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     unSelectHover = "QPushButton::hover{color: rgb(52, 212, 34);}";
     unSelectPressed = "QPushButton::pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:white;}";
 
-    /*settingsStackedWidget = new SettingsStackedWidget(this->widget(3));
-    settingsStackedWidget->setGeometry(476, 290, 251, 301);
-    ui->settingStackedWidget->hide();*/
-
     on_scrollArea_ScanImage_itemSelectionChanged();
-    connect(ui->scrollArea_ScanImage ,SIGNAL(print_scan_images(QStringList)) ,this ,SLOT(print_scan_images(QStringList)));
 
     paramScan.scan_doctype = T_Photo;
     paramScan.scan_dpi = Scan_300DPI;
@@ -44,10 +44,27 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     paramScan.brightness = 50;
     paramScan.scan_size = Scan_A4;
 
-    QString labelTitle = "待扫描图片大小:";
+    QString labelTitle = "ResStr_Scanned_image_size";
     QString labelText = QString("%1%2").arg(labelTitle).arg("24.89MB");
     ui->label_ImageSize->setText(labelText);
 
+    connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
+
+    connect(ui->settingStackedWidget,SIGNAL(cycleStart()),this,SLOT(startCycleEmit()));
+    connect(ui->settingStackedWidget,SIGNAL(cycleStop()),this,SLOT(stopCycleEmit()));
+    connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStartFromWT()),this,SLOT(startCycleEmit()));
+    connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStopFromWT()),this,SLOT(stopCycleEmit()));
+}
+
+void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
+{
+    switch(cmd)
+    {
+    case UIConfig::LS_CMD_COPY:
+
+        break;
+    default: break;
+    }
 }
 
 bool TabStackedWidget::getScrollAreaImageStatus()
@@ -64,11 +81,11 @@ bool TabStackedWidget::getScrollAreaImageStatus()
 }
 
 
-/*void TabStackedWidget::setDefault_Copy()
+void TabStackedWidget::setDefault_Copy()
 {
     copycmdset para;
     copycmdset *p = &para;
-    pDeviceManager->copy_get_defaultPara(p);
+    memcpy(p ,&default_copy_parameter ,sizeof(default_copy_parameter));
 
     paramCopy.scaling = (int)p->scale;
     paramCopy.docType = (DocType_Copy)p->scanMode;
@@ -81,7 +98,7 @@ bool TabStackedWidget::getScrollAreaImageStatus()
     paramCopy.promptInfo.isIDCard = true;
     paramCopy.promptInfo.isMultible = true;
 
-}*/
+}
 
 void TabStackedWidget::on_scrollArea_ScanImage_itemSelectionChanged()
 {
@@ -101,20 +118,22 @@ void TabStackedWidget::on_btn_WiFi_clicked()
 {
     ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless_Active.png)");
     ui->img_SoftAP->setStyleSheet("border-image: url(:/Images/SoftAP.png)");
-    ui->img_TCPIP->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV4->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV6->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
     ui->img_PowerSave->setStyleSheet("border-image: url(:/Images/PowerSave.png)");
     ui->img_UserConfig->setStyleSheet("border-image: url(:/Images/UserConfig.png)");
     ui->img_Password->setStyleSheet("border-image: url(:/Images/Password.png)");
 
     ui->btn_WiFi->setStyleSheet(selectState+selectHover+selectPressed);
     ui->btn_SoftAP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
-    ui->btn_TCPIP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV4->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV6->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_PowerSave->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_UserConfig->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_Password->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
 
     //neil add for settings page 2016-01-29
-   // settingsStackedWidget->changeStackIndex(0);
+    ui->settingStackedWidget->changeStackIndex(0);
     ui->settingStackedWidget->setCurrentIndex(0);
 }
 
@@ -122,105 +141,138 @@ void TabStackedWidget::on_btn_SoftAP_clicked()
 {
     ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless.png)");
     ui->img_SoftAP->setStyleSheet("border-image: url(:/Images/SoftAP_Active.png)");
-    ui->img_TCPIP->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV4->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV6->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
     ui->img_PowerSave->setStyleSheet("border-image: url(:/Images/PowerSave.png)");
     ui->img_UserConfig->setStyleSheet("border-image: url(:/Images/UserConfig.png)");
     ui->img_Password->setStyleSheet("border-image: url(:/Images/Password.png)");
 
     ui->btn_WiFi->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_SoftAP->setStyleSheet(selectState+selectHover+selectPressed);
-    ui->btn_TCPIP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV4->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV6->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_PowerSave->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_UserConfig->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_Password->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
 
     //neil add for settings page 2016-01-29
-   //settingsStackedWidget->changeStackIndex(1);
+   ui->settingStackedWidget->changeStackIndex(1);
     ui->settingStackedWidget->setCurrentIndex(1);
 }
 
-void TabStackedWidget::on_btn_TCPIP_clicked()
+void TabStackedWidget::on_btn_TCPIPV4_clicked()
 {
     ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless.png)");
     ui->img_SoftAP->setStyleSheet("border-image: url(:/Images/SoftAP.png)");
-    ui->img_TCPIP->setStyleSheet("border-image: url(:/Images/TCPIP_Active.png)");
+    ui->img_TCPIPV4->setStyleSheet("border-image: url(:/Images/TCPIP_Active.png)");
+    ui->img_TCPIPV6->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
     ui->img_PowerSave->setStyleSheet("border-image: url(:/Images/PowerSave.png)");
     ui->img_UserConfig->setStyleSheet("border-image: url(:/Images/UserConfig.png)");
     ui->img_Password->setStyleSheet("border-image: url(:/Images/Password.png)");
 
     ui->btn_WiFi->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_SoftAP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
-    ui->btn_TCPIP->setStyleSheet(selectState+selectHover+selectPressed);
+    ui->btn_TCPIPV4->setStyleSheet(selectState+selectHover+selectPressed);
+    ui->btn_TCPIPV6->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_PowerSave->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_UserConfig->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_Password->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
 
     //neil add for settings page 2016-01-29
-    //settingsStackedWidget->changeStackIndex(2);
+    ui->settingStackedWidget->changeStackIndex(2);
     ui->settingStackedWidget->setCurrentIndex(2);
+}
+
+void TabStackedWidget::on_btn_TCPIPV6_clicked()
+{
+    ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless.png)");
+    ui->img_SoftAP->setStyleSheet("border-image: url(:/Images/SoftAP.png)");
+    ui->img_TCPIPV4->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV6->setStyleSheet("border-image: url(:/Images/TCPIP_Active.png)");
+    ui->img_PowerSave->setStyleSheet("border-image: url(:/Images/PowerSave.png)");
+    ui->img_UserConfig->setStyleSheet("border-image: url(:/Images/UserConfig.png)");
+    ui->img_Password->setStyleSheet("border-image: url(:/Images/Password.png)");
+
+    ui->btn_WiFi->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_SoftAP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV4->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV6->setStyleSheet(selectState+selectHover+selectPressed);
+    ui->btn_PowerSave->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_UserConfig->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_Password->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+
+    //neil add for settings page 2016-01-29
+    ui->settingStackedWidget->changeStackIndex(3);
+    ui->settingStackedWidget->setCurrentIndex(3);
 }
 
 void TabStackedWidget::on_btn_PowerSave_clicked()
 {
     ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless.png)");
     ui->img_SoftAP->setStyleSheet("border-image: url(:/Images/SoftAP.png)");
-    ui->img_TCPIP->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV4->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV6->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
     ui->img_PowerSave->setStyleSheet("border-image: url(:/Images/PowerSave_Active.png)");
     ui->img_UserConfig->setStyleSheet("border-image: url(:/Images/UserConfig.png)");
     ui->img_Password->setStyleSheet("border-image: url(:/Images/Password.png)");
 
     ui->btn_WiFi->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_SoftAP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
-    ui->btn_TCPIP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV4->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV6->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_PowerSave->setStyleSheet(selectState+selectHover+selectPressed);
     ui->btn_UserConfig->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_Password->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
 
     //neil add for settings page 2016-01-29
-    //settingsStackedWidget->changeStackIndex(3);
-    ui->settingStackedWidget->setCurrentIndex(3);
+    ui->settingStackedWidget->changeStackIndex(4);
+    ui->settingStackedWidget->setCurrentIndex(4);
 }
 
 void TabStackedWidget::on_btn_UserConfig_clicked()
 {
     ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless.png)");
     ui->img_SoftAP->setStyleSheet("border-image: url(:/Images/SoftAP.png)");
-    ui->img_TCPIP->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV4->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV6->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
     ui->img_PowerSave->setStyleSheet("border-image: url(:/Images/PowerSave.png)");
     ui->img_UserConfig->setStyleSheet("border-image: url(:/Images/UserConfig_Active.png)");
     ui->img_Password->setStyleSheet("border-image: url(:/Images/Password.png)");
 
     ui->btn_WiFi->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_SoftAP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
-    ui->btn_TCPIP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV4->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV6->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_PowerSave->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_UserConfig->setStyleSheet(selectState+selectHover+selectPressed);
     ui->btn_Password->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
 
     //neil add for settings page 2016-01-29
-    //settingsStackedWidget->changeStackIndex(4);
-    ui->settingStackedWidget->setCurrentIndex(4);
+    ui->settingStackedWidget->changeStackIndex(5);
+    ui->settingStackedWidget->setCurrentIndex(5);
 }
 
 void TabStackedWidget::on_btn_Password_clicked()
 {
     ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless.png)");
     ui->img_SoftAP->setStyleSheet("border-image: url(:/Images/SoftAP.png)");
-    ui->img_TCPIP->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV4->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV6->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
     ui->img_PowerSave->setStyleSheet("border-image: url(:/Images/PowerSave.png)");
     ui->img_UserConfig->setStyleSheet("border-image: url(:/Images/UserConfig.png)");
     ui->img_Password->setStyleSheet("border-image: url(:/Images/Password_Active.png)");
 
     ui->btn_WiFi->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_SoftAP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
-    ui->btn_TCPIP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV4->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV6->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_PowerSave->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_UserConfig->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
     ui->btn_Password->setStyleSheet(selectState+selectHover+selectPressed);
 
     //neil add for settings page 2016-01-29
-   // settingsStackedWidget->changeStackIndex(5);
-    ui->settingStackedWidget->setCurrentIndex(5);
+    ui->settingStackedWidget->changeStackIndex(6);
+    ui->settingStackedWidget->setCurrentIndex(6);
 }
 
 
@@ -230,7 +282,7 @@ void TabStackedWidget::on_cBox_IsIDCard_clicked(bool checked)
     {
         ui->cBox_IsIDCard->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
         ui->icon_IDCardCopy->setStyleSheet("border-image: url(:/Images/IDCardCopyIconEnable.png);");
-        ui->btn_Copy->setText("身份证复印");
+        ui->btn_Copy->setText(tr("ResStr_ID_Card_Copy"));
 
         ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
         ui->cBox_DuplexCopy->setChecked(false);
@@ -240,7 +292,7 @@ void TabStackedWidget::on_cBox_IsIDCard_clicked(bool checked)
     {
         ui->cBox_IsIDCard->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
         ui->icon_IDCardCopy->setStyleSheet("border-image: url(:/Images/IDCardCopyIconDisable.png);");
-        ui->btn_Copy->setText("复印");
+        ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));
     }
 }
 
@@ -254,13 +306,13 @@ void TabStackedWidget::on_cBox_DuplexCopy_clicked(bool checked)
 
         ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
         ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconEnable.tif);");
-        ui->btn_Copy->setText("双面复印");
+        ui->btn_Copy->setText(tr("双面复印"));
     }
     else
     {
         ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
         ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconDisable.tif);");
-        ui->btn_Copy->setText("复印");
+        ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));
     }
 }
 
@@ -370,4 +422,103 @@ void TabStackedWidget::on_btn_CopyNumReduce_clicked()
         str.setNum(value);
         ui->copyNum->setText(str);
     }
+}
+
+void TabStackedWidget::set_copy_enabled(bool enabled)
+{
+    qDebug()<<"btn_Copy";
+    ui->btn_Copy->setEnabled(enabled);
+}
+
+void TabStackedWidget::set_scan_enabled(bool enabled)
+{
+     ui->btn_Scan->setEnabled(enabled);
+}
+
+void TabStackedWidget::set_setting_enabled(bool enabled)
+{
+    ui->settingStackedWidget->setEnabled(enabled);
+}
+
+void TabStackedWidget::startCycleEmit()
+{
+    emit cycleStartFromTab();
+}
+
+void TabStackedWidget::stopCycleEmit()
+{
+    emit cycleStopFromTab();
+}
+
+void TabStackedWidget::on_btn_Copy_clicked()
+{
+    qDebug()<<"start copy";
+    if (ui->cBox_IsIDCard->isChecked() == true)
+    {
+        if (paramCopy.promptInfo.isIDCard == true)
+        {
+            bool enNextShow = false;
+            QString videoTypeStr = "01_JAM";
+            QString languageStr = "SimplifiedChinese";
+            AnimationDlg *aDialog = new AnimationDlg(0, 1, &enNextShow);
+            aDialog->setAttribute(Qt::WA_DeleteOnClose);
+            if (aDialog->exec() == QDialog::Rejected)
+            {
+                return;
+            }
+            if(enNextShow == true)
+            {
+                paramCopy.promptInfo.isIDCard = false;
+            }
+        }
+
+        paramCopy.scaling = 100;
+        paramCopy.docDpi = DocDpi_Copy_DPI600;
+        paramCopy.outputSize = OutPutSize_Copy_A4;
+        paramCopy.isMultiPage = false;
+        paramCopy.multiMode = TwoInOne;
+    }
+    else
+    {
+        if (paramCopy.promptInfo.isMultible == true)
+        {
+            bool enNextShow = false;
+            QString videoTypeStr = "06_Nin1Copy";
+            QString languageStr = "SimplifiedChinese";
+            AnimationDlg *aDialog = new AnimationDlg(0, 2, &enNextShow);
+            aDialog->setAttribute(Qt::WA_DeleteOnClose);
+            if (aDialog->exec() == QDialog::Rejected)
+            {
+                return;
+            }
+            if(enNextShow == true)
+            {
+                paramCopy.promptInfo.isMultible = false;
+            }
+        }
+    }
+
+    copycmdset copyPara;
+    copyPara.copyNum = ui->copyNum->text().toUInt();
+    copyPara.Density = value_Density;
+    copyPara.scanMode = paramCopy.docType;
+    copyPara.orgSize = paramCopy.docSize;
+    copyPara.paperSize = paramCopy.outputSize;
+
+    if (paramCopy.isMultiPage == false && ui->cBox_IsIDCard->isChecked() == false)
+    {
+        copyPara.nUp = OneInOne;
+    }
+    else
+    {
+        copyPara.nUp = paramCopy.multiMode;
+    }
+
+    copyPara.dpi = paramCopy.docDpi;
+    copyPara.mediaType = paramCopy.docType;
+    copyPara.scale = paramCopy.scaling;
+
+    QVariant data;
+    data.setValue<copycmdset>(copyPara);
+    gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_COPY,data);
 }

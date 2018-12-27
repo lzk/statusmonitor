@@ -63,13 +63,11 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent, bool idCardFlag, Param
     listView4->setStyleSheet("QListView::item:selected{background-color:gray;color:white}");
     ui->paperTypeList->setView(listView4);
 }
-/*void MoreSettingsForCopy::setDefault()
+void MoreSettingsForCopy::setDefault()
 {
     copycmdset para;
     copycmdset *p = &para;
-    DeviceManager *dManager;
-    dManager = DeviceManager::get_device_manager();
-    dManager->copy_get_defaultPara(p);
+    memcpy(p ,&default_copy_parameter ,sizeof(default_copy_parameter));
     if(!_idCardFlag)
     {
         ParamForCopy->scaling = (int)p->scale;
@@ -95,7 +93,7 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent, bool idCardFlag, Param
         showParam();
     }
 
-}*/
+}
 
 void MoreSettingsForCopy::showParam()
 {
@@ -227,7 +225,7 @@ void MoreSettingsForCopy::on_btOK_clicked()
 
 void MoreSettingsForCopy::on_btDefault_clicked()
 {
-    //setDefault();
+    setDefault();
 }
 
 

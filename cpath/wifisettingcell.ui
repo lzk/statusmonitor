@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>StackedWidget</string>
   </property>
-  <widget class="QWidget" name="page">
+  <widget class="QWidget" name="page0">
    <widget class="QLabel" name="label_line1">
     <property name="geometry">
      <rect>
@@ -104,11 +104,16 @@ QPushButton{
      </font>
     </property>
     <property name="text">
-     <string>Connected </string>
+     <string>ResStr_Connected</string>
     </property>
    </widget>
+   <zorder>label_line1</zorder>
+   <zorder>label_StatusIcon</zorder>
+   <zorder>label_SSID1</zorder>
+   <zorder>label_APStatus</zorder>
+   <zorder>pushButton</zorder>
   </widget>
-  <widget class="QWidget" name="page">
+  <widget class="QWidget" name="page1">
    <widget class="QPushButton" name="btCancel">
     <property name="geometry">
      <rect>
@@ -143,7 +148,7 @@ QPushButton:pressed{
 }</string>
     </property>
     <property name="text">
-     <string>Cancel</string>
+     <string>ResStr_Cancel</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btConnect">
@@ -181,7 +186,7 @@ QPushButton:pressed{
 }</string>
     </property>
     <property name="text">
-     <string>Connect</string>
+     <string>ResStr_Connect</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_line2">
@@ -249,7 +254,7 @@ QCheckBox::indicator::checked {
 }</string>
     </property>
     <property name="text">
-     <string>Display password</string>
+     <string>ResStr_Display_Password</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -285,8 +290,11 @@ QPushButton{
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="text">
-     <string>Password</string>
+     <string>ResStr_Password</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -303,6 +311,10 @@ QPushButton{
     </property>
     <property name="focusPolicy">
      <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:2px groove gray;
+border-radius:5px;</string>
     </property>
     <property name="text">
      <string>123465</string>
@@ -323,9 +335,18 @@ QPushButton{
      </font>
     </property>
     <property name="text">
-     <string>Connected </string>
+     <string>ResStr_Connected</string>
     </property>
    </widget>
+   <zorder>btCancel</zorder>
+   <zorder>btConnect</zorder>
+   <zorder>label_line2</zorder>
+   <zorder>label_SSID2</zorder>
+   <zorder>checkBox_visiable</zorder>
+   <zorder>label_Password</zorder>
+   <zorder>lineEdit_Password</zorder>
+   <zorder>label_APStatus_2</zorder>
+   <zorder>pushButton_2</zorder>
   </widget>
  </widget>
  <resources/>

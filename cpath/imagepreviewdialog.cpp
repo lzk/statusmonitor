@@ -80,7 +80,6 @@ void ImagePreviewDialog::image_update(QObject *obj, const QImage &_image ,int fl
             ui->zoom_in->setEnabled(false);
             ui->zoom_out->setEnabled(false);
             ui->turn->setEnabled(false);
-            ui->print->setEnabled(false);
             break;
         }
     }
@@ -154,17 +153,17 @@ void ImagePreviewDialog::on_back_clicked()
     done(ret);
 }
 
-void ImagePreviewDialog::on_print_clicked()
-{
-    int ret = 20;
-    if(angle){
-        ret = QMessageBox::question(NULL ,"Lenovo" ,tr("Scanning image has been changed, please confirm whether save it or not?"));
-        if(QMessageBox::Yes == ret){
-            ret =20 + angle;
-        }else{
-            ret = 20;
-        }
-    }
-    done(ret);
-}
+//void ImagePreviewDialog::on_print_clicked()
+//{
+//    int ret = 20;
+//    if(angle){
+//        ret = QMessageBox::question(NULL ,"Lenovo" ,tr("ResStr_Scanning_image_has_been_changed__please_confirm_whether_save_it_or_not_"));
+//        if(QMessageBox::Yes == ret){
+//            ret =20 + angle;
+//        }else{
+//            ret = 20;
+//        }
+//    }
+//    done(ret);
+//}
 

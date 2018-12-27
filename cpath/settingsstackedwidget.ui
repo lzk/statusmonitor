@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>20</y>
+      <y>16</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -46,6 +46,8 @@
      <string/>
     </property>
    </widget>
+   <zorder>background_WiFi1</zorder>
+   <zorder>background_WiFi2</zorder>
   </widget>
   <widget class="QWidget" name="SoftAP">
    <widget class="QLabel" name="background_SoftAP1">
@@ -76,7 +78,7 @@
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>14</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="focusPolicy">
@@ -137,7 +139,7 @@ color:white;
 }</string>
     </property>
     <property name="text">
-     <string>Apply</string>
+     <string>ResStr_Apply</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_Password_AP">
@@ -152,7 +154,7 @@ color:white;
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>14</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="focusPolicy">
@@ -197,7 +199,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>62</y>
+      <y>55</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -213,7 +215,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>13</x>
-      <y>74</y>
+      <y>70</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -221,11 +223,11 @@ color:white;
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>14</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>SSID</string>
+     <string>ResStr_SSID</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -243,11 +245,11 @@ color:white;
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>13</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Close</string>
+     <string>ResStr_Close</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -264,11 +266,11 @@ color:white;
     </property>
     <property name="font">
      <font>
-      <pointsize>13</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Open</string>
+     <string>ResStr_Open</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -285,56 +287,23 @@ color:white;
     </property>
     <property name="font">
      <font>
-      <pointsize>14</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Password</string>
+     <string>ResStr_Password</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="TCPIP">
-   <widget class="QPushButton" name="btIPv6">
-    <property name="geometry">
-     <rect>
-      <x>135</x>
-      <y>30</y>
-      <width>100</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton{
-border-image:url(:/Images/Btn_Gray.png);
-}
-QPushButton:hover{
-	border-image:url(:/Images/Btn_Gray.png);
-	color:green;
-}
-QPushButton:pressed{
-	border-image: url(:/Images/Btn_Gray_Pressed.png);
-	color:white;
-}</string>
-    </property>
-    <property name="text">
-     <string>IPv6</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="background_TCPIP2">
+  <widget class="QWidget" name="TCPIPV4">
+   <widget class="QLabel" name="background_TCPIPV42">
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>106</y>
+      <y>95</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -346,7 +315,7 @@ QPushButton:pressed{
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="background_TCPIP1">
+   <widget class="QLabel" name="background_TCPIPV41">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -362,292 +331,25 @@ QPushButton:pressed{
      <string/>
     </property>
    </widget>
-   <widget class="QStackedWidget" name="stackedWidget">
+   <widget class="QPushButton" name="btApply_IPConfig">
     <property name="geometry">
      <rect>
-      <x>15</x>
-      <y>60</y>
-      <width>241</width>
-      <height>221</height>
+      <x>70</x>
+      <y>240</y>
+      <width>131</width>
+      <height>35</height>
      </rect>
     </property>
-    <property name="currentIndex">
-     <number>1</number>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
-    <widget class="QWidget" name="IPv4">
-     <widget class="QLineEdit" name="lineEdit_Submaskv4">
-      <property name="geometry">
-       <rect>
-        <x>77</x>
-        <y>130</y>
-        <width>141</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QLineEdit{
-	border: 2px solid  rgb(170, 170, 170);
-    border-radius: 12px;
-    padding: 0 8px;
-	background-color: rgb(189, 189, 189);
-	color: rgb(255, 255, 255);
-}</string>
-      </property>
-      <property name="text">
-       <string>255.255.255.0</string>
-      </property>
-      <property name="maxLength">
-       <number>32</number>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Normal</enum>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_Gatewayv4">
-      <property name="geometry">
-       <rect>
-        <x>77</x>
-        <y>90</y>
-        <width>141</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QLineEdit{
-	border: 2px solid  rgb(170, 170, 170);
-    border-radius: 12px;
-    padding: 0 8px;
-	background-color: rgb(189, 189, 189);
-	color: rgb(255, 255, 255);
-}</string>
-      </property>
-      <property name="text">
-       <string>192.168.156.1</string>
-      </property>
-      <property name="maxLength">
-       <number>32</number>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Normal</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_Submaskv4">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>134</y>
-        <width>61</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Submask</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_IPAddressv4">
-      <property name="geometry">
-       <rect>
-        <x>77</x>
-        <y>50</y>
-        <width>141</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QLineEdit{
-	border: 2px solid  rgb(170, 170, 170);
-    border-radius: 12px;
-    padding: 0 8px;
-	background-color: rgb(189, 189, 189);
-	color: rgb(255, 255, 255);
-}</string>
-      </property>
-      <property name="text">
-       <string>192.168.156.162</string>
-      </property>
-      <property name="maxLength">
-       <number>32</number>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Normal</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_ipType">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>17</y>
-        <width>51</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>IP Type</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="btStatic">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>17</y>
-        <width>71</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QRadioButton::indicator {
-    width: 20px;
-    height: 20px;
-}
-QRadioButton::indicator::unchecked {
-	image: url(:/Images/Uncheck.png);
-}
-
-QRadioButton::indicator::checked {
-	image: url(:/Images/Checked.png);
-}</string>
-      </property>
-      <property name="text">
-       <string>Static</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_Gatewayv4">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>93</y>
-        <width>61</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Gateway</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_IPAddressv4">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>53</y>
-        <width>71</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>IP Address</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="btDHCP">
-      <property name="geometry">
-       <rect>
-        <x>77</x>
-        <y>17</y>
-        <width>71</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QRadioButton::indicator {
-    width: 20px;
-    height: 20px;
-}
-
-QRadioButton::indicator::unchecked {
-	image: url(:/Images/Uncheck.png);
-}
-
-QRadioButton::indicator::checked {
-	image: url(:/Images/Checked.png);
-}</string>
-      </property>
-      <property name="text">
-       <string>DHCP</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btApply_IPConfig">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>170</y>
-        <width>131</width>
-        <height>35</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton{
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
 	border-image:url(:/Images/Btn_Green.png);
 	color: rgb(255, 255, 255);
 }
@@ -663,173 +365,577 @@ QPushButton::disabled{
 border-image: url(:/Images/Btn_Scan_Disabled.png) ;
 color:white;
 }</string>
-      </property>
-      <property name="text">
-       <string>APPLY</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_ipaddr_error">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>20</y>
-        <width>171</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(176, 255, 176);</string>
-      </property>
-      <property name="text">
-       <string>The ip address is invalid,please confirm and enter again.</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_gateway_error">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>59</y>
-        <width>171</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(176, 255, 176);</string>
-      </property>
-      <property name="text">
-       <string>The gateway  is invalid,please confirm and enter again.</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_sumask_error">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>101</y>
-        <width>171</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(176, 255, 176);</string>
-      </property>
-      <property name="text">
-       <string>The submask  is invalid,please confirm and enter again.</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="IPv6">
-     <widget class="QPushButton" name="btIPv6Status">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>120</y>
-        <width>100</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton{
-	border-image:url(:/Images/Btn_Green.png);
-	color: rgb(255, 255, 255);
-}
-QPushButton:hover{
-	border-image:url(:/Images/Btn_Green.png);
-	color:brack;
-}
-QPushButton:pressed{
-border-image:url(:/Images/Btn_Green_Pressed.png);
-color: rgb(255, 255, 255);
-}</string>
-      </property>
-      <property name="text">
-       <string>Status</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btIPv6Setting">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>60</y>
-        <width>100</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton{
-	border-image:url(:/Images/Btn_Green.png);
-	color: rgb(255, 255, 255);
-}
-QPushButton:hover{
-	border-image:url(:/Images/Btn_Green.png);
-	color:brack;
-}
-QPushButton:pressed{
-border-image:url(:/Images/Btn_Green_Pressed.png);
-color: rgb(255, 255, 255);
-}</string>
-      </property>
-      <property name="text">
-       <string>Setting</string>
-      </property>
-     </widget>
-    </widget>
+    </property>
+    <property name="text">
+     <string>ResStr_Apply</string>
+    </property>
    </widget>
-   <widget class="QPushButton" name="btIPv4">
+   <widget class="QLabel" name="label_ipType">
     <property name="geometry">
      <rect>
-      <x>25</x>
+      <x>20</x>
       <y>30</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_IP_Type</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_IPAddressv4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_IP_Address</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Gatewayv4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_Gateway</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Submaskv4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_Submask</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_ipaddr_error">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>24</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(176, 255, 176);</string>
+    </property>
+    <property name="text">
+     <string>ResStr_The_entered_IP_address__is_wrong__please_confirm_and_enter_again_</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="btDHCP">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>30</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+}
+
+QRadioButton::indicator::unchecked {
+	image: url(:/Images/Uncheck.png);
+}
+
+QRadioButton::indicator::checked {
+	image: url(:/Images/Checked.png);
+}</string>
+    </property>
+    <property name="text">
+     <string>ResStr_DHCP</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="btStatic">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>30</y>
+      <width>61</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+}
+QRadioButton::indicator::unchecked {
+	image: url(:/Images/Uncheck.png);
+}
+
+QRadioButton::indicator::checked {
+	image: url(:/Images/Checked.png);
+}</string>
+    </property>
+    <property name="text">
+     <string>ResStr_Static</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_gateway_error">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>89</y>
+      <width>241</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(176, 255, 176);</string>
+    </property>
+    <property name="text">
+     <string>ResStr_The_entered_Gateway_is_wrong__please_confirm_and_enter_again_</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_IPAddressv4">
+    <property name="geometry">
+     <rect>
+      <x>97</x>
+      <y>57</y>
+      <width>131</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+	border: 2px solid  rgb(170, 170, 170);
+    border-radius: 12px;
+    padding: 0 8px;
+	background-color: rgb(189, 189, 189);
+	color: rgb(255, 255, 255);
+}</string>
+    </property>
+    <property name="text">
+     <string>192.168.156.162</string>
+    </property>
+    <property name="maxLength">
+     <number>32</number>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Normal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_sumask_error">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>56</y>
+      <width>241</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(176, 255, 176);</string>
+    </property>
+    <property name="text">
+     <string>ResStr_The_subnet_mask_input_error__please_input_again_after_confirmation</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_Submaskv4">
+    <property name="geometry">
+     <rect>
+      <x>97</x>
+      <y>88</y>
+      <width>131</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+	border: 2px solid  rgb(170, 170, 170);
+    border-radius: 12px;
+    padding: 0 8px;
+	background-color: rgb(189, 189, 189);
+	color: rgb(255, 255, 255);
+}</string>
+    </property>
+    <property name="text">
+     <string>255.255.255.0</string>
+    </property>
+    <property name="maxLength">
+     <number>32</number>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Normal</enum>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_Gatewayv4">
+    <property name="geometry">
+     <rect>
+      <x>97</x>
+      <y>120</y>
+      <width>131</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+	border: 2px solid  rgb(170, 170, 170);
+    border-radius: 12px;
+    padding: 0 8px;
+	background-color: rgb(189, 189, 189);
+	color: rgb(255, 255, 255);
+}</string>
+    </property>
+    <property name="text">
+     <string>192.168.156.1</string>
+    </property>
+    <property name="maxLength">
+     <number>32</number>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Normal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_DNSType">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>162</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_Dns_Type</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="btManual">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>162</y>
+      <width>61</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+}
+
+QRadioButton::indicator::unchecked {
+	image: url(:/Images/Uncheck.png);
+}
+
+QRadioButton::indicator::checked {
+	image: url(:/Images/Checked.png);
+}</string>
+    </property>
+    <property name="text">
+     <string>ResStr_Manual_DNS</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="btAuto">
+    <property name="geometry">
+     <rect>
+      <x>173</x>
+      <y>163</y>
+      <width>61</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+}
+QRadioButton::indicator::unchecked {
+	image: url(:/Images/Uncheck.png);
+}
+
+QRadioButton::indicator::checked {
+	image: url(:/Images/Checked.png);
+}</string>
+    </property>
+    <property name="text">
+     <string>ResStr_Auto_DNS</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Server">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>200</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_DNS</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_server">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>197</y>
+      <width>131</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+	border: 2px solid  rgb(170, 170, 170);
+    border-radius: 12px;
+    padding: 0 8px;
+	background-color: rgb(189, 189, 189);
+	color: rgb(255, 255, 255);
+}</string>
+    </property>
+    <property name="text">
+     <string>192.168.156.1</string>
+    </property>
+    <property name="maxLength">
+     <number>32</number>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Normal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_server_error">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>165</y>
+      <width>241</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(176, 255, 176);</string>
+    </property>
+    <property name="text">
+     <string>ResStr_The_entered_DNS_is_wrong__please_confirm_and_enter_again_</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>background_TCPIPV41</zorder>
+   <zorder>btApply_IPConfig</zorder>
+   <zorder>label_ipType</zorder>
+   <zorder>label_IPAddressv4</zorder>
+   <zorder>label_Gatewayv4</zorder>
+   <zorder>label_Submaskv4</zorder>
+   <zorder>btDHCP</zorder>
+   <zorder>lineEdit_Submaskv4</zorder>
+   <zorder>background_TCPIPV42</zorder>
+   <zorder>lineEdit_Gatewayv4</zorder>
+   <zorder>lineEdit_IPAddressv4</zorder>
+   <zorder>label_DNSType</zorder>
+   <zorder>btManual</zorder>
+   <zorder>btAuto</zorder>
+   <zorder>label_Server</zorder>
+   <zorder>lineEdit_server</zorder>
+   <zorder>btStatic</zorder>
+   <zorder>label_gateway_error</zorder>
+   <zorder>label_ipaddr_error</zorder>
+   <zorder>label_server_error</zorder>
+   <zorder>label_sumask_error</zorder>
+  </widget>
+  <widget class="QWidget" name="TCPIPV6">
+   <widget class="QPushButton" name="btIPv6Setting">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>80</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	border-image:url(:/Images/Btn_Green.png);
+	color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+	border-image:url(:/Images/Btn_Green.png);
+	color:brack;
+}
+QPushButton:pressed{
+border-image:url(:/Images/Btn_Green_Pressed.png);
+color: rgb(255, 255, 255);
+}</string>
+    </property>
+    <property name="text">
+     <string>ResStr_Setting</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btIPv6Status">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>170</y>
       <width>100</width>
       <height>30</height>
      </rect>
@@ -853,13 +959,48 @@ QPushButton:hover{
 QPushButton:pressed{
 border-image:url(:/Images/Btn_Green_Pressed.png);
 color: rgb(255, 255, 255);
-}
-</string>
+}</string>
     </property>
     <property name="text">
-     <string>IPv4</string>
+     <string>ResStr_Device_Status</string>
     </property>
    </widget>
+   <widget class="QLabel" name="background_TCPIPV61">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>241</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/Images/SettingViewBackground.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="background_TCPIPV62">
+    <property name="geometry">
+     <rect>
+      <x>1</x>
+      <y>136</y>
+      <width>15</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/Images/triangle.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>background_TCPIPV61</zorder>
+   <zorder>btIPv6Setting</zorder>
+   <zorder>btIPv6Status</zorder>
+   <zorder>background_TCPIPV62</zorder>
   </widget>
   <widget class="QWidget" name="PowerSave">
    <widget class="QLabel" name="label_timeRange">
@@ -880,7 +1021,7 @@ color: rgb(255, 255, 255);
      </font>
     </property>
     <property name="text">
-     <string>(1-30 Minutes)</string>
+     <string>ResStr_1_30_Minute</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -958,10 +1099,10 @@ QPushButton::pressed{
    <widget class="QLabel" name="label_timeout_error">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>60</y>
-      <width>201</width>
-      <height>31</height>
+      <x>20</x>
+      <y>50</y>
+      <width>231</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -974,7 +1115,7 @@ QPushButton::pressed{
      <string notr="true">background-color: rgb(176, 255, 176);</string>
     </property>
     <property name="text">
-     <string>The valid range is 1 to 30, please confirm and enter again.</string>
+     <string>ResStr_The_valid_range_is_1_30__please_confirm_and_enter_again_</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1001,7 +1142,7 @@ QPushButton::pressed{
      </font>
     </property>
     <property name="text">
-     <string>Timeout settings</string>
+     <string>ResStr_Power_Save_Time</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1011,7 +1152,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>142</y>
+      <y>177</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -1115,18 +1256,18 @@ color:white;
 }</string>
     </property>
     <property name="text">
-     <string>APPLY</string>
+     <string>ResStr_Apply</string>
     </property>
    </widget>
    <zorder>background_PowerSave1</zorder>
    <zorder>label_timeRange</zorder>
    <zorder>lineEdit_timeout</zorder>
    <zorder>btTimeReduce</zorder>
-   <zorder>label_timeout_error</zorder>
    <zorder>label_timeoutSettings</zorder>
    <zorder>btTimeAdd</zorder>
    <zorder>btApply_Timeout</zorder>
    <zorder>background_PowerSave2</zorder>
+   <zorder>label_timeout_error</zorder>
   </widget>
   <widget class="QWidget" name="UserConfig">
    <widget class="QPushButton" name="btTopReduce">
@@ -1169,12 +1310,17 @@ QPushButton::pressed{
      <rect>
       <x>20</x>
       <y>114</y>
-      <width>131</width>
+      <width>111</width>
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Low Humidity Mode</string>
+     <string>ResStr_Low_Hunidity_Mode</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1273,7 +1419,7 @@ border:1px solid  rgb(181, 181, 181);
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>196</y>
+      <y>217</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -1328,22 +1474,6 @@ border:1px solid  rgb(181, 181, 181);
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_PlateControl">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>145</y>
-      <width>131</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Plate Control Mode</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_TopMargin">
     <property name="geometry">
      <rect>
@@ -1353,8 +1483,16 @@ border:1px solid  rgb(181, 181, 181);
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
     <property name="text">
-     <string>Top Margin(mm)</string>
+     <string>ResStr_Leading_Edge_Registration</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1363,18 +1501,18 @@ border:1px solid  rgb(181, 181, 181);
    <widget class="QPushButton" name="btApply_userconfig">
     <property name="geometry">
      <rect>
-      <x>62</x>
-      <y>247</y>
-      <width>141</width>
-      <height>35</height>
+      <x>65</x>
+      <y>249</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial</family>
       <pointsize>14</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -1397,24 +1535,24 @@ color:white;
 }</string>
     </property>
     <property name="text">
-     <string>Apply</string>
+     <string>ResStr_Apply</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btErrorClear">
     <property name="geometry">
      <rect>
-      <x>67</x>
-      <y>207</y>
+      <x>70</x>
+      <y>209</y>
       <width>131</width>
-      <height>30</height>
+      <height>29</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -1432,23 +1570,7 @@ QPushButton:pressed{
 }</string>
     </property>
     <property name="text">
-     <string>Fuser Error Clear</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_CoolMode">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>176</y>
-      <width>121</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Cooling Mode</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <string>ResStr_Fuser_Error_Remove</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btDensityReduce">
@@ -1530,7 +1652,7 @@ border:1px solid  rgb(181, 181, 181);
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>202</y>
+      <y>205</y>
       <width>221</width>
       <height>1</height>
      </rect>
@@ -1554,8 +1676,16 @@ border:1px solid  rgb(181, 181, 181);
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
     <property name="text">
-     <string>Image Density</string>
+     <string>ResStr_Image_Density</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1598,7 +1728,7 @@ QLineEdit {
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>170</y>
+      <y>172</y>
       <width>221</width>
       <height>1</height>
      </rect>
@@ -1607,29 +1737,6 @@ QLineEdit {
      <string notr="true">
 QLabel{
 border:1px solid  rgb(181, 181, 181);
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btPlateCtrl">
-    <property name="geometry">
-     <rect>
-      <x>162</x>
-      <y>144</y>
-      <width>41</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">
-QPushButton{
-	
-	border-image: url(:/Images/CheckBox_Close.png);
 }</string>
     </property>
     <property name="text">
@@ -1698,34 +1805,19 @@ QPushButton::pressed{
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
     <property name="text">
-     <string>Left Margin(mm)</string>
+     <string>ResStr_Side_to_side_Registration</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btCoolMode">
-    <property name="geometry">
-     <rect>
-      <x>162</x>
-      <y>176</y>
-      <width>41</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">
-QPushButton{
-	
-	border-image: url(:/Images/CheckBox_Close.png);
-}</string>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="btTopAdd">
@@ -1814,26 +1906,26 @@ QPushButton::pressed{
      <string>+</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_setting_error">
+   <widget class="QLabel" name="label_TopMargin_error">
     <property name="geometry">
      <rect>
-      <x>47</x>
-      <y>41</y>
-      <width>201</width>
+      <x>0</x>
+      <y>46</y>
+      <width>251</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>微软雅黑</family>
-      <pointsize>12</pointsize>
+      <pointsize>9</pointsize>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(176, 255, 176);</string>
     </property>
     <property name="text">
-     <string>The ip address is invalid,please confirm and enter again.</string>
+     <string>ResStr_The_valid_range_is_from__2_to_2__please_confirm_and_enter_again_</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1875,6 +1967,132 @@ border:transparent;
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QPushButton" name="btTonerReset">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>176</y>
+      <width>131</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton{
+	border-image: url(:/Images/Btn_Gray.png);
+}
+QPushButton:hover{
+	border-image: url(:/Images/Btn_Gray.png);
+	color:green;
+}
+QPushButton:pressed{
+	border-image: url(:/Images/Btn_Gray_Pressed.png);
+	color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>ResStr_Reset_OPC</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btDrumReset">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>143</y>
+      <width>131</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton{
+	border-image: url(:/Images/Btn_Gray.png);
+}
+QPushButton:hover{
+	border-image: url(:/Images/Btn_Gray.png);
+	color:green;
+}
+QPushButton:pressed{
+	border-image: url(:/Images/Btn_Gray_Pressed.png);
+	color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>ResStr_Reset_Toner_Cartridge</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_LeftMargin_error">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(176, 255, 176);</string>
+    </property>
+    <property name="text">
+     <string>ResStr_The_valid_range_is_from__6_to_6__please_confirm_and_enter_again_</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_ImageDensity_error">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>110</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(176, 255, 176);</string>
+    </property>
+    <property name="text">
+     <string>ResStr_The_valid_range_is_from__3_to_3__please_confirm_and_enter_again_</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>background_UserConfig1</zorder>
    <zorder>btTopReduce</zorder>
    <zorder>label_LowHumidity</zorder>
@@ -1884,11 +2102,9 @@ border:transparent;
    <zorder>background_UserConfig2</zorder>
    <zorder>btLowHumidity</zorder>
    <zorder>label_line_2</zorder>
-   <zorder>label_PlateControl</zorder>
    <zorder>label_TopMargin</zorder>
    <zorder>btApply_userconfig</zorder>
    <zorder>btErrorClear</zorder>
-   <zorder>label_CoolMode</zorder>
    <zorder>btDensityReduce</zorder>
    <zorder>label_line_7</zorder>
    <zorder>label_line_4</zorder>
@@ -1896,15 +2112,17 @@ border:transparent;
    <zorder>label_ImageDensity</zorder>
    <zorder>lineEdit_ImageDensity</zorder>
    <zorder>label_line_5</zorder>
-   <zorder>btPlateCtrl</zorder>
    <zorder>label_line_3</zorder>
    <zorder>btDensityAdd</zorder>
    <zorder>label_LeftMargin</zorder>
-   <zorder>btCoolMode</zorder>
    <zorder>btTopAdd</zorder>
    <zorder>btLeftAdd</zorder>
-   <zorder>label_setting_error</zorder>
    <zorder>lineEdit_TopMargin</zorder>
+   <zorder>btTonerReset</zorder>
+   <zorder>btDrumReset</zorder>
+   <zorder>label_TopMargin_error</zorder>
+   <zorder>label_LeftMargin_error</zorder>
+   <zorder>label_ImageDensity_error</zorder>
   </widget>
   <widget class="QWidget" name="Password">
    <widget class="QLineEdit" name="lineEdit_confirm">
@@ -1980,7 +2198,7 @@ border:transparent;
    <widget class="QLabel" name="label_passWord">
     <property name="geometry">
      <rect>
-      <x>23</x>
+      <x>20</x>
       <y>75</y>
       <width>61</width>
       <height>41</height>
@@ -1988,14 +2206,14 @@ border:transparent;
     </property>
     <property name="font">
      <font>
-      <pointsize>12</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>New PassWord</string>
+     <string>ResStr_New_Password</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
@@ -2020,7 +2238,7 @@ border:transparent;
    <widget class="QLabel" name="label_confirm">
     <property name="geometry">
      <rect>
-      <x>23</x>
+      <x>20</x>
       <y>136</y>
       <width>61</width>
       <height>41</height>
@@ -2028,14 +2246,14 @@ border:transparent;
     </property>
     <property name="font">
      <font>
-      <pointsize>12</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Confirm PassWord</string>
+     <string>ResStr_Confirm_Password</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
@@ -2045,7 +2263,7 @@ border:transparent;
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>242</y>
+      <y>256</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -2070,8 +2288,8 @@ border:transparent;
      <font>
       <family>Arial</family>
       <pointsize>14</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -2093,7 +2311,7 @@ color:white;
 }</string>
     </property>
     <property name="text">
-     <string>Apply</string>
+     <string>ResStr_Apply</string>
     </property>
    </widget>
    <zorder>background_Password1</zorder>

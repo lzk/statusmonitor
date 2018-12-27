@@ -112,7 +112,7 @@ int NetIO::read(char *buffer, int bufsize)
     do{
         bytesAvailable = tcpSocket->bytesAvailable();
         if(bytesAvailable < bufsize){
-            LOGLOG("not enough bytesAvailable:%d,buffer size:%d",bytesAvailable ,bufsize);
+//            LOGLOG("not enough bytesAvailable:%d,buffer size:%d",bytesAvailable ,bufsize);
             if(!tcpSocket->waitForReadyRead(10)){
                 return -1;
             }

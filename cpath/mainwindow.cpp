@@ -1,9 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "jkinterface.h"
+#include "uinterface.h"
 #include "membercenter/about.h"
 #include "promptdialog.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,6 +17,20 @@ MainWindow::MainWindow(QWidget *parent) :
     selectState = "background-color: rgb(99, 99, 99);color:white;";
     unSelectState = "background-color: white;color:black;";
 
+    connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
+    connect(gUInterface, SIGNAL(setDeviceMsg(QString,int)),this, SLOT(setDeviceMsg(QString,int)));
+
+    gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
+
+    statusCycle = new BusyRefreshLabel(ui->deviceMsgWidget,true);
+    statusCycle->setGeometry(50,30,20,19);
+
+    ui->cycleWidget->hide();
+    cycle = new BusyRefreshLabel(ui->cycleWidget,false);
+    cycle->setGeometry(385,280,80,80);
+
+    connect(ui->tabStackedWidget,SIGNAL(cycleStartFromTab()),this,SLOT(startCycleAnimation()));
+    connect(ui->tabStackedWidget,SIGNAL(cycleStopFromTab()),this,SLOT(stopCycleAnimation()));
 }
 
 MainWindow::~MainWindow()
@@ -58,7 +73,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
     PromptDialog *pDialog = new PromptDialog(this);
     if(ui->tabStackedWidget->getScrollAreaImageStatus())//added by gavin 2016-04-07
     {
-        pDialog->setDialogMsg("应用关闭后，扫描图片将会被删除，是否关闭，请确认。");
+        pDialog->setDialogMsg(tr("ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_"));
         pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     }
     if (pDialog->exec() == QDialog::Accepted)
@@ -130,4 +145,195 @@ void MainWindow::on_SettingImgBtn_clicked()
 
     ui->tabStackedWidget->setCurrentIndex(2);
     ui->tabStackedWidget->on_btn_WiFi_clicked();
+}
+
+void MainWindow::on_refreshBtn_clicked()
+{
+    on_Copy_clicked();
+    ui->refreshBtn->hide();
+    gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
+    statusCycle->startAnimation(20);
+}
+
+void MainWindow::cmdResult(int cmd,int result ,QVariant data)
+{
+    switch(cmd){
+
+    case UIConfig::CMD_GetPrinters:{
+        if(!result){
+            updatePrinter(data);
+        }
+        statusCycle->stopAnimation();
+        ui->refreshBtn->show();
+    }
+        break;
+    case UIConfig::CMD_GetStatus:{
+        PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
+        PrinterStatus_struct& status = printerInfo.status;
+        if(!result){
+            LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
+        }else{//get status fail
+            LOGLOG("get printer status fail!");
+            memset(&status ,-1 ,sizeof(status));
+//                status.PrinterStatus = -1;
+        }
+        on_status_ch(status);
+    }
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::updatePrinter(const QVariant& data)
+{
+    printerInfos.clear();
+    printerInfos = data.value<QList<PrinterInfo_struct> >();
+    PrinterInfo_struct printerInfo;
+
+    printers.clear();
+    disconnect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
+    ui->deviceNameBox->clear();
+    connect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
+    for(int i = 0 ;i < printerInfos.length() ;i++){
+        printerInfo = printerInfos.at(i);
+        printers << printerInfo.printer.name;
+
+        ui->deviceNameBox->addItem(printerInfo.printer.name);
+    }
+    if(printers.contains(current_printer)){
+        ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
+    }else{
+        setcurrentPrinter(printers.first());
+    }
+
+}
+
+void MainWindow::setcurrentPrinter(const QString& str)
+{
+    current_printer = str;
+    qDebug()<<"current printer:"<<current_printer;
+    gUInterface->setcurrentPrinter(str);
+    gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
+}
+
+void MainWindow::updateToner(int c ,int m ,int y ,int k)
+{
+}
+
+
+void MainWindow::updateStatus(const PrinterStatus_struct& status)
+{
+
+}
+
+void MainWindow::updateOtherStatus(const QString&  ,const PrinterStatus_struct& )
+{
+
+}
+
+void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
+{
+    if(printers.at(index) != current_printer)
+    {
+        current_printer = printers.at(index);
+        setcurrentPrinter(printers.at(index));
+        on_Copy_clicked();
+    }
+
+}
+
+void MainWindow::on_status_ch(const PrinterStatus_struct& status)
+{
+
+    ui->tabStackedWidget->set_setting_enabled(true);
+    if(ui->deviceNameBox->isEnabled())
+    {
+        ui->tabStackedWidget->set_scan_enabled(true);//Added for default enable scan button by gavin 2016-04-14
+        ui->tabStackedWidget->set_copy_enabled(true);
+    }
+    ui->label_10->setStyleSheet("QLabel{color:break;}");
+    ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
+
+    switch (status.PrinterStatus) {
+    case 0:
+        ui->label_6->setText(tr("ResStr_Ready"));
+        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
+                                    "border:0px solid;"
+                                    "border-radius:5px;"
+                                    "background-color: rgb(53, 177, 20);}");
+        //ui->label_10->setText(devStatus->getDevMsg());
+        break;
+    case 1:
+        ui->label_6->setText(tr("ResStr_Sleep"));
+        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
+                                    "border:0px solid;"
+                                    "border-radius:5px;"
+                                    "background-color: rgb(53, 177, 20);}");
+       // ui->label_10->setText(devStatus->getDevMsg());
+        break;
+    case 2:
+        ui->label_6->setText(tr("ResStr_Offline"));
+        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
+                                    "border:0px solid;"
+                                    "border-radius:5px;"
+                                    "background-color: rgb(110, 110, 110);}");
+        //ui->label_10->setText(devStatus->getDevMsg());
+        qDebug()<<"set_copy_enabled false";
+        ui->tabStackedWidget->set_copy_enabled(false);
+        ui->tabStackedWidget->set_setting_enabled(false);
+        ui->tabStackedWidget->set_scan_enabled(false); //Added for disable scan button when offline by gavin 2016-04-14
+        break;
+    case 3:
+        ui->label_6->setText(tr("ResStr_Ready")); //device status is warning, the ui status is ready in spec
+        ui->label_6->setStyleSheet("QLabel{color: white;"
+                                    "border:0px solid;"
+                                    "border-radius:5px;"
+                                    "background-color: rgb(53, 177, 20);}");
+//        ui->label_10->setText(devStatus->getDevMsg());
+        break;
+    case 4:
+        ui->label_6->setText(tr("ResStr_Busy"));
+        ui->label_6->setStyleSheet("QLabel{color: white;"
+                                    "border:0px solid;"
+                                    "border-radius:5px;"
+                                    "background-color: rgb(53, 177, 20);}");
+        //ui->label_10->setText(devStatus->getDevMsg());
+
+        break;
+    case 5:
+        ui->label_6->setText(tr("ResStr_Error"));
+        ui->label_6->setStyleSheet("QLabel{color: white;"
+                                    "border:0px solid;"
+                                    "border-radius:5px;"
+                                    "background-color: red;}");
+        //ui->label_10->setText(devStatus->getDevMsg());
+        ui->label_10->setStyleSheet("QLabel{color:red;}");
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::setDeviceMsg(const QString& msg, int result)
+{
+    if(!result)
+        ui->label_10->setStyleSheet("QLabel{color:red}");
+    else
+        ui->label_10->setStyleSheet("QLabel{color:black}");
+    ui->label_10->setText(msg);
+}
+
+void MainWindow::startCycleAnimation()
+{
+    qDebug()<<"startCycleAnimation";
+    ui->cycleWidget->show();
+    cycle->startAnimation(20);
+}
+
+void MainWindow::stopCycleAnimation()
+{
+    qDebug()<<"stopCycleAnimation";
+    ui->cycleWidget->hide();
+    cycle->stopAnimation();
 }

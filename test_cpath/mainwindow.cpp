@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
-    gUInterface->setCmd(UIConfig::CMD_GetPrinters);
+    gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
 //    gUInterface->setCmd(UIConfig::CMD_GetDefaultPrinter);
 //    gUInterface->setTimer(6);
 }

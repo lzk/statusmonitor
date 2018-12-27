@@ -55,7 +55,7 @@
        </font>
       </property>
       <property name="text">
-       <string>验证码</string>
+       <string>ResStr_Verification_Code</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -107,7 +107,7 @@ QPushButton:pressed{
 }</string>
       </property>
       <property name="text">
-       <string>获取验证码</string>
+       <string>ResStr_Get_Verification_Code</string>
       </property>
       <property name="autoDefault">
        <bool>true</bool>
@@ -154,7 +154,7 @@ QPushButton:pressed{
 }</string>
    </property>
    <property name="text">
-    <string>登录</string>
+    <string>ResStr_Login_</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_title">
@@ -172,7 +172,7 @@ QPushButton:pressed{
     </font>
    </property>
    <property name="text">
-    <string>使用手机号码快速登录</string>
+    <string>ResStr_Express_Login_using_mobile_number</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -231,7 +231,7 @@ color:red;
        </font>
       </property>
       <property name="text">
-       <string>账户名</string>
+       <string>ResStr_Account</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -251,8 +251,11 @@ color:red;
 	border-radius:12px;
 }</string>
       </property>
+      <property name="text">
+       <string/>
+      </property>
       <property name="placeholderText">
-       <string>请输入手机号</string>
+       <string>ResStr_Msg_4</string>
       </property>
      </widget>
     </item>

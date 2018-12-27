@@ -2,11 +2,20 @@
 #include <QPainter>
 #include <QTimerEvent>
 
-BusyRefreshLabel::BusyRefreshLabel(QWidget *parent) : QWidget(parent)
+BusyRefreshLabel::BusyRefreshLabel(QWidget *parent, bool bStatus) :
+    QWidget(parent)
 {
     m_rotation = 0.0;
     timerID = 0;
-    m_pixmap = QPixmap(":/Images/busyRefresh.tif");
+    if(bStatus)
+    {
+        m_pixmap = QPixmap(":/Images/Status_RefreshEnable.tif");
+    }
+    else
+    {
+        m_pixmap = QPixmap(":/Images/busyRefresh.tif");
+    }
+
 
     this->setStyleSheet("border:transparent;");
     this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);

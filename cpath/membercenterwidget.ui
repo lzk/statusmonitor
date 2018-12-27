@@ -51,7 +51,7 @@
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>账户修改信息</string>
+      <string>ResStr_Change_Account_Information</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -60,9 +60,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="label_name">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>150</x>
        <y>240</y>
-       <width>611</width>
+       <width>581</width>
        <height>61</height>
       </rect>
      </property>
@@ -76,7 +76,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>     姓名</string>
+      <string>ResStr_Full_name</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -88,9 +88,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="label_borth">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>150</x>
        <y>300</y>
-       <width>611</width>
+       <width>581</width>
        <height>61</height>
       </rect>
      </property>
@@ -104,7 +104,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>     生日</string>
+      <string>ResStr_Birthday</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -116,9 +116,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="label_sex">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>150</x>
        <y>360</y>
-       <width>611</width>
+       <width>581</width>
        <height>61</height>
       </rect>
      </property>
@@ -132,7 +132,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>     性别</string>
+      <string>ResStr_Sex</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -144,9 +144,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="label_mail">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>150</x>
        <y>420</y>
-       <width>611</width>
+       <width>581</width>
        <height>61</height>
       </rect>
      </property>
@@ -160,7 +160,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>     邮箱</string>
+      <string>ResStr_Email</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -172,9 +172,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="label_addr">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>150</x>
        <y>480</y>
-       <width>611</width>
+       <width>581</width>
        <height>61</height>
       </rect>
      </property>
@@ -188,7 +188,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>     地址</string>
+      <string>ResStr_Address</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -344,7 +344,7 @@ background-color: rgb(235, 235, 235);</string>
       </font>
      </property>
      <property name="text">
-      <string>年</string>
+      <string>ResStr_Year</string>
      </property>
     </widget>
     <widget class="QLabel" name="labelMon">
@@ -362,7 +362,7 @@ background-color: rgb(235, 235, 235);</string>
       </font>
      </property>
      <property name="text">
-      <string>月</string>
+      <string>ResStr_Month</string>
      </property>
     </widget>
     <widget class="QLabel" name="labelDay">
@@ -381,7 +381,7 @@ background-color: rgb(235, 235, 235);</string>
       </font>
      </property>
      <property name="text">
-      <string>日</string>
+      <string>ResStr_Day</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="le_mail">
@@ -469,7 +469,7 @@ QPushButton:Disable{
 </string>
      </property>
      <property name="text">
-      <string>确定</string>
+      <string>ResStr_OK</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btCancel">
@@ -503,7 +503,7 @@ QPushButton:pressed{
 }</string>
      </property>
      <property name="text">
-      <string>取消</string>
+      <string>ResStr_Cancel</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="btFemale">
@@ -535,7 +535,7 @@ QRadioButton::indicator::checked {
 }</string>
      </property>
      <property name="text">
-      <string>女  </string>
+      <string>ResStr_Women</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="btMan">
@@ -567,7 +567,7 @@ QRadioButton::indicator::checked {
 }</string>
      </property>
      <property name="text">
-      <string>男  </string>
+      <string>ResStr_Man</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btloginImg">
@@ -618,6 +618,160 @@ background-color:white;
       <number>2500</number>
      </property>
     </widget>
+    <widget class="QLabel" name="bg_2">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>240</y>
+       <width>31</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="bg_3">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>300</y>
+       <width>31</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="bg_4">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>360</y>
+       <width>31</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="bg_5">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>420</y>
+       <width>31</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="bg_6">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>480</y>
+       <width>31</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <zorder>bg_6</zorder>
+    <zorder>bg_5</zorder>
+    <zorder>bg_4</zorder>
+    <zorder>bg_3</zorder>
+    <zorder>bg_2</zorder>
+    <zorder>title_ch</zorder>
+    <zorder>label_name</zorder>
+    <zorder>label_borth</zorder>
+    <zorder>label_sex</zorder>
+    <zorder>label_mail</zorder>
+    <zorder>label_addr</zorder>
+    <zorder>line_ch1</zorder>
+    <zorder>line_ch2</zorder>
+    <zorder>line_ch2_2</zorder>
+    <zorder>line_ch2_3</zorder>
+    <zorder>le_name</zorder>
+    <zorder>spinBox_M</zorder>
+    <zorder>spinBox_D</zorder>
+    <zorder>labelYear</zorder>
+    <zorder>labelMon</zorder>
+    <zorder>labelDay</zorder>
+    <zorder>le_mail</zorder>
+    <zorder>le_addr</zorder>
+    <zorder>btApply</zorder>
+    <zorder>btCancel</zorder>
+    <zorder>btFemale</zorder>
+    <zorder>btMan</zorder>
+    <zorder>btloginImg</zorder>
+    <zorder>spinBox</zorder>
    </widget>
    <widget class="QWidget" name="memberCenter">
     <property name="styleSheet">
@@ -658,15 +812,15 @@ QPushButton:pressed{
 }</string>
      </property>
      <property name="text">
-      <string>返 回</string>
+      <string>ResStr_Return</string>
      </property>
     </widget>
     <widget class="QLabel" name="experience">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>160</x>
        <y>362</y>
-       <width>611</width>
+       <width>571</width>
        <height>41</height>
       </rect>
      </property>
@@ -680,7 +834,7 @@ QPushButton:pressed{
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>       用户体验改善计划</string>
+      <string>ResStr_User_Experience</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -707,7 +861,7 @@ background-color: rgb(235, 235, 235);</string>
       <rect>
        <x>120</x>
        <y>220</y>
-       <width>51</width>
+       <width>41</width>
        <height>41</height>
       </rect>
      </property>
@@ -778,9 +932,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="login_name">
      <property name="geometry">
       <rect>
-       <x>165</x>
+       <x>160</x>
        <y>220</y>
-       <width>566</width>
+       <width>571</width>
        <height>41</height>
       </rect>
      </property>
@@ -794,7 +948,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>登录</string>
+      <string>ResStr_Login_</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -965,7 +1119,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>会员中心</string>
+      <string>ResStr_Member_Center</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -990,9 +1144,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="changeMsg">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>160</x>
        <y>263</y>
-       <width>611</width>
+       <width>571</width>
        <height>41</height>
       </rect>
      </property>
@@ -1005,7 +1159,7 @@ background-color: rgb(235, 235, 235);</string>
       <string notr="true">background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>       修改账户信息</string>
+      <string>ResStr_Change_Account_Information</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1031,7 +1185,7 @@ background-color: rgb(235, 235, 235);</string>
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>403</y>
+       <y>410</y>
        <width>611</width>
        <height>41</height>
       </rect>
@@ -1069,9 +1223,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="inbox">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>160</x>
        <y>320</y>
-       <width>611</width>
+       <width>571</width>
        <height>41</height>
       </rect>
      </property>
@@ -1085,7 +1239,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>       产品与支持</string>
+      <string>ResStr_Product_Support</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1094,9 +1248,9 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="about">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>160</x>
        <y>405</y>
-       <width>611</width>
+       <width>571</width>
        <height>41</height>
       </rect>
      </property>
@@ -1110,7 +1264,7 @@ background-color: rgb(235, 235, 235);</string>
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
-      <string>       关于</string>
+      <string>ResStr_About</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1171,6 +1325,110 @@ background-color: rgb(235, 235, 235);</string>
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="login_2">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>260</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="inbox_bg">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>320</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="exper_bg">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>362</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="about_bg">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>405</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url();
+background-color: rgb(235, 235, 235);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <zorder>inbox_bg</zorder>
+    <zorder>about_bg</zorder>
+    <zorder>exper_bg</zorder>
+    <zorder>login_2</zorder>
     <zorder>pushButton</zorder>
     <zorder>experience</zorder>
     <zorder>login</zorder>

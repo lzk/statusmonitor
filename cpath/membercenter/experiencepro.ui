@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>用户体验改善计划</string>
+   <string>ResStr_User_Experience</string>
   </property>
   <widget class="QLabel" name="lab_msg_title">
    <property name="geometry">
@@ -28,7 +28,7 @@
     </font>
    </property>
    <property name="text">
-    <string>帮助我们为您提供更好的服务</string>
+    <string>ResStr_Help_us_improve</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -178,7 +178,7 @@ background:transparent;
 }</string>
    </property>
    <property name="text">
-    <string>OK</string>
+    <string>ResStr_OK_2</string>
    </property>
   </widget>
   <widget class="QLabel" name="lab_link">
@@ -202,7 +202,7 @@ background:transparent;
 }</string>
    </property>
    <property name="text">
-    <string>Lenovo在线隐私声明</string>
+    <string>ResStr_Lenovo_Online_Privacy_Statement</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

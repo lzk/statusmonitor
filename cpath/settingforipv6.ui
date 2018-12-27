@@ -13,12 +13,15 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
   <widget class="QLabel" name="label_gateway_error">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>50</x>
      <y>112</y>
-     <width>241</width>
+     <width>511</width>
      <height>31</height>
     </rect>
    </property>
@@ -32,7 +35,7 @@
     <string notr="true">background-color: rgb(176, 255, 176);</string>
    </property>
    <property name="text">
-    <string>The gateway address is invalid,please confirm and enter again.</string>
+    <string>ResStr_The_entered_Gateway_is_wrong__please_confirm_and_enter_again_</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -74,16 +77,16 @@ QPushButton:pressed{
 </string>
    </property>
    <property name="text">
-    <string>Apply</string>
+    <string>ResStr_Apply</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_ipaddr_error">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>27</y>
-     <width>211</width>
-     <height>31</height>
+     <x>80</x>
+     <y>17</y>
+     <width>311</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -96,7 +99,7 @@ QPushButton:pressed{
     <string notr="true">background-color: rgb(176, 255, 176);</string>
    </property>
    <property name="text">
-    <string>The ip address is invalid,please confirm and enter again.</string>
+    <string>ResStr_The_entered_IP_address__is_wrong__please_confirm_and_enter_again_</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -121,7 +124,7 @@ QPushButton:pressed{
     </font>
    </property>
    <property name="text">
-    <string>Manua Gateway Address</string>
+    <string>ResStr_Manual_Gateway_Address</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -163,10 +166,10 @@ QPushButton:pressed{
   <widget class="QLabel" name="label_submask_error">
    <property name="geometry">
     <rect>
-     <x>381</x>
-     <y>27</y>
-     <width>191</width>
-     <height>31</height>
+     <x>281</x>
+     <y>17</y>
+     <width>291</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -179,7 +182,7 @@ QPushButton:pressed{
     <string notr="true">background-color: rgb(176, 255, 176);</string>
    </property>
    <property name="text">
-    <string>The ip submask is invalid,please confirm and enter again.</string>
+    <string>ResStr_The_subnet_mask_input_error__please_input_again_after_confirmation</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -285,7 +288,7 @@ QPushButton:pressed{
 }</string>
    </property>
    <property name="text">
-    <string>Cancel</string>
+    <string>ResStr_Cancel</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">
@@ -319,7 +322,7 @@ QPushButton:hover{
     </rect>
    </property>
    <property name="text">
-    <string>Obtain address from DHCP</string>
+    <string>ResStr_Obtain_address_from_DHCP</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_isManualAddress">
@@ -332,7 +335,7 @@ QPushButton:hover{
     </rect>
    </property>
    <property name="text">
-    <string>Use Manual Address</string>
+    <string>ResStr_Use_Manual_Address</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_ManualAddress">
@@ -351,7 +354,7 @@ QPushButton:hover{
     </font>
    </property>
    <property name="text">
-    <string>Manual Address</string>
+    <string>ResStr_Manual_Address</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
