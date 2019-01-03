@@ -8,6 +8,7 @@
 #include "serverthread.h"
 #include "devicemanager.h"
 #include "lshell.h"
+#include "scannerapp.h"
 class Worker : public QObject
 {
     Q_OBJECT
@@ -23,13 +24,15 @@ signals:
 public slots:
     void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void getPrinters();
+    void set_cancel(bool);
 
 private:
     int cmd_status;
     QStringList printers;
     DeviceIO* device;
-    QList<PrinterInfo_struct> printers_detail;
     LShell* lshell;
+    ScannerApp* scanner;
+    QList<PrinterInfo_struct> printers_detail;
     StatusMonitor m_statusMonitor;
     DeviceManager deviceManager;
 

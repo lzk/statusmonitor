@@ -14,7 +14,7 @@ class AuthenticationDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit AuthenticationDlg(QWidget *parent = 0, bool *confirm = false);
+    explicit AuthenticationDlg(QWidget *parent = 0, bool *confirm = 0);
     ~AuthenticationDlg();
 
 private slots:

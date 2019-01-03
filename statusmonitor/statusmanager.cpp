@@ -139,44 +139,41 @@ static int clearPrinters()
     return 0;
 }
 
-//static int savePrinter(const char* printer)
-//{
-//    QSettings settings(filepath ,QSettings::defaultFormat());
-//    QString key = QString(printersKey) + printer;
-//    QVariant value(1);
-//    settings.setValue(key ,value);
-//    settings.sync();
-//    return 0;
-//}
-//static QStringList getPrinter()
-//{
-//    QSettings settings(filepath ,QSettings::defaultFormat());
-//    QString key = QString(printersKey);
-//    settings.beginGroup(key);
-//    return settings.childKeys();
-////    return settings.childGroups();
-//}
-
-static int savePrinters(QStringList printers)
+static int savePrinter(Printer_struct* printer)
 {
     QSettings settings(filepath ,QSettings::defaultFormat());
-    QString key = QString(printersKey);
-    QVariant value(printers);
-    settings.setValue(key ,value);
+    QString key = QString(printersKey) +"/" + printer->name;
+    settings.beginGroup(key);
+    settings.setValue("name" ,printer->name);
+    settings.setValue("makeAndModel" ,printer->makeAndModel);
+    settings.setValue("deviceUri" ,printer->deviceUri);
+    settings.setValue("connectTo" ,printer->connectTo);
+    settings.setValue("isDefault" ,printer->isDefault);
+    settings.endGroup();
     settings.sync();
     return 0;
 }
 
-static QStringList getPrinters()
+static int getPrinter(CALLBACK_getPrinters callback,void* para)
 {
     QSettings settings(filepath ,QSettings::defaultFormat());
     QString key = QString(printersKey);
-    QVariant value;
-    value = settings.value(key);
-    if(value != QVariant()){
-        return value.toStringList();
+    settings.beginGroup(key);
+    QStringList printers = settings.childGroups();
+    settings.endGroup();
+    foreach (QString printer, printers) {
+        Printer_struct ps;
+        settings.beginGroup(key + "/" + printer);
+        strncpy(ps.name ,settings.value("name").toString().toUtf8().constData() ,sizeof(ps.name));
+        strncpy(ps.makeAndModel ,settings.value("makeAndModel").toString().toUtf8().constData() ,sizeof(ps.makeAndModel));
+        strncpy(ps.deviceUri ,settings.value("deviceUri").toString().toUtf8().constData() ,sizeof(ps.deviceUri));
+        strncpy(ps.connectTo ,settings.value("connectTo").toString().toUtf8().constData() ,sizeof(ps.connectTo));
+        ps.isDefault = settings.value("isDefault").toBool();
+        settings.endGroup();
+        if(callback){
+            callback(para ,&ps);
+        }
     }
-    return QStringList();
 }
 
 StatusManager::StatusManager():
@@ -285,24 +282,23 @@ int StatusManager::clearPrintersOfFile()
     return ret;
 }
 
-QStringList StatusManager::getPrintersFromFile()
+int StatusManager::getPrintersFromFile(CALLBACK_getPrinters callback,void* para)
 {
-    QStringList printers;
     int ret;
     ret = lock(lockfile);
     if(!ret){
-        printers = getPrinters();
+        ret = getPrinter(callback ,para);
         unlock();
     }
-    return printers;
+    return ret;
 }
 
-int StatusManager::savePrintersToFile(QStringList printers)
+int StatusManager::savePrinterToFile(Printer_struct* printer)
 {
     int ret;
     ret = lock(lockfile);
     if(!ret){
-        ret = savePrinters(printers);
+        ret = savePrinter(printer);
         unlock();
     }
     return ret;

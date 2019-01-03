@@ -20,11 +20,12 @@ public:
     QStringList printerlist;
 
     bool abort;
-
 private:
     DeviceManager* devicemanager;
-    StatusManager statusmanager;
     CupsManager cupsmanager;
+
+public:
+    StatusManager statusmanager;
 };
 
 #endif // STATUSTHREAD_H

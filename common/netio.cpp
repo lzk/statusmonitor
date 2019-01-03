@@ -22,7 +22,7 @@ QHostAddress get_ip_address(const QString& host)
         }
         if(!found)
             hostAddress = info.addresses().first();
-        qDebug()<<"host name:" << host << "addresses:" <<info.addresses();
+//        qDebug()<<"host name:" << host << "addresses:" <<info.addresses();
     }
     return hostAddress;
 }
@@ -109,29 +109,6 @@ int NetIO::read(char *buffer, int bufsize)
     if(!tcpSocket)
         return -1;
     int bytesAvailable;
-    do{
-        bytesAvailable = tcpSocket->bytesAvailable();
-        if(bytesAvailable < bufsize){
-//            LOGLOG("not enough bytesAvailable:%d,buffer size:%d",bytesAvailable ,bufsize);
-            if(!tcpSocket->waitForReadyRead(10)){
-                return -1;
-            }
-        }else{
-            break;
-        }
-    }
-    while(1);
-    LOGLOG("bytesAvailable:%d,buffer size:%d",bytesAvailable ,bufsize);
-    int ret;
-    ret = tcpSocket->read(buffer ,bufsize);
-    return ret;
-}
-#if 0
-int NetIO::read(char *buffer, int bufsize)
-{
-    if(!tcpSocket)
-        return -1;
-    int bytesAvailable;
 #if 0
     do{
         bytesAvailable = tcpSocket->bytesAvailable();
@@ -151,13 +128,16 @@ int NetIO::read(char *buffer, int bufsize)
 #else
     int numRead = 0, numReadTotal = 0;
     do{
-        if (!tcpSocket->waitForReadyRead(15000)){
-//            qDebug()<<"tcp error:"<< tcpSocket->error();
-//            qDebug()<< tcpSocket->errorString();
-            LOGLOG(tcpSocket->errorString().toUtf8().constData());
-            break;
-        }
         bytesAvailable = tcpSocket->bytesAvailable();
+        if(bytesAvailable <= 0){
+            if (!tcpSocket->waitForReadyRead(5000)){
+    //            qDebug()<<"tcp error:"<< tcpSocket->error();
+    //            qDebug()<< tcpSocket->errorString();
+                LOGLOG("reading error:" ,tcpSocket->errorString().toUtf8().constData());
+                break;
+            }
+            bytesAvailable = tcpSocket->bytesAvailable();
+        }
         if(bytesAvailable > bufsize - numReadTotal)
             bytesAvailable = bufsize - numReadTotal;
         if(bytesAvailable > 0){
@@ -176,7 +156,6 @@ int NetIO::read(char *buffer, int bufsize)
     return numReadTotal;
 #endif
 }
-#endif
 int NetIO::getDeviceId(char *buffer, int bufsize)
 {
     return snmpGetDeviceID(device_uri ,buffer ,bufsize);
@@ -191,4 +170,14 @@ bool NetIO::isConnected()
 const char* NetIO::getDeviceAddress()
 {
     return hostAddress.toString().toLatin1().constData();
+}
+
+int NetIO::write_bulk(char *buffer, int bufsize)
+{
+    return write(buffer ,bufsize);
+}
+
+int NetIO::read_bulk(char *buffer, int bufsize)
+{
+    return read(buffer ,bufsize);
 }

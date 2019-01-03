@@ -6,20 +6,10 @@
 #include <QEvent>
 #include <QPushButton>
 #include <QTimer>
-
+#include "scannerapp.h"
 namespace Ui {
 class MoreSettingsForScan;
 }
-
-#define MAX_BRIGHT 100
-#define MIN_BRIGHT 0
-#define MAX_CONTRAST 100
-#define MIN_CONTRAST 0
-
-enum Scan_DocType {T_Photo,T_Text_Graph, T_Text};
-enum Scan_Dpi {Scan_100DPI, Scan_200DPI, Scan_300DPI, Scan_600DPI, Scan_1200DPI};
-enum ColorModel {Color, Black_White, Grayscale};
-enum Scan_Size {Scan_A4, Scan_A5, Scan_B5, Scan_Letter, Scan_4_6};
 
 struct Param_Scan {
     Scan_DocType scan_doctype;

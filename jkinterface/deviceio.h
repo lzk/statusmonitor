@@ -22,6 +22,8 @@ public:
     virtual bool isConnected() = 0;
     virtual int getDeviceId(char *buffer, int bufsize) = 0;
     virtual const char* getDeviceAddress() = 0;
+    virtual int write_bulk(char *buffer, int bufsize) = 0;
+    virtual int read_bulk(char *buffer, int bufsize) = 0;
 
     virtual int open(const char* url ,int port = 9100);
     virtual int resolveUrl(const char* url);

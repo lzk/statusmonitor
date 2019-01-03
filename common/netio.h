@@ -20,6 +20,8 @@ public:
     virtual bool isConnected();
     virtual int getDeviceId(char *buffer, int bufsize);
     virtual const char* getDeviceAddress();
+    virtual int write_bulk(char *buffer, int bufsize);
+    virtual int read_bulk(char *buffer, int bufsize);
 
 private:
     QTcpSocket* tcpSocket;

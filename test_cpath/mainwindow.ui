@@ -63,6 +63,20 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="btn_password_get">
+          <property name="text">
+           <string>get password</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_password_set">
+          <property name="text">
+           <string>set 888888</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>

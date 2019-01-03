@@ -10,13 +10,14 @@ static int callback_getPrinters(void* para,Printer_struct* ps)
     if(isDeviceSupported && isDeviceSupported(ps)){
         st->printers << *ps;
         st->printerlist << ps->name;
+        st->statusmanager.savePrinterToFile(ps);
     }
     return st->abort ?0 :1;
 }
 
 StatusThread::StatusThread(QObject *parent)
     : QThread(parent)
-    ,devicemanager(new DeviceManager)
+    , devicemanager(new DeviceManager)
 {
     abort = false;
     statusmanager.clearFile();
@@ -39,10 +40,11 @@ void StatusThread::run()
             return;
         printers.clear();
         printerlist.clear();
+        statusmanager.clearPrintersOfFile();
         cupsmanager.getPrinters(callback_getPrinters ,this);
         //update printer list
-        statusmanager.clearPrintersOfFile();
-        statusmanager.savePrintersToFile(printerlist);
+//        statusmanager.clearPrintersOfFile();
+//        statusmanager.savePrintersToFile(printerlist);
 
         foreach (Printer_struct printer, printers) {
             if (abort)
@@ -55,8 +57,8 @@ void StatusThread::run()
 //                status.PrinterStatus = PS_ERROR_POWER_OFF;
                 status.PrinterStatus = PS_UNKNOWN;
             }else{
-                LOGLOG("get status from device %s:success!" ,printer.name);
-                LOGLOG("status:0x%02x" ,status.PrinterStatus);
+//                LOGLOG("get status from device %s:success!" ,printer.name);
+//                LOGLOG("status:0x%02x" ,status.PrinterStatus);
                 if(IsStatusAbnormal(status.PrinterStatus)){
                     status.PrinterStatus = PS_OFFLINE;
         //            status.PrinterStatus = PS_PAUSED;

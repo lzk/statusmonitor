@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QMetaType>
 #include "lshellstruct.h"
+#include "scannerapp.h"
 
 #define SERVER_PATH "/tmp/test.domain"
 
@@ -24,6 +25,8 @@ Q_DECLARE_METATYPE(cmdst_softap)
 //Q_DECLARE_METATYPE(cmdst_PSave_time)
 //Q_DECLARE_METATYPE(cmdst_powerOff_time)
 //Q_DECLARE_METATYPE(cmdst_fusingScReset)
+
+Q_DECLARE_METATYPE(ScanSettings)
 
 typedef struct struct_wifi_refresh_info
 {
@@ -45,6 +48,7 @@ public:
         CMD_GetDefaultPrinter,
         CMD_GetPrinters,
         CMD_GetStatus,
+        CMD_Scan,
 
         CMD_WIFI_refresh_plus,
 

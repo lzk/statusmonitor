@@ -252,7 +252,9 @@ void MainWindow::updatePrinter(const QVariant& data)
 
         ui->deviceNameBox->addItem(printerInfo.printer.name);
     }
-    if(printers.contains(current_printer)){
+    if(printers.isEmpty()){
+        setcurrentPrinter(QString());
+    }else if(printers.contains(current_printer)){
         ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
     }else{
         setcurrentPrinter(printers.first());
