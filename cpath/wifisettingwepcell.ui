@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>StackedWidget</string>
   </property>
-  <widget class="QWidget" name="page">
+  <widget class="QWidget" name="page1">
    <widget class="QLabel" name="label_APStatus">
     <property name="geometry">
      <rect>

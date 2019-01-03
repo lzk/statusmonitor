@@ -272,6 +272,8 @@ UsbApi::UsbApi()
     :g_interface(0)
     ,g_device(NULL)
     ,g_dev_h(NULL)
+    ,bulk_in(0)
+    ,bulk_out(1)
 {
 }
 
@@ -450,4 +452,26 @@ int UsbApi::getDeviceAddress(int vid, int pid, const char *serial ,int* address)
         libusb_close(data.udev);
     }
     return ret;
+}
+
+int UsbApi::write_bulk(char* buffer ,int bufsize)
+{
+    int ret;
+    int actual_length;
+    ret = libusb_bulk_transfer(g_dev_h ,bulk_out , (unsigned char *) buffer, bufsize, &actual_length, 5000);
+    if(ret < 0)
+        return ret;
+    else
+        return actual_length;
+}
+
+int UsbApi::read_bulk(char* buffer ,int bufsize)
+{
+    int ret;
+    int actual_length;
+    ret = libusb_bulk_transfer(g_dev_h ,bulk_in , (unsigned char *) buffer, bufsize, &actual_length, 5000);
+    if(ret < 0)
+        return ret;
+    else
+        return actual_length;
 }

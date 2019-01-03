@@ -233,6 +233,8 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         LOGLOG("lshell get fusing sc reset:%d" ,device_para);
     }
         break;
+    case UIConfig::CMD_Scan:
+        LOGLOG("scan result:%d" ,result);
     default:
         break;
     }
@@ -253,6 +255,10 @@ void MainWindow::on_listWidget_printers_itemDoubleClicked(QListWidgetItem *item)
 
 void MainWindow::updateToner(int c ,int m ,int y ,int k)
 {
+    (void)c;
+    (void)m;
+    (void)y;
+    (void)k;
 }
 
 QString MainWindow::get_Status_string(const PrinterStatus_struct& status)
@@ -482,11 +488,23 @@ void MainWindow::on_btn_wifi_get_clicked()
 #include "lshell.h"
 void MainWindow::on_btn_copy_clicked()
 {
-    copycmdset device_data;
-    LShell::copy_get_defaultPara(&device_data);
+//    copycmdset device_data;
+//    LShell::copy_get_defaultPara(&device_data);
+//    QVariant value;
+//    value.setValue<copycmdset>(device_data);
+//    gUInterface->setCmd(UIConfig::LS_CMD_COPY ,current_printer ,value);
+
+    ScanSettings scan_settings;
+    UiSettings* settings = &scan_settings.settings;
+    settings->brightness = 50;
+    settings->contrast = 50;
+    settings->colorModel = Color;//Grayscale;// Color;
+    settings->scan_dpi = Scan_300DPI;
+    settings->scan_doctype = T_Photo;
+    settings->scan_size = Scan_A4;
     QVariant value;
-    value.setValue<copycmdset>(device_data);
-    gUInterface->setCmd(UIConfig::LS_CMD_COPY ,current_printer ,value);
+    value.setValue<ScanSettings>(scan_settings);
+    gUInterface->setCmd(UIConfig::CMD_Scan ,current_printer ,value);
 }
 
 void MainWindow::on_btn_get_aplist_clicked()
@@ -497,4 +515,19 @@ void MainWindow::on_btn_get_aplist_clicked()
 void MainWindow::on_btn_get_ipv4_clicked()
 {
     gUInterface->setCmd(UIConfig::LS_CMD_NET_GetV4 ,current_printer);
+}
+
+void MainWindow::on_btn_password_get_clicked()
+{
+    gUInterface->setCmd(UIConfig::LS_CMD_PASSWD_get ,current_printer);
+}
+
+void MainWindow::on_btn_password_set_clicked()
+{
+    cmdst_passwd device_data;
+    sprintf(device_data.passwd ,"888888");
+    QVariant value;
+    value.setValue<cmdst_passwd>(device_data);
+    gUInterface->setCmd(UIConfig::LS_CMD_PASSWD_set ,current_printer ,value);
+
 }

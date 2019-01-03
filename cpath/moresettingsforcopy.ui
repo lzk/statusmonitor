@@ -206,9 +206,6 @@ background: transparent;
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
    </property>
-   <property name="buddy">
-    <cstring>佛挡杀佛</cstring>
-   </property>
   </widget>
   <widget class="QPushButton" name="btAdd">
    <property name="geometry">
@@ -494,9 +491,6 @@ background: transparent;
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
    </property>
-   <property name="buddy">
-    <cstring>佛挡杀佛</cstring>
-   </property>
   </widget>
   <widget class="QLabel" name="label_32">
    <property name="enabled">
@@ -698,9 +692,6 @@ background: transparent;
    </property>
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-   </property>
-   <property name="buddy">
-    <cstring>佛挡杀佛</cstring>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">

@@ -55,8 +55,8 @@ void StatusThread::run()
 //                status.PrinterStatus = PS_ERROR_POWER_OFF;
                 status.PrinterStatus = PS_UNKNOWN;
             }else{
-                LOGLOG("get status from device %s:success!" ,printer.name);
-                LOGLOG("status:0x%02x" ,status.PrinterStatus);
+//                LOGLOG("get status from device %s:success!" ,printer.name);
+//                LOGLOG("status:0x%02x" ,status.PrinterStatus);
                 if(IsStatusAbnormal(status.PrinterStatus)){
                     status.PrinterStatus = PS_OFFLINE;
         //            status.PrinterStatus = PS_PAUSED;

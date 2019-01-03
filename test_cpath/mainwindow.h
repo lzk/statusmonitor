@@ -42,6 +42,10 @@ private slots:
 
     void on_btn_get_ipv4_clicked();
 
+    void on_btn_password_get_clicked();
+
+    void on_btn_password_set_clicked();
+
 private:
     Ui::MainWindow *ui;
     QDialog* dialog;

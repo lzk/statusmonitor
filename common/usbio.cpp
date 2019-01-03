@@ -95,3 +95,13 @@ const char* UsbIO::getDeviceAddress()
     }
     return QString().sprintf("USB%03d" ,address).toLatin1().constData();
 }
+
+int UsbIO::write_bulk(char *buffer, int bufsize)
+{
+    return usb->write_bulk(buffer ,bufsize);
+}
+
+int UsbIO::read_bulk(char *buffer, int bufsize)
+{
+    return usb->read_bulk(buffer ,bufsize);
+}

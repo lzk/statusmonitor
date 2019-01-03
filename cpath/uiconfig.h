@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QMetaType>
 #include "lshellstruct.h"
+#include "scannerapp.h"
 
 #define SERVER_PATH "/tmp/test.domain"
 
@@ -24,6 +25,7 @@ Q_DECLARE_METATYPE(cmdst_userconfig)
 Q_DECLARE_METATYPE(cmdst_softap)
 //Q_DECLARE_METATYPE(cmdst_fusingScReset)
 
+Q_DECLARE_METATYPE(ScanSettings)
 
 #include "smconfig.h"
 class UIConfig : public QObject ,SMConfig{
@@ -37,6 +39,7 @@ public:
         CMD_GetDefaultPrinter,
         CMD_GetPrinters,
         CMD_GetStatus,
+        CMD_Scan,
 
         LS_CMD_GetCopy,
         LS_CMD_COPY,
