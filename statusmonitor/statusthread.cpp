@@ -10,13 +10,14 @@ static int callback_getPrinters(void* para,Printer_struct* ps)
     if(isDeviceSupported && isDeviceSupported(ps)){
         st->printers << *ps;
         st->printerlist << ps->name;
+        st->statusmanager.savePrinterToFile(ps);
     }
     return st->abort ?0 :1;
 }
 
 StatusThread::StatusThread(QObject *parent)
     : QThread(parent)
-    ,devicemanager(new DeviceManager)
+    , devicemanager(new DeviceManager)
 {
     abort = false;
     statusmanager.clearFile();
@@ -39,10 +40,11 @@ void StatusThread::run()
             return;
         printers.clear();
         printerlist.clear();
+        statusmanager.clearPrintersOfFile();
         cupsmanager.getPrinters(callback_getPrinters ,this);
         //update printer list
-        statusmanager.clearPrintersOfFile();
-        statusmanager.savePrintersToFile(printerlist);
+//        statusmanager.clearPrintersOfFile();
+//        statusmanager.savePrintersToFile(printerlist);
 
         foreach (Printer_struct printer, printers) {
             if (abort)

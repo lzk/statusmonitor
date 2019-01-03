@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <QStringList>
 #include "status.h"
+#include "jkinterface.h"
 class StatusManager
 {
 public:
@@ -12,9 +13,9 @@ public:
     int saveStatusToFile(const char* printer ,PRINTER_STATUS* status);
     int getStatusFromFile(const char* printer ,PRINTER_STATUS* status);
     int clearFile();
-    QStringList getPrintersFromFile();
     int clearPrintersOfFile();
-    int savePrintersToFile(QStringList printers);
+    int savePrinterToFile(Printer_struct* printer);
+    int getPrintersFromFile(CALLBACK_getPrinters ,void*);
 
 private:
     int lock(const char* path);
