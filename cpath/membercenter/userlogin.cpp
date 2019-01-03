@@ -70,7 +70,7 @@ void UserLogin::replyFinish_check(QNetworkReply* reply)
         }
         else
         {
-            ui->labMsg->setText("Verification code error.");
+            ui->labMsg->setText(tr("ResStr_Msg_8"));
         }
     }
 }
@@ -113,7 +113,7 @@ void UserLogin::showTimelimit()
     else
     {
         ui->bt_getAuthCode->setEnabled(true);
-        ui->bt_getAuthCode->setText(QString::fromLocal8Bit("获取验证码"));
+        ui->bt_getAuthCode->setText(tr("ResStr_Get_Verification_Code"));
     }
 }
 
@@ -130,7 +130,7 @@ void UserLogin::replyFinish_send(QNetworkReply* reply)
     {
         if(result["success"].toBool())
         {
-            ui->labMsg->setText("Verification code sent successfully.");
+            ui->labMsg->setText(tr("ResStr_Msg_5"));
             acTime = 60;
             QString num = QString::number(acTime);
             ui->bt_getAuthCode->setText(num);
@@ -141,6 +141,10 @@ void UserLogin::replyFinish_send(QNetworkReply* reply)
                 connect(acTimer,SIGNAL(timeout()),this,SLOT(showTimelimit()));
                 acTimer->start(1000);
             }
+        }
+        else
+        {
+            ui->labMsg->setText(tr("ResStr_Msg_6"));
         }
     }
 }

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string/>
   </property>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
@@ -34,7 +34,7 @@
       <widget class="QWidget" name="scrollAreaWidgetContents">
        <property name="geometry">
         <rect>
-         <x>9</x>
+         <x>8</x>
          <y>0</y>
          <width>398</width>
          <height>598</height>
@@ -151,16 +151,9 @@
      </spacer>
     </item>
     <item>
-     <widget class="QPushButton" name="print">
-      <property name="text">
-       <string>print</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QPushButton" name="back">
       <property name="text">
-       <string>Return</string>
+       <string>ResStr_Return</string>
       </property>
      </widget>
     </item>
@@ -186,7 +179,6 @@
   <tabstop>zoom_in</tabstop>
   <tabstop>fit</tabstop>
   <tabstop>scrollArea</tabstop>
-  <tabstop>print</tabstop>
   <tabstop>back</tabstop>
  </tabstops>
  <resources>

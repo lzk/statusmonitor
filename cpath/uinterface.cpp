@@ -31,6 +31,11 @@ void UInterface::setCmd(int cmd ,const QString& printer_name ,QVariant data)
     cmdToWorker(cmd ,printer_name ,data);
 }
 
+void UInterface::setCurrentPrinterCmd(int cmd ,QVariant data)
+{
+    setCmd(cmd ,current_printer ,data);
+}
+
 void UInterface::setTimer(int timeVal)
 {
     this->timeval = timeVal;
@@ -66,3 +71,9 @@ void UInterface::setcurrentPrinter(const QString& str)
 {
     current_printer = str;
 }
+
+void UInterface::setDeviceMsgFrmUI(const QString &str, int result)
+{
+    emit setDeviceMsg(str,result);
+}
+

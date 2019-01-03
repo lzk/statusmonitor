@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string/>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -38,7 +38,7 @@ QLabel{
     <number>3</number>
    </property>
    <property name="text">
-    <string>The password must be 5/13 ASCII characters or 10/26 hex characters, please confirm and enter again.</string>
+    <string>ResStr_Msg_2</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string/>
   </property>
   <widget class="QPushButton" name="bt_back">
    <property name="geometry">
@@ -67,7 +67,7 @@ QPushButton:pressed{
 }</string>
    </property>
    <property name="text">
-    <string>取消</string>
+    <string>ResStr_Cancel</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bt_next">
@@ -109,7 +109,7 @@ QPushButton::Pressed{
     </font>
    </property>
    <property name="text">
-    <string>下次不再弹出该提示框</string>
+    <string>ResStr_Prompt_Box_will_not_pop_up_next_time</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_msg1">
@@ -127,7 +127,7 @@ QPushButton::Pressed{
     </font>
    </property>
    <property name="text">
-    <string>温馨提示 ：</string>
+    <string>ResStr_Prompt1</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -169,11 +169,11 @@ QPushButton::Pressed{
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
-    <string>如果1分钟之内不进行操作，任务将会自动取消</string>
+    <string>ResStr_Prompt2</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -211,7 +211,7 @@ color: rgb(255, 255, 255);
 </string>
    </property>
    <property name="text">
-    <string>确定</string>
+    <string>ResStr_OK</string>
    </property>
   </widget>
  </widget>

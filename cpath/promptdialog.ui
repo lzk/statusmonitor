@@ -10,9 +10,6 @@
     <height>204</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
-  </property>
   <widget class="QPushButton" name="btn_NO">
    <property name="geometry">
     <rect>
@@ -45,7 +42,7 @@ color:white;
 }</string>
    </property>
    <property name="text">
-    <string>否</string>
+    <string>ResStr_No</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btn_YES">
@@ -89,7 +86,7 @@ color:white;
 }</string>
    </property>
    <property name="text">
-    <string>是</string>
+    <string>ResStr_Yes</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -107,7 +104,7 @@ color:white;
     </font>
    </property>
    <property name="text">
-    <string>是否退出小新打印?</string>
+    <string>ResStr_Do_you_want_to_exit_the_Lenovo_Printer</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

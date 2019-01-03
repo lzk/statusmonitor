@@ -2,11 +2,16 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "statusmonitor.h"
+#include <QVariant>
+#include "uiconfig.h"
+#include "busyrefreshlabel.h"
 
 namespace Ui {
 class MainWindow;
 }
-
+class QListWidgetItem;
+class QCloseEvent;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -42,8 +47,39 @@ private slots:
 
     void on_SettingImgBtn_clicked();
 
+    void on_refreshBtn_clicked();
+
+    void cmdResult(int cmd,int result ,QVariant data=QVariant());
+
+    void setcurrentPrinter(const QString& str);
+
+    void updateToner(int c ,int m ,int y ,int k);
+
+    void updateStatus(const PrinterStatus_struct& status);
+
+    void updateOtherStatus(const QString& printer ,const PrinterStatus_struct& status);
+
+    void updatePrinter(const QVariant& data);
+
+    void on_deviceNameBox_currentIndexChanged(int index);
+
+    void on_status_ch(const PrinterStatus_struct& status);
+
+    void setDeviceMsg(const QString& msg, int result);
+
+    void startCycleAnimation();
+    void stopCycleAnimation();
+
 private:
     Ui::MainWindow *ui;
+
+    QString current_printer;
+
+    BusyRefreshLabel *statusCycle;
+    BusyRefreshLabel *cycle;
+
+    QStringList printers;
+    QList<PrinterInfo_struct> printerInfos;
 };
 
 #endif // MAINWINDOW_H

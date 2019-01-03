@@ -36,12 +36,12 @@ int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSi
             if(!nocheck){
                 if(1 == read(rdBuffer,1)){
                     if(0x4d != rdBuffer[0]){
-                        LOGLOG("waiting for 0x4d:%#.2x" ,rdBuffer[0]);
+//                        LOGLOG("waiting for 0x4d:%#.2x" ,rdBuffer[0]);
                         delay100ms (1 ,ifdelay);
                         continue;
                     }
                 }else{
-                    LOGLOG("cannot read now,wait 100 ms read again");
+//                    LOGLOG("cannot read now,wait 100 ms read again");
                     delay100ms (1 ,ifdelay);
                     continue;
                 }
@@ -52,7 +52,7 @@ int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSi
                 if(0x3c == rdBuffer[1]){
                     delay100ms (1 ,ifdelay);
                     _read_size = read(rdBuffer+2 ,rdSize-2);
-                    LOGLOG("read size:%d" ,_read_size == -1 ?-1 : _read_size + 2);
+//                    LOGLOG("read size:%d" ,_read_size == -1 ?-1 : _read_size + 2);
                     j++;
                     break;
                 }else if(0x4d == rdBuffer[1]){

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>ResStr_About</string>
   </property>
   <widget class="QLabel" name="lab_bell">
    <property name="geometry">

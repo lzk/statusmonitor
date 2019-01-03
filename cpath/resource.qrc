@@ -182,5 +182,7 @@
         <file>Images/Wireless_Active.png</file>
         <file>Images/ZoomIn.tif</file>
         <file>Images/ZoomOut.tif</file>
+        <file>Images/DulplexCopyIconDisable.tif</file>
+        <file>Images/DulplexCopyIconEnable.tif</file>
     </qresource>
 </RCC>

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>StackedWidget</string>
   </property>
-  <widget class="QWidget" name="page1">
+  <widget class="QWidget" name="page0">
    <widget class="QLabel" name="label_APStatus">
     <property name="geometry">
      <rect>
@@ -29,7 +29,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Connected </string>
+     <string>ResStr_Connected</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_line1">
@@ -107,8 +107,13 @@ QPushButton{
      <string/>
     </property>
    </widget>
+   <zorder>label_APStatus</zorder>
+   <zorder>label_line1</zorder>
+   <zorder>label_SSID1</zorder>
+   <zorder>label_StatusIcon</zorder>
+   <zorder>pushButton</zorder>
   </widget>
-  <widget class="QWidget" name="page">
+  <widget class="QWidget" name="page1">
    <widget class="QRadioButton" name="btKey3">
     <property name="geometry">
      <rect>
@@ -127,7 +132,7 @@ QPushButton{
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>11</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -154,9 +159,9 @@ QRadioButton::indicator::checked {
    <widget class="QLabel" name="label_Password">
     <property name="geometry">
      <rect>
-      <x>1</x>
+      <x>2</x>
       <y>48</y>
-      <width>61</width>
+      <width>79</width>
       <height>20</height>
      </rect>
     </property>
@@ -165,8 +170,11 @@ QRadioButton::indicator::checked {
       <pointsize>13</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="text">
-     <string>Password</string>
+     <string>ResStr_Password</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -175,7 +183,7 @@ QRadioButton::indicator::checked {
    <widget class="QLabel" name="label_keyid">
     <property name="geometry">
      <rect>
-      <x>3</x>
+      <x>8</x>
       <y>104</y>
       <width>91</width>
       <height>16</height>
@@ -208,7 +216,7 @@ QRadioButton::indicator::checked {
      </font>
     </property>
     <property name="text">
-     <string>Connected </string>
+     <string>ResStr_Connected</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btConnect">
@@ -247,7 +255,7 @@ QPushButton:pressed{
 </string>
     </property>
     <property name="text">
-     <string>Connect</string>
+     <string>ResStr_Connect</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -287,7 +295,7 @@ QPushButton{
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>11</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -347,7 +355,7 @@ QRadioButton::indicator::checked {
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>11</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -403,7 +411,7 @@ QCheckBox::indicator::checked {
 }</string>
     </property>
     <property name="text">
-     <string>Display password</string>
+     <string>ResStr_Display_Password</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="btKey1">
@@ -424,7 +432,7 @@ QCheckBox::indicator::checked {
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>11</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -451,7 +459,7 @@ QRadioButton::indicator::checked {
    <widget class="QLineEdit" name="lineEdit_Password">
     <property name="geometry">
      <rect>
-      <x>67</x>
+      <x>84</x>
       <y>49</y>
       <width>129</width>
       <height>20</height>
@@ -459,6 +467,10 @@ QRadioButton::indicator::checked {
     </property>
     <property name="focusPolicy">
      <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:2px groove gray;
+border-radius:5px;</string>
     </property>
     <property name="text">
      <string>123465</string>
@@ -498,7 +510,7 @@ QPushButton:pressed{
 }</string>
     </property>
     <property name="text">
-     <string>Cancel</string>
+     <string>ResStr_Cancel</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_line2">
@@ -521,6 +533,20 @@ border:1px solid  rgb(181, 181, 181);
      <string/>
     </property>
    </widget>
+   <zorder>btKey3</zorder>
+   <zorder>label_Password</zorder>
+   <zorder>label_keyid</zorder>
+   <zorder>label_APStatus_2</zorder>
+   <zorder>btConnect</zorder>
+   <zorder>btKey2</zorder>
+   <zorder>label_SSID2</zorder>
+   <zorder>btKey4</zorder>
+   <zorder>checkBox_visiable</zorder>
+   <zorder>btKey1</zorder>
+   <zorder>lineEdit_Password</zorder>
+   <zorder>btCancel</zorder>
+   <zorder>label_line2</zorder>
+   <zorder>pushButton_2</zorder>
   </widget>
  </widget>
  <resources/>

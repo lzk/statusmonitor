@@ -19,7 +19,8 @@
    <string>StackedWidget</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background-image: url();
+background-color: transparent;</string>
   </property>
   <widget class="QWidget" name="copyPage">
    <property name="styleSheet">
@@ -312,7 +313,7 @@ color:white;
 }</string>
     </property>
     <property name="text">
-     <string>更多设置</string>
+     <string>ResStr_More_Settings</string>
     </property>
    </widget>
    <widget class="QLabel" name="text_IDCardCopy">
@@ -330,7 +331,7 @@ color:white;
      </font>
     </property>
     <property name="text">
-     <string>身份证复印</string>
+     <string>ResStr_ID_Card_Copy</string>
     </property>
    </widget>
    <widget class="QLabel" name="text_CopyNum">
@@ -348,7 +349,7 @@ color:white;
      </font>
     </property>
     <property name="text">
-     <string>复印份数</string>
+     <string>ResStr_Copies_2</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -402,10 +403,16 @@ border-image: url(:/Images/Btn_Green_Pressed.png) 16;
 border-width:16px;
 padding:-16px 0px;
 color:white;
+}
+
+QPushButton::disabled{
+border-image: url(:/Images/Btn_Scan_Disabled.png) ;
+
+color:white;
 }</string>
     </property>
     <property name="text">
-     <string>复印</string>
+     <string>ResStr_ExtraAdd_Copy</string>
     </property>
    </widget>
    <widget class="QLabel" name="mark0_Density">
@@ -493,7 +500,7 @@ QPushButton::pressed{
      </font>
     </property>
     <property name="text">
-     <string>浓度</string>
+     <string>ResStr_Density</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -505,7 +512,7 @@ QPushButton::pressed{
     </property>
     <property name="geometry">
      <rect>
-      <x>680</x>
+      <x>670</x>
       <y>490</y>
       <width>41</width>
       <height>21</height>
@@ -531,7 +538,7 @@ QPushButton::pressed{
    <widget class="QLabel" name="text_IDCardCopy_2">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>590</x>
       <y>490</y>
       <width>81</width>
       <height>21</height>
@@ -549,7 +556,7 @@ QPushButton::pressed{
    <widget class="QLabel" name="icon_DuplexCopy">
     <property name="geometry">
      <rect>
-      <x>560</x>
+      <x>550</x>
       <y>480</y>
       <width>30</width>
       <height>37</height>
@@ -626,7 +633,7 @@ color:gray;
 }</string>
     </property>
     <property name="text">
-     <string>更多设置</string>
+     <string>ResStr_More_Settings</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_Scan">
@@ -658,7 +665,7 @@ color:white;
 }</string>
     </property>
     <property name="text">
-     <string>扫 描</string>
+     <string>ResStr_ExtraAdd_Scan</string>
     </property>
     <property name="flat">
      <bool>false</bool>
@@ -709,7 +716,7 @@ color:white;
      <string notr="true">border-image: url(:/Images/background_scan_btn1.png);</string>
     </property>
     <property name="text">
-     <string>保 存</string>
+     <string>ResStr_Save</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_Background">
@@ -744,7 +751,7 @@ border-image: url(:/Images/background_scan1.png);</string>
      </font>
     </property>
     <property name="text">
-     <string>待扫描图片大小:23.95MB</string>
+     <string>ResStr_Scanned_image_size</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_ScanProgress">
@@ -757,7 +764,7 @@ border-image: url(:/Images/background_scan1.png);</string>
      </rect>
     </property>
     <property name="text">
-     <string>扫描进度</string>
+     <string>ResStr_Scanning_2</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar_Scan">
@@ -824,8 +831,8 @@ background-image: url(:/Images/PageScan.tif);
    <widget class="QLabel" name="img_SoftAP">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>355</y>
+      <x>319</x>
+      <y>348</y>
       <width>22</width>
       <height>19</height>
      </rect>
@@ -841,9 +848,9 @@ background-image: url(:/Images/PageScan.tif);
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>435</y>
-      <width>126</width>
-      <height>35</height>
+      <y>460</y>
+      <width>121</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -856,14 +863,14 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
 </string>
     </property>
     <property name="text">
-     <string>休眠时间</string>
+     <string>ResStr_Power_Save</string>
     </property>
    </widget>
    <widget class="QLabel" name="img_Password">
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>535</y>
+      <y>548</y>
       <width>18</width>
       <height>24</height>
      </rect>
@@ -875,11 +882,11 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="img_TCPIP">
+   <widget class="QLabel" name="img_TCPIPV4">
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>400</y>
+      <y>387</y>
       <width>24</width>
       <height>23</height>
      </rect>
@@ -895,7 +902,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>440</y>
+      <y>465</y>
       <width>17</width>
       <height>26</height>
      </rect>
@@ -911,9 +918,9 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>480</y>
-      <width>126</width>
-      <height>35</height>
+      <y>500</y>
+      <width>121</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -926,7 +933,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
 </string>
     </property>
     <property name="text">
-     <string>高级设置</string>
+     <string>ResStr_User_Config</string>
     </property>
    </widget>
    <widget class="SettingsStackedWidget" name="settingStackedWidget">
@@ -939,13 +946,12 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-background-image: url();
+     <string notr="true">background-image: url();
 background-color: transparent;
 </string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="WiFi_3">
      <widget class="QLabel" name="background_WiFi1_3">
@@ -968,7 +974,7 @@ background-color: transparent;
       <property name="geometry">
        <rect>
         <x>1</x>
-        <y>20</y>
+        <y>16</y>
         <width>15</width>
         <height>20</height>
        </rect>
@@ -1002,7 +1008,7 @@ background-color: transparent;
       <property name="geometry">
        <rect>
         <x>1</x>
-        <y>62</y>
+        <y>55</y>
         <width>15</width>
         <height>20</height>
        </rect>
@@ -1015,12 +1021,12 @@ background-color: transparent;
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="TCPIP_3">
-     <widget class="QLabel" name="background_TCPIP1_3">
+    <widget class="QWidget" name="TCPIP4_3">
+     <widget class="QLabel" name="background_TCPIP41_3">
       <property name="geometry">
        <rect>
         <x>1</x>
-        <y>106</y>
+        <y>95</y>
         <width>15</width>
         <height>20</height>
        </rect>
@@ -1032,7 +1038,7 @@ background-color: transparent;
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="background_TCPIP2_3">
+     <widget class="QLabel" name="background_TCPIP42_3">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -1048,13 +1054,49 @@ background-color: transparent;
        <string/>
       </property>
      </widget>
+     <zorder>background_TCPIP42_3</zorder>
+     <zorder>background_TCPIP41_3</zorder>
+    </widget>
+    <widget class="QWidget" name="TCPIP6">
+     <widget class="QLabel" name="background_TCPIP61_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>241</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/Images/SettingViewBackground.png);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="background_TCPIP62_4">
+      <property name="geometry">
+       <rect>
+        <x>1</x>
+        <y>136</y>
+        <width>15</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/Images/triangle.png);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="PowerSave_3">
      <widget class="QLabel" name="background_PS2_3">
       <property name="geometry">
        <rect>
         <x>1</x>
-        <y>152</y>
+        <y>177</y>
         <width>15</width>
         <height>20</height>
        </rect>
@@ -1082,13 +1124,15 @@ background-color: transparent;
        <string/>
       </property>
      </widget>
+     <zorder>background_PS1_3</zorder>
+     <zorder>background_PS2_3</zorder>
     </widget>
     <widget class="QWidget" name="UserConfig_3">
      <widget class="QLabel" name="background_UC2_3">
       <property name="geometry">
        <rect>
         <x>1</x>
-        <y>196</y>
+        <y>217</y>
         <width>15</width>
         <height>20</height>
        </rect>
@@ -1116,6 +1160,8 @@ background-color: transparent;
        <string/>
       </property>
      </widget>
+     <zorder>background_UC1_3</zorder>
+     <zorder>background_UC2_3</zorder>
     </widget>
     <widget class="QWidget" name="Password_3">
      <widget class="QLabel" name="background_PW1_3">
@@ -1138,7 +1184,7 @@ background-color: transparent;
       <property name="geometry">
        <rect>
         <x>1</x>
-        <y>242</y>
+        <y>256</y>
         <width>15</width>
         <height>20</height>
        </rect>
@@ -1156,9 +1202,9 @@ background-color: transparent;
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>525</y>
-      <width>126</width>
-      <height>35</height>
+      <y>540</y>
+      <width>121</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1171,7 +1217,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
 </string>
     </property>
     <property name="text">
-     <string>管理员密码修改</string>
+     <string>ResStr_Modify_Password</string>
     </property>
    </widget>
    <widget class="QLabel" name="img_WiFi">
@@ -1194,9 +1240,9 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>345</y>
-      <width>126</width>
-      <height>35</height>
+      <y>340</y>
+      <width>121</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1210,19 +1256,19 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
 </string>
     </property>
     <property name="text">
-     <string>打印机热点</string>
+     <string>ResStr_Soft_AP</string>
     </property>
     <property name="flat">
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_TCPIP">
+   <widget class="QPushButton" name="btn_TCPIPV4">
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>390</y>
-      <width>126</width>
-      <height>35</height>
+      <y>380</y>
+      <width>121</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1235,7 +1281,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
 </string>
     </property>
     <property name="text">
-     <string>打印机IP地址</string>
+     <string>ResStr_TCP_IPv4</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_WiFi">
@@ -1243,8 +1289,8 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
      <rect>
       <x>350</x>
       <y>300</y>
-      <width>126</width>
-      <height>35</height>
+      <width>121</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1257,7 +1303,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Green_Pressed.png);color:whi
 }</string>
     </property>
     <property name="text">
-     <string>打印机Wi-Fi</string>
+     <string>ResStr_Printer_Wi_Fi</string>
     </property>
     <property name="flat">
      <bool>false</bool>
@@ -1267,13 +1313,51 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Green_Pressed.png);color:whi
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>490</y>
+      <y>510</y>
       <width>24</width>
       <height>20</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">border-image: url(:/Images/UserConfig.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_TCPIPV6">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>420</y>
+      <width>121</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{border-image: url(:/Images/Btn_Gray.png);}
+QPushButton::hover{
+	color: rgb(52, 212, 34);
+}
+QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:white
+}
+</string>
+    </property>
+    <property name="text">
+     <string>ResStr_TCP_IPv6</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="img_TCPIPV6">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>426</y>
+      <width>24</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/Images/TCPIP.png);</string>
     </property>
     <property name="text">
      <string/>

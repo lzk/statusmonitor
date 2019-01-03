@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>ResStr_Setting</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
@@ -29,7 +32,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Stateless Address2</string>
+    <string>ResStr_Stateless_Address_2</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_10">
@@ -86,7 +89,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Stateless Address1</string>
+    <string>ResStr_Stateless_Address_1</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_7">
@@ -105,7 +108,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Auto Configure Gateway Address</string>
+    <string>ResStr_Auto_Configure_Gateway_Address</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_11">
@@ -178,7 +181,7 @@ QPushButton:pressed{
 </string>
    </property>
    <property name="text">
-    <string>Return</string>
+    <string>ResStr_Return</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -197,7 +200,7 @@ QPushButton:pressed{
     </font>
    </property>
    <property name="text">
-    <string>Stateless Address3</string>
+    <string>ResStr_Stateless_Address_3</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
@@ -216,7 +219,7 @@ QPushButton:pressed{
     </font>
    </property>
    <property name="text">
-    <string>Auto Statefull Address</string>
+    <string>ResStr_Auto_Statefull_Address</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -235,7 +238,7 @@ QPushButton:pressed{
     </font>
    </property>
    <property name="text">
-    <string>Link Local  Address</string>
+    <string>ResStr_Link_Local_Address</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_9">

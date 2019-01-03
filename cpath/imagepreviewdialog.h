@@ -45,7 +45,7 @@ private slots:
     void on_zoom_out_clicked();
     void on_turn_clicked();
     void on_back_clicked();
-    void on_print_clicked();
+//    void on_print_clicked();
 };
 
 #endif // IMAGEPREVIEWDIALOG_H

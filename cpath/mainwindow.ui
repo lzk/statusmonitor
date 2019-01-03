@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string/>
   </property>
   <property name="styleSheet">
    <string notr="true">#centralWidget{
@@ -80,7 +80,9 @@ background-color: transparent;</string>
        <bool>false</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: transparent;</string>
+       <string notr="true">background-image: url();
+background-color: transparent;
+</string>
       </property>
       <widget class="QWidget" name="page">
        <property name="styleSheet">
@@ -316,22 +318,6 @@ border-radius:5px;
         <string/>
        </property>
       </widget>
-      <widget class="QLabel" name="label_4">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>30</y>
-         <width>20</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-image: url(:/Images/Status_RefreshEnable.tif);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_5">
        <property name="geometry">
         <rect>
@@ -345,7 +331,7 @@ border-radius:5px;
         <string notr="true">background-image:url();</string>
        </property>
        <property name="text">
-        <string>墨粉</string>
+        <string>ResStr_Toner</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_6">
@@ -372,7 +358,7 @@ background-color: rgb(110, 110, 110);
 background-image:url();</string>
        </property>
        <property name="text">
-        <string>离线</string>
+        <string>ResStr_Offline</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -391,7 +377,7 @@ background-image:url();</string>
         <string notr="true">background-image:url();</string>
        </property>
        <property name="text">
-        <string>机型</string>
+        <string>ResStr_Model</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_8">
@@ -407,7 +393,7 @@ background-image:url();</string>
         <string notr="true">background-image:url();</string>
        </property>
        <property name="text">
-        <string>设备状态</string>
+        <string>ResStr_Status</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_9">
@@ -485,10 +471,23 @@ QComboBox:down-arrow {
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="refreshBtn">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>30</y>
+         <width>20</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-image: url(:/Images/Status_RefreshEnable.tif);</string>
        </property>
       </widget>
      </widget>
@@ -547,7 +546,7 @@ border-top-right-radius:0px;
 border-bottom-right-radius:0px;</string>
        </property>
        <property name="text">
-        <string>复印</string>
+        <string>ResStr_ExtraAdd_Copy</string>
        </property>
       </widget>
       <widget class="QPushButton" name="Scan">
@@ -592,7 +591,7 @@ color:gray;
 }*/</string>
        </property>
        <property name="text">
-        <string>扫描</string>
+        <string>ResStr_ExtraAdd_Scan</string>
        </property>
       </widget>
       <widget class="QPushButton" name="Setting">
@@ -621,7 +620,7 @@ background-color: rgb(255, 255, 255);
 border-bottom-left-radius:0px;</string>
        </property>
        <property name="text">
-        <string>设置</string>
+        <string>ResStr_Setting</string>
        </property>
       </widget>
      </widget>
@@ -647,6 +646,16 @@ border-bottom-left-radius:0px;</string>
       </property>
      </widget>
     </widget>
+   </widget>
+   <widget class="QWidget" name="cycleWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>850</width>
+      <height>640</height>
+     </rect>
+    </property>
    </widget>
   </widget>
  </widget>

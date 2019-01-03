@@ -11,7 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string/>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+#AuthenticationDlg{
+	background-image:url();
+	background-color: rgb(255, 255, 255);
+	border-image:url();
+}</string>
   </property>
   <widget class="QLabel" name="label_msg">
    <property name="geometry">
@@ -25,14 +33,14 @@
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>14</pointsize>
+     <pointsize>13</pointsize>
     </font>
    </property>
    <property name="lineWidth">
     <number>1</number>
    </property>
    <property name="text">
-    <string>The default password for this unit is &quot;888888&quot;. For security of your equipment, please change this password.</string>
+    <string>ResStr_Password_Tip</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -76,7 +84,7 @@
   <widget class="QLabel" name="label_psd">
    <property name="geometry">
     <rect>
-     <x>16</x>
+     <x>20</x>
      <y>28</y>
      <width>91</width>
      <height>21</height>
@@ -85,11 +93,11 @@
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>14</pointsize>
+     <pointsize>13</pointsize>
     </font>
    </property>
    <property name="text">
-    <string>PassWord</string>
+    <string>ResStr_Password</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -131,7 +139,7 @@ QPushButton:pressed{
 }</string>
    </property>
    <property name="text">
-    <string>Login</string>
+    <string>ResStr_Login</string>
    </property>
   </widget>
  </widget>

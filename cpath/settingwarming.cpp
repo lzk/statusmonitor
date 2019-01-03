@@ -12,7 +12,7 @@ SettingWarming::SettingWarming(QWidget *parent, QString text, bool showLabel) :
     }
     else
     {
-        ui->label->setText(tr(" The password must be 5/13 ASCII characters \n or 10/26 hex characters, \n please confirm and enter again."));
+        ui->label->setText(tr("ResStr_Msg_2"));
     }
     if(showLabel)
     {
