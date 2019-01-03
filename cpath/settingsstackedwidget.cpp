@@ -432,7 +432,8 @@ void SettingsStackedWidget::changeStackIndex(int index)
         //if(CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
             titelCell->setCurrentIndex(0);
-            gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
+            titelCell->on_btFlesh_clicked();
+//            gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
             emit cycleStart();
         }
         break;

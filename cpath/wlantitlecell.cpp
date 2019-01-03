@@ -100,7 +100,6 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             orin_wifi_para = wifi_refresh_info.wifi_para;
             wifi_para = wifi_refresh_info.wifi_para;
             cmdst_aplist_get aplist = wifi_refresh_info.wifi_aplist;
-
             initCell(wifi_para,aplist);
             is_wifi_now_on = true;
         }
@@ -487,6 +486,7 @@ void WlanTitleCell::on_timeout()
 void WlanTitleCell::on_btFlesh_clicked()
 {
 //    timer1->start(1000);
+    qDebug()<<"on_btFlesh_clicked";
     while(!(apList.isEmpty()))
    {
        currentSize.setHeight( currentSize.height() - qobject_cast<QWidget *>(apList.last())->size().height() - 1);

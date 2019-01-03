@@ -185,7 +185,7 @@ background:transparent;
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>340</y>
+     <y>350</y>
      <width>271</width>
      <height>21</height>
     </rect>
@@ -210,11 +210,11 @@ background:transparent;
   </widget>
   <zorder>lab_msg_title</zorder>
   <zorder>checkBox</zorder>
-  <zorder>btLink</zorder>
   <zorder>bt_OK</zorder>
   <zorder>lab_link</zorder>
   <zorder>lab_msg</zorder>
   <zorder>lab_check_info</zorder>
+  <zorder>btLink</zorder>
  </widget>
  <resources/>
  <connections/>

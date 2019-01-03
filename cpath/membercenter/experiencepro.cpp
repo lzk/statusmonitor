@@ -1,5 +1,7 @@
 #include "experiencepro.h"
 #include "ui_experiencepro.h"
+#include "qdesktopservices.h"
+#include "qurl.h"
 
 ExperiencePro::ExperiencePro(QWidget *parent) :
     QDialog(parent),
@@ -20,4 +22,19 @@ ExperiencePro::~ExperiencePro()
 void ExperiencePro::on_bt_OK_clicked()
 {
     close();
+}
+
+void ExperiencePro::on_btLink_clicked()
+{
+    QDesktopServices::openUrl(QUrl("https://www.lenovo.com.cn/public/privacy.html"));
+}
+
+bool ExperiencePro::isStartCRM()
+{
+    return m_bCRM;
+}
+
+void ExperiencePro::on_checkBox_clicked(bool checked)
+{
+    m_bCRM = checked;
 }

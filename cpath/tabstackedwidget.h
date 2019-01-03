@@ -27,6 +27,7 @@ public slots:
     void set_copy_enabled(bool enabled);
     void set_scan_enabled(bool enabled);
     void set_setting_enabled(bool enabled);
+    void setCopyStackedWidgetCurrentIndex(int index);
 
 private slots:
     void on_cBox_IsIDCard_clicked(bool checked);

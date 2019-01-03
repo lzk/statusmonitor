@@ -14,12 +14,19 @@ class ExperiencePro : public QDialog
 public:
     explicit ExperiencePro(QWidget *parent = 0);
     ~ExperiencePro();
+    bool isStartCRM();
 
 private slots:
     void on_bt_OK_clicked();
 
+    void on_btLink_clicked();
+
+    void on_checkBox_clicked(bool checked);
+
 private:
     Ui::ExperiencePro *ui;
+    bool m_bCRM;
+
 };
 
 #endif // EXPERIENCEPRO_H

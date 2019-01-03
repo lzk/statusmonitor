@@ -87,7 +87,7 @@ void TabStackedWidget::setDefault_Copy()
     copycmdset *p = &para;
     memcpy(p ,&default_copy_parameter ,sizeof(default_copy_parameter));
 
-    paramCopy.scaling = (int)p->scale;
+     paramCopy.scaling = (int)p->scale;
     paramCopy.docType = (DocType_Copy)p->scanMode;
     paramCopy.docSize = (DocSize_Copy)p->orgSize;
     paramCopy.docDpi = (DocDpi_Copy)p->dpi;
@@ -422,6 +422,11 @@ void TabStackedWidget::on_btn_CopyNumReduce_clicked()
         str.setNum(value);
         ui->copyNum->setText(str);
     }
+}
+
+void TabStackedWidget::setCopyStackedWidgetCurrentIndex(int index)
+{
+    ui->copyStackedWidget->setCurrentIndex(index);
 }
 
 void TabStackedWidget::set_copy_enabled(bool enabled)

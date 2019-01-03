@@ -4,6 +4,9 @@
 #include "uinterface.h"
 #include "membercenter/about.h"
 #include "promptdialog.h"
+#include "ids_string.h"
+#include "animationdlg.h"
+#include <qmenu.h>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -26,16 +29,61 @@ MainWindow::MainWindow(QWidget *parent) :
     statusCycle->setGeometry(50,30,20,19);
 
     ui->cycleWidget->hide();
+    ui->errorBtn->hide();
+//    ui->tabStackedWidget->setCopyStackedWidgetCurrentIndex(1);
+//    ui->CopyImgBtn->setEnabled(false);
+//    ui->ScanImgBtn->setEnabled(false);
+//    ui->SettingImgBtn->setEnabled(false);
+//    ui->Copy->setStyleSheet("background-color: white;color:gray;border-top-right-radius:0px;border-bottom-right-radius:0px");
+//    ui->Scan->setStyleSheet("background-color: white;color:gray;border-radius:0px");
+//    ui->Setting->setStyleSheet("background-color: white;color:gray;border-top-left-radius:0px;border-bottom-left-radius:0px");
+//    ui->Copy->setEnabled(false);
+//    ui->Scan->setEnabled(false);
+//    ui->Setting->setEnabled(false);
+
     cycle = new BusyRefreshLabel(ui->cycleWidget,false);
     cycle->setGeometry(385,280,80,80);
 
     connect(ui->tabStackedWidget,SIGNAL(cycleStartFromTab()),this,SLOT(startCycleAnimation()));
     connect(ui->tabStackedWidget,SIGNAL(cycleStopFromTab()),this,SLOT(stopCycleAnimation()));
+
+    createSysTray();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::createSysTray()
+{
+
+//    minimizeAction = new QAction(tr("Mi&nimize"), this);
+//    connect(minimizeAction, SIGNAL(triggered(bool)), this, SLOT(hide()));
+////    connect(minimizeAction, SIGNAL(triggered(bool)), this, SLOT(showMinimized()));
+
+//    maximizeAction = new QAction(tr("Ma&ximize"), this);
+//    connect(maximizeAction, SIGNAL(triggered(bool)), this, SLOT(showMaximized()));
+
+//    restoreAction = new QAction(tr("&Restore"), this);
+//    restoreAction = new QAction(tr("显示(&R)"), this);
+//    connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(showNormal()));
+    quitAction = new QAction(tr("退出(&Q)"), this);
+    connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+    trayIconMenu = new QMenu(this);
+//    trayIconMenu->addAction(minimizeAction);
+//    trayIconMenu->addAction(maximizeAction);
+//    trayIconMenu->addAction(restoreAction);
+//    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(quitAction);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon->setIcon(QIcon(":/Images/printer.ico"));
+
+//    connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+    trayIcon->show();
 }
 
 //rewrite the mousePressEvent
@@ -149,7 +197,10 @@ void MainWindow::on_SettingImgBtn_clicked()
 
 void MainWindow::on_refreshBtn_clicked()
 {
-    on_Copy_clicked();
+    if(ui->tabStackedWidget->currentIndex() != 0)
+    {
+        on_Copy_clicked();
+    }
     ui->refreshBtn->hide();
     gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
     statusCycle->startAnimation(20);
@@ -238,7 +289,10 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
     {
         current_printer = printers.at(index);
         setcurrentPrinter(printers.at(index));
-        on_Copy_clicked();
+        if(ui->tabStackedWidget->currentIndex() != 0)
+        {
+            on_Copy_clicked();
+        }
     }
 
 }
@@ -247,6 +301,7 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
 {
 
     ui->tabStackedWidget->set_setting_enabled(true);
+
     if(ui->deviceNameBox->isEnabled())
     {
         ui->tabStackedWidget->set_scan_enabled(true);//Added for default enable scan button by gavin 2016-04-14
@@ -254,9 +309,10 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
     }
     ui->label_10->setStyleSheet("QLabel{color:break;}");
     ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
+    ui->errorBtn->hide();
 
     switch (status.PrinterStatus) {
-    case 0:
+    case PS_READY:
         ui->label_6->setText(tr("ResStr_Ready"));
         ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
                                     "border:0px solid;"
@@ -264,7 +320,7 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
                                     "background-color: rgb(53, 177, 20);}");
         //ui->label_10->setText(devStatus->getDevMsg());
         break;
-    case 1:
+    case PS_POWER_SAVING:
         ui->label_6->setText(tr("ResStr_Sleep"));
         ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
                                     "border:0px solid;"
@@ -272,7 +328,7 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
                                     "background-color: rgb(53, 177, 20);}");
        // ui->label_10->setText(devStatus->getDevMsg());
         break;
-    case 2:
+    case PS_OFFLINE:
         ui->label_6->setText(tr("ResStr_Offline"));
         ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
                                     "border:0px solid;"
@@ -284,15 +340,15 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
         ui->tabStackedWidget->set_setting_enabled(false);
         ui->tabStackedWidget->set_scan_enabled(false); //Added for disable scan button when offline by gavin 2016-04-14
         break;
-    case 3:
-        ui->label_6->setText(tr("ResStr_Ready")); //device status is warning, the ui status is ready in spec
-        ui->label_6->setStyleSheet("QLabel{color: white;"
-                                    "border:0px solid;"
-                                    "border-radius:5px;"
-                                    "background-color: rgb(53, 177, 20);}");
-//        ui->label_10->setText(devStatus->getDevMsg());
-        break;
-    case 4:
+//    case PS_READY:
+//        ui->label_6->setText(tr("ResStr_Ready")); //device status is warning, the ui status is ready in spec
+//        ui->label_6->setStyleSheet("QLabel{color: white;"
+//                                    "border:0px solid;"
+//                                    "border-radius:5px;"
+//                                    "background-color: rgb(53, 177, 20);}");
+////        ui->label_10->setText(devStatus->getDevMsg());
+//        break;
+    case PS_BUSY:
         ui->label_6->setText(tr("ResStr_Busy"));
         ui->label_6->setStyleSheet("QLabel{color: white;"
                                     "border:0px solid;"
@@ -301,7 +357,7 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
         //ui->label_10->setText(devStatus->getDevMsg());
 
         break;
-    case 5:
+    case PS_ERROR_ERROR:
         ui->label_6->setText(tr("ResStr_Error"));
         ui->label_6->setStyleSheet("QLabel{color: white;"
                                     "border:0px solid;"
@@ -309,6 +365,7 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
                                     "background-color: red;}");
         //ui->label_10->setText(devStatus->getDevMsg());
         ui->label_10->setStyleSheet("QLabel{color:red;}");
+        ui->errorBtn->show();
         break;
     default:
         break;
@@ -336,4 +393,15 @@ void MainWindow::stopCycleAnimation()
     qDebug()<<"stopCycleAnimation";
     ui->cycleWidget->hide();
     cycle->stopAnimation();
+}
+
+void MainWindow::on_errorBtn_clicked()
+{
+    bool enNextShow = false;
+    AnimationDlg *aDialog = new AnimationDlg(this, 0xBD, &enNextShow);
+    aDialog->setAttribute(Qt::WA_DeleteOnClose);
+    if (aDialog->exec() == QDialog::Rejected)
+    {
+        return;
+    }
 }

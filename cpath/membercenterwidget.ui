@@ -1454,8 +1454,8 @@ background-color: rgb(235, 235, 235);</string>
     <zorder>about_img</zorder>
     <zorder>btAbout</zorder>
     <zorder>inbox_arrow</zorder>
-    <zorder>btProduct</zorder>
     <zorder>btloginImg2</zorder>
+    <zorder>btProduct</zorder>
    </widget>
   </widget>
  </widget>

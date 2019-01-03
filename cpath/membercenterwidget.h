@@ -21,6 +21,16 @@ typedef struct UserInfo
     QString mobileCode;
 }StrUserInfo;
 
+typedef struct CRM_PrintInfo
+{
+    QString strDeviceCode;
+    QString strMobileNumber;
+    QString strPlatform;
+    QString strVersion;
+    QDateTime time;
+    QString strSign;
+}StrCRM_PrintInfo;
+
 class MemberCenterWidget : public QWidget
 {
     Q_OBJECT
@@ -57,6 +67,10 @@ private slots:
 
     void on_btApply_clicked();
 
+    void on_btProduct_clicked();
+
+    void uploadCRM();
+
 private:
     Ui::MemberCenterWidget *ui;
 
@@ -66,6 +80,8 @@ private:
     QString loginPhone;
     StrUserInfo currentUser;
     QString m_strKey;
+
+    QTimer *crmTimer;
 };
 
 #endif // MEMBERCENTERWIDGET_H

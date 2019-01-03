@@ -1,8 +1,9 @@
 #include "animationdlg.h"
 #include "ui_animationdlg.h"
-#define Jam "01"
-#define JamExit "02"
-#define OutOfPaper "03"
+#include "qdebug.h"
+#define _JamInSide "01"
+#define _JamAtExit "02"
+#define _NofeedJam "03"
 #define _IDCardScan "05"
 #define _Nin1Copy   "06"
 
@@ -56,8 +57,9 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     map["vi_VN"] = "Vietnamese";
 
     QString lan = QLocale::system().name();                     //get the system local language
-    QString dirStr = QApplication::applicationDirPath() +"/Video/"+map[lan];
-//    qDebug()<<"dirStr"<<dirStr;
+//    QString dirStr = QApplication::applicationDirPath() +"/Video/"+map[lan];
+    QString dirStr = ":/Images/Video/"+map[lan];
+    qDebug()<<"dirStr"<<dirStr;
     videoDir =new QDir(dirStr);
 
     QString flag;
@@ -72,28 +74,29 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
         this->setWindowTitle(tr("ResStr_N_in_1_Copy"));
         break;
     case 0xBD:
-        flag = OutOfPaper;
+        flag = _NofeedJam;
         this->setWindowTitle(tr("ResStr_Out_of_Paper"));
         hideLabel();
         break;
     case 0xBC:          //PSTATUS_InitializeJam
     case 0xBE:          //PSTATUS_JamAtRegistStayOn
-        flag = Jam;
+        flag = _JamInSide;
         this->setWindowTitle(tr("ResStr_Jam_front"));
         hideLabel();
         break;
     case 0xBF:          //PSTATUS_JamAtExitNotReach
     case 0xC0:          //PSTATUS_JamAtExitStayOn
-        flag = JamExit;
+        flag = _JamAtExit;
         this->setWindowTitle(tr("ResStr_Jam_back"));
         hideLabel();
         break;
     default:
-        flag = Jam;
+        flag = _JamInSide;
         break;
     }
     QStringList filters;
     filters << flag +"*.gif" ;
+    qDebug()<<filters;
     videoDir->setNameFilters(filters);
     files = videoDir->entryInfoList();
     fquantity = files.size();
@@ -178,9 +181,7 @@ void AnimationDlg::on_bt_next_clicked()
         movie->start();
         isPause = true;
         on_bt_pause_play_clicked();
-    }
-    //add this for auto cycle play;
-    if(!ui->bt_next->isEnabled())
+    }else if(!ui->bt_next->isEnabled())//add this for auto cycle play;
     {
         index = 0;
         movie->stop();
@@ -191,11 +192,13 @@ void AnimationDlg::on_bt_next_clicked()
         isPause = true;
         on_bt_pause_play_clicked();
     }
+
     if(index == fquantity - 1)
     {
         ui->bt_next->setDisabled(true);
         ui->bt_next->setStyleSheet("QPushButton{border-image: url(:/Images/AnimationControl/rightDisable.tif);}");
     }
+
     if(index > 0)
     {
         ui->bt_back->setEnabled(true);
