@@ -137,34 +137,35 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         if(printer){
             device = deviceManager.getDevice(printer->deviceUri);
             struct_wifi_refresh_info wifi_refresh_data;
-            device->open();
+            result = device->open();
+            if(!result){
+
 //            if(!cmd_status_validate_setting(err)){
 //                break;
 //            }
-            cmdst_wifi_get wifi_data;
-            int err = lshell->wifi_get_para(&wifi_data);
-            if(err){
-                LOGLOG("err: can not get wifi");
-            }
-            else
-            {
-                cmdst_wifi_status status_data;
-                err = lshell->wifi_get_status(&status_data);
+                cmdst_wifi_get wifi_data;
+                result = lshell->wifi_get_para(&wifi_data);
+                if(result){
+                    LOGLOG("err: can not get wifi");
+                }
+                else
+                {
+                    cmdst_wifi_status status_data;
+                    result = lshell->wifi_get_status(&status_data);
 
-                if(!err){
-                    cmdst_aplist_get wifi_aplist_data;
-                    err = lshell->wifi_get_aplist(&wifi_aplist_data);
+                    if(!result){
+                        cmdst_aplist_get wifi_aplist_data;
+                        result = lshell->wifi_get_aplist(&wifi_aplist_data);
 
-                    device->close();
+                        device->close();
 
-                    wifi_refresh_data.wifi_para = wifi_data;
-                    wifi_refresh_data.wifi_aplist = wifi_aplist_data;
+                        wifi_refresh_data.wifi_para = wifi_data;
+                        wifi_refresh_data.wifi_aplist = wifi_aplist_data;
 
-                    value.setValue(wifi_refresh_data);
+                        value.setValue(wifi_refresh_data);
+                    }
                 }
             }
-
-            result = err;
         }
         cmdResult(cmd ,result ,value);
         break;
