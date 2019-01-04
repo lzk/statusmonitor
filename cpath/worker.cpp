@@ -421,10 +421,8 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             device = deviceManager.getDevice(printer->deviceUri);
             result = device->open();
             if(!result){
-                cmdst_fusingScReset device_data = data.value<cmdst_fusingScReset>();
-                result = lshell->fusingsc_reset(&device_data);
+                result = lshell->fusingsc_reset();
                 device->close();
-                value.setValue(device_data);
             }
         }
         cmdResult(cmd ,result ,value);
@@ -434,10 +432,8 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             device = deviceManager.getDevice(printer->deviceUri);
             result = device->open();
             if(!result){
-                cmdst_tonerReset device_data = data.value<cmdst_tonerReset>();
-                result = lshell->toner_reset(&device_data);
+                result = lshell->toner_reset();
                 device->close();
-                value.setValue(device_data);
             }
         }
         cmdResult(cmd ,result ,value);
@@ -447,10 +443,8 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             device = deviceManager.getDevice(printer->deviceUri);
             result = device->open();
             if(!result){
-                cmdst_drumReset device_data = data.value<cmdst_drumReset>();
-                result = lshell->drum_reset(&device_data);
+                result = lshell->drum_reset();
                 device->close();
-                value.setValue(device_data);
             }
         }
         cmdResult(cmd ,result ,value);

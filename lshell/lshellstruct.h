@@ -154,30 +154,5 @@ typedef struct
     UINT8 DHCPv6;
 }net_ipv6_st;
 
-typedef struct _cmdst_user_center
-{
-	char	_2ndSerialNO[20];
-	UINT32	_totalCounter;
-	char	_SerialNO4AIO[16];
-}cmdst_user_center;
-
-typedef struct _fw_info_st
-{
-	char ServTag[32];
-	char cPrinterSerialNumber[32];
-	char cPrinterType[32];
-	char cAssetTagNumber[32];
-	char cMemoryCapacity[32];
-	char cProcessorSpeed[32];
-	char cFirmwareVersion[32];
-	char cNetworkFirmwareVersion[32];
-	char cEngFirmwareVersion[32];
-	char cPrintingSpeedColor[32];
-	char cPrintingSpeedMonochrome[32];
-	char cBootCodeVersion[32];
-	char cColorTableVersion[32];
-	char cMacAddress[32];
-} fw_info_st;
-
 #endif // LSHELLSTRUCT_H
 
