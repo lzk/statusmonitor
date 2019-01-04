@@ -23,6 +23,8 @@ typedef struct _copycmdset
         UINT8 dpi             ; // 6  -   0: 300*300, 1: 600*600
         UINT8 mediaType       ; // 7  -   0: plain paper 1: Recycled paper 2: Thick paper 3: Thin paper 4: Label
         UINT16 scale          ; // 8  -   25~400, disabled for 2/4/9up
+	UINT8 duplexCopy; // 9  -   0: off 1: on – Long Edge 2: on – Short Edge
+	UINT8 IDCardMode; // 10  -   0: A4, Center 1: A4, Top 2: A4, Buttom 3: A5, Center
 } copycmdset;
 
 typedef struct cmdst_userconfig
@@ -123,6 +125,8 @@ typedef UINT8  cmdst_tonerEnd;
 typedef UINT8  cmdst_PSave_time;
 typedef UINT8  cmdst_powerOff_time;
 typedef UINT8  cmdst_fusingScReset;
+typedef UINT8  cmdst_tonerReset;
+typedef UINT8  cmdst_drumReset;
 
 typedef struct net_info_st
 {
@@ -131,6 +135,8 @@ typedef struct net_info_st
     UINT8 IPAddress[4]      ; // 0.0.0.0 ~ 223.255.255.255
     UINT8 SubnetMask[4]     ; // 0.0.0.0 ~ 223.255.255.255
     UINT8 GatewayAddress[4] ; // 0.0.0.0 ~ 223.255.255.255
+	UINT8 UseManualDNS;
+	UINT8 DNSAddress[4];      // 0.0.0.0 ~ 223.255.255.255
 } net_info_st;
 
 typedef struct
@@ -147,6 +153,31 @@ typedef struct
     char AutoStatefulAddress[44];
     UINT8 DHCPv6;
 }net_ipv6_st;
+
+typedef struct _cmdst_user_center
+{
+	char	_2ndSerialNO[20];
+	UINT32	_totalCounter;
+	char	_SerialNO4AIO[16];
+}cmdst_user_center;
+
+typedef struct _fw_info_st
+{
+	char ServTag[32];
+	char cPrinterSerialNumber[32];
+	char cPrinterType[32];
+	char cAssetTagNumber[32];
+	char cMemoryCapacity[32];
+	char cProcessorSpeed[32];
+	char cFirmwareVersion[32];
+	char cNetworkFirmwareVersion[32];
+	char cEngFirmwareVersion[32];
+	char cPrintingSpeedColor[32];
+	char cPrintingSpeedMonochrome[32];
+	char cBootCodeVersion[32];
+	char cColorTableVersion[32];
+	char cMacAddress[32];
+} fw_info_st;
 
 #endif // LSHELLSTRUCT_H
 

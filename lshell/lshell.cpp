@@ -59,6 +59,8 @@ static copycmdset default_copy_parameter =
     0,//UINT8 dpi             ; // 6  -   0: 300*300, 1: 600*600
     0,//UINT8 mediaType       ; // 7  -   0: plain paper 1: Recycled paper 2: Thick paper 3: Thin paper 4: Label
     100,//UINT16 scale          ; // 8  -   25~400, disabled for 2/4/9up
+	0,//UINT8 duplexCopy; // 9  -   0: off 1: on – Long Edge 2: on – Short Edge
+	0,//UINT8 IDCardMode; // 10  -   0: A4, Center 1: A4, Top 2: A4, Buttom 3: A5, Center
 };
 
 static int lshell_getCmdDirect(int cmd ,int sub_cmd ,int& direct ,int& data_buffer_size)
@@ -91,6 +93,11 @@ static int lshell_getCmdDirect(int cmd ,int sub_cmd ,int& direct ,int& data_buff
         case 0x11:  direct = 0;data_buffer_size = 1; break;//get toner end
         case 0x12:  direct = 1;data_buffer_size = 1; break;//set toner end
         case 0x0b:  direct = 1;data_buffer_size = 1; break;//set fusing sc reset
+        case 0x04:  direct = 0;data_buffer_size = 480; break;//get printer info
+        case 0x05:  direct = 0;data_buffer_size = 480; break;//get printer info ext
+        case 0x10:  direct = 0;data_buffer_size = 64; break;//get user center info
+        case 0x19:  direct = 1;data_buffer_size = 1; break;//set toner reset
+        case 0x1a:  direct = 1;data_buffer_size = 1; break;//set drum reset
         default:ret=-1;break;
         }
         break;
@@ -211,6 +218,11 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
 #define lshell_set_softAp(buffer ,bufsize)                  lshell_cmd(_LS_WIFICMD ,0x11 ,buffer ,bufsize)
 #define lshell_get_softAp(buffer ,bufsize)                  lshell_cmd(_LS_WIFICMD ,0x10 ,buffer ,bufsize)
 #define lshell_fusingScReset(buffer ,bufsize)               lshell_cmd(_LS_PRNCMD ,0x0b ,buffer ,bufsize)
+
+#define lshell_tonerReset(buffer ,bufsize)                  lshell_cmd(_LS_PRNCMD ,0x19 ,buffer ,bufsize)
+#define lshell_drumScReset(buffer ,bufsize)                 lshell_cmd(_LS_PRNCMD ,0x1a ,buffer ,bufsize)
+#define lshell_getUserInfo(buffer ,bufsize)                 lshell_cmd(_LS_PRNCMD ,0x10 ,buffer ,bufsize)
+#define lshell_getFWInfo(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x04 ,buffer ,bufsize)
 
 int LShell::copy(copycmdset* para)
 {
@@ -378,6 +390,31 @@ int LShell::fusingsc_get(cmdst_fusingScReset* para)
     int err;
     err = lshell_fusingScReset(para ,sizeof(*para));
     return err;
+}
+
+int LShell::toner_reset(cmdst_tonerReset* para)
+{
+	int err;
+	err = lshell_tonerReset(para, sizeof(*para));
+	return err;
+}
+int LShell::drum_reset(cmdst_drumReset* para)
+{
+	int err;
+	err = lshell_drumScReset(para, sizeof(*para));
+	return err;
+}
+int LShell::usercenterinfo_get(cmdst_user_center* para)
+{
+	int err;
+	err = lshell_getUserInfo(para, sizeof(*para));
+	return err;
+}
+int LShell::printerinfo_get(fw_info_st* para)
+{
+	int err;
+	err = lshell_getFWInfo(para, sizeof(*para));
+	return err;
 }
 
 void LShell::copy_get_defaultPara(copycmdset* p)
