@@ -59,7 +59,7 @@ static copycmdset default_copy_parameter =
     0,//UINT8 dpi             ; // 6  -   0: 300*300, 1: 600*600
     0,//UINT8 mediaType       ; // 7  -   0: plain paper 1: Recycled paper 2: Thick paper 3: Thin paper 4: Label
     100,//UINT16 scale          ; // 8  -   25~400, disabled for 2/4/9up
-	0,//UINT8 duplexCopy; // 9  -   0: off 1: on – Long Edge 2: on – Short Edge
+	0,//UINT8 duplexCopy; // 9  -   0: off 1: on â€“ Long Edge 2: on â€“ Short Edge
 	0,//UINT8 IDCardMode; // 10  -   0: A4, Center 1: A4, Top 2: A4, Buttom 3: A5, Center
 };
 
@@ -385,7 +385,7 @@ int LShell::userconfig_get(cmdst_userconfig* para)
     return err;
 }
 
-int LShell::fusingsc_get(cmdst_fusingScReset* para)
+int LShell::fusingsc_reset(cmdst_fusingScReset* para)
 {
     int err;
     err = lshell_fusingScReset(para ,sizeof(*para));

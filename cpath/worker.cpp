@@ -421,8 +421,47 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             device = deviceManager.getDevice(printer->deviceUri);
             result = device->open();
             if(!result){
-                cmdst_fusingScReset device_data;
-                result = lshell->fusingsc_get(&device_data);
+                cmdst_fusingScReset device_data = data.value<cmdst_fusingScReset>();
+                result = lshell->fusingsc_reset(&device_data);
+                device->close();
+                value.setValue(device_data);
+            }
+        }
+        cmdResult(cmd ,result ,value);
+        break;
+    case UIConfig::LS_CMD_PRN_TonerReset:
+        if(printer){
+            device = deviceManager.getDevice(printer->deviceUri);
+            result = device->open();
+            if(!result){
+                cmdst_tonerReset device_data = data.value<cmdst_tonerReset>();
+                result = lshell->toner_reset(&device_data);
+                device->close();
+                value.setValue(device_data);
+            }
+        }
+        cmdResult(cmd ,result ,value);
+        break;
+    case UIConfig::LS_CMD_PRN_DrumReset:
+        if(printer){
+            device = deviceManager.getDevice(printer->deviceUri);
+            result = device->open();
+            if(!result){
+                cmdst_drumReset device_data = data.value<cmdst_drumReset>();
+                result = lshell->drum_reset(&device_data);
+                device->close();
+                value.setValue(device_data);
+            }
+        }
+        cmdResult(cmd ,result ,value);
+        break;
+    case UIConfig::LS_CMD_PRN_Get_UserCenterInfo:
+        if(printer){
+            device = deviceManager.getDevice(printer->deviceUri);
+            result = device->open();
+            if(!result){
+                cmdst_user_center device_data;
+                result = lshell->usercenterinfo_get(&device_data);
                 device->close();
                 value.setValue(device_data);
             }

@@ -23,7 +23,7 @@ typedef struct _copycmdset
         UINT8 dpi             ; // 6  -   0: 300*300, 1: 600*600
         UINT8 mediaType       ; // 7  -   0: plain paper 1: Recycled paper 2: Thick paper 3: Thin paper 4: Label
         UINT16 scale          ; // 8  -   25~400, disabled for 2/4/9up
-	UINT8 duplexCopy; // 9  -   0: off 1: on – Long Edge 2: on – Short Edge
+	UINT8 duplexCopy; // 9  -   0: off 1: on â€“ Long Edge 2: on â€“ Short Edge
 	UINT8 IDCardMode; // 10  -   0: A4, Center 1: A4, Top 2: A4, Buttom 3: A5, Center
 } copycmdset;
 
