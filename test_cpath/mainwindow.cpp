@@ -144,8 +144,10 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         break;
 
     case UIConfig::LS_CMD_GetCopy:{
-        copycmdset device_para = data.value<copycmdset>();
-        LOGLOG("lshell get copy num:%d" ,device_para.copyNum);
+        if(!result){
+            copycmdset device_para = data.value<copycmdset>();
+            LOGLOG("lshell get copy num:%d" ,device_para.copyNum);
+        }
     }
         break;
     case UIConfig::LS_CMD_COPY:
@@ -153,63 +155,81 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
     case UIConfig::LS_CMD_WIFI_apply_noread:
         break;
     case UIConfig::LS_CMD_WIFI_get:{
-        cmdst_wifi_get device_para = data.value<cmdst_wifi_get>();
-        LOGLOG("lshell get wifi ssid:%s" ,device_para.ssid);
+        if(!result){
+            cmdst_wifi_get device_para = data.value<cmdst_wifi_get>();
+            LOGLOG("lshell get wifi ssid:%s" ,device_para.ssid);
+        }
     }
         break;
     case UIConfig::LS_CMD_WIFI_getAplist:{
-        cmdst_aplist_get device_para = data.value<cmdst_aplist_get>();
-        LOGLOG("lshell get aplist ssid:");
-        for(int i = 0 ;i < 10 ;i++){
-            LOGLOG("\t\t%d:%s" ,i+1 ,device_para.aplist[i].ssid);
+        if(!result){
+            cmdst_aplist_get device_para = data.value<cmdst_aplist_get>();
+            LOGLOG("lshell get aplist ssid:");
+            for(int i = 0 ;i < 10 ;i++){
+                LOGLOG("\t\t%d:%s" ,i+1 ,device_para.aplist[i].ssid);
+            }
         }
     }
         break;
     case UIConfig::LS_CMD_PASSWD_set:
         break;
     case UIConfig::LS_CMD_PASSWD_get:{
-        cmdst_passwd device_para = data.value<cmdst_passwd>();
-        LOGLOG("lshell get password:%s" ,device_para.passwd);
+        if(!result){
+            cmdst_passwd device_para = data.value<cmdst_passwd>();
+            LOGLOG("lshell get password:%s" ,device_para.passwd);
+        }
     }
         break;
     case UIConfig::LS_CMD_PASSWD_confirm:
         break;
     case UIConfig::LS_CMD_WIFI_GetWifiStatus:{
-        cmdst_wifi_status device_para = data.value<cmdst_wifi_status>();
-        LOGLOG("lshell get wifi status:%d" ,device_para);
+        if(!result){
+            cmdst_wifi_status device_para = data.value<cmdst_wifi_status>();
+            LOGLOG("lshell get wifi status:%d" ,device_para);
+        }
     }
         break;
     case UIConfig::LS_CMD_PRN_TonerEnd_Get:{
-        cmdst_tonerEnd device_para = data.value<cmdst_tonerEnd>();
-        LOGLOG("lshell get toner end:%d" ,device_para);
+        if(!result){
+            cmdst_tonerEnd device_para = data.value<cmdst_tonerEnd>();
+            LOGLOG("lshell get toner end:%d" ,device_para);
+        }
     }
         break;
     case UIConfig::LS_CMD_PRN_TonerEnd_Set:
         break;
     case UIConfig::LS_CMD_PRN_PSaveTime_Get:{
-        cmdst_PSave_time device_para = data.value<cmdst_PSave_time>();
-        LOGLOG("lshell get save time:%d" ,device_para);
+        if(!result){
+            cmdst_PSave_time device_para = data.value<cmdst_PSave_time>();
+            LOGLOG("lshell get save time:%d" ,device_para);
+        }
     }
         break;
     case UIConfig::LS_CMD_PRN_PSaveTime_Set:
         break;
     case UIConfig::LS_CMD_PRN_PowerOff_Get:{
-        cmdst_powerOff_time device_para = data.value<cmdst_powerOff_time>();
-        LOGLOG("lshell get power off time:%d" ,device_para);
+        if(!result){
+            cmdst_powerOff_time device_para = data.value<cmdst_powerOff_time>();
+            LOGLOG("lshell get power off time:%d" ,device_para);
+        }
     }
         break;
     case UIConfig::LS_CMD_PRN_PowerOff_Set:
         break;
     case UIConfig::LS_CMD_NET_GetV4:{
-        net_info_st device_para = data.value<net_info_st>();
-        LOGLOG("lshell get ipv4 :%d.%d.%d.%d" ,device_para.IPAddress[0],device_para.IPAddress[1],device_para.IPAddress[2],device_para.IPAddress[3]);
+        if(!result){
+            net_info_st device_para = data.value<net_info_st>();
+            LOGLOG("lshell get ipv4 :%d.%d.%d.%d" ,device_para.IPAddress[0],device_para.IPAddress[1],device_para.IPAddress[2],device_para.IPAddress[3]);
+        }
     }
         break;
     case UIConfig::LS_CMD_NET_SetV4:
         break;
     case UIConfig::LS_CMD_NET_GetV6:{
-        net_ipv6_st device_para = data.value<net_ipv6_st>();
-        LOGLOG("lshell get ipv6 :%s" ,device_para.ManualAddress);
+        if(!result){
+            net_ipv6_st device_para = data.value<net_ipv6_st>();
+            LOGLOG("lshell get ipv6 :%s" ,device_para.ManualAddress);
+        }
     }
         break;
     case UIConfig::LS_CMD_NET_SetV6:
@@ -217,27 +237,33 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
     case UIConfig::LS_CMD_PRN_Set_UserConfig:
         break;
     case UIConfig::LS_CMD_PRN_Get_UserConfig:{
-        cmdst_userconfig device_para = data.value<cmdst_userconfig>();
-        LOGLOG("lshell get user config image density:%d" ,device_para.ImageDensity);
+        if(!result){
+            cmdst_userconfig device_para = data.value<cmdst_userconfig>();
+            LOGLOG("lshell get user config image density:%d" ,device_para.ImageDensity);
+        }
     }
         break;
     case UIConfig::LS_CMD_WIFI_Set_SoftAp:
         break;
     case UIConfig::LS_CMD_WIFI_Get_SoftAp:{
-        cmdst_softap device_para = data.value<cmdst_softap>();
-        LOGLOG("lshell get softap :%s" ,device_para.ssid);
+        if(!result){
+            cmdst_softap device_para = data.value<cmdst_softap>();
+            LOGLOG("lshell get softap :%s" ,device_para.ssid);
+        }
     }
         break;
     case UIConfig::LS_CMD_PRN_FusingScReset:{
-        cmdst_fusingScReset device_para = data.value<cmdst_fusingScReset>();
-        LOGLOG("lshell get fusing sc reset:%d" ,device_para);
+        if(!result){
+            cmdst_fusingScReset device_para = data.value<cmdst_fusingScReset>();
+            LOGLOG("lshell get fusing sc reset:%d" ,device_para);
+        }
     }
         break;
     case UIConfig::CMD_Scan:
-        LOGLOG("scan result:%d" ,result);
     default:
         break;
     }
+    LOGLOG("cmd result:%d" ,result);
 }
 
 void MainWindow::setcurrentPrinter(const QString& str)
