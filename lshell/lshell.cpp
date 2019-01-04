@@ -385,22 +385,28 @@ int LShell::userconfig_get(cmdst_userconfig* para)
     return err;
 }
 
-int LShell::fusingsc_reset(cmdst_fusingScReset* para)
+int LShell::fusingsc_reset()
 {
     int err;
+    cmdst_fusingScReset val = 0;
+    cmdst_fusingScReset* para = &val;
     err = lshell_fusingScReset(para ,sizeof(*para));
     return err;
 }
 
-int LShell::toner_reset(cmdst_tonerReset* para)
+int LShell::toner_reset()
 {
 	int err;
+    cmdst_tonerReset val = 0;
+    cmdst_tonerReset* para = &val;
 	err = lshell_tonerReset(para, sizeof(*para));
 	return err;
 }
-int LShell::drum_reset(cmdst_drumReset* para)
+int LShell::drum_reset()
 {
-	int err;
+    int err;
+    cmdst_drumReset val = 0;
+    cmdst_drumReset* para = &val;
 	err = lshell_drumScReset(para, sizeof(*para));
 	return err;
 }

@@ -61,10 +61,10 @@ public:
     int ipv6_get(net_ipv6_st* para);
     int userconfig_set(cmdst_userconfig* para);
     int userconfig_get(cmdst_userconfig* para);
-    int fusingsc_reset(cmdst_fusingScReset* para);
+    int fusingsc_reset();
 
-	int toner_reset(cmdst_tonerReset* para);
-	int drum_reset(cmdst_drumReset* para);
+    int toner_reset();
+    int drum_reset();
 	int usercenterinfo_get(cmdst_user_center* para);
 	int printerinfo_get(fw_info_st* para);
 
