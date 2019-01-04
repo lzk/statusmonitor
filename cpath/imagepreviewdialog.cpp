@@ -28,6 +28,7 @@ ImagePreviewDialog::ImagePreviewDialog(QListWidgetItem* _item ,ImageHandler* han
 
 void ImagePreviewDialog::image_update(QObject *obj, const QImage &_image ,int flag ,int _weight)
 {
+    qDebug()<<"ImagePreviewDialog::image_update";
     if(obj == this){
         image = _image;
         QLabel* label = new QLabel;
@@ -110,8 +111,10 @@ void ImagePreviewDialog::keyPressEvent(QKeyEvent *e)
 
 bool ImagePreviewDialog::eventFilter(QObject *obj, QEvent *event)
 {
+    qDebug()<<"eventFilter"<<angle<<" "<<weight;
     if(obj == ui->scrollArea){
         if(event->type() == QEvent::Resize){
+            qDebug()<<"1";
             image_ask(weight ,angle);
         }
     }

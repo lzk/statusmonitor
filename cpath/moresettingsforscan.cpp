@@ -5,7 +5,7 @@
 #include <QGroupBox>
 #include <QListView>
 
-MoreSettingsForScan::MoreSettingsForScan(QWidget *parent, Param_Scan *param) :
+MoreSettingsForScan::MoreSettingsForScan(QWidget *parent, UiSettings *param) :
     QDialog(parent),
     ui(new Ui::MoreSettingsForScan)
 {

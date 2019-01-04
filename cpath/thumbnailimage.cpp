@@ -6,6 +6,10 @@
 #include "imagepreviewdialog.h"
 #include "thumbnailview.h"
 #include <QBitmap>
+#include <qdebug.h>
+#include <qfile.h>
+
+extern QString get_preview_file_name(const QString& origin_file_name);
 
 ThumbnailImage::~ThumbnailImage()
 {
@@ -59,11 +63,33 @@ void ThumbnailImage::listWidget_itemSelectionChanged()
 
 void ThumbnailImage::image_ask()
 {
+    //get preview image
+    QString imageFileName = item->data(Qt::UserRole).toString();
+    QSize image_size = item->data(Qt::UserRole + 1).toSize();
+    QImage image(imageFileName);
+    QString previewFileName = get_preview_file_name(imageFileName);
+    qDebug()<<previewFileName<<" "<<image.depth();
+    if(image.depth() != 1){
+        QSize size = image_size;
+        while(size.width() * size.height() > 30 * 1024 * 1024){
+            size /= 2;
+        }
+        image.scaled(size).save(get_preview_file_name(imageFileName));
+//            while(size.width() * size.height() > 1 * 1024 * 1024){
+//                size /= 2;
+//            }
+//            image.scaled(size).save(get_thumbnail_file_name(imageFileName));
+    }else{
+        QFile::copy(imageFileName ,get_preview_file_name(imageFileName));
+//            QFile::copy(imageFileName ,get_thumbnail_file_name(imageFileName));
+    }
+
     emit image_ask(this ,item ,item->sizeHint() ,0 ,0);
 }
 
 void ThumbnailImage::image_update(QObject *obj, const QImage &_image)
 {
+    qDebug()<<"ThumbnailImage::image_update";
     if(obj == this){
         image = _image;
         update();
@@ -75,8 +101,8 @@ void ThumbnailImage::paintEvent(QPaintEvent *e)
 {
     if(!image.isNull()){
         QPainter painter(this);
-        painter.drawImage(QPoint((width() - image.width())/2 ,(height() - image.height()) / 2) ,image);
-//    painter.drawPixmap(0,0,width(),height(),QPixmap::fromImage(image));
+//        painter.drawImage(QPoint((width() - image.width())/2 ,(height() - image.height()) / 2) ,image);
+        painter.drawPixmap(0,0,width(),height(),QPixmap::fromImage(image));
     }
     QWidget::paintEvent(e);
 }
@@ -115,12 +141,12 @@ void ThumbnailImage::mouseDoubleClickEvent(QMouseEvent *)
             emit image_save(path ,angle);
             image_ask();
         }
-        //print
-        if(ret >= 20){
-            QStringList sl;
-            sl << path;
-            emit print_scan_images(sl);
-        }
+//        //print
+//        if(ret >= 20){
+//            QStringList sl;
+//            sl << path;
+//            emit print_scan_images(sl);
+//        }
     }
 }
 

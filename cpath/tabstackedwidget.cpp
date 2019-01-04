@@ -63,7 +63,24 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
     case UIConfig::LS_CMD_COPY:
 
         break;
-    default: break;
+    case UIConfig::CMD_Scan:
+    {
+
+        if(!result)
+        {
+            ScanSettings scanSettings = data.value<ScanSettings>();
+
+            QString image_path = scanSettings.filename;
+            qDebug()<<scanSettings.calc_data.pixels_per_line<<" "<<scanSettings.calc_data.source_total_lines;
+            qDebug()<<scanSettings.filename;
+            QSize size = QSize(scanSettings.calc_data.pixels_per_line,scanSettings.calc_data.source_total_lines);
+            ui->scrollArea_ScanImage->add_image_item(image_path ,size);
+        }
+        emit cycleStopFromTab();
+    }
+        break;
+    default:
+        break;
     }
 }
 
@@ -320,21 +337,17 @@ void TabStackedWidget::on_cBox_DuplexCopy_clicked(bool checked)
 
 void TabStackedWidget::on_btn_Scan_clicked()
 {
-    const char *image_path = "/tmp/vop_scan/123456.bmp";
+    const char *image_path = "/tmp/vop_scan/2019-01-04_14-54-19-658.bmp";
 
-/*    QImage *image = new QImage;
-
-    if(image->load(image_path)== false)
-    {
-        qDebug()<<"load image error.";
-    }
-    else
-    {
-        ui->label_Background_2->setPixmap(QPixmap::fromImage(*image));
-    }*/
-
-    QSize size = QSize(850,640);
+    QSize size = QSize(2496,3507);
     ui->scrollArea_ScanImage->add_image_item(image_path ,size);
+//    QVariant data;
+//    ScanSettings paraScanSettings;
+//    paraScanSettings.settings = paramScan;
+//    data.setValue<ScanSettings>(paraScanSettings);
+//    gUInterface->setCurrentPrinterCmd(UIConfig::CMD_Scan,data);
+//    emit cycleStartFromTab();
+
 }
 
 void TabStackedWidget::on_btn_MoreSetting_Scan_clicked()

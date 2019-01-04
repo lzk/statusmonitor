@@ -313,65 +313,65 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
     ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
     ui->errorBtn->hide();
 
-    switch (status.PrinterStatus) {
-    case PS_READY:
-        ui->label_6->setText(tr("ResStr_Ready"));
-        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
-                                    "border:0px solid;"
-                                    "border-radius:5px;"
-                                    "background-color: rgb(53, 177, 20);}");
-        //ui->label_10->setText(devStatus->getDevMsg());
-        break;
-    case PS_POWER_SAVING:
-        ui->label_6->setText(tr("ResStr_Sleep"));
-        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
-                                    "border:0px solid;"
-                                    "border-radius:5px;"
-                                    "background-color: rgb(53, 177, 20);}");
-       // ui->label_10->setText(devStatus->getDevMsg());
-        break;
-    case PS_OFFLINE:
-        ui->label_6->setText(tr("ResStr_Offline"));
-        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
-                                    "border:0px solid;"
-                                    "border-radius:5px;"
-                                    "background-color: rgb(110, 110, 110);}");
-        //ui->label_10->setText(devStatus->getDevMsg());
-        qDebug()<<"set_copy_enabled false";
-        ui->tabStackedWidget->set_copy_enabled(false);
-        ui->tabStackedWidget->set_setting_enabled(false);
-        ui->tabStackedWidget->set_scan_enabled(false); //Added for disable scan button when offline by gavin 2016-04-14
-        break;
+//    switch (status.PrinterStatus) {
 //    case PS_READY:
-//        ui->label_6->setText(tr("ResStr_Ready")); //device status is warning, the ui status is ready in spec
+//        ui->label_6->setText(tr("ResStr_Ready"));
+//        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
+//                                    "border:0px solid;"
+//                                    "border-radius:5px;"
+//                                    "background-color: rgb(53, 177, 20);}");
+//        //ui->label_10->setText(devStatus->getDevMsg());
+//        break;
+//    case PS_POWER_SAVING:
+//        ui->label_6->setText(tr("ResStr_Sleep"));
+//        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
+//                                    "border:0px solid;"
+//                                    "border-radius:5px;"
+//                                    "background-color: rgb(53, 177, 20);}");
+//       // ui->label_10->setText(devStatus->getDevMsg());
+//        break;
+//    case PS_OFFLINE:
+//        ui->label_6->setText(tr("ResStr_Offline"));
+//        ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
+//                                    "border:0px solid;"
+//                                    "border-radius:5px;"
+//                                    "background-color: rgb(110, 110, 110);}");
+//        //ui->label_10->setText(devStatus->getDevMsg());
+//        qDebug()<<"set_copy_enabled false";
+//        ui->tabStackedWidget->set_copy_enabled(false);
+//        ui->tabStackedWidget->set_setting_enabled(false);
+//        ui->tabStackedWidget->set_scan_enabled(false); //Added for disable scan button when offline by gavin 2016-04-14
+//        break;
+////    case PS_READY:
+////        ui->label_6->setText(tr("ResStr_Ready")); //device status is warning, the ui status is ready in spec
+////        ui->label_6->setStyleSheet("QLabel{color: white;"
+////                                    "border:0px solid;"
+////                                    "border-radius:5px;"
+////                                    "background-color: rgb(53, 177, 20);}");
+//////        ui->label_10->setText(devStatus->getDevMsg());
+////        break;
+//    case PS_BUSY:
+//        ui->label_6->setText(tr("ResStr_Busy"));
 //        ui->label_6->setStyleSheet("QLabel{color: white;"
 //                                    "border:0px solid;"
 //                                    "border-radius:5px;"
 //                                    "background-color: rgb(53, 177, 20);}");
-////        ui->label_10->setText(devStatus->getDevMsg());
-//        break;
-    case PS_BUSY:
-        ui->label_6->setText(tr("ResStr_Busy"));
-        ui->label_6->setStyleSheet("QLabel{color: white;"
-                                    "border:0px solid;"
-                                    "border-radius:5px;"
-                                    "background-color: rgb(53, 177, 20);}");
-        //ui->label_10->setText(devStatus->getDevMsg());
+//        //ui->label_10->setText(devStatus->getDevMsg());
 
-        break;
-    case PS_ERROR_ERROR:
-        ui->label_6->setText(tr("ResStr_Error"));
-        ui->label_6->setStyleSheet("QLabel{color: white;"
-                                    "border:0px solid;"
-                                    "border-radius:5px;"
-                                    "background-color: red;}");
-        //ui->label_10->setText(devStatus->getDevMsg());
-        ui->label_10->setStyleSheet("QLabel{color:red;}");
-        ui->errorBtn->show();
-        break;
-    default:
-        break;
-    }
+//        break;
+//    case PS_ERROR_ERROR:
+//        ui->label_6->setText(tr("ResStr_Error"));
+//        ui->label_6->setStyleSheet("QLabel{color: white;"
+//                                    "border:0px solid;"
+//                                    "border-radius:5px;"
+//                                    "background-color: red;}");
+//        //ui->label_10->setText(devStatus->getDevMsg());
+//        ui->label_10->setStyleSheet("QLabel{color:red;}");
+//        ui->errorBtn->show();
+//        break;
+//    default:
+//        break;
+//    }
 }
 
 void MainWindow::setDeviceMsg(const QString& msg, int result)

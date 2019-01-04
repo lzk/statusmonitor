@@ -88,7 +88,7 @@ private:
 
     Param_Copy paramCopy;
 
-    Param_Scan paramScan;
+    UiSettings paramScan;
 
 signals:
     void cycleStartFromTab();

@@ -449,12 +449,15 @@ QComboBox:down-arrow {
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>30</y>
-         <width>121</width>
-         <height>28</height>
+         <y>37</y>
+         <width>123</width>
+         <height>21</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
         <item>
          <widget class="QLabel" name="label_7">
           <property name="sizePolicy">
@@ -502,12 +505,15 @@ QComboBox:down-arrow {
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>90</y>
-         <width>121</width>
-         <height>31</height>
+         <y>100</y>
+         <width>123</width>
+         <height>21</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
         <item>
          <widget class="QLabel" name="label_8">
           <property name="sizePolicy">
@@ -724,8 +730,6 @@ border-bottom-left-radius:0px;</string>
      </rect>
     </property>
    </widget>
-   <zorder>cycleWidget</zorder>
-   <zorder>totalStackedWidget</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
