@@ -36,6 +36,11 @@ typedef struct struct_wifi_refresh_info
     struct_wifi_refresh_info;
 Q_DECLARE_METATYPE(struct_wifi_refresh_info)
 
+//Q_DECLARE_METATYPE(cmdst_tonerReset)
+//Q_DECLARE_METATYPE(cmdst_drumReset)
+
+Q_DECLARE_METATYPE(cmdst_user_center)
+
 #include "smconfig.h"
 class UIConfig : public QObject ,SMConfig{
     Q_OBJECT
@@ -77,6 +82,9 @@ public:
         LS_CMD_WIFI_Set_SoftAp,
         LS_CMD_WIFI_Get_SoftAp,
         LS_CMD_PRN_FusingScReset,
+        LS_CMD_PRN_TonerReset,
+        LS_CMD_PRN_DrumReset,
+        LS_CMD_PRN_Get_UserCenterInfo,
     };
     Q_ENUMS(CmdType)
 };

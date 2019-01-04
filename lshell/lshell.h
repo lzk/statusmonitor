@@ -61,7 +61,12 @@ public:
     int ipv6_get(net_ipv6_st* para);
     int userconfig_set(cmdst_userconfig* para);
     int userconfig_get(cmdst_userconfig* para);
-    int fusingsc_get(cmdst_fusingScReset* para);
+    int fusingsc_reset(cmdst_fusingScReset* para);
+
+	int toner_reset(cmdst_tonerReset* para);
+	int drum_reset(cmdst_drumReset* para);
+	int usercenterinfo_get(cmdst_user_center* para);
+	int printerinfo_get(fw_info_st* para);
 
 public:
     static void copy_get_defaultPara(copycmdset* p);
