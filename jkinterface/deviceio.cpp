@@ -32,7 +32,7 @@ int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSi
         int nocheck=0;
 
         delay100ms(9 ,ifdelay);
-        for(j = 0 ;j < 50 ;j++){
+        for(j = 0 ;j < 3 ;j++){
             if(!nocheck){
                 if(1 == read(rdBuffer,1)){
                     if(0x4d != rdBuffer[0]){

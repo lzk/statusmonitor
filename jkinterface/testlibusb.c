@@ -25,7 +25,7 @@
 #define snprintf _snprintf
 #endif
 
-int verbose = 0;
+int verbose = 1;
 
 static void print_endpoint_comp(const struct libusb_ss_endpoint_companion_descriptor *ep_comp)
 {
