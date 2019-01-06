@@ -45,9 +45,16 @@ Q_DECLARE_METATYPE(cmdst_user_center)
 class UIConfig : public QObject ,SMConfig{
     Q_OBJECT
 public:
+    typedef enum{
+        ModelSerial_unknown,
+        ModelSerial_L,
+        ModelSerial_M,
+    }
+        ModelSerial;
     explicit UIConfig(QObject *parent = 0);
 
     static void initConfig();
+    static ModelSerial getModelSerial(Printer_struct* ps);
 public:
     enum CmdType{
         CMD_GetDefaultPrinter,
