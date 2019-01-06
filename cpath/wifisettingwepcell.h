@@ -54,6 +54,7 @@ private:
     bool *islogin;
     bool isConnected;
     bool isDoingCMD;
+    bool m_isLogin;
     int times;
 };
 

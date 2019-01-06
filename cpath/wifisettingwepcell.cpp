@@ -9,7 +9,8 @@
 WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_islogin, bool isconnected) :
     QStackedWidget(parent),
     ui(new Ui::WiFiSettingWEPCell),
-    isConnected(isconnected)
+    isConnected(isconnected),
+    m_isLogin(false)
 {
     ui->setupUi(this);
     this->setCurrentIndex(0);
@@ -47,7 +48,7 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
     }
     else
     {
-        islogin = new bool(false);
+        islogin = &m_isLogin;
     }
     isDoingCMD = false;
     times = 0;
