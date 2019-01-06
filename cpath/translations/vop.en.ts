@@ -252,25 +252,30 @@
         <translation>The scanned images will be deleted after the application is closed. Close application?</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="341"/>
         <source>ResStr_Ready</source>
-        <translation type="obsolete">Ready</translation>
+        <translation>Ready</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="350"/>
         <source>ResStr_Sleep</source>
-        <translation type="obsolete">Sleep</translation>
+        <translation>Sleep</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="361"/>
+        <location filename="../mainwindow.cpp" line="359"/>
         <source>ResStr_Offline</source>
         <translation>Offline</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="379"/>
         <source>ResStr_Busy</source>
-        <translation type="obsolete">Busy</translation>
+        <translation>Busy</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="389"/>
         <source>ResStr_Error</source>
-        <translation type="obsolete">Error</translation>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -380,209 +385,210 @@
 <context>
     <name>MoreSettingsForCopy</name>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="40"/>
-        <location filename="../moresettingsforcopy.ui" line="406"/>
+        <location filename="../moresettingsforcopy.ui" line="43"/>
+        <location filename="../moresettingsforcopy.ui" line="409"/>
         <source>ResStr_On</source>
         <translation>On</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="73"/>
-        <location filename="../moresettingsforcopy.ui" line="1031"/>
+        <location filename="../moresettingsforcopy.ui" line="76"/>
+        <location filename="../moresettingsforcopy.ui" line="1034"/>
         <source>ResStr_A4</source>
         <translation>A4</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="78"/>
-        <location filename="../moresettingsforcopy.ui" line="1036"/>
+        <location filename="../moresettingsforcopy.ui" line="81"/>
+        <location filename="../moresettingsforcopy.ui" line="1039"/>
         <source>ResStr_A5</source>
         <translation>A5</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="83"/>
-        <location filename="../moresettingsforcopy.ui" line="1046"/>
+        <location filename="../moresettingsforcopy.ui" line="86"/>
+        <location filename="../moresettingsforcopy.ui" line="1049"/>
         <source>ResStr_B5</source>
         <translation>B5</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="88"/>
-        <location filename="../moresettingsforcopy.ui" line="1026"/>
+        <location filename="../moresettingsforcopy.ui" line="91"/>
+        <location filename="../moresettingsforcopy.ui" line="1029"/>
         <source>ResStr_Letter</source>
         <translation>Letter</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="93"/>
-        <location filename="../moresettingsforcopy.ui" line="1056"/>
+        <location filename="../moresettingsforcopy.ui" line="96"/>
+        <location filename="../moresettingsforcopy.ui" line="1059"/>
         <source>ResStr_Executive</source>
         <translation>Executive</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="113"/>
+        <location filename="../moresettingsforcopy.ui" line="116"/>
         <source>ResStr_Output_Size</source>
         <translation>Output Paper Size</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="135"/>
+        <location filename="../moresettingsforcopy.ui" line="138"/>
         <source>ResStr_Tips_for_Copying</source>
         <translation>Tips for Copying</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="237"/>
+        <location filename="../moresettingsforcopy.ui" line="240"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="256"/>
+        <location filename="../moresettingsforcopy.ui" line="259"/>
         <source>ResStr_Media_Type</source>
         <translation>Paper Type</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="428"/>
+        <location filename="../moresettingsforcopy.ui" line="431"/>
         <source>ResStr_Document_Size</source>
         <translation>Document Size</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="452"/>
+        <location filename="../moresettingsforcopy.ui" line="455"/>
         <source>ResStr_2_in_1</source>
         <translation>2 in 1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="510"/>
+        <location filename="../moresettingsforcopy.ui" line="513"/>
         <source>ResStr_9_in_1</source>
         <translation>9 in 1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="532"/>
+        <location filename="../moresettingsforcopy.ui" line="535"/>
         <source>ResStr_Scaling</source>
         <translation>Scaling</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="557"/>
+        <location filename="../moresettingsforcopy.ui" line="560"/>
         <source>ResStr_The_valid_range_is_25_400__please_confirm_and_enter_again_</source>
         <translation>The valid range is 25% to 400%, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="597"/>
+        <location filename="../moresettingsforcopy.ui" line="600"/>
         <source>ResStr_Default</source>
         <translation>Default</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="631"/>
+        <location filename="../moresettingsforcopy.ui" line="634"/>
         <source>132</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="710"/>
+        <location filename="../moresettingsforcopy.ui" line="713"/>
         <source>ResStr_DPI</source>
         <translation>DPI</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="746"/>
+        <location filename="../moresettingsforcopy.ui" line="749"/>
         <source>—</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="765"/>
+        <location filename="../moresettingsforcopy.ui" line="768"/>
         <source>ResStr_Scanning_Mode</source>
         <translation>Type of Document</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="797"/>
+        <location filename="../moresettingsforcopy.ui" line="800"/>
         <source>ResStr_N_in_1_Copy</source>
         <translation>N in 1 Copy</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="848"/>
+        <location filename="../moresettingsforcopy.ui" line="851"/>
         <source>ResStr_OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="872"/>
+        <location filename="../moresettingsforcopy.ui" line="14"/>
+        <location filename="../moresettingsforcopy.ui" line="875"/>
         <source>ResStr_More_Settings</source>
         <translation>More Settings</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="896"/>
+        <location filename="../moresettingsforcopy.ui" line="899"/>
         <source>ResStr_4_in_1</source>
         <translation>4 in 1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="918"/>
-        <location filename="../moresettingsforcopy.ui" line="1184"/>
+        <location filename="../moresettingsforcopy.ui" line="921"/>
+        <location filename="../moresettingsforcopy.ui" line="1187"/>
         <source>ResStr_Off</source>
         <translation>Off</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="952"/>
+        <location filename="../moresettingsforcopy.ui" line="955"/>
         <source>300 × 300 dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="957"/>
+        <location filename="../moresettingsforcopy.ui" line="960"/>
         <source>600 × 600 dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="977"/>
+        <location filename="../moresettingsforcopy.ui" line="980"/>
         <source>ResStr_ID_Card</source>
         <translation>ID Card</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="998"/>
+        <location filename="../moresettingsforcopy.ui" line="1001"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1081"/>
+        <location filename="../moresettingsforcopy.ui" line="1084"/>
         <source>ResStr_N_in_1</source>
         <translation>N in 1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1132"/>
+        <location filename="../moresettingsforcopy.ui" line="1135"/>
         <source>ResStr_Text</source>
         <translation>Text</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1164"/>
+        <location filename="../moresettingsforcopy.ui" line="1167"/>
         <source>ResStr_Photo</source>
         <translation>Photo</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="366"/>
+        <location filename="../moresettingsforcopy.ui" line="369"/>
         <source>ResStr_Plain_Paper</source>
         <translation>Plain Paper</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="371"/>
+        <location filename="../moresettingsforcopy.ui" line="374"/>
         <source>ResStr_Recycled_Paper</source>
         <translation>Recycled Paper</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="376"/>
+        <location filename="../moresettingsforcopy.ui" line="379"/>
         <source>ResStr_Thick_Paper</source>
         <translation>Thick Paper</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="381"/>
+        <location filename="../moresettingsforcopy.ui" line="384"/>
         <source>ResStr_Thin_Paper</source>
         <translation>Thin Paper</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="386"/>
+        <location filename="../moresettingsforcopy.ui" line="389"/>
         <source>ResStr_Label</source>
         <translation>Label</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1041"/>
+        <location filename="../moresettingsforcopy.ui" line="1044"/>
         <source>ResStr_A6</source>
         <translation>A6</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1051"/>
+        <location filename="../moresettingsforcopy.ui" line="1054"/>
         <source>ResStr_B6</source>
         <translation>B6</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1061"/>
+        <location filename="../moresettingsforcopy.ui" line="1064"/>
         <source>ResStr_16K</source>
         <translation>16K</translation>
     </message>
@@ -590,140 +596,136 @@
 <context>
     <name>MoreSettingsForScan</name>
     <message>
-        <location filename="../moresettingsforscan.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforscan.ui" line="48"/>
+        <location filename="../moresettingsforscan.ui" line="47"/>
         <source>ResStr_A4_210_297mm_</source>
         <translation>A4(210 x 297mm)</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="53"/>
+        <location filename="../moresettingsforscan.ui" line="52"/>
         <source>ResStr_A5_148_x_210mm_</source>
         <translation>A5(148 x 210mm)</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="58"/>
+        <location filename="../moresettingsforscan.ui" line="57"/>
         <source>ResStr_B5_182_x_257mm_</source>
         <translation>B5(182 x 257mm)</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="63"/>
+        <location filename="../moresettingsforscan.ui" line="62"/>
         <source>ResStr_Letter_8_5_x_11</source>
         <translation>Letter(8.5 x 11&quot;)</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="68"/>
+        <location filename="../moresettingsforscan.ui" line="67"/>
         <source>ResStr_4_x_6_</source>
         <translation>4 x 6&quot;</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="103"/>
+        <location filename="../moresettingsforscan.ui" line="101"/>
         <source>100×100dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="108"/>
+        <location filename="../moresettingsforscan.ui" line="106"/>
         <source>200×200dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="113"/>
+        <location filename="../moresettingsforscan.ui" line="111"/>
         <source>300×300dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="118"/>
+        <location filename="../moresettingsforscan.ui" line="116"/>
         <source>600×600dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="123"/>
+        <location filename="../moresettingsforscan.ui" line="121"/>
         <source>1200×1200dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="155"/>
-        <location filename="../moresettingsforscan.ui" line="792"/>
+        <location filename="../moresettingsforscan.ui" line="153"/>
+        <location filename="../moresettingsforscan.ui" line="787"/>
         <source>100</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="219"/>
+        <location filename="../moresettingsforscan.ui" line="216"/>
         <source>ResStr_Photo_2</source>
         <translation>Photo</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="258"/>
+        <location filename="../moresettingsforscan.ui" line="254"/>
         <source>ResStr_Text_and_Graph</source>
         <translation>Text/Photo</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="297"/>
+        <location filename="../moresettingsforscan.ui" line="292"/>
         <source>ResStr_Text</source>
         <translation>Text</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="354"/>
+        <location filename="../moresettingsforscan.ui" line="349"/>
         <source>ResStr_Document_Type</source>
         <translation>Document Type</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="415"/>
+        <location filename="../moresettingsforscan.ui" line="410"/>
         <source>ResStr_DPI</source>
         <translation>DPI</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="437"/>
+        <location filename="../moresettingsforscan.ui" line="432"/>
         <source>ResStr_Scan_Size</source>
         <translation>Scan Area Size</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="459"/>
+        <location filename="../moresettingsforscan.ui" line="454"/>
         <source>ResStr_Contrast</source>
         <translation>Contrast</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="481"/>
+        <location filename="../moresettingsforscan.ui" line="476"/>
         <source>ResStr_Brightness</source>
         <translation>Brightness</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="622"/>
+        <location filename="../moresettingsforscan.ui" line="617"/>
         <source>ResStr_Color_Mode</source>
         <translation>Color Mode</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="659"/>
-        <location filename="../moresettingsforscan.ui" line="727"/>
+        <location filename="../moresettingsforscan.ui" line="654"/>
+        <location filename="../moresettingsforscan.ui" line="722"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="693"/>
-        <location filename="../moresettingsforscan.ui" line="761"/>
+        <location filename="../moresettingsforscan.ui" line="688"/>
+        <location filename="../moresettingsforscan.ui" line="756"/>
         <source>—</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="839"/>
+        <location filename="../moresettingsforscan.ui" line="834"/>
         <source>ResStr_OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="874"/>
+        <location filename="../moresettingsforscan.ui" line="869"/>
         <source>ResStr_Default</source>
         <translation>Default</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="896"/>
+        <location filename="../moresettingsforscan.ui" line="891"/>
         <source>ResStr_The_valid_range_is_0_100__please_confirm_and_enter_again_</source>
         <translation>The valid range is 0 to 100, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="988"/>
+        <location filename="../moresettingsforscan.ui" line="14"/>
+        <location filename="../moresettingsforscan.ui" line="983"/>
         <source>ResStr_More_Settings</source>
         <translation>More Settings</translation>
     </message>
@@ -969,7 +971,7 @@
     </message>
     <message>
         <location filename="../settingsstackedwidget.ui" line="931"/>
-        <location filename="../settingsstackedwidget.cpp" line="847"/>
+        <location filename="../settingsstackedwidget.cpp" line="958"/>
         <source>ResStr_Setting</source>
         <translation>Settings</translation>
     </message>
@@ -1086,64 +1088,65 @@
         <translation>Confirm Password</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="171"/>
-        <location filename="../settingsstackedwidget.cpp" line="236"/>
+        <location filename="../settingsstackedwidget.cpp" line="187"/>
+        <location filename="../settingsstackedwidget.cpp" line="252"/>
         <source>ResStr_Msg_1</source>
         <translation>Configured successfully. Restart the machine to apply changes.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="173"/>
-        <location filename="../settingsstackedwidget.cpp" line="238"/>
-        <location filename="../settingsstackedwidget.cpp" line="296"/>
-        <location filename="../settingsstackedwidget.cpp" line="355"/>
-        <location filename="../settingsstackedwidget.cpp" line="392"/>
+        <location filename="../settingsstackedwidget.cpp" line="189"/>
+        <location filename="../settingsstackedwidget.cpp" line="254"/>
+        <location filename="../settingsstackedwidget.cpp" line="312"/>
+        <location filename="../settingsstackedwidget.cpp" line="371"/>
+        <location filename="../settingsstackedwidget.cpp" line="408"/>
         <source>ResStr_Setting_Fail</source>
         <translation>Configure failed</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="294"/>
-        <location filename="../settingsstackedwidget.cpp" line="353"/>
-        <location filename="../settingsstackedwidget.cpp" line="390"/>
+        <location filename="../settingsstackedwidget.cpp" line="310"/>
+        <location filename="../settingsstackedwidget.cpp" line="369"/>
+        <location filename="../settingsstackedwidget.cpp" line="406"/>
         <source>ResStr_Setting_Successfully_</source>
         <translation>Configured successfully</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="362"/>
+        <location filename="../settingsstackedwidget.cpp" line="378"/>
         <source>ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature</source>
         <translation>Turn off the printer and let it cool to room temperature before turning it on again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="695"/>
+        <location filename="../settingsstackedwidget.cpp" line="732"/>
         <source>ResStr_Msg_9</source>
         <translation>The network name must be 1 to 32 characters long. Please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="704"/>
+        <location filename="../settingsstackedwidget.cpp" line="741"/>
         <source>ResStr_Msg_3</source>
         <translation>The password must be 8 to 63 ASCII characters or 64 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="854"/>
+        <location filename="../settingsstackedwidget.cpp" line="965"/>
         <source>ResStr_Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1106"/>
+        <location filename="../settingsstackedwidget.cpp" line="1234"/>
         <source>ResStr_The_new_password_can_not_be_empty_</source>
         <translation>The new password cannot be empty.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1115"/>
+        <location filename="../settingsstackedwidget.cpp" line="1243"/>
         <source>ResStr_The_passwords_you_entered__are_different__please_try_again_</source>
         <translation>The passwords you entered are different, please try again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="719"/>
-        <location filename="../settingsstackedwidget.cpp" line="774"/>
-        <location filename="../settingsstackedwidget.cpp" line="869"/>
-        <location filename="../settingsstackedwidget.cpp" line="904"/>
-        <location filename="../settingsstackedwidget.cpp" line="1031"/>
-        <location filename="../settingsstackedwidget.cpp" line="1130"/>
+        <location filename="../settingsstackedwidget.cpp" line="756"/>
+        <location filename="../settingsstackedwidget.cpp" line="824"/>
+        <location filename="../settingsstackedwidget.cpp" line="980"/>
+        <location filename="../settingsstackedwidget.cpp" line="1015"/>
+        <location filename="../settingsstackedwidget.cpp" line="1137"/>
+        <location filename="../settingsstackedwidget.cpp" line="1159"/>
+        <location filename="../settingsstackedwidget.cpp" line="1258"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
@@ -1157,7 +1160,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="177"/>
-        <location filename="../tabstackedwidget.cpp" line="17"/>
+        <location filename="../tabstackedwidget.cpp" line="24"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1181,7 +1184,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="495"/>
-        <location filename="../tabstackedwidget.cpp" line="302"/>
+        <location filename="../tabstackedwidget.cpp" line="309"/>
         <source>ResStr_ID_Card_Copy</source>
         <translation>ID Card Copy</translation>
     </message>
@@ -1192,8 +1195,8 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="115"/>
-        <location filename="../tabstackedwidget.cpp" line="312"/>
-        <location filename="../tabstackedwidget.cpp" line="332"/>
+        <location filename="../tabstackedwidget.cpp" line="319"/>
+        <location filename="../tabstackedwidget.cpp" line="339"/>
         <source>ResStr_ExtraAdd_Copy</source>
         <translation>Copy</translation>
     </message>
@@ -1234,7 +1237,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="870"/>
-        <location filename="../tabstackedwidget.cpp" line="47"/>
+        <location filename="../tabstackedwidget.cpp" line="54"/>
         <source>ResStr_Scanned_image_size</source>
         <translation>Scanned image size: </translation>
     </message>
@@ -1279,8 +1282,23 @@
         <translation>TCP/IPv6</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="326"/>
+        <location filename="../tabstackedwidget.cpp" line="333"/>
         <source>åé¢å¤å°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="559"/>
+        <source>Images (*.tif *.jpg *.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="561"/>
+        <source>Images (*.tif *.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="563"/>
+        <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1295,6 +1313,11 @@
         <location filename="../thumbnailimage.cpp" line="55"/>
         <source>&lt;font fontsize=15 color=white&gt;%1&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../thumbnailimage.cpp" line="120"/>
+        <source>ResStr_Are_you_sure_to_delete_the_selected_picture</source>
+        <translation>Delete selected image?</translation>
     </message>
 </context>
 <context>
@@ -1361,7 +1384,7 @@
     <message>
         <location filename="../wifisettingcell.ui" line="89"/>
         <location filename="../wifisettingcell.ui" line="227"/>
-        <location filename="../wifisettingcell.cpp" line="33"/>
+        <location filename="../wifisettingcell.cpp" line="34"/>
         <source>SWQA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1391,55 +1414,55 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="21"/>
-        <location filename="../wifisettingcell.cpp" line="34"/>
-        <location filename="../wifisettingcell.cpp" line="261"/>
+        <location filename="../wifisettingcell.cpp" line="22"/>
+        <location filename="../wifisettingcell.cpp" line="35"/>
+        <location filename="../wifisettingcell.cpp" line="262"/>
         <source>ResStr_No_Security</source>
         <translation>No Security</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.ui" line="107"/>
         <location filename="../wifisettingcell.ui" line="338"/>
-        <location filename="../wifisettingcell.cpp" line="121"/>
         <location filename="../wifisettingcell.cpp" line="122"/>
-        <location filename="../wifisettingcell.cpp" line="127"/>
-        <location filename="../wifisettingcell.cpp" line="305"/>
+        <location filename="../wifisettingcell.cpp" line="123"/>
+        <location filename="../wifisettingcell.cpp" line="128"/>
         <location filename="../wifisettingcell.cpp" line="306"/>
-        <location filename="../wifisettingcell.cpp" line="311"/>
+        <location filename="../wifisettingcell.cpp" line="307"/>
+        <location filename="../wifisettingcell.cpp" line="312"/>
         <source>ResStr_Connected</source>
         <translation>Connected</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="136"/>
+        <location filename="../wifisettingcell.cpp" line="137"/>
         <source>ResStr_Msg_3</source>
         <translation>The password must be 8 to 63 ASCII characters or 64 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="153"/>
-        <location filename="../wifisettingcell.cpp" line="212"/>
+        <location filename="../wifisettingcell.cpp" line="154"/>
+        <location filename="../wifisettingcell.cpp" line="213"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="23"/>
-        <location filename="../wifisettingcell.cpp" line="263"/>
+        <location filename="../wifisettingcell.cpp" line="24"/>
+        <location filename="../wifisettingcell.cpp" line="264"/>
         <source>ResStr_Protected_by_WEP</source>
         <translation>Protected by WEP</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="25"/>
-        <location filename="../wifisettingcell.cpp" line="265"/>
+        <location filename="../wifisettingcell.cpp" line="26"/>
+        <location filename="../wifisettingcell.cpp" line="266"/>
         <source>ResStr_Protected_by_WPA2</source>
         <translation>Protected by WPA2</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="27"/>
-        <location filename="../wifisettingcell.cpp" line="267"/>
+        <location filename="../wifisettingcell.cpp" line="28"/>
+        <location filename="../wifisettingcell.cpp" line="268"/>
         <source>ResStr_Protected_by_Mixed_Mode_PSK</source>
         <translation>Protected by Mixed Mode PSK</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="272"/>
+        <location filename="../wifisettingcell.cpp" line="273"/>
         <source>Protected by </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1508,56 +1531,56 @@
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="19"/>
-        <location filename="../wifisettingwepcell.cpp" line="25"/>
-        <location filename="../wifisettingwepcell.cpp" line="249"/>
+        <location filename="../wifisettingwepcell.cpp" line="20"/>
+        <location filename="../wifisettingwepcell.cpp" line="26"/>
+        <location filename="../wifisettingwepcell.cpp" line="250"/>
         <source>ResStr_Protected_by_WEP</source>
         <translation>Protected by WEP</translation>
     </message>
     <message>
         <location filename="../wifisettingwepcell.ui" line="32"/>
         <location filename="../wifisettingwepcell.ui" line="219"/>
-        <location filename="../wifisettingwepcell.cpp" line="140"/>
         <location filename="../wifisettingwepcell.cpp" line="141"/>
-        <location filename="../wifisettingwepcell.cpp" line="146"/>
-        <location filename="../wifisettingwepcell.cpp" line="289"/>
+        <location filename="../wifisettingwepcell.cpp" line="142"/>
+        <location filename="../wifisettingwepcell.cpp" line="147"/>
         <location filename="../wifisettingwepcell.cpp" line="290"/>
-        <location filename="../wifisettingwepcell.cpp" line="295"/>
+        <location filename="../wifisettingwepcell.cpp" line="291"/>
+        <location filename="../wifisettingwepcell.cpp" line="296"/>
         <source>ResStr_Connected</source>
         <translation>Connected</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="24"/>
+        <location filename="../wifisettingwepcell.cpp" line="25"/>
         <source>SWQA_WEP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="180"/>
+        <location filename="../wifisettingwepcell.cpp" line="181"/>
         <source>ResStr_Msg_2</source>
         <translation>The password must be 5 or 13 ASCII characters or 10 or 26 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="193"/>
+        <location filename="../wifisettingwepcell.cpp" line="194"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="247"/>
+        <location filename="../wifisettingwepcell.cpp" line="248"/>
         <source>ResStr_No_Security</source>
         <translation>No Security</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="251"/>
+        <location filename="../wifisettingwepcell.cpp" line="252"/>
         <source>ResStr_Protected_by_WPA2</source>
         <translation>Protected by WPA2</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="253"/>
+        <location filename="../wifisettingwepcell.cpp" line="254"/>
         <source>ResStr_Protected_by_Mixed_Mode_PSK</source>
         <translation>Protected by Mixed Mode PSK</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="257"/>
+        <location filename="../wifisettingwepcell.cpp" line="258"/>
         <source>Protected by </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1671,33 +1694,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="134"/>
+        <location filename="../wlantitlecell.cpp" line="135"/>
         <source>ResStr_Msg_1</source>
         <translation>Configured successfully. Restart the machine to apply changes.</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="177"/>
+        <location filename="../wlantitlecell.cpp" line="178"/>
         <source>ResStr_Setting_Successfully_</source>
         <translation>Configured successfully</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="179"/>
+        <location filename="../wlantitlecell.cpp" line="180"/>
         <source>ResStr_Setting_Fail</source>
         <translation>Configure failed</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="197"/>
-        <location filename="../wlantitlecell.cpp" line="260"/>
+        <location filename="../wlantitlecell.cpp" line="198"/>
+        <location filename="../wlantitlecell.cpp" line="261"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="588"/>
+        <location filename="../wlantitlecell.cpp" line="589"/>
         <source>ResStr_Msg_2</source>
         <translation>The password must be 5 or 13 ASCII characters or 10 or 26 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="596"/>
+        <location filename="../wlantitlecell.cpp" line="597"/>
         <source>ResStr_Msg_3</source>
         <translation>The password must be 8 to 63 ASCII characters or 64 hex characters, please check and enter again.</translation>
     </message>

@@ -66,6 +66,8 @@ private slots:
 
     void on_status_ch(const PrinterStatus_struct& status);
 
+    void errorStatus(bool bIsErrorStatus);
+
     void setDeviceMsg(const QString& msg, int result);
 
     void startCycleAnimation();

@@ -1128,7 +1128,24 @@ void SettingsStackedWidget::on_btDensityReduce_clicked()
 
 void SettingsStackedWidget::on_btDrumReset_clicked()
 {
-
+    if(!isLogn)// && CMD_STATUS_COMPLETE == device->get_cmdStatus())
+    {
+        emit cycleStart();
+        AuthenticationDlg *dlg = new AuthenticationDlg(0, &isLogn);
+        dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                            & ~Qt::WindowMinimizeButtonHint );
+        dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
+        dlg->exec();
+    }
+    if(isLogn)
+    {
+        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_FusingScReset);
+        emit cycleStart();
+    }
+    else
+    {
+        emit cycleStop();
+    }
 }
 
 void SettingsStackedWidget::on_btErrorClear_clicked()
