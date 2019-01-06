@@ -50,6 +50,7 @@ int NetIO::resolveUrl(const char* _url)
     if(host.isEmpty())
         return -1;
     hostAddress = get_ip_address(host);
+    resolved_url = QString("socket://") + hostAddress.toString();
     return 0;
 }
 
@@ -158,13 +159,16 @@ int NetIO::read(char *buffer, int bufsize)
 }
 int NetIO::getDeviceId(char *buffer, int bufsize)
 {
-    return snmpGetDeviceID(device_uri ,buffer ,bufsize);
+    //some host name can not get device id. change to ipv4 first.
+    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
+//    return snmpGetDeviceID(device_uri ,buffer ,bufsize);
 }
 
 bool NetIO::isConnected()
 {
     char buffer[1024];
-    return !snmpGetDeviceID(device_uri ,buffer ,sizeof(buffer));
+    return !snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,sizeof(buffer));
+//    return !snmpGetDeviceID(device_uri ,buffer ,sizeof(buffer));
 }
 
 const char* NetIO::getDeviceAddress()
