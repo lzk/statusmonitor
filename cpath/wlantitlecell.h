@@ -96,6 +96,7 @@ private:
     bool isWitch;
     bool is_wifi_now_on;
     bool isDoingCMD;
+    bool m_isLogin;
     int times;
 
 signals:

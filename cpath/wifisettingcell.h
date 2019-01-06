@@ -41,6 +41,7 @@ private:
     APInfo apInfo;
     bool isDisplayPW;
     bool *islogin;
+    bool m_isLogin;
     bool isConnected;
     bool isDoingCMD;
     int  times;

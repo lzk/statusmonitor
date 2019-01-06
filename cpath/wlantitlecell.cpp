@@ -18,7 +18,8 @@
 #define RETRYTIMES 3;
 WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     QStackedWidget(parent),
-    ui(new Ui::WlanTitleCell)
+    ui(new Ui::WlanTitleCell),
+    m_isLogin(false)
 {
     ui->setupUi(this);
 
@@ -75,7 +76,7 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     }
     else
     {
-        islogin = new bool(false);
+        islogin = &m_isLogin;
     }
     isWitch = false;
     is_wifi_now_on = false;
