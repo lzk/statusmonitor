@@ -344,16 +344,16 @@ void TabStackedWidget::on_cBox_DuplexCopy_clicked(bool checked)
 
 void TabStackedWidget::on_btn_Scan_clicked()
 {
-    const char *image_path = "/tmp/vop_scan/2019-01-06_13-59-14-964.bmp";
+//    const char *image_path = "/tmp/vop_scan/2019-01-06_13-59-14-964.bmp";
 
-    QSize size = QSize(2496,3507);
-    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
-//    QVariant data;
-//    ScanSettings paraScanSettings;
-//    paraScanSettings.settings = paramScan;
-//    data.setValue<ScanSettings>(paraScanSettings);
-//    gUInterface->setCurrentPrinterCmd(UIConfig::CMD_Scan,data);
-//    emit cycleStartFromTab();
+//    QSize size = QSize(2496,3507);
+//    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
+    QVariant data;
+    ScanSettings paraScanSettings;
+    paraScanSettings.settings = paramScan;
+    data.setValue<ScanSettings>(paraScanSettings);
+    gUInterface->setCurrentPrinterCmd(UIConfig::CMD_Scan,data);
+    emit cycleStartFromTab();
 
 }
 
