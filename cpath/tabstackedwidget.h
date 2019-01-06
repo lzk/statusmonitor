@@ -71,6 +71,8 @@ private slots:
 
     void cmdResult(int,int,QVariant);
 
+    void on_btn_ScanSave_clicked();
+
 private:
     Ui::TabStackedWidget *ui;
 

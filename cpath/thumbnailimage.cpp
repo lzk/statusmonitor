@@ -107,7 +107,7 @@ void ThumbnailImage::paintEvent(QPaintEvent *e)
     QWidget::paintEvent(e);
 }
 
-#include <QMessageBox>
+#include "promptdialog.h"
 #include <QMouseEvent>
 bool ThumbnailImage::eventFilter(QObject * obj, QEvent * event)
 {
@@ -116,7 +116,11 @@ bool ThumbnailImage::eventFilter(QObject * obj, QEvent * event)
             QMouseEvent* me = static_cast<QMouseEvent*>(event);
             if(Qt::LeftButton == me->button()){
                 if(!item->isSelected()){
-                    if(QMessageBox::Yes == QMessageBox::question(NULL ,"Lenovo" ,"delete?")){
+                    PromptDialog *pDialog = new PromptDialog(this);
+                    pDialog->setDialogMsg(tr("ResStr_Are_you_sure_to_delete_the_selected_picture"));
+                    pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+                    if (pDialog->exec() == QDialog::Accepted)
+                    {
                         item->listWidget()->removeItemWidget(item);
                         item->listWidget()->takeItem(item->listWidget()->row(item));
                     }

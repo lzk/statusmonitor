@@ -94,7 +94,7 @@ void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,Q
     QSize new_size;
 
     qDebug("before weight:%d" ,weight);
-    int flag = !weight;
+    int flag = !!weight;
     rate = rate1 > rate2 ?rate2 :rate1;
     QSize fit_size = rate * prev_size;//fit size
     do{
@@ -127,11 +127,17 @@ void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,Q
     }
     qDebug("after weight:%d" ,weight);
     //scale image
-    QLabel label;
-    label.setScaledContents(true);
-    label.setPixmap(QPixmap::fromImage(prev_image));
-    label.resize(new_size);
-    image = label.pixmap()->toImage();
+//    QLabel label;
+//    label.setScaledContents(true);
+//    label.setPixmap(QPixmap::fromImage(prev_image));
+//    label.resize(new_size);
+//    image = label.pixmap()->toImage();
+    QPixmap pixmap = QPixmap::fromImage(prev_image);
+    QPixmap fixPixmap = pixmap.scaled(new_size.width(),new_size.height(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    image = fixPixmap.toImage();
+
+    qDebug()<<"new"<<new_size;
+    qDebug()<<image.size();
 
     emit image_send(obj ,image ,flag ,weight);
 }

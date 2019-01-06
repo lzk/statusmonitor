@@ -7,6 +7,7 @@
 #include <qtimer.h>
 #include "settingforipv6.h"
 #include "ipv6status.h"
+#include <qbuttongroup.h>
 
 namespace Ui {
 class SettingsStackedWidget;
@@ -55,6 +56,9 @@ private:
     cmdst_userconfig userconfig_orn;
     int old_dev_status;
 
+    QButtonGroup *buttonGroupIP;
+    QButtonGroup *buttonGroupDNS;
+
 private slots:
     void on_btAPOpen_clicked();
 
@@ -70,8 +74,12 @@ private slots:
     void on_btTimeAdd_clicked();
     void on_timer1_timeout();
     void on_btApply_AP_clicked();
-    void on_btDHCP_toggled(bool checked);
-    void on_btStatic_toggled(bool checked);
+    void onbtDHCPtoggled(bool checked);
+    void onbtStatictoggled(bool checked);
+    void onbtAutotoggled(bool checked);
+    void onbtManualtoggled(bool checked);
+    void onRadioClickIP(bool checked);
+    void onRadioClickDNS(bool checked);
 
     void on_btApply_IPConfig_clicked();
     void on_btIPv6Setting_clicked();

@@ -710,8 +710,13 @@
 
 
     <phrase>
+<source>ResStr_Duplex_Copy</source>
+<target>Duplex Copy</target>
+</phrase>
+
+    <phrase>
 <source>ResStr_ID_Card_Copy</source>
-<target>Credentials Duplex Copy</target>
+<target>ID Card Copy</target>
 </phrase>
 
 

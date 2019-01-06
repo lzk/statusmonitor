@@ -1,6 +1,7 @@
 #include "imagepreviewdialog.h"
 #include "ui_imagepreviewdialog.h"
 #include "thumbnailview.h"
+#include "promptdialog.h"
 #include <QLabel>
 #include <QScrollBar>
 #include <QDebug>
@@ -146,11 +147,16 @@ void ImagePreviewDialog::on_back_clicked()
 {
     int ret = 0;
     if(angle){
-        ret = QMessageBox::question(NULL ,"Lenovo" ,tr("Please confirm whether save it or not?"));
-        if(QMessageBox::Yes == ret){
+        PromptDialog *pDialog = new PromptDialog(this);
+        pDialog->setDialogMsg(tr("Please confirm whether save it or not?"));
+        pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        if (pDialog->exec() == QDialog::Accepted)
+        {
             ret = angle;
-        }else{
-            ret = 0;
+        }
+        else
+        {
+           ret = 0;
         }
     }
     done(ret);

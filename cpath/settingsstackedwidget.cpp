@@ -10,6 +10,7 @@
 #include "authenticationdlg.h"
 #include "settingwarming.h"
 #include "qdebug.h"
+#include <qbuttongroup.h>
 
 #define RETRYTIMERS 3;
 
@@ -72,6 +73,21 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     initPassword();
     initAdvanceSetting(userconfig, true);
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
+
+
+    buttonGroupIP = new QButtonGroup(this);
+    buttonGroupIP->addButton(ui->btDHCP,0);
+    buttonGroupIP->addButton(ui->btStatic,1);
+    connect(ui->btDHCP,SIGNAL(clicked(bool)),this,SLOT(onRadioClickIP(bool)));
+    connect(ui->btStatic,SIGNAL(clicked(bool)),this,SLOT(onRadioClickIP(bool)));
+    ui->btDHCP->setChecked(true);
+
+    buttonGroupDNS = new QButtonGroup(this);
+    buttonGroupDNS->addButton(ui->btAuto,0);
+    buttonGroupDNS->addButton(ui->btManual,1);
+    connect(ui->btAuto,SIGNAL(clicked(bool)),this,SLOT(onRadioClickDNS(bool)));
+    connect(ui->btManual,SIGNAL(clicked(bool)),this,SLOT(onRadioClickDNS(bool)));
+    ui->btAuto->setChecked(true);
 
     isDoingCMD = false;
     retryTimes = 0;
@@ -523,7 +539,7 @@ void SettingsStackedWidget::initIP()
         if(info_ipv4.IPAddressMode < 4)         //DHCP mode
         {
              ui->btDHCP->setChecked(true);
-             on_btDHCP_toggled(true);
+             onbtDHCPtoggled(true);
              QString text = "%1.%2.%3.%4";
              text = text.arg(info_ipv4.IPAddress[0]).arg(info_ipv4.IPAddress[1]).\
                                         arg(info_ipv4.IPAddress[2]).arg(info_ipv4.IPAddress[3]);
@@ -540,7 +556,7 @@ void SettingsStackedWidget::initIP()
         else if(4 == info_ipv4.IPAddressMode)       //static ip mode
         {
             ui->btStatic->setChecked(true);
-            on_btStatic_toggled(true);
+            onbtStatictoggled(true);
             QString text = "%1.%2.%3.%4";
             text = text.arg(info_ipv4.IPAddress[0]).arg(info_ipv4.IPAddress[1]).\
                                        arg(info_ipv4.IPAddress[2]).arg(info_ipv4.IPAddress[3]);
@@ -553,6 +569,27 @@ void SettingsStackedWidget::initIP()
             text = text.arg(info_ipv4.SubnetMask[0]).arg(info_ipv4.SubnetMask[1]).\
                                        arg(info_ipv4.SubnetMask[2]).arg(info_ipv4.SubnetMask[3]);
             ui->lineEdit_Submaskv4->setText(tr(text.toLatin1()));
+        }
+
+        if(info_ipv4.UseManualDNS)
+        {
+            ui->btManual->setChecked(true);
+            onbtManualtoggled(true);
+            onbtAutotoggled(false);
+            QString text = "%1.%2.%3.%4";
+            text = text.arg(info_ipv4.DNSAddress[0]).arg(info_ipv4.DNSAddress[1]).\
+                                       arg(info_ipv4.DNSAddress[2]).arg(info_ipv4.DNSAddress[3]);
+            ui->lineEdit_server->setText(tr(text.toLatin1()));
+        }
+        else
+        {
+            ui->btAuto->setChecked(true);
+            onbtAutotoggled(true);
+            onbtManualtoggled(false);
+            QString text = "%1.%2.%3.%4";
+            text = text.arg(info_ipv4.DNSAddress[0]).arg(info_ipv4.DNSAddress[1]).\
+                                       arg(info_ipv4.DNSAddress[2]).arg(info_ipv4.DNSAddress[3]);
+            ui->lineEdit_server->setText(tr(text.toLatin1()));
         }
 //    }
 }
@@ -748,6 +785,7 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
     QStringList ipaddress = ui->lineEdit_IPAddressv4->text().split(".");
     QStringList ipgateway = ui->lineEdit_Gatewayv4->text().split(".");
     QStringList ipsubmask = ui->lineEdit_Submaskv4->text().split(".");
+    QStringList serverAddress = ui->lineEdit_server->text().split(".");
 
     if(ui->btDHCP->isChecked())             //using DHCP of ipv4
     {
@@ -763,6 +801,18 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
             info_ipv4.IPAddress[i] = ipaddress.at(i).toInt();
             info_ipv4.GatewayAddress[i] = ipgateway.at(i).toInt();
             info_ipv4.SubnetMask[i] = ipsubmask.at(i).toInt();
+        }
+    }
+    if(ui->btAuto->isChecked())
+    {
+        info_ipv4.UseManualDNS = 0;
+    }
+    if(ui->btManual->isChecked())
+    {
+        info_ipv4.UseManualDNS = 1;
+        for(int i = 0; i<4; i++)
+        {
+            info_ipv4.DNSAddress[i] = serverAddress.at(i).toInt();
         }
     }
     if(!isLogn)
@@ -789,7 +839,68 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
     ui->btApply_IPConfig->setFocus();
 }
 
-void SettingsStackedWidget::on_btDHCP_toggled(bool checked)
+void SettingsStackedWidget::onRadioClickIP(bool checked)
+{
+    qDebug()<<"4"<<checked;
+    if(buttonGroupIP->checkedId() == 0)
+    {
+        qDebug()<<"0";
+        onbtDHCPtoggled(checked);
+        onbtStatictoggled(!checked);
+    }
+    else
+    {
+        qDebug()<<"1";
+        onbtStatictoggled(checked);
+        onbtDHCPtoggled(!checked);
+    }
+}
+
+void SettingsStackedWidget::onRadioClickDNS(bool checked)
+{
+    if(buttonGroupDNS->checkedId() == 0)
+    {
+        onbtAutotoggled(checked);
+        onbtManualtoggled(!checked);
+    }
+    else
+    {
+        onbtAutotoggled(!checked);
+        onbtManualtoggled(checked);
+    }
+}
+
+void SettingsStackedWidget::onbtAutotoggled(bool checked)
+{
+    if(checked)
+    {
+        ui->lineEdit_server->setDisabled(true);
+    }
+    else
+    {
+        ui->lineEdit_server->setEnabled(true);
+    }
+}
+
+void SettingsStackedWidget::onbtManualtoggled(bool checked)
+{
+    if(checked)
+    {
+        ui->lineEdit_server->setStyleSheet("QLineEdit{\
+                                              border:2px solid rgb(170, 170, 170);\
+                                              border-radius:12px;}");
+    }
+    else
+    {
+        ui->lineEdit_server->setStyleSheet("QLineEdit{\
+                                          border:2px solid rgb(170, 170, 170);\
+                                          border-radius:12px;\
+                                          background-color: rgb(189, 189, 189);\
+                                          color: rgb(255, 255, 255);}");
+    }
+}
+
+void SettingsStackedWidget::onbtDHCPtoggled(bool checked)
 {
     if(checked)
     {
@@ -807,7 +918,7 @@ void SettingsStackedWidget::on_btDHCP_toggled(bool checked)
     }
 }
 
-void SettingsStackedWidget::on_btStatic_toggled(bool checked)
+void SettingsStackedWidget::onbtStatictoggled(bool checked)
 {
     if(checked)
     {

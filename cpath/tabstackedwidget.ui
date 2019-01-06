@@ -82,7 +82,7 @@ background-color: transparent;</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>18</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="focusPolicy">
@@ -115,35 +115,6 @@ color:white;
        <string>ResStr_ExtraAdd_Copy</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="cBox_DuplexCopy">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>340</x>
-        <y>200</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-image: url(:/Images/CheckBox_Close.png);
-</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QPushButton" name="btn_MoreSetting_Copy">
       <property name="geometry">
        <rect>
@@ -152,11 +123,6 @@ color:white;
         <width>125</width>
         <height>35</height>
        </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>18</pointsize>
-       </font>
       </property>
       <property name="focusPolicy">
        <enum>Qt::ClickFocus</enum>
@@ -289,35 +255,6 @@ QPushButton::pressed{
        <string>+</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="cBox_IsIDCard">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>200</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-image: url(:/Images/CheckBox_Close.png);
-</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QPushButton" name="btn_DensityReduce">
       <property name="geometry">
        <rect>
@@ -390,56 +327,6 @@ QPushButton::pressed{
       </property>
       <property name="text">
        <string>+</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="icon_DuplexCopy">
-      <property name="geometry">
-       <rect>
-        <x>230</x>
-        <y>190</y>
-        <width>30</width>
-        <height>37</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-image: url(:/Images/DulplexCopyIconDisable.tif);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="icon_IDCardCopy">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>200</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-image: url(:/Images/IDCardCopyIconDisable.png);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="text_IDCardCopy">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>200</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>ResStr_ID_Card_Copy</string>
       </property>
      </widget>
      <widget class="QLabel" name="mark0_Density">
@@ -533,7 +420,7 @@ QPushButton::pressed{
       </property>
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>13</pointsize>
        </font>
       </property>
       <property name="text">
@@ -554,7 +441,7 @@ QPushButton::pressed{
       </property>
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>13</pointsize>
        </font>
       </property>
       <property name="text">
@@ -564,46 +451,152 @@ QPushButton::pressed{
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="text_IDCardCopy_2">
+     <widget class="QWidget" name="horizontalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>30</x>
         <y>200</y>
-        <width>81</width>
-        <height>21</height>
+        <width>361</width>
+        <height>39</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>双面复印</string>
-      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="icon_IDCardCopy">
+         <property name="minimumSize">
+          <size>
+           <width>31</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>31</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-image: url(:/Images/IDCardCopyIconDisable.png);</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="text_IDCardCopy">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>ResStr_ID_Card_Copy</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cBox_IsIDCard">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>41</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>41</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-image: url(:/Images/CheckBox_Close.png);
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="icon_DuplexCopy">
+         <property name="minimumSize">
+          <size>
+           <width>30</width>
+           <height>37</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>37</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-image: url(:/Images/DulplexCopyIconDisable.tif);</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="text_IDCardCopy_2">
+         <property name="text">
+          <string>ResStr_Duplex_Copy</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cBox_DuplexCopy">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>41</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>41</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-image: url(:/Images/CheckBox_Close.png);
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-     <zorder>background_Concentration</zorder>
-     <zorder>background_copyNum</zorder>
-     <zorder>btn_Copy</zorder>
-     <zorder>cBox_DuplexCopy</zorder>
-     <zorder>btn_MoreSetting_Copy</zorder>
-     <zorder>copyNum</zorder>
-     <zorder>btn_CopyNumReduce</zorder>
-     <zorder>btn_CopyNumAdd</zorder>
-     <zorder>cBox_IsIDCard</zorder>
-     <zorder>btn_DensityReduce</zorder>
-     <zorder>btn_DensityAdd</zorder>
-     <zorder>icon_IDCardCopy</zorder>
-     <zorder>text_IDCardCopy</zorder>
-     <zorder>mark0_Density</zorder>
-     <zorder>mark1_Density</zorder>
-     <zorder>mark2_Density</zorder>
-     <zorder>mark3_Density</zorder>
-     <zorder>mark4_Density</zorder>
-     <zorder>text_Density</zorder>
-     <zorder>text_CopyNum</zorder>
-     <zorder>text_IDCardCopy_2</zorder>
-     <zorder>icon_DuplexCopy</zorder>
     </widget>
     <widget class="QWidget" name="troubleShootingPage">
      <widget class="QPushButton" name="TUSBBtn_3">
@@ -743,11 +736,6 @@ border-width:0px;</string>
       <height>35</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>18</pointsize>
-     </font>
-    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 border-image: url(:/Images/Btn_Gray.png) 16;
@@ -782,11 +770,6 @@ color:gray;
       <width>111</width>
       <height>35</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>18</pointsize>
-     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/background_scan_btn2.png);color:white;
@@ -845,11 +828,6 @@ color:white;
       <height>35</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>18</pointsize>
-     </font>
-    </property>
     <property name="styleSheet">
      <string notr="true">border-image: url(:/Images/background_scan_btn1.png);</string>
     </property>
@@ -885,7 +863,7 @@ border-image: url(:/Images/background_scan1.png);</string>
     </property>
     <property name="font">
      <font>
-      <pointsize>14</pointsize>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="text">

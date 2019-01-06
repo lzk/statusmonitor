@@ -729,9 +729,9 @@ QRadioButton::indicator::checked {
    <widget class="QRadioButton" name="btManual">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>160</x>
       <y>162</y>
-      <width>61</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
@@ -762,7 +762,7 @@ QRadioButton::indicator::checked {
    <widget class="QRadioButton" name="btAuto">
     <property name="geometry">
      <rect>
-      <x>173</x>
+      <x>90</x>
       <y>163</y>
       <width>61</width>
       <height>17</height>
@@ -886,14 +886,14 @@ QRadioButton::indicator::checked {
    <zorder>lineEdit_IPAddressv4</zorder>
    <zorder>label_DNSType</zorder>
    <zorder>btManual</zorder>
-   <zorder>btAuto</zorder>
    <zorder>label_Server</zorder>
    <zorder>lineEdit_server</zorder>
    <zorder>btStatic</zorder>
    <zorder>label_gateway_error</zorder>
    <zorder>label_ipaddr_error</zorder>
-   <zorder>label_server_error</zorder>
    <zorder>label_sumask_error</zorder>
+   <zorder>btAuto</zorder>
+   <zorder>label_server_error</zorder>
   </widget>
   <widget class="QWidget" name="TCPIPV6">
    <widget class="QPushButton" name="btIPv6Setting">
