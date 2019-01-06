@@ -10,10 +10,12 @@ UsbIO::UsbIO()
     ,interface(0)
 {
     memset(this->serial ,0 ,sizeof(this->serial));
+    usb->init();
 }
 
 UsbIO::~UsbIO()
 {
+    usb->exit();
     delete usb;
 }
 
@@ -25,16 +27,14 @@ int UsbIO::type()
 int UsbIO::open(int port)
 {
     (void)(port);
-    mutex.lock();
-    usb->init();
+//    mutex.lock();
     return usb->open(vid ,pid ,serial ,interface);
 }
 
 int UsbIO::close(void)
 {
     usb->close();
-    usb->exit();
-    mutex.unlock();
+//    mutex.unlock();
     return 0;
 }
 

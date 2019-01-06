@@ -3,7 +3,7 @@
 
 #include "usbapi_libusb.h"
 #include "deviceio.h"
-#include <QMutex>
+//#include <QMutex>
 
 class UsbIO :public DeviceIO
 {
@@ -35,7 +35,7 @@ private:
     int vid;
     int pid;
     char serial[256];
-    QMutex mutex;
+//    QMutex mutex;
 };
 
 #endif // USBIO_H
