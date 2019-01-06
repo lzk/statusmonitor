@@ -1,6 +1,7 @@
 #include "imagepreviewdialog.h"
 #include "ui_imagepreviewdialog.h"
 #include "thumbnailview.h"
+#include "promptdialog.h"
 #include <QLabel>
 #include <QScrollBar>
 #include <QDebug>
@@ -28,6 +29,7 @@ ImagePreviewDialog::ImagePreviewDialog(QListWidgetItem* _item ,ImageHandler* han
 
 void ImagePreviewDialog::image_update(QObject *obj, const QImage &_image ,int flag ,int _weight)
 {
+    qDebug()<<"ImagePreviewDialog::image_update";
     if(obj == this){
         image = _image;
         QLabel* label = new QLabel;
@@ -110,8 +112,10 @@ void ImagePreviewDialog::keyPressEvent(QKeyEvent *e)
 
 bool ImagePreviewDialog::eventFilter(QObject *obj, QEvent *event)
 {
+    qDebug()<<"eventFilter"<<angle<<" "<<weight;
     if(obj == ui->scrollArea){
         if(event->type() == QEvent::Resize){
+            qDebug()<<"1";
             image_ask(weight ,angle);
         }
     }
@@ -143,11 +147,16 @@ void ImagePreviewDialog::on_back_clicked()
 {
     int ret = 0;
     if(angle){
-        ret = QMessageBox::question(NULL ,"Lenovo" ,tr("Please confirm whether save it or not?"));
-        if(QMessageBox::Yes == ret){
+        PromptDialog *pDialog = new PromptDialog(this);
+        pDialog->setDialogMsg(tr("Please confirm whether save it or not?"));
+        pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        if (pDialog->exec() == QDialog::Accepted)
+        {
             ret = angle;
-        }else{
-            ret = 0;
+        }
+        else
+        {
+           ret = 0;
         }
     }
     done(ret);

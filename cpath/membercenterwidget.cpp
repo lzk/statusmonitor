@@ -5,6 +5,8 @@
 #include "membercenter/experiencepro.h"
 #include "jsonparser/parser.h"
 #include "qmessagebox.h"
+#include "qdesktopservices.h"
+#include <qstringlist.h>
 
 MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     QWidget(parent),
@@ -16,6 +18,9 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
 
     ui->btChInfo->setDisabled(true);
     ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);color:gray}");
+
+    crmTimer = new QTimer(this);
+    connect(crmTimer,SIGNAL(timeout()),this,SLOT(uploadCRM()));
 }
 
 MemberCenterWidget::~MemberCenterWidget()
@@ -307,7 +312,25 @@ void MemberCenterWidget::on_btExpe_clicked()
 {
     ExperiencePro *exp = new ExperiencePro(this);
     exp->exec();
+
+    if(exp->isStartCRM())
+    {
+        crmTimer->start(30*60*1000);//30min
+    }
+    else
+    {
+        crmTimer->stop();
+    }
+
     exp->deleteLater();
+}
+
+void MemberCenterWidget::uploadCRM()
+{
+    QString strPrinterModel = "";
+    QString strDrvName = "";
+    QStringList *listPrinters = new QStringList();
+
 }
 
 void MemberCenterWidget::setSW(QStackedWidget* _sw, QPushButton * _bt)
@@ -326,4 +349,9 @@ void MemberCenterWidget::on_pushButton_clicked()
 void MemberCenterWidget::on_btApply_clicked()
 {
     setUserInfo();
+}
+
+void MemberCenterWidget::on_btProduct_clicked()
+{
+    QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/home_abc.aspx"));
 }

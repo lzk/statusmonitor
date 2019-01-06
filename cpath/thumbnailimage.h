@@ -38,7 +38,7 @@ signals:
     void image_ask(QObject* obj ,QListWidgetItem* item ,QSize size ,int weight ,int angle);
     void image_save(const QString& path ,int angle);
     void image_rm(const QString& path);
-    void print_scan_images(QStringList filename_list);
+//    void print_scan_images(QStringList filename_list);
 
 private slots:
     void image_update(QObject* obj ,const QImage& image);

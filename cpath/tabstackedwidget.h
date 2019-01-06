@@ -27,6 +27,7 @@ public slots:
     void set_copy_enabled(bool enabled);
     void set_scan_enabled(bool enabled);
     void set_setting_enabled(bool enabled);
+    void setCopyStackedWidgetCurrentIndex(int index);
 
 private slots:
     void on_cBox_IsIDCard_clicked(bool checked);
@@ -70,6 +71,8 @@ private slots:
 
     void cmdResult(int,int,QVariant);
 
+    void on_btn_ScanSave_clicked();
+
 private:
     Ui::TabStackedWidget *ui;
 
@@ -87,7 +90,7 @@ private:
 
     Param_Copy paramCopy;
 
-    Param_Scan paramScan;
+    UiSettings paramScan;
 
 signals:
     void cycleStartFromTab();

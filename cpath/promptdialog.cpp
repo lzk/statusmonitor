@@ -6,7 +6,7 @@ PromptDialog::PromptDialog(QWidget *parent) :
     ui(new Ui::PromptDialog)
 {
     ui->setupUi(this);
-    this->setWindowTitle("ResStr_Prompt"); //added by gavin 2016-04-07
+    this->setWindowTitle(tr("ResStr_Prompt")); //added by gavin 2016-04-07
     connect(ui->btn_YES,SIGNAL(clicked()),this,SLOT(accept()));
     connect(ui->btn_NO,SIGNAL(clicked()),this,SLOT(reject()));
 }

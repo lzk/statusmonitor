@@ -3,7 +3,7 @@
 
 #include <QListWidget>
 
-#define DEBUG_VIEW 1
+//#define DEBUG_VIEW 1
 
 class ImageHandler : public QObject
 {
@@ -32,7 +32,7 @@ private:
     ImageHandler* image_handler;
 
 signals:
-    void print_scan_images(QStringList filename_list);
+//    void print_scan_images(QStringList filename_list);
 
 public slots:
     void add_image_item(const QString& ,QSize size = QSize());

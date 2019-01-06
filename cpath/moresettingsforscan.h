@@ -11,21 +11,12 @@ namespace Ui {
 class MoreSettingsForScan;
 }
 
-struct Param_Scan {
-    Scan_DocType scan_doctype;
-    Scan_Dpi scan_dpi;
-    ColorModel colorModel;
-    Scan_Size scan_size;
-    int contrast;
-    int brightness;
-};
-
 class MoreSettingsForScan : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit MoreSettingsForScan(QWidget *parent = 0, Param_Scan *param= NULL);
+    explicit MoreSettingsForScan(QWidget *parent = 0, UiSettings *param= NULL);
     ~MoreSettingsForScan();
 
 private:
@@ -39,8 +30,8 @@ private:
     QTimer *timerC;
     int timeCount;
 
-    Param_Scan *param_scan;
-    Param_Scan defaultParam;
+    UiSettings *param_scan;
+    UiSettings defaultParam;
 
 
 

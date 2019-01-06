@@ -14,19 +14,6 @@
         <file>Images/AnimationControl/rightHover.tif</file>
         <file>Images/AnimationControl/rightNormal.tif</file>
         <file>Images/AnimationControl/rightPress.tif</file>
-        <file>Images/Video/English/01_Jam_1.gif</file>
-        <file>Images/Video/English/01_Jam_2.gif</file>
-        <file>Images/Video/English/01_Jam_3.gif</file>
-        <file>Images/Video/English/02_JamExit_1.gif</file>
-        <file>Images/Video/English/02_JamExit_2.gif</file>
-        <file>Images/Video/English/02_JamExit_3.gif</file>
-        <file>Images/Video/English/03_OutOfPaper_1.gif</file>
-        <file>Images/Video/English/03_OutOfPaper_2.gif</file>
-        <file>Images/Video/English/05_IDCardScan_1.gif</file>
-        <file>Images/Video/English/05_IDCardScan_2.gif</file>
-        <file>Images/Video/English/06_Nin1Copy_1.gif</file>
-        <file>Images/Video/English/06_Nin1Copy_2.gif</file>
-        <file>Images/Video/English/06_Nin1Copy_3.gif</file>
         <file>Images/112233.png</file>
         <file>Images/123.png</file>
         <file>Images/123123.png</file>
@@ -184,5 +171,31 @@
         <file>Images/ZoomOut.tif</file>
         <file>Images/DulplexCopyIconDisable.tif</file>
         <file>Images/DulplexCopyIconEnable.tif</file>
+        <file>Images/Video/English/01_JamInside1_en.gif</file>
+        <file>Images/Video/English/01_JamInside2_en.gif</file>
+        <file>Images/Video/English/01_JamInside3_en.gif</file>
+        <file>Images/Video/English/02_JamAtExitStayOn1_en.gif</file>
+        <file>Images/Video/English/02_JamAtExitStayOn2_en.gif</file>
+        <file>Images/Video/English/02_JamAtExitStayOn3_en.gif</file>
+        <file>Images/Video/English/03_NofeedJam1_en.gif</file>
+        <file>Images/Video/English/03_NofeedJam2_en.gif</file>
+        <file>Images/Video/English/05_IDCardCopy1_en.gif</file>
+        <file>Images/Video/English/05_IDCardCopy2_en.gif</file>
+        <file>Images/Video/English/06_NIn1Copy1_en.gif</file>
+        <file>Images/Video/English/06_NIn1Copy2_en.gif</file>
+        <file>Images/Video/English/06_NIn1Copy3_en.gif</file>
+        <file>Images/Video/SimplifiedChinese/01_JamInside1_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/01_JamInside2_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/01_JamInside3_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/02_JamAtExitStayOn1_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/02_JamAtExitStayOn2_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/02_JamAtExitStayOn3_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/03_NofeedJam1_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/03_NofeedJam2_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/05_IDCardCopy1_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/05_IDCardCopy2_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/06_NIn1Copy1_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/06_NIn1Copy2_zh.gif</file>
+        <file>Images/Video/SimplifiedChinese/06_NIn1Copy3_zh.gif</file>
     </qresource>
 </RCC>

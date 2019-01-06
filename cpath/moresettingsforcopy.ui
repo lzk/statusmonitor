@@ -10,6 +10,9 @@
     <height>498</height>
    </rect>
   </property>
+  <property name="windowTitle">
+   <string>ResStr_More_Settings</string>
+  </property>
   <property name="styleSheet">
    <string notr="true">#MoreSettingsForCopy{
 

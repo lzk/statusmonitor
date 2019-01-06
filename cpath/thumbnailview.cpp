@@ -61,6 +61,7 @@ void ImageHandler::image_save(const QString& path ,int angle)
 
 void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,QSize size ,int weight ,int angle)
 {
+    qDebug()<<"image_answer_then_send"<<":SizeW:"<<size.width()<<":SizeH:"<<size.height()<<" weight:"<<weight<<" angle:"<<angle;
     QImage image;
     //get source image
     QString image_path = item->data(Qt::UserRole).toString();
@@ -92,7 +93,7 @@ void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,Q
     bool rate_fit;
     QSize new_size;
 
-//    qDebug("before weight:%d" ,weight);
+    qDebug("before weight:%d" ,weight);
     int flag = !!weight;
     rate = rate1 > rate2 ?rate2 :rate1;
     QSize fit_size = rate * prev_size;//fit size
@@ -124,13 +125,19 @@ void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,Q
     }else if(flag == 2){
         weight++;
     }
-//    qDebug("after weight:%d" ,weight);
+    qDebug("after weight:%d" ,weight);
     //scale image
-    QLabel label;
-    label.setScaledContents(true);
-    label.setPixmap(QPixmap::fromImage(prev_image));
-    label.resize(new_size);
-    image = label.pixmap()->toImage();
+//    QLabel label;
+//    label.setScaledContents(true);
+//    label.setPixmap(QPixmap::fromImage(prev_image));
+//    label.resize(new_size);
+//    image = label.pixmap()->toImage();
+    QPixmap pixmap = QPixmap::fromImage(prev_image);
+    QPixmap fixPixmap = pixmap.scaled(new_size.width(),new_size.height(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    image = fixPixmap.toImage();
+
+    qDebug()<<"new"<<new_size;
+    qDebug()<<image.size();
 
     emit image_send(obj ,image ,flag ,weight);
 }
@@ -163,7 +170,7 @@ void ThumbnailView::add_image_item(const QString& origin_image_path ,QSize iamge
     item->setData(Qt::UserRole ,origin_image_path);
     item->setData(Qt::UserRole + 1 ,iamge_size);
     ThumbnailImage* widget = new ThumbnailImage(item ,image_handler);
-    connect(widget ,SIGNAL(print_scan_images(QStringList)) ,this ,SIGNAL(print_scan_images(QStringList)));
+//    connect(widget ,SIGNAL(print_scan_images(QStringList)) ,this ,SIGNAL(print_scan_images(QStringList)));
     setItemWidget(item ,widget);
     //to make relayout to avoid some bug
     QSize _size = size();

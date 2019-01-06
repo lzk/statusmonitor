@@ -6,6 +6,7 @@
 #include <QVariant>
 #include "uiconfig.h"
 #include "busyrefreshlabel.h"
+#include <qsystemtrayicon.h>
 
 namespace Ui {
 class MainWindow;
@@ -70,6 +71,8 @@ private slots:
     void startCycleAnimation();
     void stopCycleAnimation();
 
+    void on_errorBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -80,6 +83,11 @@ private:
 
     QStringList printers;
     QList<PrinterInfo_struct> printerInfos;
+
+    QAction *quitAction;
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
+    void createSysTray();
 };
 
 #endif // MAINWINDOW_H

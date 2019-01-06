@@ -48,7 +48,7 @@ void UInterface::setTimer(int timeVal)
 
 void UInterface::timerOut()
 {
-    cmdToWorker(UIConfig::CMD_GetPrinters);
+    //cmdToWorker(UIConfig::CMD_GetPrinters);
     cmdToWorker(UIConfig::CMD_GetStatus ,current_printer);
 }
 

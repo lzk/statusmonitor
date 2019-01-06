@@ -52,6 +52,8 @@ int main(int argc, char *argv[])
 
     MainWindow w;
 
+    w.setWindowIcon(QIcon(":/Images/printer.ico"));
+
 //    QTranslator trans1;
 //    trans1.load("qt_" + QLocale::system().name() ,":/translations");
 //    a.installTranslator(&trans1);

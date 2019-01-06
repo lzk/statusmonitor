@@ -11,6 +11,8 @@ UserLogin::UserLogin(QWidget *parent) :
     ui->setupUi(this);
     m_strKey = "86c02972fba047b0b0a9adb8123029fb";
     m_loginSuccess = false;
+    acTimer = new QTimer(this);
+    connect(acTimer,SIGNAL(timeout()),this,SLOT(showTimelimit()));
 }
 
 UserLogin::~UserLogin()
@@ -104,6 +106,7 @@ void UserLogin::on_bt_getAuthCode_clicked()
 
 void UserLogin::showTimelimit()
 {
+    qDebug()<<acTime;
     if(acTime != 0)
     {
         acTime--;
@@ -114,6 +117,7 @@ void UserLogin::showTimelimit()
     {
         ui->bt_getAuthCode->setEnabled(true);
         ui->bt_getAuthCode->setText(tr("ResStr_Get_Verification_Code"));
+        acTimer->stop();
     }
 }
 
@@ -135,12 +139,7 @@ void UserLogin::replyFinish_send(QNetworkReply* reply)
             QString num = QString::number(acTime);
             ui->bt_getAuthCode->setText(num);
             ui->bt_getAuthCode->setEnabled(false);
-            if(acTimer)
-            {
-                acTimer = new QTimer(this);
-                connect(acTimer,SIGNAL(timeout()),this,SLOT(showTimelimit()));
-                acTimer->start(1000);
-            }
+            acTimer->start(1000);
         }
         else
         {

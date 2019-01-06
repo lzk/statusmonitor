@@ -478,6 +478,10 @@
 <target>身份证复印</target>
 </phrase>
     <phrase>
+<source>ResStr_Duplex_Copy</source>
+<target>双面复印</target>
+</phrase>
+    <phrase>
 <source>ResStr_Document_Size</source>
 <target>原稿尺寸</target>
 </phrase>
