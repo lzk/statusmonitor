@@ -64,12 +64,15 @@ private slots:
     void setUserInfo();
 
     void replyFinish_set(QNetworkReply* reply);
+    void replyFinish_uploadCRM(QNetworkReply* reply);
 
     void on_btApply_clicked();
 
     void on_btProduct_clicked();
 
     void uploadCRM();
+
+    void cmdResult(int cmd,int result,QVariant data);
 
 private:
     Ui::MemberCenterWidget *ui;

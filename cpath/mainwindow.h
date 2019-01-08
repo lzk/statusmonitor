@@ -56,13 +56,15 @@ private slots:
 
     void updateToner(int c ,int m ,int y ,int k);
 
-    void updateStatus(const PrinterStatus_struct& status);
+    void updateStatus(QVariant data);
 
     void updateOtherStatus(const QString& printer ,const PrinterStatus_struct& status);
 
     void updatePrinter(const QVariant& data);
 
     void on_deviceNameBox_currentIndexChanged(int index);
+
+    void set_Message_Background_Color(UIConfig::EnumStatus s);
 
     void on_status_ch(const PrinterStatus_struct& status);
 
@@ -74,6 +76,8 @@ private slots:
     void stopCycleAnimation();
 
     void on_errorBtn_clicked();
+
+    void on_btCar_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -10,6 +10,9 @@
     <height>204</height>
    </rect>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
   <widget class="QPushButton" name="btn_NO">
    <property name="geometry">
     <rect>
@@ -18,11 +21,6 @@
      <width>125</width>
      <height>35</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>16</pointsize>
-    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
@@ -53,11 +51,6 @@ color:white;
      <width>126</width>
      <height>35</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>16</pointsize>
-    </font>
    </property>
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
@@ -100,7 +93,7 @@ color:white;
    </property>
    <property name="font">
     <font>
-     <pointsize>19</pointsize>
+     <pointsize>13</pointsize>
     </font>
    </property>
    <property name="text">

@@ -7,6 +7,7 @@
 #include "qmessagebox.h"
 #include "qdesktopservices.h"
 #include <qstringlist.h>
+#include "uinterface.h"
 
 MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     QWidget(parent),
@@ -21,6 +22,8 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
 
     crmTimer = new QTimer(this);
     connect(crmTimer,SIGNAL(timeout()),this,SLOT(uploadCRM()));
+
+    connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
 }
 
 MemberCenterWidget::~MemberCenterWidget()
@@ -84,7 +87,7 @@ void MemberCenterWidget::getUserInfo()
     QString text = loginPhone;
 
     QString str = QString("%0%1%2").arg(text).arg(time).arg(m_strKey);
-    qDebug()<<str;
+//    qDebug()<<str;
 
     QString md5;
     QByteArray bb;
@@ -97,7 +100,7 @@ void MemberCenterWidget::getUserInfo()
 
     QByteArray post_data;
     QString post_str = QString("mobile=%0&time=%1&Sign=%2").arg(text).arg(time).arg(md5);
-    qDebug()<<post_str;
+//    qDebug()<<post_str;
 #if QT_VERSION_MAJOR > 4
     post_data = post_str.toLocal8Bit();
 #else
@@ -147,15 +150,15 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
 
         if(user["sex"].toString() != NULL)
         {
-            if(user["sex"].toInt() == 0)
-            {
-                ui->btFemale->setChecked(true);
-                ui->btMan->setChecked(false);
-            }
-            else
+            if(user["sex"].toString() == "男")
             {
                 ui->btFemale->setChecked(false);
                 ui->btMan->setChecked(true);
+            }
+            else
+            {
+                ui->btFemale->setChecked(true);
+                ui->btMan->setChecked(false);
             }
         }
         else
@@ -246,7 +249,7 @@ void MemberCenterWidget::setUserInfo()
 #endif
     strSign.append(bb.toHex());
 
-    QString post_str = QString("MobileCode={%0}&Mobile={%1}&DeviceBrand{%2}&DeviceModel={%3}&Truename={%4}&Birthdate={%5}&Sex={%6}&Email={%7}&Address={%8}&time={%9}&sign={%10}")
+    QString post_str = QString("MobileCode=%0&Mobile=%1&DeviceBrand%2&DeviceModel=%3&Truename=%4&Birthdate=%5&Sex=%6&Email=%7&Address=%8&time=%9&sign=%10")
             .arg(strMacAddr)
             .arg(loginPhone)
             .arg("")
@@ -315,10 +318,13 @@ void MemberCenterWidget::on_btExpe_clicked()
 
     if(exp->isStartCRM())
     {
+        qDebug()<<"start crm";
+        MemberCenterWidget::uploadCRM();
         crmTimer->start(30*60*1000);//30min
     }
     else
     {
+        qDebug()<<"stop crm";
         crmTimer->stop();
     }
 
@@ -327,10 +333,79 @@ void MemberCenterWidget::on_btExpe_clicked()
 
 void MemberCenterWidget::uploadCRM()
 {
-    QString strPrinterModel = "";
-    QString strDrvName = "";
-    QStringList *listPrinters = new QStringList();
+    qDebug()<<"uploadcrm";
+    gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Get_UserCenterInfo);
+}
 
+void MemberCenterWidget::cmdResult(int cmd,int result,QVariant data)
+{
+    switch(cmd)
+    {
+    case UIConfig::LS_CMD_PRN_Get_UserCenterInfo:
+        if(!result)
+        {
+            struct_user_center userCenter = data.value<struct_user_center>();
+            QString inkLevel = "0";
+            QString printerDataStr = QString("[{{\"printermodel\":\"%0\",\"printerid\":\"%1\",\"tonerid\":\"%2\",\"totalprint\":\"%3\",\"inklevel\":\"%4\"}}]")
+                    .arg(userCenter.strPrinterModel)
+                    .arg(userCenter.user_center._2ndSerialNO)
+                    .arg(userCenter.user_center._SerialNO4AIO)
+                    .arg(userCenter.user_center._totalCounter)
+                    .arg(inkLevel);
+
+            QString strMacAddr = MemberCenterWidget::getHostMacAddress();
+            QDateTime dateTime;
+            QString time = dateTime.currentDateTime().toString("yyyyMMddHHmmss");
+            QString md5_str = QString("%0%1%2").arg(strMacAddr).arg(time).arg(m_strKey);
+
+            QString strPlatform = "MacPC";
+            QString strVersion = "1.0.0.1";
+
+
+            QString post_str = QString("{{\"devicecode\":\"%0\",\"mobile\":\"%1\",\"platform\":\"%2\",\"version\":\"%3\",\"time\":\"%4\",\"sign\":\"%5\",\"location\":\"\",\"printerdata\":%6}}")
+                    .arg(strMacAddr)
+                    .arg(loginPhone)
+                    .arg(strPlatform)
+                    .arg(strVersion)
+                    .arg(time)
+                    .arg(md5_str)
+                    .arg(printerDataStr);
+            qDebug()<<post_str;
+
+#if QT_VERSION_MAJOR > 4
+    QByteArray post_data = post_str.toLocal8Bit();
+#else
+    QByteArray post_data = post_str.toAscii();
+#endif
+
+             QString baseUrl = "http://crm.iprintworks.cn/api/printerinfo";//debug
+             QUrl url(baseUrl);
+
+             QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+             connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_uploadCRM(QNetworkReply*)));
+
+             QNetworkRequest *req = new QNetworkRequest();
+
+             req->setUrl(url);
+
+             req->setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+             req->setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+
+             manager->post(*req,post_data);
+
+        }
+        break;
+
+    default:
+        break;
+
+    }
+}
+
+void MemberCenterWidget::replyFinish_uploadCRM(QNetworkReply *reply)
+{
+    QString strJsonText = reply->readAll();
+    qDebug()<<"replyFinish_uploadCRM"<<strJsonText;
 }
 
 void MemberCenterWidget::setSW(QStackedWidget* _sw, QPushButton * _bt)

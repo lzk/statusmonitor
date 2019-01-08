@@ -1967,7 +1967,7 @@ border:transparent;
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="btTonerReset">
+   <widget class="QPushButton" name="btDrumReset">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -2002,7 +2002,7 @@ QPushButton:pressed{
      <string>ResStr_Reset_OPC</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btDrumReset">
+   <widget class="QPushButton" name="btTonerReset">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -2118,8 +2118,8 @@ QPushButton:pressed{
    <zorder>btTopAdd</zorder>
    <zorder>btLeftAdd</zorder>
    <zorder>lineEdit_TopMargin</zorder>
-   <zorder>btTonerReset</zorder>
    <zorder>btDrumReset</zorder>
+   <zorder>btTonerReset</zorder>
    <zorder>label_TopMargin_error</zorder>
    <zorder>label_LeftMargin_error</zorder>
    <zorder>label_ImageDensity_error</zorder>

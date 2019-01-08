@@ -79,17 +79,20 @@ void UserLogin::replyFinish_check(QNetworkReply* reply)
 
 void UserLogin::on_bt_getAuthCode_clicked()
 {
+    qDebug()<<"on_bt_getAuthCode_clicked";
     QString baseUrl = "http://function.iprintworks.cn:8001/smsauth/mt_u.php";
     QUrl url(baseUrl);
 
     QString strPhoneNumber = ui->le_userName->text();
 
     QString str = QString("phoneNum=%0").arg(strPhoneNumber);
+    qDebug()<<str;
 #if QT_VERSION_MAJOR > 4
     QByteArray post_data = str.toLocal8Bit();
 #else
     QByteArray post_data = str.toAscii();
 #endif
+    qDebug()<<post_data;
 
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_send(QNetworkReply*)));
@@ -140,12 +143,11 @@ void UserLogin::replyFinish_send(QNetworkReply* reply)
             ui->bt_getAuthCode->setText(num);
             ui->bt_getAuthCode->setEnabled(false);
             acTimer->start(1000);
-        }
-        else
-        {
-            ui->labMsg->setText(tr("ResStr_Msg_6"));
+            return;
         }
     }
+
+    ui->labMsg->setText(tr("ResStr_Msg_6"));
 }
 
 QString UserLogin::getPhone()

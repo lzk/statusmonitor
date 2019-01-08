@@ -548,10 +548,53 @@ void TabStackedWidget::on_btn_Copy_clicked()
     gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_COPY,data);
 }
 
-//#define _QT_PDF 1
+#define _QT_PDF 1
 #if _QT_PDF
-#include <QPdfWriter>
 #include <QPainter>
+#include <QPrinter>
+
+//extern void saveMultiPageTiffImage(NSString* tmpPath ,NSString* imageFilePath);
+//void saveMultiPageTiffImage(const QString& tmpPath ,const QString& imageFilePath)
+//{
+//    return saveMultiPageTiffImage(tmpPath.toNSString() ,imageFilePath.toNSString());
+//}
+
+static QPrinter* printer = NULL;
+static QPainter* painter = NULL;
+void saveMultiPagePdfImageInit(const QString& fileName)
+{
+    printer = new QPrinter;
+    printer->setPageSize(QPrinter::A4); //设置纸张大小为A4
+    printer->setOutputFormat(QPrinter::PdfFormat); //设置输出格式为pdf
+    printer->setOutputFileName(fileName);  //设置输出路径
+    painter = new QPainter(printer);
+}
+
+bool saveMultiPagePdfImage(const QString& tmpPath ,bool firstPage)
+{
+    QRect rect = painter->viewport();
+    if(rect.isEmpty())
+        return false;
+    QPixmap pixmap = QPixmap(tmpPath).scaled(rect.size() ,Qt::KeepAspectRatio);
+    QSize size = pixmap.size();
+    if(!size.isValid())
+        return false;
+    if(!firstPage)
+        printer->newPage();
+    painter->drawPixmap(rect.x() + (rect.width() - size.width()) / 2,
+                       rect.y() + (rect.height() - size.height()) / 2,pixmap);
+    return true;
+}
+
+void saveMultiPagePdfImageRelease()
+{
+    if(painter)
+        delete painter;
+    painter = NULL;
+    if(printer)
+        delete printer;
+    printer = NULL;
+}
 #endif
 void TabStackedWidget::on_btn_ScanSave_clicked()
 {
@@ -564,94 +607,14 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
     QString temp_filename;
     if(!filename.isEmpty()){
         if(filename.endsWith(".pdf")){
-//#if _QT_PDF
-//            QPdfWriter pw(filename);
-//            pw.setPageMargins(QMargins());
-//            pw.setResolution(1200);
-//            pw.setPageSize(QPdfWriter::A5);
-//            QPainter p(&pw);
-//            bool first_time = true;
-//            foreach (QListWidgetItem* item, item_list) {
-//                if(first_time){
-//                    first_time = false;
-//                }else
-//                    pw.newPage();
-//                first_time = false;
-
-//                temp_filename = item->data(Qt::UserRole).toString();
-//                QImage image(temp_filename);
-
-////                double resolution = image.dotsPerMeterX()*0.0254;
-////                resolution = (resolution + 5) / 100 * 100;
-
-//                pw.setPageSizeMM((image.size()) * 1000 / (image.dotsPerMeterX() * 1.0));
-//                QRect rect(0 ,0 ,pw.width() ,pw.height());
-//                p.drawImage(rect ,image ,image.rect());
-//                qDebug()<< "paper size" << QSize(pw.width() ,pw.height())
-//                <<"---image size:"<<image.size();
-////                <<"---image resize:"<<sizef <<"---resolution:"<<resolution;
-
-//            }
-//#else
-//            CGContextRef pdfContext = NULL;
-//            CFStringRef cf_filename = CFStringCreateWithCStringNoCopy(kCFAllocatorDefault
-//                                              ,filename.toLatin1() ,kCFStringEncodingUTF8 ,kCFAllocatorNull);
-//           CFURLRef cf_filename_url = CFURLCreateWithFileSystemPath (kCFAllocatorDefault, cf_filename,
-//                                                              kCFURLPOSIXPathStyle, 0);
-//            pdfContext = CGPDFContextCreateWithURL (cf_filename_url, NULL ,NULL);
-//            CFRelease(cf_filename_url);
-//            if (pdfContext)
-//            {
-//                QString temp_file("tmp.jpeg");
-//                foreach (QListWidgetItem* item, item_list) {
-//                    temp_filename = item->data(Qt::UserRole).toString();
-//                    QImage image(temp_filename);
-//                    image.save(temp_file);
-
-//                    CFStringRef tmpPath = CFStringCreateWithCStringNoCopy(kCFAllocatorDefault
-//                                          ,temp_file.toLatin1() ,kCFStringEncodingUTF8 ,kCFAllocatorNull);
-//                    CGImageSourceRef sourceRef;
-//                    CFURLRef jpegURL = CFURLCreateWithFileSystemPath (kCFAllocatorDefault, tmpPath,
-//                                                                      kCFURLPOSIXPathStyle, 0);
-//                    sourceRef = CGImageSourceCreateWithURL(jpegURL, NULL);
-//                    CFRelease(jpegURL);
-//                    if (sourceRef)
-//                    {
-//                        CGImageRef tmpImageRef;
-//                        tmpImageRef = CGImageSourceCreateImageAtIndex(sourceRef, 0, NULL);
-//                        CFRelease(sourceRef);
-//                        sourceRef = NULL;
-
-//                        //612 * 792 points --- 8.5*11 inch
-//                        double resolution = image.dotsPerMeterX() * 0.0254;
-//                        double factor = 612.0 / 850;
-////                        double width = image.widthMM() / 25.4 * 100 * factor;
-////                        double height = image.heightMM() / 25.4 * 100 * factor;
-//                        double width = image.width() / resolution * 100 * factor;
-//                        double height = image.height() / resolution * 100 * factor;
-//                        CGRect pageRect   = CGRectMake(0, 0, width ,height);
-
-//                        CFMutableDictionaryRef dictionary = nil;
-//                        dictionary = CFDictionaryCreateMutable(nil, 0, &kCFTypeDictionaryKeyCallBacks,
-//                                                                      &kCFTypeDictionaryValueCallBacks);
-//                        CFDataRef cfData = CFDataCreate(kCFAllocatorDefault ,(const uint8*)&pageRect ,sizeof(CGRect));
-//                        CFDictionarySetValue(dictionary, kCGPDFContextMediaBox, cfData);
-
-//                        CGPDFContextBeginPage(pdfContext ,dictionary);
-//                        CGContextDrawImage(pdfContext, pageRect, tmpImageRef);
-//                        CGPDFContextEndPage(pdfContext);
-
-//                        CFRelease(tmpImageRef);
-//                        CFRelease(dictionary);
-//                        CFRelease(cfData);
-//                    }
-//                    QFile(temp_file).remove();
-
-//                }
-//                CGPDFContextClose(pdfContext);
-//                CGContextRelease (pdfContext);
-//            }
-//#endif
+            saveMultiPagePdfImageInit(filename);
+            int j = 0;
+            foreach (QListWidgetItem* item, item_list) {
+                temp_filename = item->data(Qt::UserRole).toString();
+                saveMultiPagePdfImage(temp_filename ,j == 0);
+                j++;
+            }
+            saveMultiPagePdfImageRelease();
         }else if(filename.endsWith(".tif")){
             QString temp_file("tmp.tiff");
             bool first_time = true;

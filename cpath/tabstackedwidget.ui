@@ -602,15 +602,15 @@ QPushButton::pressed{
      <widget class="QPushButton" name="TUSBBtn_3">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>40</x>
         <y>240</y>
-        <width>141</width>
+        <width>161</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <pointsize>8</pointsize>
         <underline>true</underline>
        </font>
       </property>
@@ -654,14 +654,15 @@ border-width:0px;</string>
      <widget class="QPushButton" name="TWiFiBtn_3">
       <property name="geometry">
        <rect>
-        <x>230</x>
+        <x>220</x>
         <y>240</y>
-        <width>141</width>
+        <width>161</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
+        <pointsize>8</pointsize>
         <underline>true</underline>
        </font>
       </property>
@@ -688,7 +689,7 @@ QPushButton::Pressed{
      <widget class="QLabel" name="TroubleshootingUSB_3">
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>90</x>
         <y>160</y>
         <width>55</width>
         <height>55</height>
