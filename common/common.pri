@@ -22,4 +22,3 @@ SOURCES += \
     $$PWD/netio.cpp \
     $$PWD/devicemanager.cpp
 
-FORMS +=

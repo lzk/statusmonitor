@@ -143,28 +143,16 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 //            if(!cmd_status_validate_setting(err)){
 //                break;
 //            }
-                cmdst_wifi_get wifi_data;
-                result = lshell->wifi_get_para(&wifi_data);
-                if(result){
-                    LOGLOG("err: can not get wifi");
-                }
-                else
-                {
+                result = lshell->wifi_get_para(&wifi_refresh_data.wifi_para);
+                if(!result){
                     cmdst_wifi_status status_data;
                     result = lshell->wifi_get_status(&status_data);
-
-                    if(!result){
-                        cmdst_aplist_get wifi_aplist_data;
-                        result = lshell->wifi_get_aplist(&wifi_aplist_data);
-
-                        device->close();
-
-                        wifi_refresh_data.wifi_para = wifi_data;
-                        wifi_refresh_data.wifi_aplist = wifi_aplist_data;
-
-                        value.setValue(wifi_refresh_data);
-                    }
                 }
+                if(!result){
+                    result = lshell->wifi_get_aplist(&wifi_refresh_data.wifi_aplist);
+                }
+                value.setValue(wifi_refresh_data);
+                device->close();
             }
         }
         cmdResult(cmd ,result ,value);

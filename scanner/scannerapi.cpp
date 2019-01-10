@@ -195,15 +195,23 @@ typedef struct{
 }
     Scan_Size_t;
 
+//const Scan_Size_t scan_size_array[] =
+//{
+//    {Scan_A4, 210/25.4, 297/25.4},
+//    {Scan_A5, 148/25.4, 210/25.4},
+//    {Scan_B5, 182/25.4, 257/25.4},
+//    {Scan_Letter, 8.5, 11.0},
+//    {Scan_4_6, 4, 6},
+//};
+
 const Scan_Size_t scan_size_array[] =
 {
-    {Scan_A4, 210/25.4, 297/25.4},
-    {Scan_A5, 148/25.4, 210/25.4},
-    {Scan_B5, 182/25.4, 257/25.4},
+    {Scan_A4, 8.268, 11.693},
+    {Scan_A5, 5.827, 8.268},
+    {Scan_B5, 7.165, 10},
     {Scan_Letter, 8.5, 11.0},
     {Scan_4_6, 4, 6},
 };
-
 
 #include <time.h>
 #include <sys/timeb.h>
@@ -232,8 +240,6 @@ void calculate_parameters(ScanSettings* scan_settings)
         break;
     }
 
-    pCalc->tl_x = 0;
-    pCalc->tl_y = 0;
     pCalc->source_pixel_resolution = pCalc->dpi_x;
     pCalc->source_motor_resolution = pCalc->dpi_x;
     if(pCalc->dpi_x < 300){
@@ -243,59 +249,9 @@ void calculate_parameters(ScanSettings* scan_settings)
         pCalc->source_motor_resolution = 600;
     }
 
-    float br_x = SCAN_RANGE_WIDTH;
-    float br_y = SCAN_RANGE_HEIGHT;
-    br_x = scan_size_array[settings->scan_size].width;
-    br_y = scan_size_array[settings->scan_size].height;
-//    switch (settings->scan_size) {
-//    case Scan_A4:
-//        br_x = scan_size_array[Scan_A4].width;
-//        br_y = scan_size_array[Scan_A4].width;
-//        break;
-//    default:
-//        break;
-//    }
-    float scan_width = br_x - pCalc->tl_x;
-    float scan_height = br_y - pCalc->tl_y;
-    float min_width;
-    float min_height = (8 / (float)pCalc->dpi_x) * UNIT_FACTOR + (SIZE_ACCURACY / 10);
-    int pixel_alignment;
-
-    switch (settings->colorModel) {
-    case Black_White:
-        pixel_alignment = 32;
-        min_width = (pixel_alignment / (float)pCalc->dpi_x) * UNIT_FACTOR + (SIZE_ACCURACY / 10);
-        if(scan_width > 0 && scan_width < min_width){
-            scan_width = min_width;
-        }
-        if(scan_height > 0 && scan_height < min_height){
-            scan_height = min_height;
-        }
-        break;
-    case Grayscale:
-        pixel_alignment = 32;
-        min_width = (32 / (float)pCalc->dpi_x) * UNIT_FACTOR + (SIZE_ACCURACY / 10);
-        if(scan_width > 0 && scan_width < min_width){
-            scan_width = min_width;
-        }
-        if(scan_height > 0 && scan_height < min_height){
-            scan_height = min_height;
-        }
-        break;
-    case Color:
-    default:
-        pixel_alignment = 32;
-        min_width = (32 / (float)pCalc->dpi_x) * UNIT_FACTOR + (SIZE_ACCURACY / 10);
-        if(scan_width > 0 && scan_width < min_width)
-        {
-            scan_width = min_width;
-        }
-        if(scan_height > 0 && scan_height < min_height)
-        {
-            scan_height = min_height;
-        }
-        break;
-    }
+    float scan_width = scan_size_array[settings->scan_size].width;
+    float scan_height = scan_size_array[settings->scan_size].height;
+    int pixel_alignment = 32;
 
     pCalc->pixels_per_line = scan_width * pCalc->source_pixel_resolution / UNIT_FACTOR;
     pCalc->source_total_lines = scan_height * pCalc->source_motor_resolution / UNIT_FACTOR;
@@ -309,31 +265,33 @@ void caculate_image_trans_data(ScanSettings* settings)
     ImageTransInfo* info = settings->info;
     ImageInfo* target = &info->target_image_info;
 
+    info->format = ImageTransFormat_Raw;
+    info->mode = ImageTransMode_rawToBmp;
+
     info->source_pixelsOfWidth = settings->calc_data.source_pixels_per_line;
     info->source_dpi_x = settings->calc_data.source_pixel_resolution;
     info->source_dpi_y = settings->calc_data.source_motor_resolution;
     info->source_total_lines = settings->calc_data.source_total_lines;
 
-    target->PixelsOfWidth = settings->calc_data.pixels_per_line;
+
     target->Resolution = settings->calc_data.dpi_x;
-    target->TotalScanLines = info->source_total_lines
-            * target->Resolution / info->source_dpi_y;
+    info->source_lines_per_10_lines = info->source_dpi_y * 10 / target->Resolution;
+    LOGLOG("source_lines_per_10_lines is:%d" ,info->source_lines_per_10_lines);
+    target->PixelsOfWidth = settings->calc_data.pixels_per_line
+            * target->Resolution / info->source_dpi_x;
+    target->PixelsOfWidth += 7;
+    target->PixelsOfWidth /= 8;
+    target->PixelsOfWidth *= 8;
+    LOGLOG("target->PixelsOfWidth is:%d" ,target->PixelsOfWidth);
+    target->TotalScanLines = info->source_total_lines * 10 / info->source_lines_per_10_lines;
+    LOGLOG("target->TotalScanLines is:%d" ,target->TotalScanLines);
 
     info->source_line_buf_size = info->source_pixelsOfWidth;
     info->target_line_buf_size = target->PixelsOfWidth;
-    info->source_lines_per_line = info->source_dpi_y / target->Resolution;
-    info->lines_per_source_line = 1;
-    if(info->source_lines_per_line < 1){
-        info->source_lines_per_line = 1;
-        info->lines_per_source_line = target->Resolution / info->source_dpi_y;
-    }
-
-    info->format = ImageTransFormat_Raw;
-    info->mode = ImageTransMode_rawToBmp;
     switch (settings->settings.colorModel) {
     case Black_White:
         target->BitsPerPixel = 1;
-        info->source_line_buf_size /= 8;
+//        info->source_line_buf_size /= 8;
         info->target_line_buf_size /= 8;
         break;
     case Grayscale:
@@ -346,6 +304,13 @@ void caculate_image_trans_data(ScanSettings* settings)
         info->target_line_buf_size *= 3;
         break;
     }
+    LOGLOG("source_pixelsOfWidth is:%d" ,info->source_pixelsOfWidth);
+    LOGLOG("target->PixelsOfWidth is:%d" ,target->PixelsOfWidth);
+
+    info->image_trans_parameter.gamma = 1000;
+    info->image_trans_parameter.brightness = settings->settings.brightness;
+    info->image_trans_parameter.contrast = settings->settings.contrast;
+    info->image_trans_parameter.mediaO = settings->settings.scan_doctype;
 }
 
 
@@ -403,43 +368,27 @@ SCANINFO get_parameters(ScanSettings* scan_settings)
     scan_info.nWidthInBytes = source_total_lines;                    // Width of image in bytes
     scan_info.nLines = source_bytes_per_line;
  */
-//    if (image_type == IMAGE_LINEART)
-    if (settings->colorModel == Black_White)
-    {
-        // B&W
-        scan_info.nDataType = 1;                        // Data Types: 1 - BW, 2- Grayscale, 4 - Color
-        scan_info.nBitsPerPixel = 1;                        // Pixel Bits: 1 - BW, 8- Grayscale, 24 - Color
-    }
-//    else if (scanner->image_type == IMAGE_GRAY)
-    else if (settings->colorModel == Grayscale)
-    {
-        // B&W / Grayscale
+    switch (settings->colorModel) {
+    case Black_White:
+    case Grayscale:
         scan_info.nDataType = 2;                        // Data Types: 1 - BW, 2- Grayscale, 4 - Color
         scan_info.nBitsPerPixel = 8;                        // Pixel Bits: 1 - BW, 8- Grayscale, 24 - Color
-    }
-//    else if (scanner->image_type == IMAGE_COLOR)
-    else if (settings->colorModel == Color)
-    {
-        // Color
+        break;
+    case Color:
+    default:
         scan_info.nDataType = 4;                        // Data Types: 1 - BW, 2- Grayscale, 4 - Color
         scan_info.nBitsPerPixel = 24;                        // Pixel Bits: 1 - BW, 8- Grayscale, 24 - Color
+        break;
     }
-    else
-    {
-        // invalid scanmode value
-        scan_info.nDataType = 4;                        // Data Types: 1 - BW, 2- Grayscale, 4 - Color
-        scan_info.nBitsPerPixel = 24;                        // Pixel Bits: 1 - BW, 8- Grayscale, 24 - Color
-    }
-
 
     scan_info.nIntensity = 0;                        // Intensity
     scan_info.nContrast = 0;                            // Contrast
 
-    scan_info.nXResolution = pCalc->dpi_x;                        // X resolution
-    scan_info.nYResoultion = pCalc->dpi_y;                        // Y resolution
+    scan_info.nXResolution = pCalc->source_pixel_resolution;                        // X resolution
+    scan_info.nYResoultion = pCalc->source_motor_resolution;                        // Y resolution
 
-    scan_info.nXPosition = ((UINT32) (pCalc->tl_x*pCalc->source_pixel_resolution / UNIT_FACTOR)) /4 * 4;                        // X position (left) of scanner window settings (4x)
-    scan_info.nYPosition = (UINT32) (pCalc->tl_y*pCalc->source_motor_resolution / UNIT_FACTOR);                        // Y position (top) of scanner window settings
+    scan_info.nXPosition = 0;                        // X position (left) of scanner window settings (4x)
+    scan_info.nYPosition = 0;                        // Y position (top) of scanner window settings
 
     scan_info.nXExtent = pCalc->source_pixels_per_line;                            // X Extent (number of pixels in a line) of scanner window (32x)
     scan_info.nYExtent = pCalc->source_total_lines;                            // Y Extent (number of lines) of scanner window (32x)
@@ -491,15 +440,10 @@ int ScannerApi::get_cmd_status()
         ret = -1;
     }else{
         ret = statusRsp.status;
-        if(ret == ScannerApp::STATUS_WARMINGUP){
-            LOGLOG("warming up,please try again later");
-        }else if(ret == ScannerApp::STATUS_USEWITHOUTLOCK){
-
-        }
     }
     return ret;
 }
-
+#include <unistd.h>
 int ScannerApi::lock()
 {
     if(scanner_locked)
@@ -510,11 +454,22 @@ int ScannerApi::lock()
 
     int ret;
 
-    ret = (*device)->write_bulk((char*)&cmd ,sizeof(cmd));
-    if(ret < 0){
-        return ret;
+    for(int i = 0 ;i < 10 ;i++){
+        ret = (*device)->write_bulk((char*)&cmd ,sizeof(cmd));
+        if(ret < 0){
+            return ret;
+        }
+        ret = get_cmd_status();
+        if(ret == ScannerApp::STATUS_WARMINGUP){
+            LOGLOG("warming up,please try again later");
+        }else if(ret == ScannerApp::STATUS_USEWITHOUTLOCK){
+//            unlock();
+            break;
+        }else{
+            break;
+        }
+        usleep(1000000);
     }
-    ret = get_cmd_status();
 
     if(!ret)
         scanner_locked = true;
@@ -530,14 +485,20 @@ int ScannerApi::unlock()
     ScanCmd cmd = {CMDID_CMDHEAD, CMDID_UNLOCKSCANNER};
 
     int ret;
-
-    ret = (*device)->write_bulk((char*)&cmd ,sizeof(cmd));
+    for(int i = 0 ;i < 3 ;i++){
+        ret = (*device)->write_bulk((char*)&cmd ,sizeof(cmd));
+        if(ret == sizeof(cmd)){
+            break;
+        }
+    }
     if(ret < 0){
         return ret;
     }
 
     ret = get_cmd_status();
-
+    if(ret > -1){
+        usleep(50000);
+    }
     if(!ret)
         scanner_locked = false;
     return ret;

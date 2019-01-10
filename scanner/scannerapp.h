@@ -19,10 +19,10 @@ enum Scan_Size {Scan_A4, Scan_A5, Scan_B5, Scan_Letter, Scan_4_6};
 
 typedef struct
 {
-    Scan_DocType scan_doctype;
-    Scan_Dpi scan_dpi;
-    ColorModel colorModel;
-    Scan_Size scan_size;
+    int scan_doctype;
+    int scan_dpi;
+    int colorModel;
+    int scan_size;
     int contrast;
     int brightness;
 }
@@ -32,8 +32,6 @@ typedef
 struct{
     int dpi_x;
     int dpi_y;
-    int tl_x;
-    int tl_y;
     int source_pixel_resolution;
     int source_motor_resolution;
     int source_pixels_per_line;
@@ -91,14 +89,16 @@ public:
 private:
     Scanner* scanner;
     DeviceIO** device;
+    ImageTrans* image_trans;
 
     pthread_t thread;
     pthread_mutex_t mutex;
 
     int init_scan(ScanSettings* settings);
-    int save_scan_data(ScanSettings* settings);
+    int save_scan_data(ScanSettings* settings ,char* buffer ,int buf_size);
     int exit_scan(ScanSettings* settings);
 
+    int trans_process(ScanSettings* settings);
     friend class Scanner;
 };
 

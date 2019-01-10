@@ -173,7 +173,7 @@ void MoreSettingsForScan::setBgColor(QPushButton *button, QString *color)
 }
 
 //选择色彩模式
- void MoreSettingsForScan::selectMode(ColorModel model)
+ void MoreSettingsForScan::selectMode(int model)
  {
     setBgColor(ui->btBgColor, lightgrey_str);
     setBgColor(ui->btBgBW,lightgrey_str);

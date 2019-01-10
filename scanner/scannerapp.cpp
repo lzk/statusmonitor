@@ -15,13 +15,42 @@ void calculate_parameters(ScanSettings* scan_settings);
 //    .scan_size = Scan_A4,
 //};
 
+const char* scan_tmp_file_name = "/tmp/tmpscan.raw";
+FILE* scan_file;
+int scan_buffer_open(const char* mode)
+{
+    int ret = 0;
+    scan_file = fopen(scan_tmp_file_name ,mode);
+    if(!scan_file){
+        ret = -1;
+    }
+    return ret;
+}
+
+int scan_buffer_read(char* buffer ,int buf_size)
+{
+    return fread(buffer ,sizeof(char) ,buf_size ,scan_file);
+}
+
+int scan_buffer_write(char* buffer ,int buf_size)
+{
+    return fwrite(buffer ,sizeof(char) ,buf_size ,scan_file);
+}
+
+int scan_buffer_exit()
+{
+    fclose(scan_file);
+    scan_file = NULL;
+}
+
 int trans_init(ScanSettings* settings)
 {
     int ret;
     ImageTransInfo* info = settings->info;
+
     caculate_image_trans_data(settings);
 
-    ret = ImageTrans::init(info);
+    ret = settings->info->image_trans->init(info);
     if(ret <= 0){
         return ret;
     }
@@ -42,7 +71,7 @@ int trans_trans(ScanSettings* settings)
 {
     ImageTransInfo* info = settings->info;
     int ret;
-    ret = ImageTrans::trans(info);
+    ret = settings->info->image_trans->trans(info);
     //save image
     if(settings->file){
         fwrite(info->target_buffer ,sizeof(char) ,info->target_buf_size ,settings->file);
@@ -57,18 +86,18 @@ void trans_exit(ScanSettings* settings)
         fclose(settings->file);
         settings->file = NULL;
     }
+    settings->info->image_trans->exit();
 }
 
 static void image_trans_thread(void *reference)
 {
     int ret;
     ScanSettings* settings = (ScanSettings*)reference;
-    ImageTransInfo* info = settings->info;
     ret = trans_init(settings);
     if(ret < 0)
         return;
     while (1) {
-        ret = ImageTrans::trans(info);
+        ret = trans_trans(settings);
         if(ret)
             break;
     }
@@ -80,15 +109,18 @@ ScannerApp::ScannerApp(DeviceIO** _device)
     :device(_device)
 {
     scanner = new Scanner(this);
+    image_trans = new ImageTrans;
 }
 
 ScannerApp::~ScannerApp()
 {
     delete scanner;
+    delete image_trans;
 }
 
 int ScannerApp::init_scan(ScanSettings* settings)
 {
+    settings->info->image_trans = image_trans;
     calculate_parameters(settings);
     int ret = trans_init(settings);
     if(ret < 0)
@@ -104,9 +136,10 @@ int ScannerApp::init_scan(ScanSettings* settings)
     return ret;
 }
 
-int ScannerApp::save_scan_data(ScanSettings* settings)
+int ScannerApp::save_scan_data(ScanSettings* settings ,char* buffer ,int buf_size)
 {
-    trans_trans(settings);
+//    trans_trans(settings);
+    scan_buffer_write(buffer ,buf_size);
     return 0;
 }
 
@@ -117,6 +150,7 @@ int ScannerApp::exit_scan(ScanSettings* settings)
 }
 
 #define SCAN_BUFFER_SIZE 	0x10000
+#if 0
 int ScannerApp::scan(ScanSettings* settings)
 {
     int ret;
@@ -145,7 +179,93 @@ int ScannerApp::scan(ScanSettings* settings)
     delete [] resume_buf;
     return ret;
 }
+#else
 
+int ScannerApp::trans_process(ScanSettings* settings)
+{
+    int ret;
+    ret = scan_buffer_open("rb");
+    if(ret){
+        return ret;
+    }
+
+    ImageTransInfo* info = settings->info;
+    caculate_image_trans_data(settings);
+
+
+    int each_lines = 3;
+    int each_source_size =  each_lines * info->source_line_buf_size;
+    char* buffer = new char[each_source_size];
+    info->scan_buffer = buffer;
+
+//    int source_size = each_lines * info->source_line_buf_size;
+    char* jerry_buffer = new char[each_source_size * 2];
+    info->resume_buffer = jerry_buffer;
+    info->resume_buf_size = each_source_size * 2;
+
+    int target_lines = each_lines * 10 / info->source_lines_per_10_lines;
+    int target_size = target_lines * info->target_line_buf_size;
+    char* target_buffer = new char[target_size];
+    info->target_buffer = target_buffer;
+    info->target_buf_size = target_size;
+
+    info->filename = (const char*)settings->filename;
+    image_trans->init(info);
+    int lines;
+    for(int rest_lines = info->source_total_lines ;rest_lines > 0 ;rest_lines = rest_lines - each_lines){
+        if(rest_lines > each_lines){
+            lines = each_lines;
+        }else{
+            lines = rest_lines;
+        }
+        each_source_size = lines * info->source_line_buf_size;
+        scan_buffer_read(buffer ,each_source_size);
+        info->each_source_size = each_source_size;
+        info->lines = lines;
+        image_trans->process(info);
+    }
+    scan_buffer_exit();
+    image_trans->exit();
+
+    delete [] buffer;
+    delete [] jerry_buffer;
+    delete [] target_buffer;
+    return ret;
+}
+
+#define Test_Jerry 1
+int ScannerApp::scan(ScanSettings* settings)
+{
+    int ret = 0;
+    ImageTransInfo image_trans_info;
+    settings->info = &image_trans_info;
+    calculate_parameters(settings);
+#if Test_Jerry
+    ImageTransInfo* info = settings->info;
+    char* source_buf = new char[SCAN_BUFFER_SIZE];
+    info->source_buffer = source_buf;
+    info->source_buf_size = SCAN_BUFFER_SIZE;
+    settings->file = NULL;
+
+    ret = scan_buffer_open("wb+");
+//    ret = init_scan(settings);
+    if(ret){
+        return STATUS_Error_App;
+    }
+
+
+    set_cancel(false);
+    ret = scanner->flat_scan(settings);
+//    exit_scan(settings);
+    scan_buffer_exit();
+    delete [] source_buf;
+#endif
+    if(!ret){
+        trans_process(settings);
+    }
+    return ret;
+}
+#endif
 void ScannerApp::set_cancel(bool cancel)
 {
     scanner->set_cancel(cancel);

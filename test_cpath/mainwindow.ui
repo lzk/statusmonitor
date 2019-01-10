@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>692</width>
+    <height>506</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,6 +19,112 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QListWidget" name="listWidget_printers"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QComboBox" name="dpi">
+          <item>
+           <property name="text">
+            <string>100dpi</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200dpi</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>300dpi</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>600dpi</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1200dpi</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="size">
+          <item>
+           <property name="text">
+            <string>A4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>A5</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>B5</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Letter</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>46</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="mode">
+          <item>
+           <property name="text">
+            <string>color</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>bw</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>gray</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="type">
+          <item>
+           <property name="text">
+            <string>Photo</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Graph</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Text</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="brightness"/>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="contrast"/>
+        </item>
+       </layout>
       </item>
       <item>
        <spacer name="horizontalSpacer">
@@ -38,7 +144,7 @@
         <item>
          <widget class="QPushButton" name="btn_copy">
           <property name="text">
-           <string>copy</string>
+           <string>scan</string>
           </property>
          </widget>
         </item>
@@ -108,8 +214,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
-     <height>22</height>
+     <width>692</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

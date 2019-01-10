@@ -522,12 +522,12 @@ void MainWindow::on_btn_copy_clicked()
 
     ScanSettings scan_settings;
     UiSettings* settings = &scan_settings.settings;
-    settings->brightness = 50;
-    settings->contrast = 50;
-    settings->colorModel = Color;//Grayscale;// Color;
-    settings->scan_dpi = Scan_300DPI;
-    settings->scan_doctype = T_Photo;
-    settings->scan_size = Scan_A4;
+    settings->brightness = ui->brightness->value();
+    settings->contrast = ui->contrast->value();
+    settings->colorModel = ui->mode->currentIndex();//Grayscale;// Color;
+    settings->scan_dpi = ui->dpi->currentIndex();
+    settings->scan_doctype = ui->type->currentIndex();
+    settings->scan_size = ui->size->currentIndex();
     QVariant value;
     value.setValue<ScanSettings>(scan_settings);
     gUInterface->setCmd(UIConfig::CMD_Scan ,current_printer ,value);
@@ -555,5 +555,4 @@ void MainWindow::on_btn_password_set_clicked()
     QVariant value;
     value.setValue<cmdst_passwd>(device_data);
     gUInterface->setCmd(UIConfig::LS_CMD_PASSWD_set ,current_printer ,value);
-
 }

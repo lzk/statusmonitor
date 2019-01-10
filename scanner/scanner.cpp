@@ -29,7 +29,7 @@ int Scanner::flat_scan(ScanSettings* settings)
     if(ret){
         LOGLOG("scanning...error:lock");
         scannner_api->close();
-        return ScannerApp::STATUS_Error_Error;
+        return ret;
     }
 
     ret = scannner_api->set_parameters(settings);
@@ -66,8 +66,7 @@ int Scanner::flat_scan(ScanSettings* settings)
                 ret = -1;
                 break;
             }else{
-                settings->info->scanned_buf_size = size;
-                scanner_app->save_scan_data(settings);
+                scanner_app->save_scan_data(settings ,buffer ,size);
             }
         }else if(status.status == ScanStatus_End){
             ret = status.error_code;
@@ -82,10 +81,13 @@ int Scanner::flat_scan(ScanSettings* settings)
     scannner_api->stop();
 
  ERROR_RETURN:
-    scannner_api->unlock();
+    int aa = scannner_api->unlock();
+    if(aa){
+        LOGLOG("scanner unlock error:%d" ,aa);
+    }
     scannner_api->close();
-    if(ret < 0)
-        ret = ScannerApp::STATUS_Error_Error;
+//    if(ret < 0)
+//        ret = ScannerApp::STATUS_Error_Error;
     return ret;
 }
 

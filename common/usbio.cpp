@@ -3,6 +3,8 @@
 #include <string.h>
 #include "log.h"
 //vid:0x0550 pid:0x0175
+#include <QMutex>
+static QMutex mutex;
 UsbIO::UsbIO()
     :usb(new UsbApi)
     ,pid(-1)
@@ -10,12 +12,10 @@ UsbIO::UsbIO()
     ,interface(0)
 {
     memset(this->serial ,0 ,sizeof(this->serial));
-    usb->init();
 }
 
 UsbIO::~UsbIO()
 {
-    usb->exit();
     delete usb;
 }
 
@@ -27,14 +27,21 @@ int UsbIO::type()
 int UsbIO::open(int port)
 {
     (void)(port);
-//    mutex.lock();
-    return usb->open(vid ,pid ,serial ,interface);
+    mutex.lock();
+    usb->init();
+    int ret = usb->open(vid ,pid ,serial ,interface);
+    if(ret){
+        usb->exit();
+        mutex.unlock();
+    }
+    return ret;
 }
 
 int UsbIO::close(void)
 {
     usb->close();
-//    mutex.unlock();
+    usb->exit();
+    mutex.unlock();
     return 0;
 }
 
@@ -86,12 +93,21 @@ int UsbIO::resolveUrl(const char* url)
 
 bool UsbIO::isConnected()
 {
-    return !usb->isConnected(vid ,pid ,serial);
+    mutex.lock();
+    usb->init();
+    bool ret = !usb->isConnected(vid ,pid ,serial);
+    usb->exit();
+    mutex.unlock();
+    return ret;
 }
 
 const char* UsbIO::getDeviceAddress()
 {
+    mutex.lock();
+    usb->init();
     int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address);
+    usb->exit();
+    mutex.unlock();
     if(ret){
        address = 0;
     }
