@@ -7,6 +7,7 @@
 #include "ids_string.h"
 #include "animationdlg.h"
 #include <qmenu.h>
+#include <qdesktopservices.h>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -22,8 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
     connect(gUInterface, SIGNAL(setDeviceMsg(QString,int)),this, SLOT(setDeviceMsg(QString,int)));
+//    connect(gUInterface, SIGNAL(updateStatus(QVariant)),this,SLOT(updateStatus(QVariant)));
 
     gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
+    gUInterface->setTimer(10);
 
 //    qDebug()<<"horizontalLayout"<<ui->horizontalLayout->geometry();
 //    qDebug()<<"refreshbtn"<<ui->refreshBtn->geometry();
@@ -195,7 +198,7 @@ void MainWindow::on_refreshBtn_clicked()
 //    qDebug()<<"refresh"<<ui->refreshBtn->pos();
 //    statusCycle->setGeometry(point.x(),point.y(),20,19);
     statusCycle->setGeometry(70,37,20,19);
-    qDebug()<<"status"<<statusCycle->pos();
+//    qDebug()<<"status"<<statusCycle->pos();
 
     if(ui->tabStackedWidget->currentIndex() != 0)
     {
@@ -219,15 +222,11 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
     }
         break;
     case UIConfig::CMD_GetStatus:{
-        PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
-        PrinterStatus_struct& status = printerInfo.status;
         if(!result){
-            LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
-            on_status_ch(status);
+            LOGLOG("MainWindow")
+            updateStatus(data);
         }else{//get status fail
             LOGLOG("get printer status fail!");
-            memset(&status ,-1 ,sizeof(status));
-//                status.PrinterStatus = -1;
         }
     }
         break;
@@ -254,11 +253,14 @@ void MainWindow::updatePrinter(const QVariant& data)
     }
     if(printers.isEmpty()){
         setcurrentPrinter(QString());
+        return;
     }else if(printers.contains(current_printer)){
         ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
     }else{
         setcurrentPrinter(printers.first());
     }
+
+    on_Copy_clicked();
 
 }
 
@@ -275,9 +277,13 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
 }
 
 
-void MainWindow::updateStatus(const PrinterStatus_struct& status)
+void MainWindow::updateStatus(QVariant data)
 {
-
+    LOGLOG("updateStatus");
+    PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
+    PrinterStatus_struct& status = printerInfo.status;
+    LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
+    on_status_ch(status);
 }
 
 void MainWindow::updateOtherStatus(const QString&  ,const PrinterStatus_struct& )
@@ -293,6 +299,7 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
         setcurrentPrinter(printers.at(index));
         if(ui->tabStackedWidget->currentIndex() != 0)
         {
+            LOGLOG("on_deviceNameBox_currentIndexChanged");
             on_Copy_clicked();
         }
     }
@@ -311,93 +318,158 @@ void MainWindow::errorStatus(bool bIsErrorStatus)
         ui->Copy->setStyleSheet("background-color: white;color:gray;border-top-right-radius:0px;border-bottom-right-radius:0px");
         ui->Scan->setStyleSheet("background-color: white;color:gray;border-radius:0px");
         ui->Setting->setStyleSheet("background-color: white;color:gray;border-top-left-radius:0px;border-bottom-left-radius:0px");
-        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Disable.tiff)");
+        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Disable.tif);");
+        ui->btCar->setEnabled(false);
     }
     else
-    {
-        on_Copy_clicked();
-        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png)");
+    { 
+        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png);");
+        ui->btCar->setEnabled(true);
     }
 
     ui->Copy->setEnabled(!bIsErrorStatus);
     ui->Scan->setEnabled(!bIsErrorStatus);
     ui->Setting->setEnabled(!bIsErrorStatus);
     ui->btCar->setEnabled(!bIsErrorStatus);
+
+    ui->tabStackedWidget->set_setting_enabled(!bIsErrorStatus);
+
+//    if(ui->deviceNameBox->isEnabled())
+//    {
+        ui->tabStackedWidget->set_scan_enabled(!bIsErrorStatus);//Added for default enable scan button by gavin 2016-04-14
+        ui->tabStackedWidget->set_copy_enabled(!bIsErrorStatus);
+//    }
+//    ui->errorBtn->hide();
+
+}
+
+void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
+{
+    switch ( s )
+    {
+        case UIConfig::Ready                                   : ui->label_10->setStyleSheet("QLabel{color:Black;}"); break;
+        case UIConfig::Printing                                : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::PowerSaving                             : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::WarmingUp                               : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::PrintCanceling                          : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::Processing                              : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::CopyScanning                            : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::CopyScanNextPage                        : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::CopyPrinting                            : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::CopyCanceling                           : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::IDCardMode                              : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::ScanScanning                            : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::ScanSending                             : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::ScanCanceling                           : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::ScannerBusy                             : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::TonerEnd1                               : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
+        case UIConfig::TonerEnd2                               : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
+        case UIConfig::TonerNearEnd                            : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
+        case UIConfig::OPCNearEnd                              : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
+        case UIConfig::OPCEnd                                  : ui->label_10->setStyleSheet("QLabel{color:Red;}");;    break;
+        case UIConfig::ManualFeedRequired                      : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::InitializeJam                           : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::NofeedJam                               : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::JamAtRegistStayOn                       : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::JamAtExitNotReach                       : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::JamAtExitStayOn                         : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::CoverOpen                               : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::NoTonerCartridge                        : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::WasteTonerFull                          : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
+        case UIConfig::PDLMemoryOver                          : ui->label_10->setStyleSheet("QLabel{color:Red;}");; break;
+        case UIConfig::FWUpdate                                : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::OverHeat                                : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
+        case UIConfig::PolygomotorOnTimeoutError               : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::PolygomotorOffTimeoutError              : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::PolygomotorLockSignalError              : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::BeamSynchronizeError                    : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::BiasLeak                                : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::PlateActionError                        : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::MainmotorError                          : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::MainFanMotorEorror                      : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::JoinerThermistorError                   : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::JoinerReloadError                       : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::HighTemperatureErrorSoft                : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::HighTemperatureErrorHard                : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::JoinerFullHeaterError                   : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::Joiner3timesJamError                    : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::LowVoltageJoinerReloadError             : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::MotorThermistorError                    : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::EEPROMCommunicationError                : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::CTL_PRREQ_NSignalNoCome                 : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::SCAN_USB_Disconnect                     : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::SCAN_NET_Disconnect                     : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::ScanMotorError                          : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::SCAN_DRV_CALIB_FAIL                     : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::NetWirelessDongleCfgFail                : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::DMAError                                : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        default:
+                                                                  ui->label_10->setStyleSheet("QLabel{color:Black;}");;
+                                                                  break;
+    }
 }
 
 void MainWindow::on_status_ch(const PrinterStatus_struct& status)
 {
-
-    ui->tabStackedWidget->set_setting_enabled(true);
-
-    if(ui->deviceNameBox->isEnabled())
-    {
-        ui->tabStackedWidget->set_scan_enabled(true);//Added for default enable scan button by gavin 2016-04-14
-        ui->tabStackedWidget->set_copy_enabled(true);
-    }
     ui->label_10->setStyleSheet("QLabel{color:break;}");
     ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
-    ui->errorBtn->hide();
+    errorStatus(false);
 
-    switch (status.PrinterStatus) {
-    case PS_READY:
+    UIConfig::StatusDisplayType displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
+    QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,UIConfig::UnknowJob,0);
+
+    ui->label_10->setText(errMsg);
+    set_Message_Background_Color((UIConfig::EnumStatus)status.PrinterStatus);
+
+    switch (displayStatus) {
+    case UIConfig::Status_Ready:
         ui->label_6->setText(tr("ResStr_Ready"));
         ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
-        //ui->label_10->setText(devStatus->getDevMsg());
-        errorStatus(false);
+
+
+        ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
         break;
-    case PS_POWER_SAVING:
+    case UIConfig::Status_Sleep:
         ui->label_6->setText(tr("ResStr_Sleep"));
         ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
-       // ui->label_10->setText(devStatus->getDevMsg());
-        errorStatus(false);
         break;
-    case PS_OFFLINE:
+    case UIConfig::Status_Offline:
         ui->label_6->setText(tr("ResStr_Offline"));
         ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(110, 110, 110);}");
-        //ui->label_10->setText(devStatus->getDevMsg());
-        qDebug()<<"set_copy_enabled false";
+
         ui->tabStackedWidget->set_copy_enabled(false);
         ui->tabStackedWidget->set_setting_enabled(false);
         ui->tabStackedWidget->set_scan_enabled(false); //Added for disable scan button when offline by gavin 2016-04-14
+        ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
+        ui->mofenProgressBar->setValue(0);
         break;
-//    case PS_READY:
-//        ui->label_6->setText(tr("ResStr_Ready")); //device status is warning, the ui status is ready in spec
-//        ui->label_6->setStyleSheet("QLabel{color: white;"
-//                                    "border:0px solid;"
-//                                    "border-radius:5px;"
-//                                    "background-color: rgb(53, 177, 20);}");
-////        ui->label_10->setText(devStatus->getDevMsg());
-//        break;
-    case PS_BUSY:
+    case UIConfig::Status_Busy:
         ui->label_6->setText(tr("ResStr_Busy"));
         ui->label_6->setStyleSheet("QLabel{color: white;"
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
-        //ui->label_10->setText(devStatus->getDevMsg());
-        errorStatus(false);
 
+        ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
         break;
-    case PS_ERROR_ERROR:
+    case UIConfig::Status_Error:
         ui->label_6->setText(tr("ResStr_Error"));
         ui->label_6->setStyleSheet("QLabel{color: white;"
                                     "border:0px solid;"
                                     "border-radius:5px;"
-                                    "background-color: red;}");
-        //ui->label_10->setText(devStatus->getDevMsg());
-        ui->label_10->setStyleSheet("QLabel{color:red;}");
+                                    "background-color: red;}");       
         ui->errorBtn->show();
-        errorStatus(false);
+
+        ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Red.png);");
         break;
     default:
         break;
@@ -436,4 +508,9 @@ void MainWindow::on_errorBtn_clicked()
     {
         return;
     }
+}
+
+void MainWindow::on_btCar_clicked()
+{
+    QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/buy_abc2.aspx"));
 }

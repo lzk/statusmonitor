@@ -217,63 +217,63 @@
         <translation>Toner</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="473"/>
+        <location filename="../mainwindow.ui" line="456"/>
         <source>ResStr_Model</source>
         <translation>Model</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="529"/>
+        <location filename="../mainwindow.ui" line="512"/>
         <source>ResStr_Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="622"/>
+        <location filename="../mainwindow.ui" line="639"/>
         <source>ResStr_ExtraAdd_Copy</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="667"/>
+        <location filename="../mainwindow.ui" line="684"/>
         <source>ResStr_ExtraAdd_Scan</source>
         <translation>Scan</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="696"/>
+        <location filename="../mainwindow.ui" line="713"/>
         <source>ResStr_Setting</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="71"/>
+        <location filename="../mainwindow.cpp" line="64"/>
         <source>éåº(&amp;Q)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="124"/>
+        <location filename="../mainwindow.cpp" line="117"/>
         <source>ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_</source>
         <translation>The scanned images will be deleted after the application is closed. Close application?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="341"/>
+        <location filename="../mainwindow.cpp" line="344"/>
         <source>ResStr_Ready</source>
         <translation>Ready</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="350"/>
+        <location filename="../mainwindow.cpp" line="353"/>
         <source>ResStr_Sleep</source>
         <translation>Sleep</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="361"/>
-        <location filename="../mainwindow.cpp" line="359"/>
+        <location filename="../mainwindow.cpp" line="362"/>
         <source>ResStr_Offline</source>
         <translation>Offline</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="379"/>
+        <location filename="../mainwindow.cpp" line="382"/>
         <source>ResStr_Busy</source>
         <translation>Busy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="389"/>
+        <location filename="../mainwindow.cpp" line="392"/>
         <source>ResStr_Error</source>
         <translation>Error</translation>
     </message>
@@ -282,7 +282,7 @@
     <name>MemberCenterWidget</name>
     <message>
         <location filename="../membercenterwidget.ui" line="54"/>
-        <location filename="../membercenterwidget.ui" line="1162"/>
+        <location filename="../membercenterwidget.ui" line="1144"/>
         <source>ResStr_Change_Account_Information</source>
         <translation>Change Account Information</translation>
     </message>
@@ -312,52 +312,52 @@
         <translation>Address</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="347"/>
+        <location filename="../membercenterwidget.ui" line="340"/>
         <source>ResStr_Year</source>
         <translation>Year</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="365"/>
+        <location filename="../membercenterwidget.ui" line="353"/>
         <source>ResStr_Month</source>
         <translation>Month</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="384"/>
+        <location filename="../membercenterwidget.ui" line="371"/>
         <source>ResStr_Day</source>
         <translation>Day</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="472"/>
+        <location filename="../membercenterwidget.ui" line="458"/>
         <source>ResStr_OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="506"/>
+        <location filename="../membercenterwidget.ui" line="491"/>
         <source>ResStr_Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="815"/>
+        <location filename="../membercenterwidget.ui" line="797"/>
         <source>ResStr_Return</source>
         <translation>Return</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="837"/>
+        <location filename="../membercenterwidget.ui" line="819"/>
         <source>ResStr_User_Experience</source>
         <translation>User Experience Improvement Program</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1242"/>
+        <location filename="../membercenterwidget.ui" line="1224"/>
         <source>ResStr_Product_Support</source>
         <translation>Product and support</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1267"/>
+        <location filename="../membercenterwidget.ui" line="1249"/>
         <source>ResStr_About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="951"/>
+        <location filename="../membercenterwidget.ui" line="933"/>
         <source>ResStr_Login_</source>
         <translation>Login</translation>
     </message>
@@ -367,17 +367,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="538"/>
+        <location filename="../membercenterwidget.ui" line="522"/>
         <source>ResStr_Women</source>
         <translation>female</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="570"/>
+        <location filename="../membercenterwidget.ui" line="553"/>
         <source>ResStr_Man</source>
         <translation>male</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1122"/>
+        <location filename="../membercenterwidget.ui" line="1104"/>
         <source>ResStr_Member_Center</source>
         <translation>Member Center</translation>
     </message>
@@ -971,7 +971,7 @@
     </message>
     <message>
         <location filename="../settingsstackedwidget.ui" line="931"/>
-        <location filename="../settingsstackedwidget.cpp" line="958"/>
+        <location filename="../settingsstackedwidget.cpp" line="1032"/>
         <source>ResStr_Setting</source>
         <translation>Settings</translation>
     </message>
@@ -1099,6 +1099,8 @@
         <location filename="../settingsstackedwidget.cpp" line="312"/>
         <location filename="../settingsstackedwidget.cpp" line="371"/>
         <location filename="../settingsstackedwidget.cpp" line="408"/>
+        <location filename="../settingsstackedwidget.cpp" line="445"/>
+        <location filename="../settingsstackedwidget.cpp" line="482"/>
         <source>ResStr_Setting_Fail</source>
         <translation>Configure failed</translation>
     </message>
@@ -1106,47 +1108,60 @@
         <location filename="../settingsstackedwidget.cpp" line="310"/>
         <location filename="../settingsstackedwidget.cpp" line="369"/>
         <location filename="../settingsstackedwidget.cpp" line="406"/>
+        <location filename="../settingsstackedwidget.cpp" line="443"/>
+        <location filename="../settingsstackedwidget.cpp" line="480"/>
         <source>ResStr_Setting_Successfully_</source>
         <translation>Configured successfully</translation>
     </message>
     <message>
         <location filename="../settingsstackedwidget.cpp" line="378"/>
+        <location filename="../settingsstackedwidget.cpp" line="415"/>
+        <location filename="../settingsstackedwidget.cpp" line="452"/>
         <source>ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature</source>
         <translation>Turn off the printer and let it cool to room temperature before turning it on again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="732"/>
+        <location filename="../settingsstackedwidget.cpp" line="806"/>
         <source>ResStr_Msg_9</source>
         <translation>The network name must be 1 to 32 characters long. Please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="741"/>
+        <location filename="../settingsstackedwidget.cpp" line="815"/>
         <source>ResStr_Msg_3</source>
         <translation>The password must be 8 to 63 ASCII characters or 64 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="965"/>
+        <location filename="../settingsstackedwidget.cpp" line="1039"/>
         <source>ResStr_Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1234"/>
+        <location filename="../settingsstackedwidget.cpp" line="1206"/>
+        <source>ResStr_This_operation_will_reset_the_drum</source>
+        <translation>This operation will reset the drum status. Please confirm the new drum cartridge has been replaced before performing this.  Do you want to continue?</translation>
+    </message>
+    <message>
+        <location filename="../settingsstackedwidget.cpp" line="1269"/>
+        <source>ResStr_This_operation_will_reset_the_toner</source>
+        <translation>This operation will reset the toner to 100%. Please confirm the new toner cartridge has been replaced before performing this.  Do you want to continue?</translation>
+    </message>
+    <message>
+        <location filename="../settingsstackedwidget.cpp" line="1305"/>
         <source>ResStr_The_new_password_can_not_be_empty_</source>
         <translation>The new password cannot be empty.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1243"/>
+        <location filename="../settingsstackedwidget.cpp" line="1314"/>
         <source>ResStr_The_passwords_you_entered__are_different__please_try_again_</source>
         <translation>The passwords you entered are different, please try again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="756"/>
-        <location filename="../settingsstackedwidget.cpp" line="824"/>
-        <location filename="../settingsstackedwidget.cpp" line="980"/>
-        <location filename="../settingsstackedwidget.cpp" line="1015"/>
-        <location filename="../settingsstackedwidget.cpp" line="1137"/>
-        <location filename="../settingsstackedwidget.cpp" line="1159"/>
-        <location filename="../settingsstackedwidget.cpp" line="1258"/>
+        <location filename="../settingsstackedwidget.cpp" line="830"/>
+        <location filename="../settingsstackedwidget.cpp" line="898"/>
+        <location filename="../settingsstackedwidget.cpp" line="1054"/>
+        <location filename="../settingsstackedwidget.cpp" line="1089"/>
+        <location filename="../settingsstackedwidget.cpp" line="1223"/>
+        <location filename="../settingsstackedwidget.cpp" line="1329"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
@@ -1328,27 +1343,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="58"/>
+        <location filename="../membercenter/userlogin.ui" line="64"/>
         <source>ResStr_Verification_Code</source>
         <translation>Verification code</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="157"/>
+        <location filename="../membercenter/userlogin.ui" line="167"/>
         <source>ResStr_Login_</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="175"/>
+        <location filename="../membercenter/userlogin.ui" line="185"/>
         <source>ResStr_Express_Login_using_mobile_number</source>
         <translation>Use mobile number to login</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="234"/>
+        <location filename="../membercenter/userlogin.ui" line="245"/>
         <source>ResStr_Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="258"/>
+        <location filename="../membercenter/userlogin.ui" line="269"/>
         <source>ResStr_Msg_4</source>
         <translation>Please enter your mobile number</translation>
     </message>
@@ -1358,18 +1373,18 @@
         <translation>Invalid verification code. Please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.cpp" line="146"/>
+        <location filename="../membercenter/userlogin.cpp" line="150"/>
         <source>ResStr_Msg_6</source>
         <translation>Failed to send verification code.</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="110"/>
-        <location filename="../membercenter/userlogin.cpp" line="119"/>
+        <location filename="../membercenter/userlogin.ui" line="121"/>
+        <location filename="../membercenter/userlogin.cpp" line="122"/>
         <source>ResStr_Get_Verification_Code</source>
         <translation>Get verification code</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.cpp" line="137"/>
+        <location filename="../membercenter/userlogin.cpp" line="140"/>
         <source>ResStr_Msg_5</source>
         <translation>Verification code sent successfully.</translation>
     </message>

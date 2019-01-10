@@ -5,17 +5,38 @@
 #define PS_PRINTING								0x01
 #define PS_POWER_SAVING							0x02
 #define PS_WARMING_UP							0x03
-#define PS_PENDING_DELETION						0x04
-#define PS_PAUSED								0x05
-#define PS_WAITING								0x06
+#define PS_PRINT_CANCELING						0x04
+//#define PS_PAUSED								0x05
+//#define PS_WAITING								0x06
 #define PS_PROCESSING							0x07
-#define PS_BUSY									0x08
+//#define PS_BUSY									0x08
+#define PS_COPY_SCANNING                        0x60
+#define PS_COPY_SCAN_NEXT_PAGE                  0x61
+#define PS_COPY_PRINTING                        0x62
+#define PS_COPY_CANCELING                       0x63
+#define PS_IDCARD_MODE                          0x64
+#define PS_SCAN_SCANNING                        0x6A
+#define PS_SCAN_SENDING                         0x6B
+#define PS_SCAN_CANCELING                       0x6C
+#define PS_SCANNER_BUSY                         0x6D
+#define PS_TONER_END1                           0x7F
+#define PS_TONER_END2                           0x80
+#define PS_TONER_NEAR_END                       0x81
+#define PS_OPC_NEAR_END                         0x86
+#define PS_OPC_END                              0xCC
+#define PS_MANUAL_FEED_REQUIRED					0x85
+#define PS_INITIALIZE_JAM                       0xBC
+#define PS_NOFEEDJAM                            0xBD
+#define PS_JAM_AT_REGIST_STAY_ON                0xBE
+#define PS_JAM_AT_EXIT_STAY_ON                  0xC0
+#define PS_COVER_OPEN                           0xC1
+
 #define PS_OFFLINE								0x80
 #define PS_TONER_LOW							0x81
 #define PS_INITIALIZING							0x82
 #define PS_UNKNOWN								0x83
 #define PS_ACTIVE								0x84
-#define PS_MANUAL_FEED_REQUIRED					0x85
+
 
 #define PS_ERROR_PAPER_JAM						0xC0
 #define PS_ERROR_DOOR_OPEN						0xC1

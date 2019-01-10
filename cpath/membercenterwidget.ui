@@ -43,7 +43,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>27</pointsize>
+       <pointsize>24</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -68,7 +68,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>18</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -96,7 +96,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>18</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -124,7 +124,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>18</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -152,7 +152,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>18</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -180,7 +180,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>18</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -290,7 +290,7 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QSpinBox" name="spinBox_M">
      <property name="geometry">
       <rect>
-       <x>539</x>
+       <x>534</x>
        <y>320</y>
        <width>51</width>
        <height>25</height>
@@ -299,7 +299,6 @@ background-color: rgb(235, 235, 235);</string>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>16</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -320,7 +319,6 @@ background-color: rgb(235, 235, 235);</string>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>16</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -332,16 +330,11 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="labelYear">
      <property name="geometry">
       <rect>
-       <x>504</x>
+       <x>497</x>
        <y>315</y>
        <width>31</width>
        <height>31</height>
       </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>20</pointsize>
-      </font>
      </property>
      <property name="text">
       <string>ResStr_Year</string>
@@ -350,16 +343,11 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="labelMon">
      <property name="geometry">
       <rect>
-       <x>594</x>
+       <x>591</x>
        <y>315</y>
        <width>31</width>
        <height>31</height>
       </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>20</pointsize>
-      </font>
      </property>
      <property name="text">
       <string>ResStr_Month</string>
@@ -377,7 +365,6 @@ background-color: rgb(235, 235, 235);</string>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>20</pointsize>
       </font>
      </property>
      <property name="text">
@@ -445,7 +432,6 @@ background-color: rgb(235, 235, 235);</string>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>16</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -484,7 +470,6 @@ QPushButton:Disable{
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>16</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -509,16 +494,15 @@ QPushButton:pressed{
     <widget class="QRadioButton" name="btFemale">
      <property name="geometry">
       <rect>
-       <x>580</x>
+       <x>560</x>
        <y>376</y>
-       <width>71</width>
+       <width>91</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>微软雅黑</family>
-       <pointsize>20</pointsize>
       </font>
      </property>
      <property name="layoutDirection">
@@ -541,16 +525,15 @@ QRadioButton::indicator::checked {
     <widget class="QRadioButton" name="btMan">
      <property name="geometry">
       <rect>
-       <x>440</x>
+       <x>430</x>
        <y>376</y>
-       <width>71</width>
+       <width>81</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>20</pointsize>
       </font>
      </property>
      <property name="layoutDirection">
@@ -591,7 +574,7 @@ QRadioButton::indicator::checked {
     <widget class="QSpinBox" name="spinBox">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>419</x>
        <y>316</y>
        <width>71</width>
        <height>31</height>
@@ -600,7 +583,6 @@ QRadioButton::indicator::checked {
      <property name="font">
       <font>
        <family>黑体</family>
-       <pointsize>16</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>

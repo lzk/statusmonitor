@@ -58,9 +58,15 @@ void UInterface::cmdResult_slot(int cmd,int result ,QVariant data)
     (void)data;
     switch (cmd) {
     case UIConfig::CMD_GetStatus:
+        qDebug("UInterface");
         if(timeval > 0){
             timer.start(timeval * 1000);
         }
+//        if(!result){
+//            emit updateStatus(data);
+//        }else{//get status fail
+//            LOGLOG("get printer status fail!");
+//        }
         break;
     default:
         break;

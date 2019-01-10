@@ -11,6 +11,7 @@
 #include "settingwarming.h"
 #include "qdebug.h"
 #include <qbuttongroup.h>
+#include "promptdialog.h"
 
 #define RETRYTIMERS 3;
 
@@ -105,7 +106,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
         {
         case UIConfig::CMD_WIFI_refresh_plus:
             LOGLOG("CMD_WIFI_refresh_plus enter");
-            if(!result || WarmingUp == result){ //when the machine is warmming up, the err will be STATUS_WarmingUp
+            if(!result || UIConfig::WarmingUp == result){ //when the machine is warmming up, the err will be STATUS_WarmingUp
                 isDoingCMD = false;
                 retryTimes = 0;
             }
@@ -127,7 +128,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 emit cycleStop();
             break;
         case UIConfig::LS_CMD_WIFI_Get_SoftAp:
-            if(!result || WarmingUp == result)
+            if(!result || UIConfig::WarmingUp == result)
             {
                 qDebug()<<QString(softap.ssid).left(32)<<":"<<softap.pwd;
                 softap = data.value<cmdst_softap>();
@@ -191,7 +192,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             break;
         case UIConfig::LS_CMD_NET_GetV4:
-            if(!result || WarmingUp == result)
+            if(!result || UIConfig::WarmingUp == result)
             {
                 info_ipv4 = data.value<net_info_st>();
                 info_ipv4_orn = info_ipv4;
@@ -257,7 +258,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             break;
 
         case UIConfig::LS_CMD_PRN_PSaveTime_Get:
-            if(!result || WarmingUp == result) {
+            if(!result || UIConfig::WarmingUp == result) {
                 psavetm = data.value<cmdst_PSave_time>();
                 QString str;
                 str.setNum(psavetm);
@@ -316,7 +317,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             break;
 
         case UIConfig::LS_CMD_PRN_Get_UserConfig:
-            if(!result || WarmingUp == result) {
+            if(!result || UIConfig::WarmingUp == result) {
                 userconfig = data.value<cmdst_userconfig>();
                 userconfig_orn = userconfig;
                 initAdvanceSetting(userconfig, false);
@@ -373,6 +374,80 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             break;
         case UIConfig::LS_CMD_PRN_FusingScReset:
+            if(!result)
+            {
+                SettingWarming *warming = new SettingWarming(0, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
+                warming->setWindowTitle("ResStr_Prompt");
+
+                warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                warming->exec();
+                warming->deleteLater();
+                isDoingCMD = false;
+                retryTimes = 0;
+            }
+            else {
+                if(!isDoingCMD){
+                    isDoingCMD = true;
+                    retryTimes = RETRYTIMERS;
+                }
+                if(retryTimes > 0){
+                    retryTimes--;
+                    on_btErrorClear_clicked();
+                }
+                else{
+                    isDoingCMD = false;
+                }
+            }
+            if(!isDoingCMD)
+            {
+                emit cycleStop();
+                QString deviceMsg;
+                if(result)
+                    deviceMsg = tr("ResStr_Setting_Successfully_");
+                else
+                    deviceMsg = tr("ResStr_Setting_Fail");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+            }
+            break;
+        case UIConfig::LS_CMD_PRN_DrumReset:
+            if(!result)
+            {
+                SettingWarming *warming = new SettingWarming(0, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
+                warming->setWindowTitle("ResStr_Prompt");
+
+                warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                warming->exec();
+                warming->deleteLater();
+                isDoingCMD = false;
+                retryTimes = 0;
+            }
+            else {
+                if(!isDoingCMD){
+                    isDoingCMD = true;
+                    retryTimes = RETRYTIMERS;
+                }
+                if(retryTimes > 0){
+                    retryTimes--;
+                    on_btErrorClear_clicked();
+                }
+                else{
+                    isDoingCMD = false;
+                }
+            }
+            if(!isDoingCMD)
+            {
+                emit cycleStop();
+                QString deviceMsg;
+                if(result)
+                    deviceMsg = tr("ResStr_Setting_Successfully_");
+                else
+                    deviceMsg = tr("ResStr_Setting_Fail");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+            }
+            break;
+        case UIConfig::LS_CMD_PRN_TonerReset:
             if(!result)
             {
                 SettingWarming *warming = new SettingWarming(0, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
@@ -1128,23 +1203,13 @@ void SettingsStackedWidget::on_btDensityReduce_clicked()
 
 void SettingsStackedWidget::on_btDrumReset_clicked()
 {
-    if(!isLogn)// && CMD_STATUS_COMPLETE == device->get_cmdStatus())
+    PromptDialog *pDialog = new PromptDialog(this);
+    pDialog->setDialogMsg(tr("ResStr_This_operation_will_reset_the_drum"));
+    pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    if (pDialog->exec() == QDialog::Accepted)
     {
+        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_DrumReset);
         emit cycleStart();
-        AuthenticationDlg *dlg = new AuthenticationDlg(0, &isLogn);
-        dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
-                            & ~Qt::WindowMinimizeButtonHint );
-        dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
-        dlg->exec();
-    }
-    if(isLogn)
-    {
-        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_FusingScReset);
-        emit cycleStart();
-    }
-    else
-    {
-        emit cycleStop();
     }
 }
 
@@ -1201,7 +1266,14 @@ void SettingsStackedWidget::on_btLowHumidity_clicked()
 
 void SettingsStackedWidget::on_btTonerReset_clicked()
 {
-
+    PromptDialog *pDialog = new PromptDialog(this);
+    pDialog->setDialogMsg(tr("ResStr_This_operation_will_reset_the_toner"));
+    pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    if (pDialog->exec() == QDialog::Accepted)
+    {
+        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_TonerReset);
+        emit cycleStart();
+    }
 }
 
 void SettingsStackedWidget::on_btTopAdd_clicked()

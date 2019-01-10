@@ -444,8 +444,12 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             if(!result){
                 cmdst_user_center device_data;
                 result = lshell->usercenterinfo_get(&device_data);
+                struct_user_center user_center;
+                user_center.strPrinterModel = printer->name;
+                qDebug()<<printer;
+                user_center.user_center = device_data;
                 device->close();
-                value.setValue(device_data);
+                value.setValue(user_center);
             }
         }
         cmdResult(cmd ,result ,value);
