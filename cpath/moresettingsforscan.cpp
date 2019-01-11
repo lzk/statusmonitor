@@ -189,24 +189,6 @@ void MoreSettingsForScan::setBgColor(QPushButton *button, QString *color)
      }
 }
 
- void MoreSettingsForScan::selectModeColor()
- {
-    param_scan->colorModel = Color;
-    selectMode(Color);
- }
-
- void MoreSettingsForScan::selectModeGreyScale()
- {
-     param_scan->colorModel = Grayscale;
-     selectMode(Grayscale);
- }
-
- void MoreSettingsForScan::selectModeBW()
- {
-     param_scan->colorModel = Black_White;
-     selectMode(Black_White);
- }
-
 void MoreSettingsForScan::on_comboDpi_currentIndexChanged(int index)
 {
     param_scan->scan_dpi = Scan_Dpi(index);
@@ -493,3 +475,35 @@ bool MoreSettingsForScan::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
+void MoreSettingsForScan::on_btModeColor_clicked()
+{
+    param_scan->colorModel = Color;
+    selectMode(Color);
+}
+
+void MoreSettingsForScan::on_btModeGreyscale_clicked()
+{
+    param_scan->colorModel = Grayscale;
+    selectMode(Grayscale);
+}
+
+void MoreSettingsForScan::on_btModeBW_clicked()
+{
+    param_scan->colorModel = Black_White;
+    selectMode(Black_White);
+}
+
+void MoreSettingsForScan::on_btBgColor_clicked()
+{
+    on_btModeColor_clicked();
+}
+
+void MoreSettingsForScan::on_btBgGrayscale_clicked()
+{
+    on_btModeGreyscale_clicked();
+}
+
+void MoreSettingsForScan::on_btBgBW_clicked()
+{
+    on_btModeBW_clicked();
+}

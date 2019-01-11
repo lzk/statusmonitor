@@ -97,6 +97,9 @@ private:
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
     void createSysTray();
+
+    bool enabledScanCopy;
+    bool enabledWiFi;
 };
 
 #endif // MAINWINDOW_H

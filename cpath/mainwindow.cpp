@@ -9,7 +9,7 @@
 #include <qmenu.h>
 #include <qdesktopservices.h>
 
-#define DEBUG
+//#define DEBUG
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,12 +35,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->errorBtn->hide();
 #ifndef DEBUG
     gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
-    gUInterface->setTimer(10);
     errorStatus(true);
 #else
     qDebug()<<"Status_Ready";
     printers << QString("Lenovo Pro");
     printers << QString("Lenovo Pro D");
+    printers << QString("Lenovo Pro L");
+    printers << QString("Lenovo Pro M");
+    printers << QString("Lenovo Pro W");
 
     ui->label_6->setText(tr("ResStr_Ready"));
     ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
@@ -57,6 +59,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->deviceNameBox->setEnabled(true);
     ui->deviceNameBox->addItem(QString("Lenovo Pro"));
     ui->deviceNameBox->addItem(QString("Lenovo Pro D"));
+    ui->deviceNameBox->addItem(QString("Lenovo Pro L"));
+    ui->deviceNameBox->addItem(QString("Lenovo Pro M"));
+    ui->deviceNameBox->addItem(QString("Lenovo Pro W"));
     qDebug()<<"printers1"<<printers;
 #endif
 
@@ -179,7 +184,10 @@ void MainWindow::on_Setting_clicked()
     ui->Setting->setStyleSheet(selectState + "border-top-left-radius:0px;border-bottom-left-radius:0px");
 
     ui->tabStackedWidget->setCurrentIndex(2);
-    ui->tabStackedWidget->on_btn_WiFi_clicked();
+    if(enabledWiFi)
+    {
+        ui->tabStackedWidget->on_btn_WiFi_clicked();
+    }
 }
 
 void MainWindow::on_loginButton_clicked()
@@ -212,19 +220,17 @@ void MainWindow::on_SettingImgBtn_clicked()
     ui->Setting->setStyleSheet(selectState + "border-top-left-radius:0px;border-bottom-left-radius:0px");
 
     ui->tabStackedWidget->setCurrentIndex(2);
-    ui->tabStackedWidget->on_btn_WiFi_clicked();
+    if(enabledWiFi)
+    {
+        ui->tabStackedWidget->on_btn_WiFi_clicked();
+    }
 }
 
 void MainWindow::on_refreshBtn_clicked()
 {
-
-//    QPoint point = ui->refreshBtn->mapFromParent(ui->deviceMsgWidget->pos());
-//    qDebug()<<"refresh"<<ui->refreshBtn->pos();
-//    statusCycle->setGeometry(point.x(),point.y(),20,19);
     statusCycle->setGeometry(70,37,20,19);
-//    qDebug()<<"status"<<statusCycle->pos();
 
-    if(ui->tabStackedWidget->currentIndex() != 0)
+    if(ui->tabStackedWidget->currentIndex() != 0 && enabledScanCopy)
     {
         on_Copy_clicked();
     }
@@ -276,7 +282,10 @@ void MainWindow::updatePrinter(const QVariant& data)
         ui->deviceNameBox->addItem(printerInfo.printer.name);
     }
     if(printers.isEmpty()){
+        LOGLOG("no printers");
         setcurrentPrinter(QString());
+        errorStatus(true);
+        gUInterface->setTimer(0);
         return;
     }else if(printers.contains(current_printer)){
         ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
@@ -284,7 +293,12 @@ void MainWindow::updatePrinter(const QVariant& data)
         setcurrentPrinter(printers.first());
     }
 
-    on_Copy_clicked();
+    gUInterface->setTimer(6);
+
+    if(enabledScanCopy)
+    {
+        on_Copy_clicked();
+    }
 
 }
 
@@ -294,6 +308,62 @@ void MainWindow::setcurrentPrinter(const QString& str)
     qDebug()<<"current printer:"<<current_printer;
     gUInterface->setcurrentPrinter(str);
     gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
+
+    if(str != "")
+    {
+        PrinterInfo_struct printerInfo = printerInfos.at(ui->deviceNameBox->currentIndex());
+        int modelType = UIConfig::getModelSerial(&printerInfo.printer);
+        if(modelType & UIConfig::ModelSerial_M == UIConfig::ModelSerial_M)//M:3in1
+        {
+            if(modelType & UIConfig::Model_D == UIConfig::Model_D)//MD:3in1,duplex copy
+            {
+                ui->tabStackedWidget->setEnabledDuplexCopy(true);
+            }
+            else
+            {
+                ui->tabStackedWidget->setEnabledDuplexCopy(false);
+            }
+            enabledScanCopy = true;
+            ui->tabStackedWidget->setEnabledCopyScan(true);
+            ui->Copy->show();
+            ui->CopyImgBtn->show();
+            ui->Scan->show();
+            ui->ScanImgBtn->show();
+
+            QRect sRect = QRect(ui->Scan->geometry().x()+ui->Scan->geometry().width(),ui->Scan->geometry().y(),111,25);
+            QRect sIRect = QRect((ui->ScanImgBtn->geometry().x()+ui->ScanImgBtn->geometry().width() - 1),ui->ScanImgBtn->geometry().y(),111,77);
+            ui->Setting->setGeometry(sRect);
+            ui->SettingImgBtn->setGeometry(sIRect);
+
+            on_Copy_clicked();
+        }
+        else//L:only print
+        {
+            enabledScanCopy = false;
+            ui->tabStackedWidget->setEnabledCopyScan(false);
+            ui->Copy->hide();
+            ui->CopyImgBtn->hide();
+            ui->Scan->hide();
+            ui->ScanImgBtn->hide();
+            ui->tabStackedWidget->setCurrentIndex(2);
+
+            ui->Setting->setGeometry(ui->Copy->geometry());
+            ui->SettingImgBtn->setGeometry(ui->CopyImgBtn->geometry());
+            ui->Setting->setStyleSheet(selectState + "border-radius:7px;");
+
+            ui->tabStackedWidget->setCurrentIndex(2);
+        }
+        if(modelType & UIConfig::Model_W == UIConfig::Model_W)//W:WIFI
+        {
+            enabledWiFi = true;
+            ui->tabStackedWidget->setEnabledWifi(true);
+        }
+        else
+        {
+            enabledWiFi = false;
+            ui->tabStackedWidget->setEnabledWifi(false);
+        }
+    }
 }
 
 void MainWindow::updateToner(int c ,int m ,int y ,int k)
@@ -323,7 +393,50 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
         current_printer = printers.at(index);
         setcurrentPrinter(printers.at(index));
 #endif
+#ifdef DEBUG
         qDebug()<<"printers"<<printers;
+        if(printers.at(index).endsWith("L"))
+        {
+            enabledScanCopy = false;
+            ui->tabStackedWidget->setEnabledCopyScan(false);
+            ui->Copy->hide();
+            ui->CopyImgBtn->hide();
+            ui->Scan->hide();
+            ui->ScanImgBtn->hide();
+            ui->tabStackedWidget->setCurrentIndex(2);
+
+            ui->Setting->setGeometry(ui->Copy->geometry());
+            ui->SettingImgBtn->setGeometry(ui->CopyImgBtn->geometry());
+            ui->Setting->setStyleSheet(selectState + "border-radius:7px;");
+
+            ui->tabStackedWidget->setCurrentIndex(2);
+        }
+        else
+        {
+            enabledScanCopy = true;
+            ui->tabStackedWidget->setEnabledCopyScan(true);
+            ui->Copy->show();
+            ui->CopyImgBtn->show();
+            ui->Scan->show();
+            ui->ScanImgBtn->show();
+
+            QRect sRect = QRect(ui->Scan->geometry().x()+ui->Scan->geometry().width(),ui->Scan->geometry().y(),111,25);
+            QRect sIRect = QRect((ui->ScanImgBtn->geometry().x()+ui->ScanImgBtn->geometry().width() - 1),ui->ScanImgBtn->geometry().y(),111,77);
+            ui->Setting->setGeometry(sRect);
+            ui->SettingImgBtn->setGeometry(sIRect);
+
+
+            on_Copy_clicked();
+        }
+        if(printers.at(index).endsWith("W")){
+            enabledWiFi = true;
+            ui->tabStackedWidget->setEnabledWifi(true);
+        }
+        else
+        {
+            enabledWiFi = false;
+            ui->tabStackedWidget->setEnabledWifi(false);
+        }
         if(printers.at(index).endsWith("D"))
         {
             ui->tabStackedWidget->setEnabledDuplexCopy(true);
@@ -332,11 +445,15 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
         {
             ui->tabStackedWidget->setEnabledDuplexCopy(false);
         }
+#endif
 
         if(ui->tabStackedWidget->currentIndex() != 0)
         {
             LOGLOG("on_deviceNameBox_currentIndexChanged");
-            on_Copy_clicked();
+            if(enabledScanCopy)
+            {
+                on_Copy_clicked();
+            }
         }
 #ifndef DEBUG
     }
@@ -453,7 +570,7 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
     ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
     errorStatus(false);
 
-    UIConfig::StatusDisplayType displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
+    int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
     QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,UIConfig::UnknowJob,0);
 
     ui->label_10->setText(errMsg);

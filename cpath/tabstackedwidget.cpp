@@ -514,9 +514,64 @@ void TabStackedWidget::stopCycleEmit()
 
 void TabStackedWidget::setEnabledDuplexCopy(bool enabled)
 {
-    ui->text_DuplexCopy->setHidden(enabled);
-    ui->icon_DuplexCopy->setHidden(enabled);
-    ui->cBox_DuplexCopy->setHidden(enabled);
+    ui->text_DuplexCopy->setHidden(!enabled);
+    ui->icon_DuplexCopy->setHidden(!enabled);
+    ui->cBox_DuplexCopy->setHidden(!enabled);
+}
+
+void TabStackedWidget::setEnabledCopyScan(bool enabled)
+{
+    ui->copyPage->setHidden(!enabled);
+    if(enabled)
+    {
+        ui->settingPage->setStyleSheet("#settingPage{background-image: url(:/Images/PageScan.tif);}");
+    }
+    else
+    {
+        ui->scanPage->setHidden(true);
+        ui->settingPage->setStyleSheet("#settingPage{background-image: url(:/Images/PagePrint.tif);}");
+    }
+}
+
+void TabStackedWidget::setEnabledWifi(bool enabled)
+{
+    ui->settingStackedWidget->setWifiEnabled(enabled);
+    ui->btn_WiFi->setHidden(!enabled);
+    ui->btn_SoftAP->setHidden(!enabled);
+    ui->btn_TCPIPV4->setHidden(!enabled);
+    ui->btn_TCPIPV6->setHidden(!enabled);
+    ui->img_WiFi->setHidden(!enabled);
+    ui->img_SoftAP->setHidden(!enabled);
+    ui->img_TCPIPV4->setHidden(!enabled);
+    ui->img_TCPIPV6->setHidden(!enabled);
+
+    if(enabled)
+    {
+        ui->settingStackedWidget->setCurrentIndex(0);
+        ui->btn_PowerSave->setGeometry(ui->btn_TCPIPV6->geometry().x(),ui->btn_TCPIPV6->geometry().y()+40,ui->btn_TCPIPV6->geometry().width(),ui->btn_TCPIPV6->geometry().height());
+        ui->btn_UserConfig->setGeometry(ui->btn_TCPIPV6->geometry().x(),ui->btn_TCPIPV6->geometry().y()+80,ui->btn_TCPIPV6->geometry().width(),ui->btn_TCPIPV6->geometry().height());
+        ui->btn_Password->setGeometry(ui->btn_TCPIPV6->geometry().x(),ui->btn_TCPIPV6->geometry().y()+120,ui->btn_TCPIPV6->geometry().width(),ui->btn_TCPIPV6->geometry().height());
+        QRect rect = ui->img_PowerSave->geometry();
+        ui->img_PowerSave->setGeometry(rect.x(),ui->btn_PowerSave->geometry().y()+(ui->btn_PowerSave->geometry().height()-rect.height())/2,rect.width(),rect.height());
+        rect = ui->img_UserConfig->geometry();
+        ui->img_UserConfig->setGeometry(rect.x(),ui->btn_UserConfig->geometry().y()+(ui->btn_UserConfig->geometry().height()-rect.height())/2,rect.width(),rect.height());
+        rect = ui->img_Password->geometry();
+        ui->img_Password->setGeometry(rect.x(),ui->btn_Password->geometry().y()+(ui->btn_Password->geometry().height()-rect.height())/2,rect.width(),rect.height());
+
+    }
+    else
+    {
+        ui->settingStackedWidget->setCurrentIndex(4);
+        ui->btn_PowerSave->setGeometry(ui->btn_WiFi->geometry());
+        ui->btn_UserConfig->setGeometry(ui->btn_SoftAP->geometry());
+        ui->btn_Password->setGeometry(ui->btn_TCPIPV4->geometry());
+        QRect rect = ui->img_PowerSave->geometry();
+        ui->img_PowerSave->setGeometry(rect.x(),ui->btn_PowerSave->geometry().y()+(ui->btn_PowerSave->geometry().height()-rect.height())/2,rect.width(),rect.height());
+        rect = ui->img_UserConfig->geometry();
+        ui->img_UserConfig->setGeometry(rect.x(),ui->btn_UserConfig->geometry().y()+(ui->btn_UserConfig->geometry().height()-rect.height())/2,rect.width(),rect.height());
+        rect = ui->img_Password->geometry();
+        ui->img_Password->setGeometry(rect.x(),ui->btn_Password->geometry().y()+(ui->btn_Password->geometry().height()-rect.height())/2,rect.width(),rect.height());
+    }
 }
 
 void TabStackedWidget::on_btn_Copy_clicked()

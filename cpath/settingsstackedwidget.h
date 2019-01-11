@@ -23,6 +23,7 @@ public:
 
     WlanTitleCell *titelCell;
     void changeStackIndex(int index);
+    void setWifiEnabled(bool enabled);
 
 
 private:

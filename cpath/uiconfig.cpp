@@ -3,8 +3,9 @@
 static bool _isDeviceSupported(Printer_struct* ps)
 {
 //    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
-//    if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
-//        return false;
+    if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
+        return false;
+
     return true;
 }
 
@@ -25,41 +26,41 @@ void UIConfig::initConfig()
     isDeviceSupported = _isDeviceSupported;
 }
 
-UIConfig::ModelSerial UIConfig::getModelSerial(Printer_struct* ps)
+int UIConfig::getModelSerial(Printer_struct* ps)
 {
-    ModelSerial ms = ModelSerial_unknown;
+    int ms = ModelSerial_unknown;
     QString makeAndModel(ps->makeAndModel);
     if(makeAndModel.startsWith("Lenovo L100D")){
-        ms = ModelSerial_L;
+        ms = ModelSerial_L + Model_D;
     }else if(makeAndModel.startsWith("Lenovo L100W")){
-        ms = ModelSerial_L;
+        ms = ModelSerial_L + Model_W;
     }else if(makeAndModel.startsWith("Lenovo L100DW")){
-        ms = ModelSerial_L;
+        ms = ModelSerial_L + Model_D + Model_W;
     }else if(makeAndModel.startsWith("Lenovo L100")){
         ms = ModelSerial_L;
     }else if(makeAndModel.startsWith("Lenovo M100W")){
-        ms = ModelSerial_M;
+        ms = ModelSerial_M + Model_W;
     }else if(makeAndModel.startsWith("Lenovo M100D")){
-        ms = ModelSerial_M;
+        ms = ModelSerial_M + Model_D;
     }else if(makeAndModel.startsWith("Lenovo M100")){
         ms = ModelSerial_M;
     }else if(makeAndModel.startsWith("Lenovo M101DW")){
-        ms = ModelSerial_M;
+        ms = ModelSerial_M + Model_D + Model_W;
     }else if(makeAndModel.startsWith("Lenovo M101W")){
-        ms = ModelSerial_M;
+        ms = ModelSerial_M + Model_W;
     }else if(makeAndModel.startsWith("Lenovo M101")){
         ms = ModelSerial_M;
     }else if(makeAndModel.startsWith("Lenovo M102W")){
-        ms = ModelSerial_M;
+        ms = ModelSerial_M + Model_W;
     }else if(makeAndModel.startsWith("Lenovo M102")){
         ms = ModelSerial_M;
     }
     return ms;
 }
 
-UIConfig::StatusDisplayType UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
+int UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
 {
-    StatusDisplayType st = Status_Offline;
+    int st = Status_Offline;
 
     switch ( status )
     {

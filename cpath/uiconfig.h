@@ -55,8 +55,10 @@ class UIConfig : public QObject ,SMConfig{
 public:
     typedef enum{
         ModelSerial_unknown,
-        ModelSerial_L,
-        ModelSerial_M
+        ModelSerial_L = 1,
+        ModelSerial_M = 1<<1,
+        Model_D = 1 << 2,
+        Model_W = 1 << 3
     }
         ModelSerial;
 
@@ -152,8 +154,8 @@ public:
     explicit UIConfig(QObject *parent = 0);
 
     static void initConfig();
-    static ModelSerial getModelSerial(Printer_struct* ps);
-    static StatusDisplayType GetStatusTypeForUI(EnumStatus status);
+    static int getModelSerial(Printer_struct* ps);
+    static int GetStatusTypeForUI(EnumStatus status);
     static QString getErrorMsg(EnumStatus status,EnumMachineJob job,bool isAbcPlusModel);
 public:
     enum CmdType{

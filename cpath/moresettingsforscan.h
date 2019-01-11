@@ -46,9 +46,6 @@ protected slots:
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
 
-    void selectModeColor();
-    void selectModeGreyScale();
-    void selectModeBW();
     bool eventFilter(QObject *, QEvent *);      //事件过滤器，主要用于过滤lineEdit_scaling的foucout事件，
                                                 //当用户lineEdit_scaling输入为空时焦点移开后未触发editedfinished事件
 private slots:
@@ -83,6 +80,18 @@ private slots:
 
     void on_btContrastBar_clicked();
     void on_btBrightnessBar_clicked();
+
+    void on_btModeColor_clicked();
+
+    void on_btModeGreyscale_clicked();
+
+    void on_btModeBW_clicked();
+
+    void on_btBgColor_clicked();
+
+    void on_btBgGrayscale_clicked();
+
+    void on_btBgBW_clicked();
 
 signals:
     void signals_scan_buffer_size(float, int);//Added by gavin for setting scan buffer size. 2016-04-08

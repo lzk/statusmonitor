@@ -948,7 +948,7 @@ background-image: url(:/Images/PageScan.tif);
     <property name="geometry">
      <rect>
       <x>319</x>
-      <y>348</y>
+      <y>346</y>
       <width>22</width>
       <height>19</height>
      </rect>
@@ -986,7 +986,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>548</y>
+      <y>543</y>
       <width>18</width>
       <height>24</height>
      </rect>
@@ -1002,7 +1002,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>387</y>
+      <y>384</y>
       <width>24</width>
       <height>23</height>
      </rect>
@@ -1018,7 +1018,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>465</y>
+      <y>462</y>
       <width>17</width>
       <height>26</height>
      </rect>
@@ -1067,7 +1067,7 @@ background-color: transparent;
 </string>
     </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="WiFi_3">
      <widget class="QLabel" name="background_WiFi1_3">
@@ -1340,7 +1340,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>310</y>
+      <y>305</y>
       <width>23</width>
       <height>20</height>
      </rect>
@@ -1429,7 +1429,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Green_Pressed.png);color:whi
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>510</y>
+      <y>505</y>
       <width>24</width>
       <height>20</height>
      </rect>
@@ -1467,7 +1467,7 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>426</y>
+      <y>424</y>
       <width>24</width>
       <height>23</height>
      </rect>

@@ -199,7 +199,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>55</y>
+      <y>56</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -303,7 +303,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>95</y>
+      <y>96</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -1152,7 +1152,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>177</y>
+      <y>176</y>
       <width>15</width>
       <height>20</height>
      </rect>
@@ -1207,8 +1207,8 @@ QPushButton::pressed{
    <widget class="QLabel" name="background_PowerSave1">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>0</y>
+      <x>10</x>
+      <y>10</y>
       <width>241</width>
       <height>281</height>
      </rect>
@@ -1419,7 +1419,7 @@ border:1px solid  rgb(181, 181, 181);
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>217</y>
+      <y>216</y>
       <width>15</width>
       <height>20</height>
      </rect>

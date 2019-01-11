@@ -30,6 +30,8 @@ public slots:
     void setCopyStackedWidgetCurrentIndex(int index);
 
     void setEnabledDuplexCopy(bool enabled);
+    void setEnabledCopyScan(bool enabled);
+    void setEnabledWifi(bool enabled);
 
 private slots:
     void on_cBox_IsIDCard_clicked(bool checked);
