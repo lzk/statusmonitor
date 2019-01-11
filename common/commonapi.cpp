@@ -15,7 +15,38 @@ bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultVal
     }
     return result;
 }
+#if 1
+#include <QApplication>
+#include <QLocalSocket>
+ #include <QLocalServer>
+#include <QFile>
+QLocalServer* m_localServer;
+bool isRunning(const char* serverName)
+{
+    bool running = true;
+    QLocalSocket socket;
+    socket.connectToServer(serverName);
+    if (!socket.waitForConnected()) {
+//        LOGLOG(socket.errorString());
+        if(QFile::exists(serverName))
+            QFile::remove(serverName);
 
+        m_localServer = new QLocalServer(qApp);
+        if (!m_localServer->listen(serverName)) {
+            if (m_localServer->serverError() == QAbstractSocket::AddressInUseError
+                    && QFile::exists(serverName)) { //make sure listening success
+                QFile::remove(serverName);
+                m_localServer->listen(serverName);
+            }
+        }
+        if(!system((QString("chmod a+w ") + serverName+ " 2>/dev/null").toLatin1())){
+            ;
+        }
+        running = false;
+    }
+    return running;
+}
+#else
 bool isRunning(const char* server_path)
 {
     bool running = true;
@@ -23,7 +54,6 @@ bool isRunning(const char* server_path)
     int ret = tc.tryConnectToServer();
     switch (ret) {
     case 0:
-        LOGLOG("There has been a same app running!");
         break;
     case -2:
         running = false;
@@ -34,3 +64,4 @@ bool isRunning(const char* server_path)
     }
     return running;
 }
+#endif
