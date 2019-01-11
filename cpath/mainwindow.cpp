@@ -9,12 +9,14 @@
 #include <qmenu.h>
 #include <qdesktopservices.h>
 
+#define DEBUG
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle(" ");
     LOGLOG("test!!!");
     ui->memberCenterWidget->setSW(ui->totalStackedWidget, ui->loginButton);
 
@@ -24,18 +26,40 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
     connect(gUInterface, SIGNAL(setDeviceMsg(QString,int)),this, SLOT(setDeviceMsg(QString,int)));
 //    connect(gUInterface, SIGNAL(updateStatus(QVariant)),this,SLOT(updateStatus(QVariant)));
+    connect(gUInterface,SIGNAL(startScan()),this, SLOT(startScan()));
+    connect(gUInterface,SIGNAL(stopScan()),this,SLOT(stopScan()));
 
-    gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
-    gUInterface->setTimer(10);
-
-//    qDebug()<<"horizontalLayout"<<ui->horizontalLayout->geometry();
-//    qDebug()<<"refreshbtn"<<ui->refreshBtn->geometry();
     statusCycle = new BusyRefreshLabel(ui->deviceMsgWidget,true);
-//    statusCycle->setGeometry(50,30,20,19);
 
     ui->cycleWidget->hide();
     ui->errorBtn->hide();
+#ifndef DEBUG
+    gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
+    gUInterface->setTimer(10);
     errorStatus(true);
+#else
+    qDebug()<<"Status_Ready";
+    printers << QString("Lenovo Pro");
+    printers << QString("Lenovo Pro D");
+
+    ui->label_6->setText(tr("ResStr_Ready"));
+    ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
+                                "border:0px solid;"
+                                "border-radius:5px;"
+                                "background-color: rgb(53, 177, 20);}");
+
+
+    ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+    errorStatus(false);
+    disconnect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
+    ui->deviceNameBox->clear();
+    connect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
+    ui->deviceNameBox->setEnabled(true);
+    ui->deviceNameBox->addItem(QString("Lenovo Pro"));
+    ui->deviceNameBox->addItem(QString("Lenovo Pro D"));
+    qDebug()<<"printers1"<<printers;
+#endif
+
 
     cycle = new BusyRefreshLabel(ui->cycleWidget,false);
     cycle->setGeometry(385,280,80,80);
@@ -293,16 +317,31 @@ void MainWindow::updateOtherStatus(const QString&  ,const PrinterStatus_struct& 
 
 void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
 {
+#ifndef DEBUG
     if(printers.at(index) != current_printer)
     {
         current_printer = printers.at(index);
         setcurrentPrinter(printers.at(index));
+#endif
+        qDebug()<<"printers"<<printers;
+        if(printers.at(index).endsWith("D"))
+        {
+            ui->tabStackedWidget->setEnabledDuplexCopy(true);
+        }
+        else
+        {
+            ui->tabStackedWidget->setEnabledDuplexCopy(false);
+        }
+
         if(ui->tabStackedWidget->currentIndex() != 0)
         {
             LOGLOG("on_deviceNameBox_currentIndexChanged");
             on_Copy_clicked();
         }
+#ifndef DEBUG
     }
+#endif
+
 
 }
 
@@ -318,8 +357,6 @@ void MainWindow::errorStatus(bool bIsErrorStatus)
         ui->Copy->setStyleSheet("background-color: white;color:gray;border-top-right-radius:0px;border-bottom-right-radius:0px");
         ui->Scan->setStyleSheet("background-color: white;color:gray;border-radius:0px");
         ui->Setting->setStyleSheet("background-color: white;color:gray;border-top-left-radius:0px;border-bottom-left-radius:0px");
-        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Disable.tif);");
-        ui->btCar->setEnabled(false);
     }
     else
     { 
@@ -409,6 +446,7 @@ void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
     }
 }
 
+
 void MainWindow::on_status_ch(const PrinterStatus_struct& status)
 {
     ui->label_10->setStyleSheet("QLabel{color:break;}");
@@ -420,9 +458,9 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
 
     ui->label_10->setText(errMsg);
     set_Message_Background_Color((UIConfig::EnumStatus)status.PrinterStatus);
-
     switch (displayStatus) {
     case UIConfig::Status_Ready:
+        qDebug()<<"Status_Ready";
         ui->label_6->setText(tr("ResStr_Ready"));
         ui->label_6->setStyleSheet("QLabel#label_6{color: white;"
                                     "border:0px solid;"
@@ -451,6 +489,8 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
         ui->tabStackedWidget->set_scan_enabled(false); //Added for disable scan button when offline by gavin 2016-04-14
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
         ui->mofenProgressBar->setValue(0);
+        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Disable.tif);");
+        ui->btCar->setEnabled(false);
         break;
     case UIConfig::Status_Busy:
         ui->label_6->setText(tr("ResStr_Busy"));
@@ -479,9 +519,10 @@ void MainWindow::on_status_ch(const PrinterStatus_struct& status)
 void MainWindow::setDeviceMsg(const QString& msg, int result)
 {
     if(!result)
-        ui->label_10->setStyleSheet("QLabel{color:red}");
-    else
         ui->label_10->setStyleSheet("QLabel{color:black}");
+    else
+        ui->label_10->setStyleSheet("QLabel{color:red}");
+
     ui->label_10->setText(msg);
 }
 
@@ -499,6 +540,34 @@ void MainWindow::stopCycleAnimation()
     cycle->stopAnimation();
 }
 
+void MainWindow::startScan()
+{
+    ui->CopyImgBtn->setEnabled(false);
+    ui->ScanImgBtn->setEnabled(false);
+    ui->SettingImgBtn->setEnabled(false);
+    ui->Copy->setEnabled(false);
+    ui->Scan->setEnabled(false);
+    ui->Setting->setEnabled(false);
+
+    ui->refreshBtn->setEnabled(false);
+
+    ui->deviceNameBox->setEnabled(false);
+}
+
+void MainWindow::stopScan()
+{
+    ui->CopyImgBtn->setEnabled(true);
+    ui->ScanImgBtn->setEnabled(true);
+    ui->SettingImgBtn->setEnabled(true);
+    ui->Copy->setEnabled(true);
+    ui->Scan->setEnabled(true);
+    ui->Setting->setEnabled(true);
+
+    ui->refreshBtn->setEnabled(true);
+
+    ui->deviceNameBox->setEnabled(true);
+}
+
 void MainWindow::on_errorBtn_clicked()
 {
     bool enNextShow = false;
@@ -512,5 +581,14 @@ void MainWindow::on_errorBtn_clicked()
 
 void MainWindow::on_btCar_clicked()
 {
-    QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/buy_abc2.aspx"));
+    if(ui->memberCenterWidget->loginPhone !="")
+    {
+        QString url = QString("http://ibase.lenovoimage.com/buy_abc2.aspx?id=%0").arg(ui->memberCenterWidget->loginPhone);
+        QDesktopServices::openUrl(QUrl(url));
+    }
+    else
+    {
+        QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/buy_abc2.aspx"));
+    }
+
 }

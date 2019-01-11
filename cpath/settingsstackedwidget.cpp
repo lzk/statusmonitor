@@ -184,7 +184,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             {
                 emit cycleStop();
                 QString deviceMsg;
-                if(result)
+                if(!result)
                     deviceMsg = tr("ResStr_Msg_1");
                 else
                     deviceMsg = tr("ResStr_Setting_Fail");
@@ -249,7 +249,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             {
                 emit cycleStop();
                 QString deviceMsg;
-                if(result)
+                if(!result)
                     deviceMsg = tr("ResStr_Msg_1");
                 else
                     deviceMsg = tr("ResStr_Setting_Fail");
@@ -307,7 +307,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             {
                 emit cycleStop();
                 QString deviceMsg;
-                if(result)
+                if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
                 else
                     deviceMsg = tr("ResStr_Setting_Fail");
@@ -366,7 +366,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             {
                 emit cycleStop();
                 QString deviceMsg;
-                if(result)
+                if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
                 else
                     deviceMsg = tr("ResStr_Setting_Fail");
@@ -403,7 +403,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             {
                 emit cycleStop();
                 QString deviceMsg;
-                if(result)
+                if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
                 else
                     deviceMsg = tr("ResStr_Setting_Fail");
@@ -440,7 +440,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             {
                 emit cycleStop();
                 QString deviceMsg;
-                if(result)
+                if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
                 else
                     deviceMsg = tr("ResStr_Setting_Fail");
@@ -477,7 +477,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             {
                 emit cycleStop();
                 QString deviceMsg;
-                if(result)
+                if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
                 else
                     deviceMsg = tr("ResStr_Setting_Fail");

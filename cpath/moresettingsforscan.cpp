@@ -139,6 +139,7 @@ void MoreSettingsForScan::setDefValue()
     param_scan->contrast = 50;
     param_scan->brightness = 50;
     param_scan->scan_size = Scan_A4;
+    param_scan->scan_type = Hight_Speed;
 }
 
 //显示参数到ui
@@ -321,7 +322,7 @@ void MoreSettingsForScan::on_lineEdit_constrast_textChanged(const QString &arg1)
     }
     else
     {
-        ui->label_tip->setGeometry(231,202,295,20);/**********************************************/
+        ui->label_tip->setGeometry(195,202,331,20);/**********************************************/
         ui->label_tip->setVisible(true);
         ui->lineEdit_constrast->setStyleSheet("#lineEdit_constrast{border:2px solid red;}");
         ui->btContrastAdd->setEnabled(false);
@@ -435,7 +436,7 @@ void MoreSettingsForScan::on_lineEdit_brightness_textChanged(const QString &arg1
     }
     else
     {
-        ui->label_tip->setGeometry(231,320,295,20);/***********************************************/
+        ui->label_tip->setGeometry(195,320,331,20);/***********************************************/
         ui->label_tip->setVisible(true);
         ui->lineEdit_brightness->setStyleSheet("#lineEdit_brightness{border:2px solid red;}");
         ui->btBrightnessAdd->setEnabled(false);

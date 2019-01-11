@@ -16,15 +16,19 @@ enum Scan_DocType {T_Photo,T_Text_Graph, T_Text};
 enum Scan_Dpi {Scan_100DPI, Scan_200DPI, Scan_300DPI, Scan_600DPI, Scan_1200DPI};
 enum ColorModel {Color, Black_White, Grayscale};
 enum Scan_Size {Scan_A4, Scan_A5, Scan_B5, Scan_Letter, Scan_4_6};
+enum Scan_Type {Hight_Speed,Hight_Quality};
 
 typedef struct
 {
+
     int scan_doctype;
     int scan_dpi;
     int colorModel;
     int scan_size;
+    int scan_type;
     int contrast;
     int brightness;
+
 }
     UiSettings;
 

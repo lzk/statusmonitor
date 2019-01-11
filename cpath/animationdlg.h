@@ -27,6 +27,7 @@ public:
         explicit AnimationDlg(QWidget *parent = 0, int status = 0, bool *enNext = NULL);
         ~AnimationDlg();
 
+
 private slots:
     void getFinished();
     void on_bt_pause_play_clicked();

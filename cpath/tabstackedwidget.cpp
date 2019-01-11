@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QTime>
+#include "settingwarming.h"
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
@@ -83,7 +84,16 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             QSize size = QSize(scanSettings.calc_data.pixels_per_line,scanSettings.calc_data.source_total_lines);
             ui->scrollArea_ScanImage->add_image_item(image_path ,size);
         }
-        emit cycleStopFromTab();
+        gUInterface->emitStopScanSignal();
+        ui->scrollArea_ScanImage->setEnabled(true);
+        if(ui->scrollArea_ScanImage->selectedItems().isEmpty()){
+            ui->btn_ScanSave->setEnabled(false);
+        }else{
+            ui->btn_ScanSave->setEnabled(true);
+        }
+        ui->btn_MoreSetting_Scan->setEnabled(true);
+        ui->btn_Scan->setEnabled(true);
+        ui->btn_ScanCancel->setEnabled(false);
     }
         break;
     default:
@@ -340,10 +350,9 @@ void TabStackedWidget::on_cBox_DuplexCopy_clicked(bool checked)
     }
 }
 
-
-
 void TabStackedWidget::on_btn_Scan_clicked()
 {
+//    qDebug()<<"on_btn_Scan_clicked";
 //    const char *image_path = "/tmp/vop_scan/2019-01-06_13-59-14-964.bmp";
 
 //    QSize size = QSize(2496,3507);
@@ -353,7 +362,13 @@ void TabStackedWidget::on_btn_Scan_clicked()
     paraScanSettings.settings = paramScan;
     data.setValue<ScanSettings>(paraScanSettings);
     gUInterface->setCurrentPrinterCmd(UIConfig::CMD_Scan,data);
-    emit cycleStartFromTab();
+
+    gUInterface->emitStartScanSignal();
+    ui->btn_ScanSave->setEnabled(false);
+    ui->scrollArea_ScanImage->setEnabled(false);
+    ui->btn_MoreSetting_Scan->setEnabled(false);
+    ui->btn_Scan->setEnabled(false);
+    ui->btn_ScanCancel->setEnabled(true);
 
 }
 
@@ -365,9 +380,31 @@ void TabStackedWidget::on_btn_MoreSetting_Scan_clicked()
     moreSettingScan->deleteLater();
 }
 
+void TabStackedWidget::slots_scan_image_size(float size, int unit)//Added by gavin for setting scan buffer size. 2016-04-08
+{
+    QString labelTitle = "待扫描图片大小:";
+    char sizeText[16] = {0};
+    if(unit == 1)
+    {
+        sprintf(sizeText, "%0.2f%s", size, "KB");
+    }
+    else if(unit == 2)
+    {
+        sprintf(sizeText, "%0.2f%s", size, "MB");
+    }
+    else
+    {
+        sprintf(sizeText, "%d%s", (int)size, "B");
+    }
+    QString labelText = QString("%1%2").arg(labelTitle).arg(sizeText);
+
+    ui->label_ImageSize->setText(labelText);
+
+}
+
 void TabStackedWidget::on_btn_MoreSetting_Copy_clicked()
 {
-    MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(0,ui->cBox_IsIDCard->isChecked(),&paramCopy);
+    MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),&paramCopy);
     moreSettingsForCopy->exec();
     moreSettingsForCopy->deleteLater();
 }
@@ -475,6 +512,13 @@ void TabStackedWidget::stopCycleEmit()
     emit cycleStopFromTab();
 }
 
+void TabStackedWidget::setEnabledDuplexCopy(bool enabled)
+{
+    ui->text_DuplexCopy->setHidden(enabled);
+    ui->icon_DuplexCopy->setHidden(enabled);
+    ui->cBox_DuplexCopy->setHidden(enabled);
+}
+
 void TabStackedWidget::on_btn_Copy_clicked()
 {
     qDebug()<<"start copy";
@@ -482,7 +526,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
     {
         if (paramCopy.promptInfo.isIDCard == true)
         {
-            bool enNextShow = false;
+            bool enNextShow = true;
             QString videoTypeStr = "01_JAM";
             QString languageStr = "SimplifiedChinese";
             AnimationDlg *aDialog = new AnimationDlg(0, 1, &enNextShow);
@@ -491,7 +535,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
             {
                 return;
             }
-            if(enNextShow == true)
+            if(enNextShow == false)
             {
                 paramCopy.promptInfo.isIDCard = false;
             }
@@ -507,7 +551,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
     {
         if (paramCopy.promptInfo.isMultible == true)
         {
-            bool enNextShow = false;
+            bool enNextShow = true;
             QString videoTypeStr = "06_Nin1Copy";
             QString languageStr = "SimplifiedChinese";
             AnimationDlg *aDialog = new AnimationDlg(0, 2, &enNextShow);
@@ -516,7 +560,8 @@ void TabStackedWidget::on_btn_Copy_clicked()
             {
                 return;
             }
-            if(enNextShow == true)
+            qDebug()<<"enNextShow"<<enNextShow;
+            if(enNextShow == false)
             {
                 paramCopy.promptInfo.isMultible = false;
             }
@@ -599,14 +644,23 @@ void saveMultiPagePdfImageRelease()
 void TabStackedWidget::on_btn_ScanSave_clicked()
 {
     QList<QListWidgetItem*> item_list = ui->scrollArea_ScanImage->selectedItems();
-    QString filter = tr("Images (*.tif *.jpg *.pdf)");
+    QString filter = tr("TIF(*.tif);;PDF(*pdf);;JPG(*jpg)");
+    QString selectedFilter;
     if(item_list.count() > 1){
-        filter = tr("Images (*.tif *.pdf)");
+        filter = tr("TIF(*.tif);;PDF(*pdf)");
     }
-    QString filename = QFileDialog::getSaveFileName(0 ,tr("Save File"),"/tmp" ,filter);
+    QString filename = QFileDialog::getSaveFileName(0 ,tr("Save File"),"/tmp" ,filter,&selectedFilter);
+    qDebug()<<filename<<selectedFilter;
     QString temp_filename;
     if(!filename.isEmpty()){
-        if(filename.endsWith(".pdf")){
+//        if(filename.endsWith(".pdf")){
+        if(selectedFilter == tr("PDF(*pdf)")){
+            if(filename.endsWith(".pdf") == false)
+            {
+                filename = filename.append(".pdf");
+            }
+
+            qDebug()<<filename;
             saveMultiPagePdfImageInit(filename);
             int j = 0;
             foreach (QListWidgetItem* item, item_list) {
@@ -615,7 +669,12 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
                 j++;
             }
             saveMultiPagePdfImageRelease();
-        }else if(filename.endsWith(".tif")){
+        }else if(selectedFilter == tr("TIF(*.tif)")){
+            if(filename.endsWith(".tiff"))
+            {
+                filename = filename.append(".tiff");
+            }
+            qDebug()<<filename;
             QString temp_file("tmp.tiff");
             bool first_time = true;
             QString cmd;
@@ -633,6 +692,11 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
                 QFile(temp_file).remove();
             }
         }else{
+            if(filename.endsWith(".jpg") == false)
+            {
+                filename = filename.append(".jpg");
+            }
+            qDebug()<<filename;
             foreach (QListWidgetItem* item, item_list) {
                 temp_filename = item->data(Qt::UserRole).toString();
                 QImage image(temp_filename);
@@ -641,4 +705,23 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
             }
         }
     }
+}
+
+void TabStackedWidget::on_copyNum_textChanged(const QString &arg1)
+{
+    if(arg1 == "0")
+    {
+        SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_"));
+        msgWarm->setWindowTitle("ResStr_Error");
+        msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint);
+        msgWarm->exec();
+        msgWarm->deleteLater();
+        ui->copyNum->setText("1");
+    }
+}
+
+void TabStackedWidget::on_btn_ScanCancel_clicked()
+{
+
 }

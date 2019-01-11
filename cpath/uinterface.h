@@ -18,12 +18,16 @@ public:
     void setcurrentPrinter(const QString& str);//{current_printer = str;}
     void setCurrentPrinterCmd(int cmd ,QVariant data = QVariant());
     void setDeviceMsgFrmUI(const QString& str, int result);
+    void emitStartScanSignal();
+    void emitStopScanSignal();
     
 signals:
     void cmdToWorker(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
     void setDeviceMsg(const QString& str, int result);
 //    void updateStatus(QVariant data);
+    void startScan();
+    void stopScan();
 
 private slots:
     void timerOut();

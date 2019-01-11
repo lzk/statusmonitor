@@ -38,6 +38,7 @@ class MemberCenterWidget : public QWidget
 public:
     explicit MemberCenterWidget(QWidget *parent = 0);
     ~MemberCenterWidget();
+    QString loginPhone;
 
 public slots:
     void setSW(QStackedWidget* _sw, QPushButton * _bt);
@@ -80,7 +81,6 @@ private:
     QStackedWidget* sw;
     QPushButton *bt;
     bool isLogin;
-    QString loginPhone;
     StrUserInfo currentUser;
     QString m_strKey;
 

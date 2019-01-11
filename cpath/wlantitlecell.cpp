@@ -94,6 +94,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
     switch(cmd)
     {
     case UIConfig::CMD_WIFI_refresh_plus:
+        qDebug()<<"CMD_WIFI_refresh_plus";
         if(!result){
             struct_wifi_refresh_info wifi_refresh_info;
             wifi_refresh_info = data.value<struct_wifi_refresh_info>();
@@ -111,28 +112,32 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
         emit cycleStopFromWT();
         break;
     case UIConfig::LS_CMD_WIFI_apply:
+        qDebug()<<"LS_CMD_WIFI_apply"<<result;
         if(!result && isWitch)
+//        if(result < 0 && isWitch)
         {
             isWlanOn = isWlanOn ? false : true;
+            qDebug()<<isWlanOn;
             if(isWlanOn)
             {
-                 ui->btManualWiFi->show();
-                 ui->btFlesh->show();
-                 ui->label_line->show();
-                 ui->label_network->show();
-                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_get);
+                ui->btManualWiFi->show();
+                ui->btFlesh->show();
+                ui->label_line->show();
+                ui->label_network->show();
+                on_btFlesh_clicked();
+//                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_get);
             }
             else
             {
-                ui->btManualWiFi->hide();
-                ui->btFlesh->hide();
-                ui->label_line->hide();
-                ui->label_network->hide();
                 emit cycleStopFromWT();
             }
             if((is_wifi_now_on == true && isWlanOn == false) || (is_wifi_now_on == false && isWlanOn == true) )
             {
-                SettingWarming *warming = new SettingWarming(0, tr("ResStr_Msg_1"), true);
+                QString deviceMsg;
+                deviceMsg = tr("ResStr_Msg_1");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+
+                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_1"), true);
                 warming->setWindowTitle("ResStr_Prompt1");
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -155,16 +160,16 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
             }
             else{
-                if(isWlanOn)
-                {
-                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
-                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
-                }
-                else
-                {
-                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-                }
+//                if(isWlanOn)
+//                {
+//                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+//                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+//                }
+//                else
+//                {
+//                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+//                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+//                }
                 emit cycleStopFromWT();
                 isDoingCMD = false;
                 times = 0;
@@ -174,10 +179,15 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
         {
             isWitch = false;
             QString deviceMsg;
-            if(result)
-                deviceMsg = tr("ResStr_Setting_Successfully_");
-            else
+            qDebug()<<result;
+            if(result != 0)
+//            if(!result)
+            {
+//                ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+//                ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
                 deviceMsg = tr("ResStr_Setting_Fail");
+            }
+
             gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
         }
         break;
@@ -188,6 +198,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
 
 void WlanTitleCell::on_btWLANON1_clicked()
 {
+    qDebug()<<"on_btWLANON1_clicked";
     isWitch = true;
     if(!*islogin)
     {
@@ -217,7 +228,14 @@ void WlanTitleCell::on_btWLANON1_clicked()
         {
             ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
             ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+            this->setCurrentIndex(0);
             updateAP();
+
+            ui->btManualWiFi->hide();
+            ui->btFlesh->hide();
+            ui->label_line->hide();
+            ui->label_network->hide();
+
             wifi_para = orin_wifi_para;
             wifi_para.wifiEnable = 0;
             QVariant value;
@@ -251,6 +269,7 @@ void WlanTitleCell::on_btCancel_clicked()
 
 void WlanTitleCell::on_btWLANON2_clicked()
 {
+    qDebug("on_btWLANON2_clicked");
     isWitch = true;
     if(!*islogin)
     {
@@ -283,6 +302,12 @@ void WlanTitleCell::on_btWLANON2_clicked()
             ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
             this->setCurrentIndex(0);
             updateAP();
+
+            ui->btManualWiFi->hide();
+            ui->btFlesh->hide();
+            ui->label_line->hide();
+            ui->label_network->hide();
+
             wifi_para = orin_wifi_para;
             wifi_para.wifiEnable = 0;
             QVariant value;
@@ -400,12 +425,11 @@ void WlanTitleCell::updateAP()
    }
    aList.clear();
    apList.clear();
-
-   emit cycleStopFromWT();
 }
 
 void WlanTitleCell::initCell(cmdst_wifi_get wifi_para, cmdst_aplist_get aplist)
 {
+    qDebug()<<"initCell";
     while(!(apList.isEmpty()))
     {
        currentSize.setHeight( currentSize.height() - qobject_cast<QWidget *>(apList.last())->size().height() - 1);

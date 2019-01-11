@@ -72,6 +72,9 @@ private slots:
 
     void setDeviceMsg(const QString& msg, int result);
 
+    void startScan();
+    void stopScan();
+
     void startCycleAnimation();
     void stopCycleAnimation();
 

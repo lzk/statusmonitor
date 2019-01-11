@@ -29,6 +29,8 @@ public slots:
     void set_setting_enabled(bool enabled);
     void setCopyStackedWidgetCurrentIndex(int index);
 
+    void setEnabledDuplexCopy(bool enabled);
+
 private slots:
     void on_cBox_IsIDCard_clicked(bool checked);
 
@@ -72,6 +74,12 @@ private slots:
     void cmdResult(int,int,QVariant);
 
     void on_btn_ScanSave_clicked();
+
+    void on_copyNum_textChanged(const QString &arg1);
+
+
+    void on_btn_ScanCancel_clicked();
+    void slots_scan_image_size(float, int);
 
 private:
     Ui::TabStackedWidget *ui;

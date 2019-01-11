@@ -456,7 +456,7 @@ QPushButton::pressed{
        <rect>
         <x>30</x>
         <y>200</y>
-        <width>462</width>
+        <width>371</width>
         <height>39</height>
        </rect>
       </property>
@@ -554,7 +554,7 @@ QPushButton::pressed{
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="text_IDCardCopy_2">
+        <widget class="QLabel" name="text_DuplexCopy">
          <property name="text">
           <string>ResStr_Duplex_Copy</string>
          </property>

@@ -130,7 +130,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         }
         if(!current_printer.compare(printerInfo.printer.name)){
             updateToner(status.TonelStatusLevelC ,status.TonelStatusLevelM ,status.TonelStatusLevelY ,status.TonelStatusLevelK);
-            updateStatus(status);
+//            updateStatus(status);
         }
         updateOtherStatus(printerInfo.printer.name ,status);
     }
@@ -287,197 +287,197 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
     (void)k;
 }
 
-QString MainWindow::get_Status_string(const PrinterStatus_struct& status)
-{
-    QString str_status;
-    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup, status.ErrorCodeID, status.PaperType, status.PaperSize);
-    int ps = status.PrinterStatus;
-    if ((IsStatusError(ps) && !IsStatusVirtual(ps) && ps != PS_ERROR_NOT_AVAILABLE && ps != PS_ERROR_NOT_SUPPORT) || ps == PS_TONER_LOW) {
-        if(!ei.error || !ei.errorString){
-            return IDS_STRUnknow;
-        }
-        str_status = QString() + ei.errorString->title + "(" + ei.error->code + ")";
-        return str_status;
-    }
+//QString MainWindow::get_Status_string(const PrinterStatus_struct& status)
+//{
+//    QString str_status;
+//    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup, status.ErrorCodeID, status.PaperType, status.PaperSize);
+//    int ps = status.PrinterStatus;
+//    if ((IsStatusError(ps) && !IsStatusVirtual(ps) && ps != PS_ERROR_NOT_AVAILABLE && ps != PS_ERROR_NOT_SUPPORT) || ps == PS_TONER_LOW) {
+//        if(!ei.error || !ei.errorString){
+//            return IDS_STRUnknow;
+//        }
+//        str_status = QString() + ei.errorString->title + "(" + ei.error->code + ")";
+//        return str_status;
+//    }
 
-    switch (ps) {
-    case 0://Ready
-        if(status.ErrorCodeGroup == 0x05 && ((status.ErrorCodeID == 43) || (status.ErrorCodeID == 66) || (status.ErrorCodeID == 70))){
-            if(!ei.error || !ei.errorString){
-                str_status = IDS_STRUnknow;
-            }else{
-                str_status = QString() + ei.errorString->title + "(" + ei.error->code + ")";
-            }
-        }else{
-            str_status = IDS_STATUSReady;
-        }
-        break;
-    case 1://Printing
-        str_status = IDS_STATUSPrinting;
-        break;
-    case 2://Power Saving
-        str_status = IDS_STATUSPowerSaving;
-        break;
-    case 3://Warmming Up
-        str_status = IDS_STATUSWarningUp;
-        break;
-    case 4://Pending Deletion
-        str_status = IDS_STRPendingDeletion;
-        break;
-    case 5://Paused
-        str_status = IDS_STATUSPaused;
-        break;
-    case 6://Waiting
-        str_status = IDS_STATUSWaiting;
-        break;
-    case 7://Processing
-        str_status = IDS_STRProcessing;
-        break;
-    case 8://Busy
-        str_status = IDS_STATUSBusy;
-        break;
-    case 0x80://Offline
-        str_status = IDS_STATUSOffline;
-        break;
-    case 0x81://Toner low
-        str_status = IDS_STATUSTonerLow;
-        break;
-    case 0x82://Initializing
-        str_status = IDS_STATUSInitializing;
-        break;
-    case PS_MANUAL_FEED_REQUIRED:
-        str_status = IDS_STATUSManualFeedRequired;
-        break;
-    case 0xc3: //Out of paper
-        str_status = IDS_STATUSOutOfPaper;
-        break;
-    case 0xc5: //No toner
-        str_status = IDS_STATUSNoToner;
-        break;
-    case 0xc1: //Door open
-    case PS_ERROR_ADF_COVER_OPEN:
-        str_status = IDS_STATUSDoorOpen;
-        break;
-    case 0xc7: //Not available
-        str_status = IDS_STATUSNotAV;
-        break;
-    case 0xc4: //Paper problem
-        str_status = IDS_STATUSPaperProblem;
-        break;
-    case 0xc6: //Page error
-        str_status = IDS_STATUSPageError;
-        break;
-    case 0xc0: //Paper Jam
-    case PS_ERROR_ADF_PAPER_JAM:
-        str_status = IDS_STATUSPaperJam;
-        break;
-    case 0xc2: //Out of memory
-        str_status = IDS_STATUSOutOfM;
-        break;
-    case 0xC9: //Not Supported
-        str_status = IDS_STRUnknow;
-//        str_status = IDS_STATUSNotSupported;
-        break;
-    case 0xca: //User intervention required
-        str_status = IDS_STATUSUserIR;
-        break;
-    case 0xCF: //Error
-        str_status = IDS_STATUSError;
-        break;
-    case 0xCE: //Power Off
-        str_status = IDS_STRPOWEROFF;
-        break;
+//    switch (ps) {
+//    case 0://Ready
+//        if(status.ErrorCodeGroup == 0x05 && ((status.ErrorCodeID == 43) || (status.ErrorCodeID == 66) || (status.ErrorCodeID == 70))){
+//            if(!ei.error || !ei.errorString){
+//                str_status = IDS_STRUnknow;
+//            }else{
+//                str_status = QString() + ei.errorString->title + "(" + ei.error->code + ")";
+//            }
+//        }else{
+//            str_status = IDS_STATUSReady;
+//        }
+//        break;
+//    case 1://Printing
+//        str_status = IDS_STATUSPrinting;
+//        break;
+//    case 2://Power Saving
+//        str_status = IDS_STATUSPowerSaving;
+//        break;
+//    case 3://Warmming Up
+//        str_status = IDS_STATUSWarningUp;
+//        break;
+//    case 4://Pending Deletion
+//        str_status = IDS_STRPendingDeletion;
+//        break;
+//    case 5://Paused
+//        str_status = IDS_STATUSPaused;
+//        break;
+//    case 6://Waiting
+//        str_status = IDS_STATUSWaiting;
+//        break;
+//    case 7://Processing
+//        str_status = IDS_STRProcessing;
+//        break;
+//    case 8://Busy
+//        str_status = IDS_STATUSBusy;
+//        break;
+//    case 0x80://Offline
+//        str_status = IDS_STATUSOffline;
+//        break;
+//    case 0x81://Toner low
+//        str_status = IDS_STATUSTonerLow;
+//        break;
+//    case 0x82://Initializing
+//        str_status = IDS_STATUSInitializing;
+//        break;
+//    case PS_MANUAL_FEED_REQUIRED:
+//        str_status = IDS_STATUSManualFeedRequired;
+//        break;
+//    case 0xc3: //Out of paper
+//        str_status = IDS_STATUSOutOfPaper;
+//        break;
+//    case 0xc5: //No toner
+//        str_status = IDS_STATUSNoToner;
+//        break;
+//    case 0xc1: //Door open
+//    case PS_ERROR_ADF_COVER_OPEN:
+//        str_status = IDS_STATUSDoorOpen;
+//        break;
+//    case 0xc7: //Not available
+//        str_status = IDS_STATUSNotAV;
+//        break;
+//    case 0xc4: //Paper problem
+//        str_status = IDS_STATUSPaperProblem;
+//        break;
+//    case 0xc6: //Page error
+//        str_status = IDS_STATUSPageError;
+//        break;
+//    case 0xc0: //Paper Jam
+//    case PS_ERROR_ADF_PAPER_JAM:
+//        str_status = IDS_STATUSPaperJam;
+//        break;
+//    case 0xc2: //Out of memory
+//        str_status = IDS_STATUSOutOfM;
+//        break;
+//    case 0xC9: //Not Supported
+//        str_status = IDS_STRUnknow;
+////        str_status = IDS_STATUSNotSupported;
+//        break;
+//    case 0xca: //User intervention required
+//        str_status = IDS_STATUSUserIR;
+//        break;
+//    case 0xCF: //Error
+//        str_status = IDS_STATUSError;
+//        break;
+//    case 0xCE: //Power Off
+//        str_status = IDS_STRPOWEROFF;
+//        break;
 
-    case PS_UNKNOWN:
-    default:
-        str_status = IDS_STRUnknow;
-        break;
-    }
-   return str_status;
-}
+//    case PS_UNKNOWN:
+//    default:
+//        str_status = IDS_STRUnknow;
+//        break;
+//    }
+//   return str_status;
+//}
 
-void MainWindow::updateStatus(const PrinterStatus_struct& status)
-{
-    QString text;
-    int i;
-    QString toner_text;
+//void MainWindow::updateStatus(const PrinterStatus_struct& status)
+//{
+//    QString text;
+//    int i;
+//    QString toner_text;
 
-    int currStatus = status.PrinterStatus;
-    bool bShowLowTonerAlert = !!status.LowTonerAlert; // BMS#51330
-    if (bShowLowTonerAlert && !IsStatusUnknownToner(currStatus) && StatusMonitor::AnyTonerReachLevel1(status) && !StatusMonitor::IsNonDellTonerMode(status)) {
-        if (StatusMonitor::OnlyColorTonerEmpty(status)) {
-            if (IsStatusPrinting(currStatus))
-                toner_text = IDS_TONER_NEED_REPLACE;
-            else
-                toner_text = QString();
-        }
-        else {
-            toner_text = IDS_TONER_IS_GETTING_LOW;
-        }
-    }
-    else {
-        toner_text = QString();
-    }
+//    int currStatus = status.PrinterStatus;
+//    bool bShowLowTonerAlert = !!status.LowTonerAlert; // BMS#51330
+//    if (bShowLowTonerAlert && !IsStatusUnknownToner(currStatus) && StatusMonitor::AnyTonerReachLevel1(status) && !StatusMonitor::IsNonDellTonerMode(status)) {
+//        if (StatusMonitor::OnlyColorTonerEmpty(status)) {
+//            if (IsStatusPrinting(currStatus))
+//                toner_text = IDS_TONER_NEED_REPLACE;
+//            else
+//                toner_text = QString();
+//        }
+//        else {
+//            toner_text = IDS_TONER_IS_GETTING_LOW;
+//        }
+//    }
+//    else {
+//        toner_text = QString();
+//    }
 
 
-    bool showDetail;
-    const PrinterStatus_struct *ps = &status;
-    if (IsStatusVirtual(ps->PrinterStatus) || IsStatusTrans(ps->PrinterStatus) || ps->ErrorCodeGroup == 0 || ps->ErrorCodeID == 0 || ps->PrinterStatus == PS_ERROR_NOT_SUPPORT) {
-        showDetail = false;
-    }
-    else {
-        if (IsStatusNormal(ps->PrinterStatus))
-            showDetail = false;
-        else {
-            // Status is abnormal , then check if there are LTC code from FW
-            if (ps->ErrorCodeGroup == 0 || ps->ErrorCodeID == 0)
-                showDetail = false;
-            else {
-                showDetail = true;
-            }
-        }
-    }
+//    bool showDetail;
+//    const PrinterStatus_struct *ps = &status;
+//    if (IsStatusVirtual(ps->PrinterStatus) || IsStatusTrans(ps->PrinterStatus) || ps->ErrorCodeGroup == 0 || ps->ErrorCodeID == 0 || ps->PrinterStatus == PS_ERROR_NOT_SUPPORT) {
+//        showDetail = false;
+//    }
+//    else {
+//        if (IsStatusNormal(ps->PrinterStatus))
+//            showDetail = false;
+//        else {
+//            // Status is abnormal , then check if there are LTC code from FW
+//            if (ps->ErrorCodeGroup == 0 || ps->ErrorCodeID == 0)
+//                showDetail = false;
+//            else {
+//                showDetail = true;
+//            }
+//        }
+//    }
 
-    text = "<html><head/><body>";
-    if(!showDetail){
-        text += QString() + "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
-    }else{
-        ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize);
-        if(!ei.error || !ei.errorString){
-            text += QString() + "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
-            goto CODE_ERROR;
-        }
+//    text = "<html><head/><body>";
+//    if(!showDetail){
+//        text += QString() + "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
+//    }else{
+//        ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize);
+//        if(!ei.error || !ei.errorString){
+//            text += QString() + "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
+//            goto CODE_ERROR;
+//        }
 
-        text += QString() + "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
-        text += "<br/>";
-        text += QString() + "<p>" + ei.error->code + "</p>";
-        for(i = 0 ;i < ei.errorString->lines ;i++){
-            text += "<br/>";
-            switch (i) {
-            case 0:
-                text += QString() + "<p>" + ei.errorString->line0 + "</p>";
-                break;
-            case 1:
-                text += QString() + "<p>" + ei.errorString->line1 + "</p>";
-                break;
-            case 2:
-                text += QString() + "<p>" + ei.errorString->line2 + "</p>";
-                break;
-            case 3:
-                text += QString() + "<p>" + ei.errorString->line3 + "</p>";
-                break;
-            case 4:
-                text += QString() + "<p>" + ei.errorString->line4 + "</p>";
-                break;
-            default:
-                break;
-            }
-        }
-    }
-    CODE_ERROR:
-    text += "</body></html>";
-    ui->label_status->setText(text);
-}
+//        text += QString() + "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
+//        text += "<br/>";
+//        text += QString() + "<p>" + ei.error->code + "</p>";
+//        for(i = 0 ;i < ei.errorString->lines ;i++){
+//            text += "<br/>";
+//            switch (i) {
+//            case 0:
+//                text += QString() + "<p>" + ei.errorString->line0 + "</p>";
+//                break;
+//            case 1:
+//                text += QString() + "<p>" + ei.errorString->line1 + "</p>";
+//                break;
+//            case 2:
+//                text += QString() + "<p>" + ei.errorString->line2 + "</p>";
+//                break;
+//            case 3:
+//                text += QString() + "<p>" + ei.errorString->line3 + "</p>";
+//                break;
+//            case 4:
+//                text += QString() + "<p>" + ei.errorString->line4 + "</p>";
+//                break;
+//            default:
+//                break;
+//            }
+//        }
+//    }
+//    CODE_ERROR:
+//    text += "</body></html>";
+//    ui->label_status->setText(text);
+//}
 
 void MainWindow::updatePrinter(const QVariant& data)
 {
@@ -492,8 +492,11 @@ void MainWindow::updatePrinter(const QVariant& data)
 
         ui->listWidget_printers->addItem(printerInfo.printer.name);
     }
-    if(printers.contains(current_printer)){
-        ui->listWidget_printers->setCurrentRow(printers.indexOf(current_printer));
+    if(printers.isEmpty()){
+        setcurrentPrinter(QString());
+        return;
+    }else if(printers.contains(current_printer)){
+        ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
     }else{
         setcurrentPrinter(printers.first());
     }

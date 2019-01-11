@@ -83,3 +83,12 @@ void UInterface::setDeviceMsgFrmUI(const QString &str, int result)
     emit setDeviceMsg(str,result);
 }
 
+void UInterface::emitStartScanSignal()
+{
+    emit startScan();
+}
+
+void UInterface::emitStopScanSignal()
+{
+    emit stopScan();
+}

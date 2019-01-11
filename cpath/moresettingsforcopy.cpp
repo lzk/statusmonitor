@@ -7,13 +7,14 @@
 #define MIN_SCALING 25
 #define MAX_SCALING 400
 
-MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent, bool idCardFlag, Param_Copy *pParam) :
+MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bool idCardFlag, Param_Copy *pParam) :
     QDialog(parent),
     ui(new Ui::MoreSettingsForCopy)
 {
     timer = new QTimer(this);
     scaling = 0;
     _idCardFlag = idCardFlag;
+    _duplexCopyFlag = duplexCopyFlag;
 
     ParamForCopy = pParam;
 
@@ -35,17 +36,19 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent, bool idCardFlag, Param
     ui->scaling->installEventFilter(this);
 
 
-    if(!_idCardFlag)
-    {
-        showParam();
-    }else
+    if(_idCardFlag)
     {
         ParamForCopy->scaling = 100;
 //        ParamForCopy->docType = DocType_Copy_Photo;
-        ParamForCopy->docDpi = DocDpi_Copy_DPI600;
+        ParamForCopy->docDpi = DocDpi_Copy_DPI300;
         ParamForCopy->outputSize = OutPutSize_Copy_A4;
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
+        showParam();
+
+    }
+    else
+    {
         showParam();
     }
 
@@ -98,50 +101,7 @@ void MoreSettingsForCopy::setDefault()
 void MoreSettingsForCopy::showParam()
 {
     QString text;
-    if(!_idCardFlag)
-    {
-        ui->scaling->setText(text.setNum(ParamForCopy->scaling));
-
-        if(ParamForCopy->docType == DocType_Copy_Photo)
-        {
-            ui->btPicture->setChecked(true);
-            ui->btText->setChecked(false);
-        }else
-        {
-            ui->btPicture->setChecked(false);
-            ui->btText->setChecked(true);
-        }
-        ui->docSizeList->setCurrentIndex(ParamForCopy->docSize);
-        ui->dpiList->setCurrentIndex(ParamForCopy->docDpi);
-        ui->outPutSizeList->setCurrentIndex(ParamForCopy->outputSize);
-        ui->paperTypeList->setCurrentIndex(ParamForCopy->paperType);
-
-        if(ParamForCopy->isMultiPage)
-        {
-             ui->isNinOne->setChecked(true);
-             selectMode(ParamForCopy->multiMode);
-
-             //设置outPutSizeList的a6，b6两种格式不可用
-             QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
-             if(model)
-             {
-                 model->item(3)->setEnabled(false);
-                 model->item(5)->setEnabled(false);
-             }
-        }
-        else
-        {
-            ui->isNinOne->setChecked(false);
-            ui->label_20->setStyleSheet("#label_20 {background-color: rgb(198, 198, 198);border-radius:8px;}");
-            ui->label_21->setStyleSheet("#label_21 {background-color: rgb(198, 198, 198);border-radius:8px;}");
-            ui->label_22->setStyleSheet("#label_22 {background-color: rgb(198, 198, 198);border-radius:8px;}");
-        }
-
-        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
-        on_btID_clicked();  //ParamForCopy->promptInfo.isIDCard = true;
-        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
-        on_btNInOne_clicked();  //ParamForCopy->promptInfo.isMultible
-    }else
+    if(_idCardFlag)
     {
         ui->label_1->setDisabled(true);
         ui->label_3->setDisabled(true);
@@ -189,7 +149,7 @@ void MoreSettingsForCopy::showParam()
         }
 
          QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->dpiList->model());
-         if(model2) model2->item(0)->setEnabled(false);
+         if(model2) model2->item(1)->setEnabled(false);
 
         if(ParamForCopy->isMultiPage)
         {
@@ -202,6 +162,129 @@ void MoreSettingsForCopy::showParam()
         }
 
         ui->isNinOne->setDisabled(true);
+
+        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
+        on_btID_clicked();  //ParamForCopy->promptInfo.isIDCard = true;
+        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
+        on_btNInOne_clicked();  //ParamForCopy->promptInfo.isMultible
+    }else if (_duplexCopyFlag)
+    {
+        ui->scaling->setText(text.setNum(ParamForCopy->scaling));
+
+        if(ParamForCopy->docType == DocType_Copy_Photo)
+        {
+            ui->btPicture->setChecked(true);
+            ui->btText->setChecked(false);
+        }else
+        {
+            ui->btPicture->setChecked(false);
+            ui->btText->setChecked(true);
+        }
+        ui->docSizeList->setCurrentIndex(ParamForCopy->docSize);
+        ui->dpiList->setCurrentIndex(ParamForCopy->docDpi);
+        ui->outPutSizeList->setCurrentIndex(ParamForCopy->outputSize);
+        ui->paperTypeList->setCurrentIndex(ParamForCopy->paperType);
+
+        if(ParamForCopy->isMultiPage)
+        {
+             ui->isNinOne->setChecked(true);
+             selectMode(ParamForCopy->multiMode);
+
+             //设置outPutSizeList的a6，b6两种格式不可用
+             QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+             if(model)
+             {
+                 model->item(3)->setEnabled(false);
+                 model->item(5)->setEnabled(false);
+             }
+        }
+        else
+        {
+            ui->isNinOne->setChecked(false);
+            ui->label_20->setStyleSheet("#label_20 {background-color: rgb(198, 198, 198);border-radius:8px;}");
+            ui->label_21->setStyleSheet("#label_21 {background-color: rgb(198, 198, 198);border-radius:8px;}");
+            ui->label_22->setStyleSheet("#label_22 {background-color: rgb(198, 198, 198);border-radius:8px;}");
+        }
+
+        //设置documentSizeList的出了letter,a4,a5,b5其他都不可用
+        QStandardItemModel *model0 = qobject_cast<QStandardItemModel *>(ui->docSizeList->model());
+        for(int i=0; i<8; i++)
+        {
+            if((i == 4) && (model0 != NULL))
+            {
+                model0->item(i)->setEnabled(false);
+               //此处设置combobox的下拉选项字体显示灰色
+               // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
+            }
+        }
+
+        //设置outPutSizeList的出了letter,a4,a5,b5其他都不可用
+        QStandardItemModel *model1 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+        for(int i=0; i<8; i++)
+        {
+            if((i != 0)&&(i != 1)&& (i != 2) && (i != 4) && (model1 != NULL))
+            {
+                model1->item(i)->setEnabled(false);
+               //此处设置combobox的下拉选项字体显示灰色
+               // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
+            }
+        }
+
+        //设置papetype的出了plain paper,recycled paper其他都不可用
+        QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->paperTypeList->model());
+        for(int i=0; i<5; i++)
+        {
+            if((i != 0)&&(i != 1) && (model2 != NULL))
+            {
+                model2->item(i)->setEnabled(false);
+               //此处设置combobox的下拉选项字体显示灰色
+               // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
+            }
+        }
+
+        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
+        on_btID_clicked();  //ParamForCopy->promptInfo.isIDCard = true;
+        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
+        on_btNInOne_clicked();  //ParamForCopy->promptInfo.isMultible
+    }
+    else
+    {
+        ui->scaling->setText(text.setNum(ParamForCopy->scaling));
+
+        if(ParamForCopy->docType == DocType_Copy_Photo)
+        {
+            ui->btPicture->setChecked(true);
+            ui->btText->setChecked(false);
+        }else
+        {
+            ui->btPicture->setChecked(false);
+            ui->btText->setChecked(true);
+        }
+        ui->docSizeList->setCurrentIndex(ParamForCopy->docSize);
+        ui->dpiList->setCurrentIndex(ParamForCopy->docDpi);
+        ui->outPutSizeList->setCurrentIndex(ParamForCopy->outputSize);
+        ui->paperTypeList->setCurrentIndex(ParamForCopy->paperType);
+
+        if(ParamForCopy->isMultiPage)
+        {
+             ui->isNinOne->setChecked(true);
+             selectMode(ParamForCopy->multiMode);
+
+             //设置outPutSizeList的a6，b6两种格式不可用
+             QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+             if(model)
+             {
+                 model->item(3)->setEnabled(false);
+                 model->item(5)->setEnabled(false);
+             }
+        }
+        else
+        {
+            ui->isNinOne->setChecked(false);
+            ui->label_20->setStyleSheet("#label_20 {background-color: rgb(198, 198, 198);border-radius:8px;}");
+            ui->label_21->setStyleSheet("#label_21 {background-color: rgb(198, 198, 198);border-radius:8px;}");
+            ui->label_22->setStyleSheet("#label_22 {background-color: rgb(198, 198, 198);border-radius:8px;}");
+        }
 
         ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
         on_btID_clicked();  //ParamForCopy->promptInfo.isIDCard = true;
@@ -514,7 +597,7 @@ void MoreSettingsForCopy::on_dpiList_currentIndexChanged(int index)
 {
     if(_idCardFlag)
     {
-         ParamForCopy->docDpi = DocDpi_Copy_DPI600;
+         ParamForCopy->docDpi = DocDpi_Copy_DPI300;
          ui->dpiList->setCurrentIndex(1);
     }else
     {

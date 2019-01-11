@@ -237,11 +237,13 @@ void AnimationDlg::on_bt_back_clicked()
 
 void AnimationDlg::on_radioButton_toggled(bool checked)
 {
+    qDebug()<<"on_radioButton_toggled"<<checked;
     if(checked)
         *enNextShow = false;
     else
         *enNextShow = true;
 }
+
 
 //void AnimationDlg::on_btCancel_clicked()
 //{
