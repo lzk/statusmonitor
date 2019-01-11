@@ -21,9 +21,10 @@ public:
     virtual int read(char *buffer, int bufsize) = 0;
     virtual bool isConnected() = 0;
     virtual int getDeviceId(char *buffer, int bufsize) = 0;
+    virtual int getDeviceId_without_open(char* ,int) = 0;
     virtual const char* getDeviceAddress() = 0;
-    virtual int write_bulk(char *buffer, int bufsize) = 0;
-    virtual int read_bulk(char *buffer, int bufsize) = 0;
+    virtual int write_bulk(char *buffer, int bufsize ,unsigned int interface=0) = 0;
+    virtual int read_bulk(char *buffer, int bufsize ,unsigned int interface=0) = 0;
 
     virtual int open(const char* url ,int port = 9100);
     virtual int resolveUrl(const char* url);

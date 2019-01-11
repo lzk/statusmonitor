@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
 
     ServerThread* thread_server = new ServerThread(SERVER_PATH);
     thread_server->start();
-    StatusThread* statusThread = new StatusThread;
-    statusThread->start();
+//    StatusThread* statusThread = new StatusThread;
+//    statusThread->start();
 
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     
     int ret = a.exec();
     delete thread_server;
-    delete statusThread;
+//    delete statusThread;
     delete gUInterface;
     return ret;
 }

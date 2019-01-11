@@ -5,7 +5,6 @@ static bool _isDeviceSupported(Printer_struct* ps)
 //    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
     if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
         return false;
-
     return true;
 }
 
@@ -55,6 +54,7 @@ int UIConfig::getModelSerial(Printer_struct* ps)
     }else if(makeAndModel.startsWith("Lenovo M102")){
         ms = ModelSerial_M;
     }
+//    return ModelSerial_M + Model_D + Model_W;
     return ms;
 }
 

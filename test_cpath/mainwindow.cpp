@@ -486,19 +486,25 @@ void MainWindow::updatePrinter(const QVariant& data)
 
     printers.clear();
     ui->listWidget_printers->clear();
+    int index_of_defaultprinter = 0;
     for(int i = 0 ;i < printerInfos.length() ;i++){
         printerInfo = printerInfos.at(i);
         printers << printerInfo.printer.name;
 
         ui->listWidget_printers->addItem(printerInfo.printer.name);
+        if(printerInfo.printer.isDefault){
+            index_of_defaultprinter =  i;
+            LOGLOG("default printer index is %d" ,i);
+        }
     }
     if(printers.isEmpty()){
         setcurrentPrinter(QString());
         return;
     }else if(printers.contains(current_printer)){
-
+        setcurrentPrinter(current_printer);
     }else{
-        setcurrentPrinter(printers.first());
+        setcurrentPrinter(printers.at(index_of_defaultprinter));
+//        ui->listWidget_printers->setCurrentIndex(index_of_defaultprinter);
     }
 }
 

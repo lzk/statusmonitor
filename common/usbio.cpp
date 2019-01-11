@@ -55,6 +55,11 @@ int UsbIO::read(char *buffer, int bufsize)
     return usb->read(buffer ,bufsize);
 }
 
+int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
+{
+    return usb->getDeviceId(buffer ,bufsize);
+}
+
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
     int ret = open();
@@ -114,12 +119,12 @@ const char* UsbIO::getDeviceAddress()
     return QString().sprintf("USB%03d" ,address).toLatin1().constData();
 }
 
-int UsbIO::write_bulk(char *buffer, int bufsize)
+int UsbIO::write_bulk(char *buffer, int bufsize ,unsigned int interface)
 {
-    return usb->write_bulk(buffer ,bufsize);
+    return usb->write_bulk(buffer ,bufsize ,interface);
 }
 
-int UsbIO::read_bulk(char *buffer, int bufsize)
+int UsbIO::read_bulk(char *buffer, int bufsize ,unsigned int interface)
 {
-    return usb->read_bulk(buffer ,bufsize);
+    return usb->read_bulk(buffer ,bufsize ,interface);
 }

@@ -34,7 +34,8 @@ class StatusMonitor
 public:
     StatusMonitor();
 
-    int getPrinters(CALLBACK_getPrinterInfo ,void*);
+    static int getPrinters(CALLBACK_getPrinterInfo ,void*);
+    static int getPrintersFromFile(CALLBACK_getPrinterInfo ,void*);
     static int getPrinterStatus(const char* printer ,PrinterStatus_struct* ps);
     static int getDeviceStatus(DeviceIO* device ,PrinterStatus_struct* ps);
 

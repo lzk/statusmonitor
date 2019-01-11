@@ -274,12 +274,16 @@ void MainWindow::updatePrinter(const QVariant& data)
     printers.clear();
     disconnect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
     ui->deviceNameBox->clear();
-    connect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
+
+    int index_of_defaultprinter = 0;
     for(int i = 0 ;i < printerInfos.length() ;i++){
         printerInfo = printerInfos.at(i);
         printers << printerInfo.printer.name;
 
         ui->deviceNameBox->addItem(printerInfo.printer.name);
+        if(printerInfo.printer.isDefault){
+            index_of_defaultprinter =  i;
+        }
     }
     if(printers.isEmpty()){
         LOGLOG("no printers");
@@ -290,15 +294,19 @@ void MainWindow::updatePrinter(const QVariant& data)
     }else if(printers.contains(current_printer)){
         ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
     }else{
-        setcurrentPrinter(printers.first());
+        setcurrentPrinter(printers.at(index_of_defaultprinter));
+        ui->deviceNameBox->setCurrentIndex(index_of_defaultprinter);
     }
 
+    gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
     gUInterface->setTimer(6);
 
     if(enabledScanCopy)
     {
         on_Copy_clicked();
     }
+    connect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
+
 
 }
 
@@ -313,9 +321,9 @@ void MainWindow::setcurrentPrinter(const QString& str)
     {
         PrinterInfo_struct printerInfo = printerInfos.at(ui->deviceNameBox->currentIndex());
         int modelType = UIConfig::getModelSerial(&printerInfo.printer);
-        if(modelType & UIConfig::ModelSerial_M == UIConfig::ModelSerial_M)//M:3in1
+        if((modelType & UIConfig::ModelSerial_M) == UIConfig::ModelSerial_M)//M:3in1
         {
-            if(modelType & UIConfig::Model_D == UIConfig::Model_D)//MD:3in1,duplex copy
+            if((modelType & UIConfig::Model_D) == UIConfig::Model_D)//MD:3in1,duplex copy
             {
                 ui->tabStackedWidget->setEnabledDuplexCopy(true);
             }
@@ -353,7 +361,7 @@ void MainWindow::setcurrentPrinter(const QString& str)
 
             ui->tabStackedWidget->setCurrentIndex(2);
         }
-        if(modelType & UIConfig::Model_W == UIConfig::Model_W)//W:WIFI
+        if((modelType & UIConfig::Model_W) == UIConfig::Model_W)//W:WIFI
         {
             enabledWiFi = true;
             ui->tabStackedWidget->setEnabledWifi(true);

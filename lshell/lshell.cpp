@@ -171,9 +171,9 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
     }
 
     if(cmd == _LS_WIFICMD  && sub_cmd == 0xff)
-        err = (*device)->write(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct);
+        err = writeNoRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct);
     else
-        err = (*device)->writeThenRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct
+        err = writeThenRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct
                                                ,buffer ,sizeof(COMM_HEADER)+data_buffer_size * (1 - direct));
     //check result
     if(!err && MAGIC_NUM == ppkg->magic){//ACK
@@ -428,4 +428,53 @@ void LShell::copy_get_defaultPara(copycmdset* p)
     memcpy(p ,&default_copy_parameter ,sizeof(default_copy_parameter));
 }
 
+int device_init(DeviceIO** device)
+{
+    if(!device || !(*device))
+        return -1;
+    int ret = 0;
+    int device_type = (*device)->type();
+    if(device_type == DeviceIO::Type_net){
+        return 0;
+    }else if(device_type == DeviceIO::Type_unknown){
+        return -1;
+    }
+
+    char buffer[1460];
+    ret = (*device)->getDeviceId_without_open(buffer ,sizeof(buffer));
+    if(ret){
+        char inBuffer[522] = {0};
+        char outBuffer[12] = {0};
+
+        inBuffer[0] = 0x1b;
+        inBuffer[1] = 0x4d;
+        inBuffer[2] = 0x53;
+        inBuffer[3] = 0x55;
+        inBuffer[4] = 0xe0;
+        inBuffer[5] = 0x2b;
+        (*device)->write_bulk(inBuffer ,10 ,1);
+        (*device)->write_bulk(inBuffer+10 ,512 ,1);
+
+        (*device)->read_bulk(outBuffer ,sizeof(outBuffer) ,1);
+    }
+
+    (*device)->read(buffer ,sizeof(buffer));
+    return 0;
+}
+
+int LShell::writeNoRead(char* wrBuffer ,int wrSize)
+{
+    int ret = device_init(device);
+    if(!ret)
+        ret = (*device)->write(wrBuffer ,wrSize);
+    return ret;
+}
+
+int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
+{
+    int ret = device_init(device);
+    if(!ret)
+        ret = (*device)->writeThenRead(wrBuffer ,wrSize ,rdBuffer ,rdSize);
+    return ret;
+}
 

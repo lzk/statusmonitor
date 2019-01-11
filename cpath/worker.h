@@ -33,7 +33,6 @@ private:
     LShell* lshell;
     ScannerApp* scanner;
     QList<PrinterInfo_struct> printers_detail;
-    StatusMonitor m_statusMonitor;
     DeviceManager deviceManager;
 
     Printer_struct* get_printer(const QString& printer_name);//get printer exist in system

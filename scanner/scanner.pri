@@ -1,13 +1,13 @@
 INCLUDEPATH += $${PWD}
 
 macx{
-    LIBS += -L$${PWD}/../libs/mac -lntdcms
+    LIBS += -L$${PWD}/../libs/mac -llnthr8zcl
 }else{
     unix{
         contains(QT_ARCH, i386) {
-            LIBS += -L$${PWD}/../libs/linux32 -lntdcms
+            LIBS += -L$${PWD}/../libs/linux32 -llnthr8zcl
         }else{
-            LIBS += -L$${PWD}/../libs/linux64 -lntdcms
+            LIBS += -L$${PWD}/../libs/linux64 -llnthr8zcl
         }
     }
 }

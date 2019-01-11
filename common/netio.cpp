@@ -159,6 +159,11 @@ int NetIO::read(char *buffer, int bufsize)
 }
 int NetIO::getDeviceId(char *buffer, int bufsize)
 {
+    return getDeviceId_without_open(buffer ,bufsize);
+}
+
+int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
+{
     //some host name can not get device id. change to ipv4 first.
     return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
 //    return snmpGetDeviceID(device_uri ,buffer ,bufsize);
@@ -176,12 +181,12 @@ const char* NetIO::getDeviceAddress()
     return hostAddress.toString().toLatin1().constData();
 }
 
-int NetIO::write_bulk(char *buffer, int bufsize)
+int NetIO::write_bulk(char *buffer, int bufsize ,unsigned int)
 {
     return write(buffer ,bufsize);
 }
 
-int NetIO::read_bulk(char *buffer, int bufsize)
+int NetIO::read_bulk(char *buffer, int bufsize ,unsigned int)
 {
     return read(buffer ,bufsize);
 }

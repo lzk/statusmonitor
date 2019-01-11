@@ -48,10 +48,11 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 
     case UIConfig::CMD_GetStatus:{
         if(printer){
+            device = deviceManager.getDevice(printer->deviceUri);
             PrinterInfo_struct printerInfo;
             strcpy(printerInfo.printer.name ,printer->name);
             PrinterStatus_struct* status = &printerInfo.status;
-            result = m_statusMonitor.getPrinterStatus(printer->name ,status);
+            result = StatusMonitor::getDeviceStatus(device ,status);
             value.setValue(printerInfo);
         }
         cmdResult(cmd ,result ,value);
@@ -484,7 +485,7 @@ void Worker::getPrinters()
 {
     printers.clear();
     printers_detail.clear();
-    m_statusMonitor.getPrinters(callback_getPrinters ,(void*)this);
+    StatusMonitor::getPrinters(callback_getPrinters ,(void*)this);
 }
 
 Printer_struct* Worker::get_printer(const QString& printer_name)

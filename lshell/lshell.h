@@ -73,6 +73,8 @@ public:
 
 private:
     int lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size);
+    int writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize);
+    int writeNoRead(char* wrBuffer ,int wrSize);
     DeviceIO** device;
 };
 #endif // LSHELL
