@@ -51,7 +51,7 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
         islogin = &m_isLogin;
     }
     isDoingCMD = false;
-    times = 0;
+//    times = 0;
 }
 
 WiFiSettingWEPCell::~WiFiSettingWEPCell()

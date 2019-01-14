@@ -135,3 +135,10 @@ DISTFILES += \
 
 TRANSLATIONS = translations/vop.en.ts  \
                 translations/vop.zh_CN.ts
+
+equals(QT_MAJOR_VERSION,4){
+contains(CONFIG ,static){
+    QTPLUGIN += qjpeg qtiff qmng qgif qico
+    DEFINES += STATIC_BUILD
+}
+}

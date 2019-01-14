@@ -5,10 +5,39 @@
 UInterface* gUInterface;
 #include <sys/wait.h>
 #include "uiconfig.h"
-#include "serverthread.h"
+//#include "serverthread.h"
 #include "commonapi.h"
-#include "statusthread.h"
+//#include "statusthread.h"
 #include <qtranslator.h>
+
+#ifndef Q_OS_DARWIN
+//extern "C"{
+//#include <string.h>
+///* some systems do not have newest memcpy@@GLIBC_2.14 - stay with old good one */
+//#ifdef __x86_64__
+//asm (".symver memcpy, memcpy@GLIBC_2.2.5");
+//#elif __i386__
+//asm (".symver memcpy, memcpy@GLIBC_2.0");
+//#endif
+
+////void *memcpy(void* ,const void* ,size_t);
+//void *__wrap_memcpy(void *dest, const void *src, size_t n)
+//{
+//    return memcpy(dest, src, n);
+//}
+
+//}
+
+#ifdef STATIC_BUILD
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(qjpeg)
+Q_IMPORT_PLUGIN(qtiff)
+Q_IMPORT_PLUGIN(qmng)
+Q_IMPORT_PLUGIN(qgif)
+Q_IMPORT_PLUGIN(qico)
+#endif
+#endif
+
 
 void quit(int)
 {
@@ -20,12 +49,13 @@ void quit(int)
 int main(int argc, char *argv[])
 {
     if(isRunning(SERVER_PATH)){
+        LOGLOG("There has been a same app running!");
         return 0;
     }
     UIConfig::initConfig();
 
-    ServerThread* thread_server = new ServerThread(SERVER_PATH);
-    thread_server->start();
+//    ServerThread* thread_server = new ServerThread(SERVER_PATH);
+//    thread_server->start();
 //    StatusThread* statusThread = new StatusThread;
 //    statusThread->start();
 
@@ -63,7 +93,7 @@ int main(int argc, char *argv[])
         w.show();
 
     int ret = a.exec();
-    delete thread_server;
+//    delete thread_server;
 //    delete statusThread;
     delete gUInterface;
     return ret;
