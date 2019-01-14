@@ -1,7 +1,7 @@
 #include "deviceio.h"
 #include "log.h"
 #include <unistd.h>
-#define delay100ms(x ,y) {if(y) usleep((x)  * 100 * 1000);}
+#define sleep100ms(x ,y) {if(y) usleep((x)  * 100 * 1000);}
 
 int DeviceIO::open(const char* url ,int port)
 {
@@ -22,6 +22,7 @@ int DeviceIO::resolveUrl(const char* url)
     return ret;
 }
 
+#include <time.h>
 int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
 {
     int err = write(wrBuffer ,wrSize);
@@ -31,26 +32,33 @@ int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSi
         int _read_size = 0;
         int nocheck=0;
 
-        delay100ms(9 ,ifdelay);
-        for(j = 0 ;j < 3 ;j++){
+        sleep100ms(9 ,ifdelay);
+        time_t first_time = time(NULL);
+        time_t second_time;
+        for(j = 0 ;j < 50 ;j++){
+            second_time = time(NULL);
+            if(second_time - first_time > 5){
+                LOGLOG("usb try %d times timeout" ,j + 1);
+                break;
+            }
             if(!nocheck){
                 if(1 == read(rdBuffer,1)){
                     if(0x4d != rdBuffer[0]){
 //                        LOGLOG("waiting for 0x4d:%#.2x" ,rdBuffer[0]);
-                        delay100ms (1 ,ifdelay);
+                        sleep100ms (1 ,ifdelay);
                         continue;
                     }
                 }else{
 //                    LOGLOG("cannot read now,wait 100 ms read again");
-                    delay100ms (1 ,ifdelay);
+                    sleep100ms (1 ,ifdelay);
                     continue;
                 }
             }
             nocheck = 0;
-            delay100ms (1 ,ifdelay);
+            sleep100ms (1 ,ifdelay);
             if(1 == read(rdBuffer+1,1)){
                 if(0x3c == rdBuffer[1]){
-                    delay100ms (1 ,ifdelay);
+                    sleep100ms (1 ,ifdelay);
                     _read_size = read(rdBuffer+2 ,rdSize-2);
 //                    LOGLOG("read size:%d" ,_read_size == -1 ?-1 : _read_size + 2);
                     j++;
@@ -59,10 +67,9 @@ int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSi
                     nocheck = 1;
                 }
             }
-            delay100ms (1 ,ifdelay);
+            sleep100ms (1 ,ifdelay);
         }
 
-        LOGLOG("try %d times" ,j);
         if(_read_size == rdSize -2){
             err = 0;
         }else{
