@@ -10,6 +10,18 @@
     <height>265</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>510</width>
+    <height>265</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>510</width>
+    <height>265</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>ResStr_Setting</string>
   </property>

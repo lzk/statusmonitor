@@ -10,6 +10,18 @@
     <height>204</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>444</width>
+    <height>204</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>444</width>
+    <height>204</height>
+   </size>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>

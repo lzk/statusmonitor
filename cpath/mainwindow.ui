@@ -10,6 +10,24 @@
     <height>640</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>850</width>
+    <height>640</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>850</width>
+    <height>640</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string/>
   </property>
@@ -391,6 +409,8 @@ QComboBox::drop-down {
 QComboBox:down-arrow {
 	image: url(:/Images/arrowdown.png);
 }
+
+QComboBox:combobox-popup:0;
 </string>
        </property>
        <property name="editable">

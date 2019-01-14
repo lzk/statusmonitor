@@ -12,7 +12,7 @@ class ExperiencePro : public QDialog
     Q_OBJECT
 
 public:
-    explicit ExperiencePro(QWidget *parent = 0);
+    explicit ExperiencePro(QWidget *parent = 0, bool bCRM = false);
     ~ExperiencePro();
     bool isStartCRM();
 

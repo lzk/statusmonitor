@@ -85,6 +85,7 @@ private:
     QString m_strKey;
 
     QTimer *crmTimer;
+    bool m_bCRM;
 };
 
 #endif // MEMBERCENTERWIDGET_H

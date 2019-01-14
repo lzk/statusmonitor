@@ -3,7 +3,7 @@
 #include "qdesktopservices.h"
 #include "qurl.h"
 
-ExperiencePro::ExperiencePro(QWidget *parent) :
+ExperiencePro::ExperiencePro(QWidget *parent, bool bCRM) :
     QDialog(parent),
     ui(new Ui::ExperiencePro)
 {
@@ -12,6 +12,10 @@ ExperiencePro::ExperiencePro(QWidget *parent) :
     ui->lab_msg->setText(tr("ResStr_In_order_to_deliver_improved"));
     ui->lab_check_info->setWordWrap(true);
     ui->lab_check_info->setText(tr("ResStr_I_have_read_and_agree"));
+
+    m_bCRM = bCRM;
+
+    ui->checkBox->setChecked(m_bCRM);
 }
 
 ExperiencePro::~ExperiencePro()

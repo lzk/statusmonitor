@@ -21,6 +21,11 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);color:gray}");
 
     crmTimer = new QTimer(this);
+//    m_bCRM = false;
+    if(m_bCRM)
+    {
+        crmTimer->start(30*60*1000);//30min
+    }
     connect(crmTimer,SIGNAL(timeout()),this,SLOT(uploadCRM()));
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
@@ -313,19 +318,23 @@ void MemberCenterWidget::on_btChInfo_clicked()
 
 void MemberCenterWidget::on_btExpe_clicked()
 {
-    ExperiencePro *exp = new ExperiencePro(this);
+    ExperiencePro *exp = new ExperiencePro(this,m_bCRM);
     exp->exec();
 
-    if(exp->isStartCRM())
+    if(exp->isStartCRM() != m_bCRM)
     {
-        qDebug()<<"start crm";
-        MemberCenterWidget::uploadCRM();
-        crmTimer->start(30*60*1000);//30min
-    }
-    else
-    {
-        qDebug()<<"stop crm";
-        crmTimer->stop();
+        m_bCRM = exp->isStartCRM();
+        if(m_bCRM)
+        {
+            qDebug()<<"start crm";
+            MemberCenterWidget::uploadCRM();
+            crmTimer->start(30*60*1000);//30min
+        }
+        else
+        {
+            qDebug()<<"stop crm";
+            crmTimer->stop();
+        }
     }
 
     exp->deleteLater();

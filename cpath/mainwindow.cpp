@@ -8,6 +8,7 @@
 #include "animationdlg.h"
 #include <qmenu.h>
 #include <qdesktopservices.h>
+#include <qlistview.h>
 
 //#define DEBUG
 
@@ -22,6 +23,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     selectState = "background-color: rgb(99, 99, 99);color:white;";
     unSelectState = "background-color: white;color:black;";
+
+    QListView *listView = new QListView(ui->deviceNameBox);
+    listView->setStyleSheet("QListView{border-color:black;border-width:2px;border-radius:0px;}");
+    listView->setStyleSheet("QListView::item:!selected{background-color:white;color:black;}");
+    listView->setStyleSheet("QListView::item:selected:!active{background-color:gray;color:black;}");
+    listView->setStyleSheet("QListView::item:selected:active{background-color:gray;color:white;}");
+    ui->deviceNameBox->setView(listView);
+
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
     connect(gUInterface, SIGNAL(setDeviceMsg(QString,int)),this, SLOT(setDeviceMsg(QString,int)));
