@@ -21,6 +21,8 @@ Worker::~Worker()
     delete scanner;
 }
 
+
+static void scan_callback(void* para);
 void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 {
     if(cmd_status)
@@ -74,6 +76,12 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             QByteArray t_ba = str_time.toLatin1();
             sprintf(device_data.filename, "%s/%s.bmp", imagePath, t_ba.constData());
 
+            //only net scan use jpg
+//            if(device->type() == DeviceIO::Type_usb)
+                device_data.settings.scan_type = Hight_Quality;
+
+            device_data.callback_para = this;
+            device_data.callback = scan_callback;
             result = scanner->scan(&device_data);
             value.setValue(device_data);
         }
@@ -500,7 +508,20 @@ Printer_struct* Worker::get_printer(const QString& printer_name)
     return printer;
 }
 
-void Worker::set_cancel(bool cancel)
+void Worker::cancel()
 {
-    scanner->set_cancel(cancel);
+    scanner->set_cancel(true);
+}
+
+void Worker::update_scan_progress(int progress)
+{
+    emit signal_update_scan_progress(progress);
+}
+
+static void scan_callback(void* para)
+{
+    ScanSettings* settings = (ScanSettings*)para;
+    Worker* worker = (Worker*) settings->callback_para;
+    worker->update_scan_progress(settings->progress);
+    LOGLOG("scan progress:%d" ,settings->progress);
 }

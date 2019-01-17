@@ -96,7 +96,7 @@ void MemberCenterWidget::getUserInfo()
 
     QString md5;
     QByteArray bb;
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     bb = QCryptographicHash::hash(str.toLocal8Bit(),QCryptographicHash::Md5);
 #else
     bb = QCryptographicHash::hash(str.toAscii(),QCryptographicHash::Md5);
@@ -106,7 +106,7 @@ void MemberCenterWidget::getUserInfo()
     QByteArray post_data;
     QString post_str = QString("mobile=%0&time=%1&Sign=%2").arg(text).arg(time).arg(md5);
 //    qDebug()<<post_str;
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     post_data = post_str.toLocal8Bit();
 #else
     post_data = post_str.toAscii();
@@ -247,7 +247,7 @@ void MemberCenterWidget::setUserInfo()
 
     QString strSign;
     QByteArray bb;
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     bb = QCryptographicHash::hash(md5_str.toLocal8Bit(),QCryptographicHash::Md5);
 #else
     bb = QCryptographicHash::hash(md5_str.toAscii(),QCryptographicHash::Md5);
@@ -267,7 +267,7 @@ void MemberCenterWidget::setUserInfo()
             .arg(time)
             .arg(strSign);
     qDebug()<<"post_str:"<<post_str;
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     QByteArray post_data = post_str.toLocal8Bit();
 #else
     QByteArray post_data = post_str.toAscii();
@@ -381,7 +381,7 @@ void MemberCenterWidget::cmdResult(int cmd,int result,QVariant data)
                     .arg(printerDataStr);
             qDebug()<<post_str;
 
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     QByteArray post_data = post_str.toLocal8Bit();
 #else
     QByteArray post_data = post_str.toAscii();

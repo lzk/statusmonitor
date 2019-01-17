@@ -1,15 +1,20 @@
 #ifndef LOG_H
 #define LOG_H
 
-#define DEBUGDEBUG 1
+#define DEBUG_TO_STDERR 1
 #include <stdio.h>
-#if DEBUGDEBUG
+#if DEBUG_TO_STDERR
 #define LOGLOG(format, ...) \
 { \
 fprintf(stderr ,format ,##__VA_ARGS__); \
     fprintf(stderr ,"\n"); \
     }
 #else
-#define LOGLOG(format, ...)
+int jklog(const char* ,...);
+#define LOGLOG(format, ...) \
+{ \
+    jklog(format ,##__VA_ARGS__); \
+    jklog("\n"); \
+    }
 #endif
 #endif // LOG_H

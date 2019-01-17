@@ -114,20 +114,16 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
     ret = libusb_open (dev, &udev);
     if(ret < 0)
         return -1;
+    LOGLOG("found usb device with vid:0x%x ,pid:0x%x" ,desc.idVendor ,desc.idProduct);
     char devserialNumber[1024];
     if (desc.iSerialNumber){
-        ret = libusb_get_string_descriptor_ascii(udev, desc.iSerialNumber, (unsigned char *)devserialNumber, sizeof(devserialNumber));
-#if DEBUG
-        if (ret > 0)
-            LOGLOG("%.*s  - Serial Number: %s\n", 0,
-            "                    ", devserialNumber);
-#endif
+        ret = libusb_get_string_descriptor_ascii(udev, desc.iSerialNumber, (unsigned char *)devserialNumber, sizeof(devserialNumber));        
+        LOGLOG("found usb device with serial:%s" ,devserialNumber);
     }
-
     if(pData_device->deviceInfo.serial[0] != NULL){
         get_serial(dev ,devserialNumber);
         if(!strcmp(pData_device->deviceInfo.serial ,devserialNumber)){
-//            LOGLOG("found usb device with serial %s" ,devserialNumber);
+            LOGLOG("get device success via serial");
             pData_device->dev = dev;
             pData_device->udev = udev;
             ret = 0;
@@ -138,7 +134,7 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
     }else{
         if(pData_device->deviceInfo.vid == desc.idVendor
                 && pData_device->deviceInfo.pid == desc.idProduct){
-            LOGLOG("found usb device with vid %x ,pid %x" ,desc.idVendor ,desc.idProduct);
+            LOGLOG("get device success via vid&pid");
             pData_device->dev = dev;
             pData_device->udev = udev;
             ret = 0;

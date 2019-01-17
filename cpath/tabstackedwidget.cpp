@@ -79,9 +79,9 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             ScanSettings scanSettings = data.value<ScanSettings>();
 
             QString image_path = scanSettings.filename;
-            qDebug()<<scanSettings.calc_data.pixels_per_line<<" "<<scanSettings.calc_data.source_total_lines;
+            qDebug()<<scanSettings.calc_data.target.pixels_per_line<<"x"<<scanSettings.calc_data.target.total_lines;
             qDebug()<<scanSettings.filename;
-            QSize size = QSize(scanSettings.calc_data.pixels_per_line,scanSettings.calc_data.source_total_lines);
+            QSize size = QSize(scanSettings.calc_data.target.pixels_per_line,scanSettings.calc_data.target.total_lines);
             ui->scrollArea_ScanImage->add_image_item(image_path ,size);
         }
         gUInterface->emitStopScanSignal();

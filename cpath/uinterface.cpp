@@ -78,6 +78,11 @@ void UInterface::setcurrentPrinter(const QString& str)
     current_printer = str;
 }
 
+void UInterface::cancel_work()
+{
+    worker->cancel();
+}
+
 void UInterface::setDeviceMsgFrmUI(const QString &str, int result)
 {
     emit setDeviceMsg(str,result);

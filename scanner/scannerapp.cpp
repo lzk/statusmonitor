@@ -139,6 +139,13 @@ int ScannerApp::init_scan(ScanSettings* settings)
 int ScannerApp::save_scan_data(ScanSettings* settings ,char* buffer ,int buf_size)
 {
 //    trans_trans(settings);
+    settings->received_bytes += buf_size;
+    if(settings->calc_data.source_size){
+        settings->progress = 100 * settings->received_bytes / settings->calc_data.source_size;
+//        LOGLOG("%ld/%ld = %d" ,settings->received_bytes ,settings->calc_data.source_size ,settings->progress);
+    }
+    if(settings->callback)
+        settings->callback(settings);
     scan_buffer_write(buffer ,buf_size);
     return 0;
 }
@@ -253,14 +260,20 @@ int ScannerApp::scan(ScanSettings* settings)
         return STATUS_Error_App;
     }
 
-
     set_cancel(false);
+    settings->progress = 0;
+    if(settings->callback)
+        settings->callback(settings);
+    settings->received_bytes = 0;
     ret = scanner->flat_scan(settings);
 //    exit_scan(settings);
     scan_buffer_exit();
     delete [] source_buf;
 #endif
     if(!ret){
+        settings->progress  = 100;
+        if(settings->callback)
+            settings->callback(settings);
         trans_process(settings);
     }
     return ret;

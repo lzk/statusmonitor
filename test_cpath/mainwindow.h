@@ -46,6 +46,8 @@ private slots:
 
     void on_btn_password_set_clicked();
 
+    void on_btn_cancel_clicked();
+
 private:
     Ui::MainWindow *ui;
     QDialog* dialog;

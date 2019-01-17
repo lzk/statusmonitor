@@ -32,24 +32,42 @@ typedef struct
 }
     UiSettings;
 
-typedef
-struct{
+typedef struct
+{
     int dpi_x;
     int dpi_y;
-    int source_pixel_resolution;
-    int source_motor_resolution;
-    int source_pixels_per_line;
-    int source_total_lines;
     int pixels_per_line;
+    int total_lines;
+    int bits_per_pixel;
+}Image_Data_Struct;
+
+typedef
+struct{
+    Image_Data_Struct source;
+    Image_Data_Struct target;
+//    int dpi_x;
+//    int dpi_y;
+//    int source_pixel_resolution;
+//    int source_motor_resolution;
+//    int source_pixels_per_line;
+//    int source_total_lines;
+//    int pixels_per_line;
+//    int source_bit_per_pixel;
+    long source_size;
 }
     Calc_Data;
 
+typedef void (*callback_scan)(void* para);
 typedef struct{
+    ImageTransInfo* info;
+    FILE* file;
+    callback_scan callback;
+    void* callback_para;
+    int progress;
     char filename[256];
     UiSettings settings;
     Calc_Data calc_data;
-    ImageTransInfo* info;
-    FILE* file;
+    long received_bytes;
 }
     ScanSettings;
 

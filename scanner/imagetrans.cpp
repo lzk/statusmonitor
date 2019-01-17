@@ -92,7 +92,7 @@ int trans_by_line(ImageTransInfo* info)
             LOGLOG("add one lines");
             memcpy(target_line_buffer ,target_line_buffer - line_buf_size ,line_buf_size);
         }else{
-            if(info->mode & ImageTransMode_rawToBmp){
+            if(info->target_format == ImageTransFormat_bmp){
                 choudian(target_line_buffer ,line_buf_size ,source_line_buf ,info);
                 if(info->target_image_info.BitsPerPixel == 24){
                     RawToBmp::rgb2bgr(target_line_buffer ,line_buf_size ,target_line_buffer ,line_buf_size);
@@ -175,7 +175,7 @@ int ImageTrans::trans_header(ImageTransInfo* info)
     if(!buffer)
         return -1;
 
-    if(info->mode & ImageTransMode_rawToBmp){
+    if(info->target_format == ImageTransFormat_bmp){
         index = RawToBmp::trans_header(buffer ,buf_size ,&info->target_image_info);
     }
 
@@ -196,7 +196,7 @@ int ImageTrans::init(ImageTransInfo* info)
 //    info->scanned_buf_size = 0;
     pNtdcmsApi->caculate_parameter(info);
 
-    if(info->mode & ImageTransMode_rawToBmp){
+    if(info->target_format == ImageTransFormat_bmp){
         char buffer[2048];
         int size;
         size = RawToBmp::trans_header(buffer ,2048 ,&info->target_image_info);
@@ -248,7 +248,7 @@ int ImageTrans::process(ImageTransInfo* info)
 #endif
 
 
-    if(info->mode & ImageTransMode_rawToBmp){
+    if(info->target_format == ImageTransFormat_bmp){
         if(info->target_image_info.BitsPerPixel == 24){
             RawToBmp::rgb2bgr(target_buffer ,target_size ,target_buffer ,target_size);
         }

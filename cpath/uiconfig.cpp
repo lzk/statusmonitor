@@ -3,10 +3,48 @@
 static bool _isDeviceSupported(Printer_struct* ps)
 {
 //    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
-//    if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
-//        return false;
+    if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
+        return false;
     return true;
 }
+
+static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
+{
+    if(!pid || !vid)
+        return -1;
+    *vid = 0x17ef;
+    *pid = -1;
+    if(makeAndModel.startsWith("lenovo/L100DW")){
+        *pid = 0x5445;
+    }else if(makeAndModel.startsWith("lenovo/L100W")){
+        *pid = 0x5443;
+    }else if(makeAndModel.startsWith("lenovo/L100D")){
+        *pid = 0x5444;
+    }else if(makeAndModel.startsWith("lenovo/L100")){
+        *pid = 0x5442;
+    }else if(makeAndModel.startsWith("lenovo/M100W")){
+        *pid = 0x5641;
+    }else if(makeAndModel.startsWith("lenovo/M100D")){
+        *pid = 0x5644;
+    }else if(makeAndModel.startsWith("lenovo/M100")){
+        *pid = 0x563e;
+    }else if(makeAndModel.startsWith("lenovo/M101DW")){
+        *pid = 0x5645;
+    }else if(makeAndModel.startsWith("lenovo/M101W")){
+        *pid = 0x5642;
+    }else if(makeAndModel.startsWith("lenovo/M101")){
+        *pid = 0x563f;
+    }else if(makeAndModel.startsWith("lenovo/M102W")){
+        *pid = 0x5643;
+    }else if(makeAndModel.startsWith("lenovo/M102")){
+        *pid = 0x5640;
+    }else if(makeAndModel.startsWith("lenovo/M7268W")){
+        *pid = 0x563a;
+    }
+    return 0;
+}
+extern
+int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
 
 UIConfig::UIConfig(QObject *parent) :
     QObject(parent)
@@ -23,6 +61,7 @@ void UIConfig::initConfig()
 
     //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;
+    getpidvid = _getpidvid;
 }
 
 int UIConfig::getModelSerial(Printer_struct* ps)

@@ -17,6 +17,7 @@ public:
     void setTimer(int timeVal = 0);
     void setcurrentPrinter(const QString& str);//{current_printer = str;}
     void setCurrentPrinterCmd(int cmd ,QVariant data = QVariant());
+    void cancel_work();
     void setDeviceMsgFrmUI(const QString& str, int result);
     void emitStartScanSignal();
     void emitStopScanSignal();

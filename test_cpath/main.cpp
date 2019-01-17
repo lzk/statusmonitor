@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 //    a.setWindowIcon(QIcon(":/image/app_icon.png"));
 
-#if QT_VERSION_MAJOR < 5
+#if QT_VERSION < 0x050000
         QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
         QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));
 #endif

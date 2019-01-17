@@ -11,6 +11,7 @@ macx{
         }
     }
 }
+#LIBS += -ljpeg
 
 SOURCES += \
     $$PWD/scanner.cpp \
@@ -18,7 +19,8 @@ SOURCES += \
     $$PWD/scannerapp.cpp \
     $$PWD/rawtobmp.cpp \
     $$PWD/imagetrans.cpp \
-    $$PWD/ntdcmsapi.cpp
+    $$PWD/ntdcmsapi.cpp \
+    $$PWD/trans_jpg.cpp
 
 
 HEADERS += \
@@ -28,4 +30,5 @@ HEADERS += \
     $$PWD/rawtobmp.h \
     $$PWD/imagetrans.h \
     $$PWD/imageinfo.h \
-    $$PWD/ntdcmsapi.h
+    $$PWD/ntdcmsapi.h \
+    $$PWD/trans_jpg.h

@@ -35,7 +35,7 @@ void UserLogin::on_bt_login_clicked()
     QString strVerifyCode = ui->le_autoCode->text();
 
     QString post_str = QString("phoneNum=%0&authCode=%1").arg(strPhoneNumber).arg(strVerifyCode);
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     QByteArray post_data = post_str.toLocal8Bit();
 #else
     QByteArray post_data = post_str.toAscii();
@@ -87,7 +87,7 @@ void UserLogin::on_bt_getAuthCode_clicked()
 
     QString str = QString("phoneNum=%0").arg(strPhoneNumber);
     qDebug()<<str;
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     QByteArray post_data = str.toLocal8Bit();
 #else
     QByteArray post_data = str.toAscii();
