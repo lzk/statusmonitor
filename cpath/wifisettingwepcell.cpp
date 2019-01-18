@@ -182,7 +182,6 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
         warming->setWindowTitle("ResStr_Warning");
         warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint );
         warming->exec();
-        warming->deleteLater();
     }
     else
     {
@@ -194,7 +193,6 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
                                 & ~Qt::WindowMinimizeButtonHint );
             dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
             dlg->exec();
-            dlg->deleteLater();
         }
         if(*islogin)
         {

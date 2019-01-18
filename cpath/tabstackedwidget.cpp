@@ -394,7 +394,6 @@ void TabStackedWidget::on_btn_MoreSetting_Scan_clicked()
     MoreSettingsForScan *moreSettingScan = new MoreSettingsForScan(this,&paramScan);
     connect(moreSettingScan, SIGNAL(signals_scan_buffer_size(float,int)), SLOT(slots_scan_image_size(float,int)));
     moreSettingScan->exec();
-    moreSettingScan->deleteLater();
 }
 
 void TabStackedWidget::slots_scan_image_size(float size, int unit)//Added by gavin for setting scan buffer size. 2016-04-08
@@ -423,7 +422,6 @@ void TabStackedWidget::on_btn_MoreSetting_Copy_clicked()
 {
     MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),&paramCopy);
     moreSettingsForCopy->exec();
-    moreSettingsForCopy->deleteLater();
 }
 
 void TabStackedWidget::on_btn_DensityAdd_clicked()
@@ -611,7 +609,6 @@ void TabStackedWidget::on_btn_Copy_clicked()
             {
                 paramCopy.promptInfo.isIDCard = false;
             }
-            aDialog->deleteLater();
         }
 
         paramCopy.scaling = 100;
@@ -789,7 +786,6 @@ void TabStackedWidget::on_copyNum_textChanged(const QString &arg1)
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
-        msgWarm->deleteLater();
         ui->copyNum->setText("1");
     }
 }

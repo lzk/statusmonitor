@@ -165,7 +165,6 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
-                warming->deleteLater();
             }
             isDoingCMD = false;
             times = 0;
@@ -231,7 +230,6 @@ void WlanTitleCell::on_btWLANON1_clicked()
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
-        dlg->deleteLater();
     }
     if(*islogin)
     {
@@ -303,7 +301,6 @@ void WlanTitleCell::on_btWLANON2_clicked()
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
-        dlg->deleteLater();
     }
     if(*islogin)
     {
@@ -640,7 +637,6 @@ void WlanTitleCell::on_btConnect_clicked()
         warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         warming->exec();
-        warming->deleteLater();
     }
     else if(len < defLen && defLen == 8)
     {
@@ -649,7 +645,6 @@ void WlanTitleCell::on_btConnect_clicked()
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();
-        msgWarm->deleteLater();
     }
     else if(defLen == 0)
     {   //search the aplist to find the ssid customer enter

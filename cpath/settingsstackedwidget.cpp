@@ -388,7 +388,6 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
-                warming->deleteLater();
                 isDoingCMD = false;
                 retryTimes = 0;
             }
@@ -425,7 +424,6 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
-                warming->deleteLater();
                 isDoingCMD = false;
                 retryTimes = 0;
             }
@@ -462,7 +460,6 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
-                warming->deleteLater();
                 isDoingCMD = false;
                 retryTimes = 0;
             }
@@ -836,7 +833,6 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();
-        msgWarm->deleteLater();
     }
     else if(psd_len < 8)
     {
@@ -845,7 +841,6 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
-        msgWarm->deleteLater();
     }
     else
     {
@@ -857,7 +852,6 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
                                 & ~Qt::WindowMinimizeButtonHint );
             dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
             dlg->exec();
-            dlg->deleteLater();
         }
         if(isLogn )//&& CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
@@ -926,7 +920,6 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
-        dlg->deleteLater();
     }
     if(isLogn )//&& CMD_STATUS_COMPLETE == device->get_cmdStatus())
     {
@@ -1061,7 +1054,6 @@ void SettingsStackedWidget::on_btIPv6Setting_clicked()
     settingIPv6Widget = new SettingForIPv6(this, &isLogn);
     settingIPv6Widget->setWindowTitle(tr("ResStr_Setting"));
     settingIPv6Widget->exec();
-    settingIPv6Widget->deleteLater();
 }
 
 void SettingsStackedWidget::on_btIPv6Status_clicked()
@@ -1069,7 +1061,6 @@ void SettingsStackedWidget::on_btIPv6Status_clicked()
     ipv6Status = new IPv6Status(this);
     ipv6Status->setWindowTitle(tr("ResStr_Status"));
     ipv6Status->exec();
-    ipv6Status->deleteLater();
 }
 
 /**************
@@ -1085,7 +1076,6 @@ void SettingsStackedWidget::on_btApply_userconfig_clicked()
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
-        dlg->deleteLater();
     }
     if(isLogn)
     {
@@ -1121,7 +1111,6 @@ void SettingsStackedWidget::on_btApply_Timeout_clicked()
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
-        dlg->deleteLater();
     }
     if(isLogn)
     {
@@ -1244,7 +1233,6 @@ void SettingsStackedWidget::on_btDrumReset_clicked()
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_DrumReset);
         emit cycleStart();
     }
-    pDialog->deleteLater();
 }
 
 void SettingsStackedWidget::on_btErrorClear_clicked()
@@ -1257,7 +1245,6 @@ void SettingsStackedWidget::on_btErrorClear_clicked()
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
-        dlg->deleteLater();
     }
     if(isLogn)
     {
@@ -1343,7 +1330,6 @@ void SettingsStackedWidget::on_btApply_clicked()
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
-        msgWarm->deleteLater();
     }
     else if(ui->lineEdit_confirm->text() != ui->lineEdit_newPassWord->text())
     {
@@ -1352,7 +1338,6 @@ void SettingsStackedWidget::on_btApply_clicked()
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
-        msgWarm->deleteLater();
     }
     else
     {
@@ -1364,7 +1349,6 @@ void SettingsStackedWidget::on_btApply_clicked()
                                 & ~Qt::WindowMinimizeButtonHint );
             dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
             dlg->exec();
-            dlg->deleteLater();
         }
         if(isLogn)
         {

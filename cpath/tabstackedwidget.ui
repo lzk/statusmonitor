@@ -451,12 +451,12 @@ QPushButton::pressed{
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget">
+     <widget class="QWidget" name="horizontalWidget" native="true">
       <property name="geometry">
        <rect>
         <x>30</x>
         <y>200</y>
-        <width>462</width>
+        <width>371</width>
         <height>39</height>
        </rect>
       </property>
@@ -594,6 +594,19 @@ QPushButton::pressed{
           <bool>false</bool>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

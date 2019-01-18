@@ -114,7 +114,6 @@ void SettingForIPv6::on_btApply_clicked()
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
             msgWarm->exec();
-            msgWarm->deleteLater();
 
             return;
         }
@@ -127,7 +126,6 @@ void SettingForIPv6::on_btApply_clicked()
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
             msgWarm->exec();
-            msgWarm->deleteLater();
 
             return;
         }
@@ -139,7 +137,6 @@ void SettingForIPv6::on_btApply_clicked()
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
             msgWarm->exec();
-            msgWarm->deleteLater();
 
             return;
         }
@@ -153,7 +150,6 @@ void SettingForIPv6::on_btApply_clicked()
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
-        dlg->deleteLater();
     }
     if(*islogin)
     {

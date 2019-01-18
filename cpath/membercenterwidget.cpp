@@ -96,15 +96,12 @@ void MemberCenterWidget::on_btLogin_clicked()
         ui->btChInfo->setEnabled(true);
         ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);}");
     }
-
-    login->deleteLater();
 }
 
 void MemberCenterWidget::on_btAbout_clicked()
 {
     About *about = new About(this);
     about->exec();
-    about->deleteLater();
 }
 
 void MemberCenterWidget::on_btCancel_clicked()
@@ -338,7 +335,6 @@ void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
         message->setIconPixmap(QPixmap(":/Images/Warning.tif"));
         message->setText(QString::fromLocal8Bit("修改账户信息失败。"));
         message->exec();
-        message->deleteLater();
     }
     reply->deleteLater();
 }
@@ -370,7 +366,6 @@ void MemberCenterWidget::on_btExpe_clicked()
         }
     }
 
-    exp->deleteLater();
 }
 
 void MemberCenterWidget::uploadCRM()
