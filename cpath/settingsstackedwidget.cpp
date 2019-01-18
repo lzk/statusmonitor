@@ -110,29 +110,29 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
     if(this->isEnabled()){
         switch(cmd)
         {
-        case UIConfig::CMD_WIFI_refresh_plus:
-            LOGLOG("CMD_WIFI_refresh_plus enter");
-            if(!result || UIConfig::WarmingUp == result){ //when the machine is warmming up, the err will be STATUS_WarmingUp
-                isDoingCMD = false;
-                retryTimes = 0;
-            }
-            else {
-                if(!isDoingCMD)
-                {
-                    isDoingCMD = true;
-                    retryTimes = RETRYTIMERS;
-                }
-                if(retryTimes > 0){
-                    retryTimes--;
-                    gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
-                }
-                else{
-                    isDoingCMD = false;
-                }
-            }
-            if(!isDoingCMD)
-                emit cycleStop();
-            break;
+//        case UIConfig::CMD_WIFI_refresh_plus:
+//            LOGLOG("CMD_WIFI_refresh_plus enter");
+//            if(!result || UIConfig::WarmingUp == result){ //when the machine is warmming up, the err will be STATUS_WarmingUp
+//                isDoingCMD = false;
+//                retryTimes = 0;
+//            }
+//            else {
+//                if(!isDoingCMD)
+//                {
+//                    isDoingCMD = true;
+//                    retryTimes = RETRYTIMERS;
+//                }
+//                if(retryTimes > 0){
+//                    retryTimes--;
+//                    gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
+//                }
+//                else{
+//                    isDoingCMD = false;
+//                }
+//            }
+//            if(!isDoingCMD)
+//                emit cycleStop();
+//            break;
         case UIConfig::LS_CMD_WIFI_Get_SoftAp:
             if(!result || UIConfig::WarmingUp == result)
             {

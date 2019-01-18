@@ -120,7 +120,7 @@ FORMS += \
 
 
 RESOURCES += \
-#    resource.qrc \
+    resource.qrc \
     translation.qrc
 
 DISTFILES += \

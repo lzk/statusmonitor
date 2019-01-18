@@ -10,6 +10,7 @@ UInterface::UInterface(QObject *parent) :
 
     connect(this ,SIGNAL(cmdToWorker(int,QString ,QVariant)) ,worker ,SLOT(cmdFromUi(int,QString ,QVariant)));
     connect(worker ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SIGNAL(cmdResult(int,int,QVariant)));
+    connect(worker ,SIGNAL(signal_update_scan_progress(int)) ,this ,SIGNAL(signal_update_scan_progress(int)));
     connect(worker ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult_slot(int,int,QVariant)));
 
     thread.start();

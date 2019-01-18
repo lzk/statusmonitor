@@ -14,6 +14,7 @@
 #include <qdesktopservices.h>
 #include <qurl.h>
 #include <qapplication.h>
+#include "scannerapp.h"
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
@@ -66,6 +67,7 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     connect(ui->settingStackedWidget,SIGNAL(cycleStop()),this,SLOT(stopCycleEmit()));
     connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStartFromWT()),this,SLOT(startCycleEmit()));
     connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStopFromWT()),this,SLOT(stopCycleEmit()));
+    connect(gUInterface,SIGNAL(signal_update_scan_progress(int)),this,SLOT(updateScanProcess(int)));
 }
 
 void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
@@ -88,6 +90,10 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             QSize size = QSize(scanSettings.calc_data.target.pixels_per_line,scanSettings.calc_data.target.total_lines);
             ui->scrollArea_ScanImage->add_image_item(image_path ,size);
         }
+//        else if(result == STATUS_Cancel)
+//        {
+            //scan cancel
+//        }
         gUInterface->emitStopScanSignal();
         ui->scrollArea_ScanImage->setEnabled(true);
         if(ui->scrollArea_ScanImage->selectedItems().isEmpty()){
@@ -98,11 +104,18 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
         ui->btn_MoreSetting_Scan->setEnabled(true);
         ui->btn_Scan->setEnabled(true);
         ui->btn_ScanCancel->setEnabled(false);
+        ui->progressBar_Scan->setValue(0);
     }
         break;
     default:
         break;
     }
+}
+
+void TabStackedWidget::updateScanProcess(int progress)
+{
+    qDebug()<<"TabStackedWidget:"<<progress;
+    ui->progressBar_Scan->setValue(progress);
 }
 
 bool TabStackedWidget::getScrollAreaImageStatus()
@@ -783,7 +796,7 @@ void TabStackedWidget::on_copyNum_textChanged(const QString &arg1)
 
 void TabStackedWidget::on_btn_ScanCancel_clicked()
 {
-
+    gUInterface->cancel_work();
 }
 
 void TabStackedWidget::on_TUSBBtn_3_clicked()

@@ -429,6 +429,7 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
 #ifndef DEBUG
     if(printers.at(index) != current_printer)
     {
+        updateStatusPanel(UIConfig::Status_Offline);
         current_printer = printers.at(index);
         setcurrentPrinter(printers.at(index));
 #endif
@@ -619,7 +620,12 @@ void MainWindow::onStatusCh(const PrinterStatus_struct& status)
 
     ui->label_10->setText(errMsg);
     set_Message_Background_Color((UIConfig::EnumStatus)status.PrinterStatus);
-    switch (displayStatus) {
+    updateStatusPanel(displayStatus);
+}
+
+void MainWindow::updateStatusPanel(int status)
+{
+    switch (status) {
     case UIConfig::Status_Ready:
         qDebug()<<"Status_Ready";
         ui->label_6->setText(tr("ResStr_Ready"));
@@ -667,7 +673,7 @@ void MainWindow::onStatusCh(const PrinterStatus_struct& status)
         ui->label_6->setStyleSheet("QLabel{color: white;"
                                     "border:0px solid;"
                                     "border-radius:5px;"
-                                    "background-color: red;}");       
+                                    "background-color: red;}");
         ui->errorBtn->show();
 
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Red.png);");

@@ -73,6 +73,7 @@ private slots:
     void on_btn_Copy_clicked();
 
     void cmdResult(int,int,QVariant);
+    void updateScanProcess(int);
 
     void on_btn_ScanSave_clicked();
 

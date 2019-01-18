@@ -106,12 +106,32 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             cmdst_aplist_get aplist = wifi_refresh_info.wifi_aplist;
             initCell(wifi_para,aplist);
             is_wifi_now_on = true;
+            isDoingCMD = false;
+            times = 0;
+        }
+        else
+        {
+            if(!isDoingCMD)
+            {
+                isDoingCMD = true;
+                times = RETRYTIMES;
+            }
+            if(times > 0){
+                times--;
+                gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
+            }
+            else{
+                isDoingCMD = false;
+            }
         }
         if(result == -4)
         {
             is_wifi_now_on = false;
         }
-        emit cycleStopFromWT();
+        if(!isDoingCMD)
+        {
+            emit cycleStopFromWT();
+        }
         break;
     case UIConfig::LS_CMD_WIFI_apply:
         qDebug()<<"LS_CMD_WIFI_apply"<<result;

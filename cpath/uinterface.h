@@ -30,6 +30,7 @@ signals:
 //    void updateStatus(QVariant data);
     void startScan();
     void stopScan();
+    void signal_update_scan_progress(int progress);//(0 - 100)
 
 private slots:
     void timerOut();

@@ -67,6 +67,7 @@ private slots:
     void set_Message_Background_Color(UIConfig::EnumStatus s);
 
     void onStatusCh(const PrinterStatus_struct& status);
+    void updateStatusPanel(int);
 
     void errorStatus(bool bIsErrorStatus);
 
