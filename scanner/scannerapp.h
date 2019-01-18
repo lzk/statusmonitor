@@ -53,7 +53,7 @@ struct{
 //    int source_total_lines;
 //    int pixels_per_line;
 //    int source_bit_per_pixel;
-    long source_size;
+    long long source_size;
 }
     Calc_Data;
 
@@ -67,7 +67,7 @@ typedef struct{
     char filename[256];
     UiSettings settings;
     Calc_Data calc_data;
-    long received_bytes;
+    long long received_bytes;
 }
     ScanSettings;
 
