@@ -344,8 +344,8 @@ color:white;
      <font>
       <family>Arial</family>
       <pointsize>14</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -909,8 +909,8 @@ QRadioButton::indicator::checked {
      <font>
       <family>Arial</family>
       <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -942,9 +942,9 @@ color: rgb(255, 255, 255);
     </property>
     <property name="font">
      <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
