@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(" ");
-    LOGLOG("test!!!");
+//    LOGLOG("test!!!");
     ui->memberCenterWidget->setSW(ui->totalStackedWidget, ui->loginButton);
 
     selectState = "background-color: rgb(99, 99, 99);color:white;";
