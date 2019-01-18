@@ -29,12 +29,12 @@ int UIConfig::getModelSerial(Printer_struct* ps)
 {
     int ms = ModelSerial_unknown;
     QString makeAndModel(ps->makeAndModel);
-    if(makeAndModel.startsWith("Lenovo L100D")){
-        ms = ModelSerial_L + Model_D;
+    if(makeAndModel.startsWith("Lenovo L100DW")){
+        ms = ModelSerial_L + Model_D + Model_W;
     }else if(makeAndModel.startsWith("Lenovo L100W")){
         ms = ModelSerial_L + Model_W;
-    }else if(makeAndModel.startsWith("Lenovo L100DW")){
-        ms = ModelSerial_L + Model_D + Model_W;
+    }else if(makeAndModel.startsWith("Lenovo L100D")){
+        ms = ModelSerial_L + Model_D;
     }else if(makeAndModel.startsWith("Lenovo L100")){
         ms = ModelSerial_L;
     }else if(makeAndModel.startsWith("Lenovo M100W")){

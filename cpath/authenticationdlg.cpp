@@ -21,7 +21,7 @@ AuthenticationDlg::AuthenticationDlg(QWidget *parent, bool*confirm) :
    //                            For security of your equipment, please change this password."));
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
-    cycle = new BusyRefreshLabel(this,false);
+    cycle = new BusyRefreshLabel(this,true);
     cycle->setGeometry(QRect(180,70,50,50));
     isDoingCMD = false;
     times = 0;

@@ -38,7 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(gUInterface,SIGNAL(startScan()),this, SLOT(startScan()));
     connect(gUInterface,SIGNAL(stopScan()),this,SLOT(stopScan()));
 
-    statusCycle = new BusyRefreshLabel(ui->deviceMsgWidget,true);
+//    statusCycle = new BusyRefreshLabel(ui->deviceMsgWidget,true);
+//    ui->statusCycle->hide();
 
     ui->cycleWidget->hide();
     ui->errorBtn->hide();
@@ -75,13 +76,16 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
 
 
-    cycle = new BusyRefreshLabel(ui->cycleWidget,false);
+    cycle = new BusyRefreshLabel(ui->cycleWidget,true);
     cycle->setGeometry(385,280,80,80);
 
     connect(ui->tabStackedWidget,SIGNAL(cycleStartFromTab()),this,SLOT(startCycleAnimation()));
     connect(ui->tabStackedWidget,SIGNAL(cycleStopFromTab()),this,SLOT(stopCycleAnimation()));
 
     createSysTray();
+
+    QCoreApplication::setOrganizationName("Lenovo");
+    QCoreApplication::setApplicationName("VOP");
 }
 
 MainWindow::~MainWindow()
@@ -116,7 +120,7 @@ void MainWindow::createSysTray()
     trayIcon->setIcon(QIcon(":/Images/printer.ico"));
 
 //    connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
-    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+//    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     trayIcon->show();
 }
 
@@ -197,6 +201,10 @@ void MainWindow::on_Setting_clicked()
     {
         ui->tabStackedWidget->on_btn_WiFi_clicked();
     }
+    else
+    {
+        ui->tabStackedWidget->on_btn_PowerSave_clicked();
+    }
 }
 
 void MainWindow::on_loginButton_clicked()
@@ -233,19 +241,25 @@ void MainWindow::on_SettingImgBtn_clicked()
     {
         ui->tabStackedWidget->on_btn_WiFi_clicked();
     }
+    else
+    {
+        ui->tabStackedWidget->on_btn_PowerSave_clicked();
+    }
 }
 
 void MainWindow::on_refreshBtn_clicked()
 {
-    statusCycle->setGeometry(70,37,20,19);
+//    statusCycle->setGeometry(70,37,20,19);
 
     if(ui->tabStackedWidget->currentIndex() != 0 && enabledScanCopy)
     {
         on_Copy_clicked();
     }
     ui->refreshBtn->hide();
+//    ui->statusCycle->show();
+    ui->statusCycle->startAnimation(20);
     gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
-    statusCycle->startAnimation(20);
+//    statusCycle->startAnimation(20);
 }
 
 void MainWindow::cmdResult(int cmd,int result ,QVariant data)
@@ -256,7 +270,9 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         if(!result){
             updatePrinter(data);
         }
-        statusCycle->stopAnimation();
+//        statusCycle->stopAnimation();
+        ui->statusCycle->stopAnimation();
+        ui->statusCycle->hide();
         ui->refreshBtn->show();
     }
         break;
@@ -330,6 +346,7 @@ void MainWindow::setcurrentPrinter(const QString& str)
     {
         PrinterInfo_struct printerInfo = printerInfos.at(ui->deviceNameBox->currentIndex());
         int modelType = UIConfig::getModelSerial(&printerInfo.printer);
+        qDebug()<<"printer"<<&printerInfo.printer<<"    modelType:"<<modelType;
         if((modelType & UIConfig::ModelSerial_M) == UIConfig::ModelSerial_M)//M:3in1
         {
             if((modelType & UIConfig::Model_D) == UIConfig::Model_D)//MD:3in1,duplex copy
@@ -346,6 +363,8 @@ void MainWindow::setcurrentPrinter(const QString& str)
             ui->CopyImgBtn->show();
             ui->Scan->show();
             ui->ScanImgBtn->show();
+            ui->Setting->setEnabled(true);
+            ui->SettingImgBtn->setEnabled(true);
 
             QRect sRect = QRect(ui->Scan->geometry().x()+ui->Scan->geometry().width(),ui->Scan->geometry().y(),111,25);
             QRect sIRect = QRect((ui->ScanImgBtn->geometry().x()+ui->ScanImgBtn->geometry().width() - 1),ui->ScanImgBtn->geometry().y(),111,77);
@@ -367,6 +386,8 @@ void MainWindow::setcurrentPrinter(const QString& str)
             ui->Setting->setGeometry(ui->Copy->geometry());
             ui->SettingImgBtn->setGeometry(ui->CopyImgBtn->geometry());
             ui->Setting->setStyleSheet(selectState + "border-radius:7px;");
+            ui->Setting->setEnabled(false);
+            ui->SettingImgBtn->setEnabled(false);
 
             ui->tabStackedWidget->setCurrentIndex(2);
         }
@@ -379,6 +400,7 @@ void MainWindow::setcurrentPrinter(const QString& str)
         {
             enabledWiFi = false;
             ui->tabStackedWidget->setEnabledWifi(false);
+            ui->tabStackedWidget->on_btn_PowerSave_clicked();
         }
     }
 }
@@ -394,7 +416,7 @@ void MainWindow::updateStatus(QVariant data)
     PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
     PrinterStatus_struct& status = printerInfo.status;
     LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
-    on_status_ch(status);
+    onStatusCh(status);
 }
 
 void MainWindow::updateOtherStatus(const QString&  ,const PrinterStatus_struct& )
@@ -482,9 +504,17 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
 void MainWindow::errorStatus(bool bIsErrorStatus)
 {
     ui->tabStackedWidget->setCopyStackedWidgetCurrentIndex(bIsErrorStatus);
-    ui->CopyImgBtn->setEnabled(!bIsErrorStatus);
-    ui->ScanImgBtn->setEnabled(!bIsErrorStatus);
-    ui->SettingImgBtn->setEnabled(!bIsErrorStatus);
+
+    if(enabledScanCopy == true)
+    {
+        ui->CopyImgBtn->setEnabled(!bIsErrorStatus);
+        ui->ScanImgBtn->setEnabled(!bIsErrorStatus);
+        ui->SettingImgBtn->setEnabled(!bIsErrorStatus);
+
+        ui->Copy->setEnabled(!bIsErrorStatus);
+        ui->Scan->setEnabled(!bIsErrorStatus);
+        ui->Setting->setEnabled(!bIsErrorStatus);
+    }
 
     if(bIsErrorStatus)
     {
@@ -498,9 +528,6 @@ void MainWindow::errorStatus(bool bIsErrorStatus)
         ui->btCar->setEnabled(true);
     }
 
-    ui->Copy->setEnabled(!bIsErrorStatus);
-    ui->Scan->setEnabled(!bIsErrorStatus);
-    ui->Setting->setEnabled(!bIsErrorStatus);
     ui->btCar->setEnabled(!bIsErrorStatus);
 
     ui->tabStackedWidget->set_setting_enabled(!bIsErrorStatus);
@@ -581,7 +608,7 @@ void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
 }
 
 
-void MainWindow::on_status_ch(const PrinterStatus_struct& status)
+void MainWindow::onStatusCh(const PrinterStatus_struct& status)
 {
     ui->label_10->setStyleSheet("QLabel{color:break;}");
     ui->mofenProgressBar->setValue(status.TonelStatusLevelK);

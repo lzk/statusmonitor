@@ -32,7 +32,9 @@
    <string/>
   </property>
   <property name="styleSheet">
-   <string notr="true">#centralWidget{
+   <string notr="true">QWidget:focus{outline: none;}
+
+#centralWidget{
 background-image: url(:Images/background.png);
 }
 
@@ -283,6 +285,11 @@ background-image: url(:/Images/PrinterMsgBackground.png);
          <height>18</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">QProgressBar{
 color:black;
@@ -298,7 +305,7 @@ border-radius:5px;
 }</string>
        </property>
        <property name="value">
-        <number>24</number>
+        <number>0</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -453,7 +460,7 @@ QComboBox:combobox-popup:0;
         <rect>
          <x>20</x>
          <y>37</y>
-         <width>123</width>
+         <width>148</width>
          <height>21</height>
         </rect>
        </property>
@@ -474,6 +481,31 @@ QComboBox:combobox-popup:0;
           </property>
           <property name="text">
            <string>ResStr_Model</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="BusyRefreshLabel" name="statusCycle">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>19</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>19</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-image:url();</string>
           </property>
          </widget>
         </item>
@@ -782,6 +814,11 @@ border-bottom-left-radius:0px;</string>
    <extends>QWidget</extends>
    <header>membercenterwidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BusyRefreshLabel</class>
+   <extends>QLabel</extends>
+   <header>busyrefreshlabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

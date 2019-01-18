@@ -44,14 +44,14 @@ void UserLogin::on_bt_login_clicked()
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_check(QNetworkReply*)));
 
-    QNetworkRequest *req = new QNetworkRequest();
+    QNetworkRequest req;
 
-    req->setUrl(url);
+    req.setUrl(url);
 
-    req->setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
-    req->setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+    req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
 
-    manager->post(*req,post_data);
+    manager->post(req,post_data);
 }
 
 void UserLogin::replyFinish_check(QNetworkReply* reply)
@@ -75,6 +75,7 @@ void UserLogin::replyFinish_check(QNetworkReply* reply)
             ui->labMsg->setText(tr("ResStr_Msg_8"));
         }
     }
+    reply->deleteLater();
 }
 
 void UserLogin::on_bt_getAuthCode_clicked()
@@ -97,14 +98,14 @@ void UserLogin::on_bt_getAuthCode_clicked()
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_send(QNetworkReply*)));
 
-    QNetworkRequest *req = new QNetworkRequest();
+    QNetworkRequest req;
 
-    req->setUrl(url);
+    req.setUrl(url);
 
-    req->setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
-    req->setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+    req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
 
-    manager->post(*req,post_data);
+    manager->post(req,post_data);
 }
 
 void UserLogin::showTimelimit()
@@ -148,6 +149,7 @@ void UserLogin::replyFinish_send(QNetworkReply* reply)
     }
 
     ui->labMsg->setText(tr("ResStr_Msg_6"));
+    reply->deleteLater();
 }
 
 QString UserLogin::getPhone()

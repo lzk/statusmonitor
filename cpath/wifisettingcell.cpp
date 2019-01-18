@@ -134,10 +134,11 @@ void WiFiSettingCell::on_btConnect_clicked()
     int len = ui->lineEdit_Password->text().length();
     if(len<8 && apInfo.encryType != NO_Securty)
     {
-        SettingWarming *msgWarm = new SettingWarming(0, tr("ResStr_Msg_3"));
+        SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_3"));
         msgWarm->setWindowTitle("ResStr_Warning");
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();
+        msgWarm->deleteLater();
     }
     else if(apInfo.encryType == NO_Securty)
     {
@@ -148,11 +149,12 @@ void WiFiSettingCell::on_btConnect_clicked()
         QString passwd;
         if(!(*islogin) )
         {
-            AuthenticationDlg *dlg = new AuthenticationDlg(0, islogin);
+            AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
             dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
             dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
             dlg->exec();
+            dlg->deleteLater();
         }
         if(*islogin)
         {

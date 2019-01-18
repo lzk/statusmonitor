@@ -10,6 +10,23 @@
     <height>481</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>409</width>
+    <height>481</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>409</width>
+    <height>481</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>ResStr_User_Experience</string>
   </property>
@@ -24,14 +41,14 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>17</pointsize>
+     <pointsize>14</pointsize>
     </font>
    </property>
    <property name="text">
     <string>ResStr_Help_us_improve</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lab_msg">
@@ -45,11 +62,14 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>13</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -103,7 +123,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>13</pointsize>
     </font>
    </property>
    <property name="text">
@@ -149,18 +169,16 @@ background:transparent;
   <widget class="QPushButton" name="bt_OK">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>140</x>
      <y>411</y>
-     <width>111</width>
-     <height>38</height>
+     <width>129</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>16</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <pointsize>14</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -193,7 +211,7 @@ background:transparent;
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>15</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">

@@ -197,5 +197,7 @@
         <file>Images/Video/SimplifiedChinese/06_NIn1Copy1_zh.gif</file>
         <file>Images/Video/SimplifiedChinese/06_NIn1Copy2_zh.gif</file>
         <file>Images/Video/SimplifiedChinese/06_NIn1Copy3_zh.gif</file>
+        <file>Images/Startup_ch.tif</file>
+        <file>Images/Startup_en.tif</file>
     </qresource>
 </RCC>

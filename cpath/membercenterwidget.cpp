@@ -8,6 +8,7 @@
 #include "qdesktopservices.h"
 #include <qstringlist.h>
 #include "uinterface.h"
+#include <qsettings.h>
 
 MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     QWidget(parent),
@@ -21,18 +22,48 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);color:gray}");
 
     crmTimer = new QTimer(this);
-//    m_bCRM = false;
-    if(m_bCRM)
-    {
-        crmTimer->start(30*60*1000);//30min
-    }
+
     connect(crmTimer,SIGNAL(timeout()),this,SLOT(uploadCRM()));
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
+
+//    loginPhone = settings.value("loginPhone").toString();
+////    loginPhone = "13640834424";
+//    qDebug()<<"loginPhone"<<loginPhone;
+//    if(loginPhone != NULL)
+//    {
+//        currentUser.mobile = loginPhone;
+//        ui->login_name->setText( loginPhone );
+//        ui->btLogin->setDisabled(true);
+//        ui->login_arrow->hide();
+//        isLogin = true;
+//        //userInfo(true);
+//        ui->btloginImg->setStyleSheet("QPushButton{"
+//                                       "border-image: url(:/Images/Logon_Active.png);}"
+//                                       "QPushButton:pressed{"
+//                                       "border-image: url(:/Images/Logon_Normal.png);}");
+//        ui->btloginImg2->setStyleSheet("QPushButton{"
+//                                       "border-image: url(:/Images/Logon_Active.png);}"
+//                                       "QPushButton:pressed{"
+//                                       "border-image: url(:/Images/Logon_Normal.png)}");
+
+//        ui->btChInfo->setEnabled(true);
+//        ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);}");
+
+//        qDebug()<<"m_bCRM";
+//        m_bCRM = settings.value("enableCRM").toBool();
+//        if(m_bCRM)
+//        {
+//            crmTimer->start(30*60*1000);//30min
+//        }
+//    }
 }
 
 MemberCenterWidget::~MemberCenterWidget()
 {
+//    settings.setValue("enableCRM",m_bCRM);
+//    settings.setValue("loginPhone",loginPhone);
+
     delete ui;
 }
 
@@ -115,14 +146,14 @@ void MemberCenterWidget::getUserInfo()
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_get(QNetworkReply*)));
 
-    QNetworkRequest *req = new QNetworkRequest();
+    QNetworkRequest req;
 
-    req->setUrl(url);
+    req.setUrl(url);
 
-    req->setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
-    req->setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+    req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
 
-    manager->post(*req,post_data);
+    manager->post(req,post_data);
 
 }
 
@@ -193,7 +224,7 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
 
     ui->btChInfo->setEnabled(true);
     ui->stackedWidget->setCurrentIndex(0);
-
+    reply->deleteLater();
 }
 
 QString MemberCenterWidget::getHostMacAddress()
@@ -221,9 +252,9 @@ void MemberCenterWidget::setUserInfo()
 
     QString realName = ui->le_name->text();
 
-    QDate *birthDate = new QDate;
-    birthDate->setDate(ui->spinBox->value(),ui->spinBox_M->value(),ui->spinBox_D->value());
-    QString strBirthDay = birthDate->toString("yyyy-MM-dd");
+    QDate birthDate;
+    birthDate.setDate(ui->spinBox->value(),ui->spinBox_M->value(),ui->spinBox_D->value());
+    QString strBirthDay = birthDate.toString("yyyy-MM-dd");
     qDebug()<<"strBirthDay:"<<strBirthDay;
 
     int nSex = 0x01;
@@ -276,14 +307,14 @@ void MemberCenterWidget::setUserInfo()
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_set(QNetworkReply*)));
 
-    QNetworkRequest *req = new QNetworkRequest();
+    QNetworkRequest req;
 
-    req->setUrl(url);
+    req.setUrl(url);
 
-    req->setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
-    req->setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+    req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
 
-    manager->post(*req,post_data);
+    manager->post(req,post_data);
 }
 
 void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
@@ -307,7 +338,9 @@ void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
         message->setIconPixmap(QPixmap(":/Images/Warning.tif"));
         message->setText(QString::fromLocal8Bit("修改账户信息失败。"));
         message->exec();
+        message->deleteLater();
     }
+    reply->deleteLater();
 }
 
 void MemberCenterWidget::on_btChInfo_clicked()
@@ -393,14 +426,14 @@ void MemberCenterWidget::cmdResult(int cmd,int result,QVariant data)
              QNetworkAccessManager *manager = new QNetworkAccessManager(this);
              connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_uploadCRM(QNetworkReply*)));
 
-             QNetworkRequest *req = new QNetworkRequest();
+             QNetworkRequest req;
 
-             req->setUrl(url);
+             req.setUrl(url);
 
-             req->setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
-             req->setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+             req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+             req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
 
-             manager->post(*req,post_data);
+             manager->post(req,post_data);
 
         }
         break;
@@ -415,12 +448,20 @@ void MemberCenterWidget::replyFinish_uploadCRM(QNetworkReply *reply)
 {
     QString strJsonText = reply->readAll();
     qDebug()<<"replyFinish_uploadCRM"<<strJsonText;
+    reply->deleteLater();
 }
 
 void MemberCenterWidget::setSW(QStackedWidget* _sw, QPushButton * _bt)
 {
     sw = _sw;
     bt = _bt;
+    if(loginPhone != NULL)
+    {
+        bt->setStyleSheet("QPushButton{"
+                          "border-image: url(:/Images/Logon_Active.png);}"
+                          "QPushButton:pressed{"
+                          "border-image: url(:/Images/Logon_Normal.png)}");
+    }
 }
 
 void MemberCenterWidget::on_pushButton_clicked()

@@ -124,6 +124,7 @@ bool ThumbnailImage::eventFilter(QObject * obj, QEvent * event)
                         item->listWidget()->removeItemWidget(item);
                         item->listWidget()->takeItem(item->listWidget()->row(item));
                     }
+                    pDialog->deleteLater();
                 }
                 return true;
             }

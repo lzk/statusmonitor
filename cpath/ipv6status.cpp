@@ -11,7 +11,7 @@ IPv6Status::IPv6Status(QWidget *parent) :
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
 
-    cycle = new BusyRefreshLabel(this,false);
+    cycle = new BusyRefreshLabel(this,true);
     cycle->setGeometry(QRect(235,100,50,50));
     cycle->startAnimation(20);
     gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_GetV6);

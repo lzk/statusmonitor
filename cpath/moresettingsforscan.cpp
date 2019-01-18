@@ -55,6 +55,8 @@ MoreSettingsForScan::MoreSettingsForScan(QWidget *parent, UiSettings *param) :
 
 MoreSettingsForScan::~MoreSettingsForScan()
 {
+    delete grey_str;
+    delete lightgrey_str;
     delete ui;
 }
 
@@ -93,6 +95,33 @@ void MoreSettingsForScan::on_btClose_clicked()
 
 void MoreSettingsForScan::on_btOK_clicked()
 {
+    //save para data
+    param_scan->scan_dpi = Scan_Dpi(ui->comboDpi->currentIndex());
+    param_scan->scan_size = Scan_Size(ui->comboScanSize->currentIndex());
+    if(ui->btPthoto->isChecked())
+    {
+        param_scan->scan_doctype = T_Photo;
+    }
+    else if(ui->btPhotoText->isChecked())
+    {
+        param_scan->scan_doctype = T_Text_Graph;
+    }else
+    {
+        param_scan->scan_doctype = T_Text;
+    }
+
+    param_scan->contrast = ui->lineEdit_constrast->text().toInt();
+    param_scan->brightness = ui->lineEdit_brightness->text().toInt();
+    param_scan->colorModel = colorMode;
+
+    if (ui->btSpeed->isChecked())
+    {
+        param_scan->scan_type = Hight_Speed;
+    }else
+    {
+        param_scan->scan_type = Hight_Quality;
+    }
+
     //Added for show scanned image size by gavin 2016-04-08
     double paper_size[5] = {(210 / 25.4) * (297 /25.4), (148 / 25.4) * (210 /25.4), (182 / 25.4) * (257 /25.4), 8.5 * 11, 4 * 6};
     int res[5] = {100 * 100, 200 *200, 300 * 300, 600 * 600, 1200 * 1200};
@@ -155,6 +184,13 @@ void MoreSettingsForScan::showParam()
     default: break;
     }
 
+    switch(param_scan->scan_type)
+    {
+    case Hight_Speed: ui->btSpeed->setChecked(true); break;
+    case Hight_Quality: ui->btQuality->setChecked(true);break;
+    default: break;
+    }
+
     ui->comboDpi->setCurrentIndex((int)param_scan->scan_dpi);
     ui->lineEdit_constrast->setText(text.number(param_scan->contrast));
     ui->slider_contrast->setValue(param_scan->contrast);
@@ -176,6 +212,7 @@ void MoreSettingsForScan::setBgColor(QPushButton *button, QString *color)
 //选择色彩模式
  void MoreSettingsForScan::selectMode(int model)
  {
+    colorMode = model;
     setBgColor(ui->btBgColor, lightgrey_str);
     setBgColor(ui->btBgBW,lightgrey_str);
     setBgColor(ui->btBgGrayscale,lightgrey_str);
@@ -189,39 +226,39 @@ void MoreSettingsForScan::setBgColor(QPushButton *button, QString *color)
      }
 }
 
-void MoreSettingsForScan::on_comboDpi_currentIndexChanged(int index)
-{
-    param_scan->scan_dpi = Scan_Dpi(index);
-}
+//void MoreSettingsForScan::on_comboDpi_currentIndexChanged(int index)
+//{
+//    param_scan->scan_dpi = Scan_Dpi(index);
+//}
 
-void MoreSettingsForScan::on_comboScanSize_currentIndexChanged(int index)
-{
-    param_scan->scan_size = Scan_Size(index);
-}
+//void MoreSettingsForScan::on_comboScanSize_currentIndexChanged(int index)
+//{
+//    param_scan->scan_size = Scan_Size(index);
+//}
 
-void MoreSettingsForScan::on_btPthoto_toggled(bool checked)
-{
-    if(checked)
-    {
-        param_scan->scan_doctype = T_Photo;
-    }
-}
+//void MoreSettingsForScan::on_btPthoto_toggled(bool checked)
+//{
+//    if(checked)
+//    {
+//        param_scan->scan_doctype = T_Photo;
+//    }
+//}
 
-void MoreSettingsForScan::on_btPhotoText_toggled(bool checked)
-{
-    if(checked)
-    {
-        param_scan->scan_doctype = T_Text_Graph;
-    }
-}
+//void MoreSettingsForScan::on_btPhotoText_toggled(bool checked)
+//{
+//    if(checked)
+//    {
+//        param_scan->scan_doctype = T_Text_Graph;
+//    }
+//}
 
-void MoreSettingsForScan::on_btText_toggled(bool checked)
-{
-    if(checked)
-    {
-        param_scan->scan_doctype = T_Text;
-    }
-}
+//void MoreSettingsForScan::on_btText_toggled(bool checked)
+//{
+//    if(checked)
+//    {
+//        param_scan->scan_doctype = T_Text;
+//    }
+//}
 
 
 /*****************************************************************************
@@ -230,15 +267,17 @@ void MoreSettingsForScan::on_btText_toggled(bool checked)
 void MoreSettingsForScan::on_btContrastReduce_clicked()
 {
     QString text;
-    if(param_scan->contrast > MIN_CONTRAST && param_scan->contrast <= MAX_CONTRAST)
+    int value = ui->lineEdit_constrast->text().toInt();
+    if(value > MIN_CONTRAST && value <= MAX_CONTRAST)
     {
-        param_scan->contrast--;
-        ui->lineEdit_constrast->setText(text.number(param_scan->contrast));
+//        param_scan->contrast--;
+        value --;
+        ui->lineEdit_constrast->setText(text.number(value));
     }
 
 }
 
-void  MoreSettingsForScan::on_timerC_timeout()
+void  MoreSettingsForScan::onTimerCTimeout()
 {
     if(timeCount>9) on_btContrastReduce_clicked();
     timeCount++;
@@ -246,28 +285,29 @@ void  MoreSettingsForScan::on_timerC_timeout()
 void MoreSettingsForScan::on_btContrastReduce_pressed()
 {
     timeCount = 0;
-    connect(timerC, SIGNAL(timeout()),this, SLOT(on_timerC_timeout()));
+    connect(timerC, SIGNAL(timeout()),this, SLOT(onTimerCTimeout()));
     timerC->start(60);
 }
 
 void MoreSettingsForScan::on_btContrastReduce_released()
 {
     timerC->stop();
-    disconnect(timerC, SIGNAL(timeout()), this, SLOT(on_timerC_timeout()));
+    disconnect(timerC, SIGNAL(timeout()), this, SLOT(onTimerCTimeout()));
 }
 
 void MoreSettingsForScan::on_btContrastAdd_clicked()
 {
     QString text;
-
-    if(param_scan->contrast >= MIN_CONTRAST && param_scan->contrast < MAX_CONTRAST)
+    int value = ui->lineEdit_constrast->text().toInt();
+    if(value >= MIN_CONTRAST && value < MAX_CONTRAST)
     {
-        param_scan->contrast++;
-        ui->lineEdit_constrast->setText(text.number(param_scan->contrast));
+//        param_scan->contrast++;
+        value ++;
+        ui->lineEdit_constrast->setText(text.number(value));
     }
 }
 
-void MoreSettingsForScan::on_timerC_timeout1()
+void MoreSettingsForScan::onTimerCTimeout1()
 {
     if(timeCount>9) on_btContrastAdd_clicked();
     timeCount++;
@@ -276,14 +316,14 @@ void MoreSettingsForScan::on_timerC_timeout1()
 void MoreSettingsForScan::on_btContrastAdd_pressed()
 {
     timeCount = 0;
-    connect(timerC, SIGNAL(timeout()),this, SLOT(on_timerC_timeout1()));
+    connect(timerC, SIGNAL(timeout()),this, SLOT(onTimerCTimeout1()));
     timerC->start(60);
 }
 
 void MoreSettingsForScan::on_btContrastAdd_released()
 {
     timerC->stop();
-    disconnect(timerC, SIGNAL(timeout()), this, SLOT(on_timerC_timeout1()));
+    disconnect(timerC, SIGNAL(timeout()), this, SLOT(onTimerCTimeout1()));
 }
 
 /*****************************************************************************
@@ -294,7 +334,7 @@ void MoreSettingsForScan::on_lineEdit_constrast_textChanged(const QString &arg1)
 {
     if(arg1.toInt()>=MIN_CONTRAST && arg1.toInt()<=MAX_CONTRAST)
     {
-        param_scan->contrast = arg1.toInt();
+//        param_scan->contrast = arg1.toInt();
         ui->slider_contrast->setValue(arg1.toInt());
         ui->label_tip->setVisible(false);
         ui->lineEdit_constrast->setStyleSheet("#lineEdit_constrast{border:transparent;}");
@@ -341,15 +381,16 @@ void MoreSettingsForScan::on_btContrastBar_clicked()
 void MoreSettingsForScan::on_btBrightnessReduce_clicked()
 {
     QString text;
-
-    if(param_scan->brightness > MIN_BRIGHT && param_scan->brightness <= MAX_BRIGHT)
+    int value = ui->lineEdit_brightness->text().toInt();
+    if(value > MIN_BRIGHT && value <= MAX_BRIGHT)
     {
-        param_scan->brightness--;
-        ui->lineEdit_brightness->setText(text.number(param_scan->brightness));
+//        param_scan->brightness--;
+        value --;
+        ui->lineEdit_brightness->setText(text.number(value));
     }
 }
 
-void MoreSettingsForScan::on_timerB_timeout()
+void MoreSettingsForScan::onTimerBTimeout()
 {
     if(timeCount>9) on_btBrightnessReduce_clicked();
     timeCount++;
@@ -358,28 +399,29 @@ void MoreSettingsForScan::on_timerB_timeout()
 void MoreSettingsForScan::on_btBrightnessReduce_pressed()
 {
     timeCount = 0;
-    connect(timerB, SIGNAL(timeout()), this, SLOT(on_timerB_timeout()));
+    connect(timerB, SIGNAL(timeout()), this, SLOT(onTimerBTimeout()));
     timerB->start(60);
 }
 
 void MoreSettingsForScan::on_btBrightnessReduce_released()
 {
     timerB->stop();
-    disconnect(timerB, SIGNAL(timeout()), this, SLOT(on_timerB_timeout()));
+    disconnect(timerB, SIGNAL(timeout()), this, SLOT(onTimerBTimeout()));
 }
 
 void MoreSettingsForScan::on_btBrightnessAdd_clicked()
 {
     QString text;
-
-    if(param_scan->brightness >= MIN_BRIGHT && param_scan->brightness < MAX_BRIGHT)
+    int value = ui->lineEdit_brightness->text().toInt();
+    if(value >= MIN_BRIGHT && value < MAX_BRIGHT)
     {
-        param_scan->brightness++;
-        ui->lineEdit_brightness->setText(text.number(param_scan->brightness));
+//        param_scan->brightness++;
+        value ++;
+        ui->lineEdit_brightness->setText(text.number(value));
     }
 }
 
-void MoreSettingsForScan::on_timerB_timeout1()
+void MoreSettingsForScan::onTimerBTimeout1()
 {
     if(timeCount>9) on_btBrightnessAdd_clicked();
     timeCount++;
@@ -388,14 +430,14 @@ void MoreSettingsForScan::on_timerB_timeout1()
 void MoreSettingsForScan::on_btBrightnessAdd_pressed()
 {
     timeCount = 0;
-    connect(timerB, SIGNAL(timeout()), this, SLOT(on_timerB_timeout1()));
+    connect(timerB, SIGNAL(timeout()), this, SLOT(onTimerBTimeout1()));
     timerB->start(60);
 }
 
 void MoreSettingsForScan::on_btBrightnessAdd_released()
 {
     timerB->stop();
-    disconnect(timerB, SIGNAL(timeout()), this, SLOT(on_timerB_timeout1()));
+    disconnect(timerB, SIGNAL(timeout()), this, SLOT(onTimerBTimeout1()));
 }
 
 /*****************************************************************************
@@ -408,7 +450,7 @@ void MoreSettingsForScan::on_lineEdit_brightness_textChanged(const QString &arg1
 {
     if(arg1.toInt()>=MIN_BRIGHT && arg1.toInt()<=MAX_BRIGHT)
     {
-        param_scan->brightness = arg1.toInt();
+//        param_scan->brightness = arg1.toInt();
         ui->slider_brightness->setValue(arg1.toInt());
         ui->label_tip->setVisible(false);
         ui->lineEdit_brightness->setStyleSheet("#lineEdit_brightness{border:transparent;}");
@@ -456,7 +498,7 @@ bool MoreSettingsForScan::eventFilter(QObject *watched, QEvent *event)
         {
             if(ui->lineEdit_constrast->text().toInt()>MAX_CONTRAST )
             {
-                param_scan->contrast = 50;
+//                param_scan->contrast = 50;
                 ui->lineEdit_constrast->setText(QString("50"));
             }
         }
@@ -467,7 +509,7 @@ bool MoreSettingsForScan::eventFilter(QObject *watched, QEvent *event)
         {
             if(ui->lineEdit_brightness->text().toInt()>MAX_BRIGHT )
             {
-                param_scan->brightness = 50;
+//                param_scan->brightness = 50;
                 ui->lineEdit_brightness->setText(QString("50"));
             }
         }
@@ -477,19 +519,19 @@ bool MoreSettingsForScan::eventFilter(QObject *watched, QEvent *event)
 
 void MoreSettingsForScan::on_btModeColor_clicked()
 {
-    param_scan->colorModel = Color;
+//    param_scan->colorModel = Color;
     selectMode(Color);
 }
 
 void MoreSettingsForScan::on_btModeGreyscale_clicked()
 {
-    param_scan->colorModel = Grayscale;
+//    param_scan->colorModel = Grayscale;
     selectMode(Grayscale);
 }
 
 void MoreSettingsForScan::on_btModeBW_clicked()
 {
-    param_scan->colorModel = Black_White;
+//    param_scan->colorModel = Black_White;
     selectMode(Black_White);
 }
 

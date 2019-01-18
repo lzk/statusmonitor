@@ -11,6 +11,9 @@
 #include <QPainter>
 #include <QTime>
 #include "settingwarming.h"
+#include <qdesktopservices.h>
+#include <qurl.h>
+#include <qapplication.h>
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
@@ -51,6 +54,7 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     paramScan.contrast = 50;
     paramScan.brightness = 50;
     paramScan.scan_size = Scan_A4;
+    paramScan.scan_type = Hight_Speed;
 
     QString labelTitle = tr("ResStr_Scanned_image_size");
     QString labelText = QString("%1%2").arg(labelTitle).arg("24.89MB");
@@ -121,7 +125,7 @@ void TabStackedWidget::setDefault_Copy()
     copycmdset *p = &para;
     memcpy(p ,&default_copy_parameter ,sizeof(default_copy_parameter));
 
-     paramCopy.scaling = (int)p->scale;
+    paramCopy.scaling = (int)p->scale;
     paramCopy.docType = (DocType_Copy)p->scanMode;
     paramCopy.docSize = (DocSize_Copy)p->orgSize;
     paramCopy.docDpi = (DocDpi_Copy)p->dpi;
@@ -584,7 +588,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
             bool enNextShow = true;
             QString videoTypeStr = "01_JAM";
             QString languageStr = "SimplifiedChinese";
-            AnimationDlg *aDialog = new AnimationDlg(0, 1, &enNextShow);
+            AnimationDlg *aDialog = new AnimationDlg(this, 1, &enNextShow);
             aDialog->setAttribute(Qt::WA_DeleteOnClose);
             if (aDialog->exec() == QDialog::Rejected)
             {
@@ -594,6 +598,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
             {
                 paramCopy.promptInfo.isIDCard = false;
             }
+            aDialog->deleteLater();
         }
 
         paramCopy.scaling = 100;
@@ -607,9 +612,9 @@ void TabStackedWidget::on_btn_Copy_clicked()
         if (paramCopy.promptInfo.isMultible == true)
         {
             bool enNextShow = true;
-            QString videoTypeStr = "06_Nin1Copy";
-            QString languageStr = "SimplifiedChinese";
-            AnimationDlg *aDialog = new AnimationDlg(0, 2, &enNextShow);
+//            QString videoTypeStr = "06_Nin1Copy";
+//            QString languageStr = "SimplifiedChinese";
+            AnimationDlg *aDialog = new AnimationDlg(this, 2, &enNextShow);
             aDialog->setAttribute(Qt::WA_DeleteOnClose);
             if (aDialog->exec() == QDialog::Rejected)
             {
@@ -779,4 +784,33 @@ void TabStackedWidget::on_copyNum_textChanged(const QString &arg1)
 void TabStackedWidget::on_btn_ScanCancel_clicked()
 {
 
+}
+
+void TabStackedWidget::on_TUSBBtn_3_clicked()
+{
+    QString lan = QLocale::system().name();
+    QString helpPath;
+    if(lan == "en_US")
+    {
+        helpPath = helpPath.append("/usr/share/lnthrvop/mht/HelpFile/Help/English/USB.mht");
+    }else if (lan == "zh_CN")
+    {
+        helpPath = helpPath.append("/usr/share/lnthrvop/mht/HelpFile/Help/SimplifiedChinese/USB.mht");
+    }
+    qDebug()<<helpPath;
+    QDesktopServices::openUrl(QUrl(helpPath));
+}
+
+void TabStackedWidget::on_TWiFiBtn_3_clicked()
+{
+    QString lan = QLocale::system().name();
+    QString helpPath;
+    if(lan == "en_US")
+    {
+        helpPath = "/usr/share/lnthrvop/HelpFile/mht/Help/English/Wi-Fi.mht";
+    }else if (lan == "zh_CN")
+    {
+        helpPath = "/usr/share/lnthrvop/HelpFile/mht/Help/SimplifiedChinese/Wi-Fi.mht";
+    }
+    QDesktopServices::openUrl(QUrl(helpPath));
 }

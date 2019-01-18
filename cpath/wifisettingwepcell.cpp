@@ -178,21 +178,23 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
     int len = ui->lineEdit_Password->text().length();
     if(len < 5)
     {
-        SettingWarming *warming = new SettingWarming(0, tr("ResStr_Msg_2"));
+        SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_2"));
         warming->setWindowTitle("ResStr_Warning");
         warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint );
         warming->exec();
+        warming->deleteLater();
     }
     else
     {
         emit doingConnect(this);
         if(!(*islogin ))
         {
-            AuthenticationDlg *dlg = new AuthenticationDlg(0, islogin);
+            AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
             dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
             dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
             dlg->exec();
+            dlg->deleteLater();
         }
         if(*islogin)
         {

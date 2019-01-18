@@ -29,11 +29,10 @@ private:
     QTimer *timerB ;
     QTimer *timerC;
     int timeCount;
+    int colorMode;
 
     UiSettings *param_scan;
     UiSettings defaultParam;
-
-
 
     void setDefValue();     //设置默认值
     void showParam();       //显示参数到ui
@@ -52,11 +51,11 @@ private slots:
     void on_btClose_clicked();
     void on_btOK_clicked();
     void on_btDefault_clicked();
-    void on_comboDpi_currentIndexChanged(int index);
-    void on_comboScanSize_currentIndexChanged(int index);
-    void on_btPthoto_toggled(bool checked);
-    void on_btPhotoText_toggled(bool checked);
-    void on_btText_toggled(bool checked);
+//    void on_comboDpi_currentIndexChanged(int index);
+//    void on_comboScanSize_currentIndexChanged(int index);
+//    void on_btPthoto_toggled(bool checked);
+//    void on_btPhotoText_toggled(bool checked);
+//    void on_btText_toggled(bool checked);
     void on_btContrastReduce_clicked();
     void on_btContrastReduce_pressed();
     void on_btContrastReduce_released();
@@ -69,10 +68,10 @@ private slots:
     void on_btBrightnessAdd_clicked();
     void on_btBrightnessAdd_pressed();
     void on_btBrightnessAdd_released();
-    void on_timerB_timeout();
-    void on_timerB_timeout1();
-    void on_timerC_timeout();
-    void on_timerC_timeout1();
+    void onTimerBTimeout();
+    void onTimerBTimeout1();
+    void onTimerCTimeout();
+    void onTimerCTimeout1();
     void on_lineEdit_constrast_textChanged(const QString &arg1);
     void on_lineEdit_brightness_textChanged(const QString &arg1);
     void on_slider_contrast_valueChanged(int value);

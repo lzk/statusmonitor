@@ -104,6 +104,7 @@ private:
 
     int trans_process(ScanSettings* settings);
     friend class Scanner;
+
 };
 
 //}

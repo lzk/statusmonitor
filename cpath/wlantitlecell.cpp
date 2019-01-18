@@ -23,7 +23,7 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
 {
     ui->setupUi(this);
 
-    timer1 = new QTimer(this);
+    timer1 = new QTimer();
     cycleCount = 0;
     currentAPID = 0;
     currentAp = new APInfo;
@@ -50,7 +50,7 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
 //    cycle = new BusyRefreshLabel(parent);
 //    cycle->setGeometry(QRect(90,130,50,50));
 
-    connect(timer1, SIGNAL(timeout()), this, SLOT(on_timeout()));
+    connect(timer1, SIGNAL(timeout()), this, SLOT(onTimeout()));
 
     QRegExp regexp1("^[\\x0020-\\x007e]{1,32}$");
     QValidator *validator1 = new QRegExpValidator(regexp1, this);
@@ -86,6 +86,8 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
 
 WlanTitleCell::~WlanTitleCell()
 {
+    delete timer1;
+    delete currentAp;
     delete ui;
 }
 
@@ -143,6 +145,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
+                warming->deleteLater();
             }
             isDoingCMD = false;
             times = 0;
@@ -208,6 +211,7 @@ void WlanTitleCell::on_btWLANON1_clicked()
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
+        dlg->deleteLater();
     }
     if(*islogin)
     {
@@ -274,11 +278,12 @@ void WlanTitleCell::on_btWLANON2_clicked()
     if(!*islogin)
     {
         emit cycleStartFromWT();
-        AuthenticationDlg *dlg = new AuthenticationDlg(0, islogin);
+        AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
+        dlg->deleteLater();
     }
     if(*islogin)
     {
@@ -496,7 +501,7 @@ void WlanTitleCell::initCell(cmdst_wifi_get wifi_para, cmdst_aplist_get aplist)
     }
 }
 
-void WlanTitleCell::on_timeout()
+void WlanTitleCell::onTimeout()
 {
     cycleCount += 1;
     if(cycleCount>1)
@@ -610,19 +615,21 @@ void WlanTitleCell::on_btConnect_clicked()
 
     if(len < defLen && defLen == 5)
     {
-        SettingWarming *warming = new SettingWarming(0, tr("ResStr_Msg_2"));
+        SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_2"));
         warming->setWindowTitle("ResStr_Warning");
         warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         warming->exec();
+        warming->deleteLater();
     }
     else if(len < defLen && defLen == 8)
     {
-        SettingWarming *msgWarm = new SettingWarming(0, tr("ResStr_Msg_3"));
+        SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_3"));
         msgWarm->setWindowTitle("ResStr_Warning");
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();
+        msgWarm->deleteLater();
     }
     else if(defLen == 0)
     {   //search the aplist to find the ssid customer enter

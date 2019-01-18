@@ -23,6 +23,7 @@ public:
 
 public slots:
     void on_btn_WiFi_clicked();
+    void on_btn_PowerSave_clicked();
     bool getScrollAreaImageStatus();
     void set_copy_enabled(bool enabled);
     void set_scan_enabled(bool enabled);
@@ -43,8 +44,6 @@ private slots:
     void on_btn_TCPIPV4_clicked();
 
     void on_btn_TCPIPV6_clicked();
-
-    void on_btn_PowerSave_clicked();
 
     void on_btn_UserConfig_clicked();
 
@@ -82,6 +81,10 @@ private slots:
 
     void on_btn_ScanCancel_clicked();
     void slots_scan_image_size(float, int);
+
+    void on_TUSBBtn_3_clicked();
+
+    void on_TWiFiBtn_3_clicked();
 
 private:
     Ui::TabStackedWidget *ui;

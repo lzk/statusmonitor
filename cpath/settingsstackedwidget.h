@@ -25,6 +25,9 @@ public:
     void changeStackIndex(int index);
     void setWifiEnabled(bool enabled);
 
+protected slots:
+    bool eventFilter(QObject *, QEvent *);
+    void hideEvent(QHideEvent *);
 
 private:
     Ui::SettingsStackedWidget *ui;
@@ -73,7 +76,7 @@ private slots:
 
     void on_btTimeReduce_clicked();
     void on_btTimeAdd_clicked();
-    void on_timer1_timeout();
+    void onTimer1Timeout();
     void on_btApply_AP_clicked();
     void onbtDHCPtoggled(bool checked);
     void onbtStatictoggled(bool checked);

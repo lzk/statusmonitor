@@ -2,18 +2,18 @@
 #include <QPainter>
 #include <QTimerEvent>
 
-BusyRefreshLabel::BusyRefreshLabel(QWidget *parent, bool bStatus) :
+BusyRefreshLabel::BusyRefreshLabel(QWidget *parent, bool bBusy) :
     QWidget(parent)
 {
     m_rotation = 0.0;
     timerID = 0;
-    if(bStatus)
+    if(bBusy)
     {
-        m_pixmap = QPixmap(":/Images/Status_RefreshEnable.tif");
+        m_pixmap = QPixmap(":/Images/busyRefresh.tif");
     }
     else
     {
-        m_pixmap = QPixmap(":/Images/busyRefresh.tif");
+        m_pixmap = QPixmap(":/Images/Status_RefreshEnable.tif");
     }
 
 

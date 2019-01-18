@@ -86,6 +86,8 @@ private:
 
     QTimer *crmTimer;
     bool m_bCRM;
+
+//    QSettings settings;
 };
 
 #endif // MEMBERCENTERWIDGET_H

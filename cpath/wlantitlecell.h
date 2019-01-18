@@ -42,7 +42,7 @@ private slots:
     void getSizeChanged(QSize, QSize);
     void addCell(QString ssid, EncrypType type, APInfo info, bool isConnected);
     void initCell(cmdst_wifi_get wifi_para, cmdst_aplist_get aplist);
-    void on_timeout();
+    void onTimeout();
 
     void getConnectAction(QWidget*);
     void getConnectResult(QWidget*, bool);

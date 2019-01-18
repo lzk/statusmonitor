@@ -9,6 +9,9 @@ UInterface* gUInterface;
 #include "commonapi.h"
 //#include "statusthread.h"
 #include <qtranslator.h>
+#include <qsplashscreen.h>
+#include <qdesktopwidget.h>
+#include <qelapsedtimer.h>
 
 #ifndef Q_OS_DARWIN
 //extern "C"{
@@ -79,8 +82,24 @@ int main(int argc, char *argv[])
     }
     a.installTranslator(&trans);
 
+    QSplashScreen *splash = new QSplashScreen;
+    QString lan = QLocale::system().name();
+    if(lan == "en_US")
+    {
+       splash->setPixmap(QPixmap(":/Images/Startup_en.tif"));
+    }else if (lan == "zh_CN")
+    {
+       splash->setPixmap(QPixmap(":/Images/Startup_ch.tif"));
+    }else
+    {
+       splash->setPixmap(QPixmap(":/Images/Startup.tif"));
+    }
+
+    splash->show();
 
     MainWindow w;
+
+    w.setGeometry(splash->geometry());
 
     w.setWindowIcon(QIcon(":/Images/printer.ico"));
 
@@ -88,9 +107,19 @@ int main(int argc, char *argv[])
 //    trans1.load("qt_" + QLocale::system().name() ,":/translations");
 //    a.installTranslator(&trans1);
 
+    int delayTime=2;//splash display 2s
+    QElapsedTimer timer;
+    timer.start();
+    while(timer.elapsed()<(delayTime*1000))
+    {
+        a.processEvents();
+    }
+
     QStringList arguments = QCoreApplication::arguments();
     if(!arguments.contains("-hide"))
         w.show();
+    splash->finish(&w);
+    delete splash;
 
     int ret = a.exec();
 //    delete thread_server;

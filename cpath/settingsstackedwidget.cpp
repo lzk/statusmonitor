@@ -92,10 +92,16 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
 
     isDoingCMD = false;
     retryTimes = 0;
+
+    //hide the softAP close/open button
+    ui->label_close_AP->hide();
+    ui->label_open_AP->hide();
+    ui->btAPOpen->hide();
 }
 
 SettingsStackedWidget::~SettingsStackedWidget()
 {
+    delete timer1;
     delete ui;
 }
 
@@ -376,7 +382,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
         case UIConfig::LS_CMD_PRN_FusingScReset:
             if(!result)
             {
-                SettingWarming *warming = new SettingWarming(0, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
+                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
                 warming->setWindowTitle("ResStr_Prompt");
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -413,7 +419,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
         case UIConfig::LS_CMD_PRN_DrumReset:
             if(!result)
             {
-                SettingWarming *warming = new SettingWarming(0, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
+                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
                 warming->setWindowTitle("ResStr_Prompt");
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -450,7 +456,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
         case UIConfig::LS_CMD_PRN_TonerReset:
             if(!result)
             {
-                SettingWarming *warming = new SettingWarming(0, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
+                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
                 warming->setWindowTitle("ResStr_Prompt");
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -700,7 +706,7 @@ void SettingsStackedWidget::initPowerSave()
 
     ui->label_timeout_error->hide();
 
-    connect(timer1, SIGNAL(timeout()), this, SLOT(on_timer1_timeout())); //this timer work for add  & reduce button;
+    connect(timer1, SIGNAL(timeout()), this, SLOT(onTimer1Timeout())); //this timer work for add  & reduce button;
 }
 
 void SettingsStackedWidget::initPassword()
@@ -754,7 +760,7 @@ void SettingsStackedWidget::on_lineEdit_timeout_textEdited(const QString &arg1)
     }
 }
 
-void SettingsStackedWidget::on_timer1_timeout()
+void SettingsStackedWidget::onTimer1Timeout()
 {
     if(timercounter > 5)
     {
@@ -825,7 +831,7 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
 
     if(ssid_len < 1)
     {
-        SettingWarming *msgWarm = new SettingWarming(0, tr("ResStr_Msg_9"));
+        SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_9"));
         msgWarm->setWindowTitle("ResStr_Warning");
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
@@ -834,7 +840,7 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
     }
     else if(psd_len < 8)
     {
-        SettingWarming *msgWarm  = new SettingWarming(0, tr("ResStr_Msg_3"));
+        SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Msg_3"));
         msgWarm->setWindowTitle("ResStr_Warning");
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
@@ -846,11 +852,12 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
         if(!isLogn)                                     //if have not confirmed, show the authentication dialog;
         {
             emit cycleStart();
-            AuthenticationDlg *dlg = new AuthenticationDlg(0, &isLogn);
+            AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
             dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
             dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
             dlg->exec();
+            dlg->deleteLater();
         }
         if(isLogn )//&& CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
@@ -914,11 +921,12 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
     if(!isLogn)
     {
         emit cycleStart();
-        AuthenticationDlg *dlg = new AuthenticationDlg(0, &isLogn);
+        AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
+        dlg->deleteLater();
     }
     if(isLogn )//&& CMD_STATUS_COMPLETE == device->get_cmdStatus())
     {
@@ -1053,6 +1061,7 @@ void SettingsStackedWidget::on_btIPv6Setting_clicked()
     settingIPv6Widget = new SettingForIPv6(this, &isLogn);
     settingIPv6Widget->setWindowTitle(tr("ResStr_Setting"));
     settingIPv6Widget->exec();
+    settingIPv6Widget->deleteLater();
 }
 
 void SettingsStackedWidget::on_btIPv6Status_clicked()
@@ -1060,6 +1069,7 @@ void SettingsStackedWidget::on_btIPv6Status_clicked()
     ipv6Status = new IPv6Status(this);
     ipv6Status->setWindowTitle(tr("ResStr_Status"));
     ipv6Status->exec();
+    ipv6Status->deleteLater();
 }
 
 /**************
@@ -1070,11 +1080,12 @@ void SettingsStackedWidget::on_btApply_userconfig_clicked()
     if(!isLogn )//&& CMD_STATUS_COMPLETE == device->get_cmdStatus())
     {
         emit cycleStart();
-        AuthenticationDlg *dlg = new AuthenticationDlg(0, &isLogn);
+        AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
+        dlg->deleteLater();
     }
     if(isLogn)
     {
@@ -1105,11 +1116,12 @@ void SettingsStackedWidget::on_btApply_Timeout_clicked()
     if(!isLogn )//&& CMD_STATUS_COMPLETE == device->get_cmdStatus())
     {
         emit cycleStart();
-        AuthenticationDlg *dlg = new AuthenticationDlg(0, &isLogn);
+        AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
+        dlg->deleteLater();
     }
     if(isLogn)
     {
@@ -1232,6 +1244,7 @@ void SettingsStackedWidget::on_btDrumReset_clicked()
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_DrumReset);
         emit cycleStart();
     }
+    pDialog->deleteLater();
 }
 
 void SettingsStackedWidget::on_btErrorClear_clicked()
@@ -1239,11 +1252,12 @@ void SettingsStackedWidget::on_btErrorClear_clicked()
     if(!isLogn)// && CMD_STATUS_COMPLETE == device->get_cmdStatus())
     {
         emit cycleStart();
-        AuthenticationDlg *dlg = new AuthenticationDlg(0, &isLogn);
+        AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
+        dlg->deleteLater();
     }
     if(isLogn)
     {
@@ -1324,7 +1338,7 @@ void SettingsStackedWidget::on_btApply_clicked()
 {
     if(ui->lineEdit_newPassWord->text().isEmpty())
     {
-        SettingWarming *msgWarm = new SettingWarming(0, tr("ResStr_The_new_password_can_not_be_empty_"));
+        SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_The_new_password_can_not_be_empty_"));
         msgWarm->setWindowTitle("ResStr_Warning");
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
@@ -1333,7 +1347,7 @@ void SettingsStackedWidget::on_btApply_clicked()
     }
     else if(ui->lineEdit_confirm->text() != ui->lineEdit_newPassWord->text())
     {
-        SettingWarming *msgWarm = new SettingWarming(0, tr("ResStr_The_passwords_you_entered__are_different__please_try_again_"));
+        SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_The_passwords_you_entered__are_different__please_try_again_"));
         msgWarm->setWindowTitle("ResStr_Warning");
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
@@ -1345,11 +1359,12 @@ void SettingsStackedWidget::on_btApply_clicked()
         if(!isLogn)// && CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
             cycleStart();
-            AuthenticationDlg *dlg = new AuthenticationDlg(0, &isLogn);
+            AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
             dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
             dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
             dlg->exec();
+            dlg->deleteLater();
         }
         if(isLogn)
         {
@@ -1366,4 +1381,129 @@ void SettingsStackedWidget::on_btApply_clicked()
             emit cycleStop();
         }
     }
+}
+
+/****************
+ * this event filter is work for the lineEdit where need to enter value
+ * it get the focus lost event of those lineEdit.
+**************************/
+bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    if(watched == ui->lineEdit_IPAddressv4)
+    {
+        if(event->type() == QEvent::FocusOut)
+        {
+            if(!(ui->label_ipaddr_error->isHidden()))
+            {
+                ui->lineEdit_IPAddressv4->setText("0.0.0.0");
+                ui->label_ipaddr_error->hide();
+                ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
+                                                      border:2px solid rgb(170, 170, 170);\
+                                                      border-radius:12px;}");
+                ui->btApply_IPConfig->setEnabled(true);
+            }
+        }
+    }
+    if(watched == ui->lineEdit_Gatewayv4)
+    {
+        if(event->type() == QEvent::FocusOut)
+        {
+            if(!(ui->label_gateway_error->isHidden()))
+            {
+                ui->lineEdit_Gatewayv4->setText("0.0.0.0");
+                ui->label_gateway_error->hide();
+                ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
+                                                      border:2px solid rgb(170, 170, 170);\
+                                                      border-radius:12px;}");
+                ui->btApply_IPConfig->setEnabled(true);
+            }
+        }
+    }
+    if(watched == ui->lineEdit_Submaskv4)
+    {
+        if(event->type() == QEvent::FocusOut)
+        {
+            if(!(ui->label_sumask_error->isHidden()))
+            {
+                ui->lineEdit_Submaskv4->setText("0.0.0.0");
+                ui->label_sumask_error->hide();
+                ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
+                                                      border:2px solid rgb(170, 170, 170);\
+                                                      border-radius:12px;}");
+                ui->btApply_IPConfig->setEnabled(true);
+            }
+        }
+    }
+    if(watched == ui->lineEdit_timeout)
+    {
+        if(event->type() == QEvent::FocusOut)
+        {
+            if(!(ui->label_timeout_error->isHidden()))
+            {
+                ui->lineEdit_timeout->setText("1");
+                ui->label_timeout_error->hide();
+                ui->lineEdit_timeout->setStyleSheet("QLineEdit{border:transparent;}");
+                ui->btTimeAdd->setEnabled(true);
+                ui->btTimeReduce->setEnabled(true);
+                ui->btApply_Timeout->setEnabled(true);
+            }
+        }
+    }
+    if(watched == ui->lineEdit_TopMargin)
+    {
+        if(event->type() == QEvent::FocusOut)
+        {
+            if(!(ui->label_TopMargin_error->isHidden()) || ui->lineEdit_TopMargin->text().isEmpty())
+            {
+                ui->lineEdit_TopMargin->setText("1");
+                ui->lineEdit_TopMargin->setStyleSheet("QLineEdit{border:transparent;}");
+                ui->label_TopMargin_error->hide();
+                ui->btTopAdd->setEnabled(true);
+                ui->btTopReduce->setEnabled(true);
+                ui->btApply_userconfig->setEnabled(true);
+            }
+        }
+    }
+    if(watched == ui->lineEdit_LeftMargin)
+    {
+        if(event->type() == QEvent::FocusOut)
+        {
+            if(!(ui->label_LeftMargin_error->isHidden()) || ui->lineEdit_LeftMargin->text().isEmpty())
+            {
+                ui->lineEdit_LeftMargin->setText("1");
+                ui->lineEdit_LeftMargin->setStyleSheet("QLineEdit{border:transparent;}");
+                ui->label_LeftMargin_error->hide();
+                ui->btLeftAdd->setEnabled(true);
+                ui->btLeftReduce->setEnabled(true);
+                ui->btApply_userconfig->setEnabled(true);
+            }
+        }
+    }
+    if(watched == ui->lineEdit_ImageDensity)
+    {
+        if(event->type() == QEvent::FocusOut)
+        {
+            if(!(ui->label_ImageDensity_error->isHidden()) || ui->lineEdit_ImageDensity->text().isEmpty())
+            {
+                ui->lineEdit_ImageDensity->setText("0");
+                ui->lineEdit_ImageDensity->setStyleSheet("QLineEdit{border:transparent;}");
+                ui->label_ImageDensity_error->hide();
+                ui->btDensityAdd->setEnabled(true);
+                ui->btDensityReduce->setEnabled(true);
+                ui->btApply_userconfig->setEnabled(true);
+                qDebug()<<"evenfilter here for imageDensity";
+            }
+        }
+    }
+    return QWidget::eventFilter(watched, event);
+}
+
+/******
+ *when the user leave this page, it would need to confirm when setting values next time;
+ *this function to reaction hide event of this page;
+***********/
+void SettingsStackedWidget::hideEvent(QHideEvent *e)
+{
+    isLogn = false;
+    QWidget::hideEvent(e);
 }

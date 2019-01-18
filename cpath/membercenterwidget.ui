@@ -47,7 +47,7 @@
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-image: url();
+      <string notr="true">/*background-image: url();*/
 background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="text">
@@ -808,7 +808,7 @@ QPushButton:pressed{
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>17</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -922,7 +922,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>17</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1134,7 +1134,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>17</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1213,7 +1213,8 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>17</pointsize>
+       <kerning>true</kerning>
       </font>
      </property>
      <property name="styleSheet">
@@ -1238,7 +1239,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>17</pointsize>
       </font>
      </property>
      <property name="styleSheet">

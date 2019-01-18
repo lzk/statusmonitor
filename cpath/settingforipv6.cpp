@@ -36,7 +36,7 @@ SettingForIPv6::SettingForIPv6(QWidget *parent, bool *_isLogin) :
     ui->label_gateway_error->hide();
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
-    cycle = new BusyRefreshLabel(this, false);
+    cycle = new BusyRefreshLabel(this, true);
     cycle->setGeometry(QRect(260,90,50,50));
     cycle->startAnimation(20);
     gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_GetV6);
@@ -148,11 +148,12 @@ void SettingForIPv6::on_btApply_clicked()
 
     if(!(*islogin ))
     {
-        AuthenticationDlg *dlg = new AuthenticationDlg(0, islogin);
+        AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
         dlg->exec();
+        dlg->deleteLater();
     }
     if(*islogin)
     {

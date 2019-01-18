@@ -849,7 +849,7 @@ QSlider::handle:horizontal {
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QRadioButton" name="btQuality">
+   <widget class="QRadioButton" name="btSpeed">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -888,7 +888,7 @@ QRadioButton::indicator::checked {
      <string>ResStr_Scan_Speed</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="btSpeed">
+   <widget class="QRadioButton" name="btQuality">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -1070,6 +1070,35 @@ QRadioButton::indicator::checked {
      <string/>
     </property>
    </widget>
+   <zorder>groupBox_3</zorder>
+   <zorder>slider_contrast</zorder>
+   <zorder>label_DocType</zorder>
+   <zorder>slider_brightness</zorder>
+   <zorder>label_DPI</zorder>
+   <zorder>label_ScanSize</zorder>
+   <zorder>label_Contrast</zorder>
+   <zorder>label_Brightness</zorder>
+   <zorder>btBgColor</zorder>
+   <zorder>btBgGrayscale</zorder>
+   <zorder>btBgBW</zorder>
+   <zorder>btModeColor</zorder>
+   <zorder>btModeGreyscale</zorder>
+   <zorder>btModeBW</zorder>
+   <zorder>label_Brightness_2</zorder>
+   <zorder>btContrastAdd</zorder>
+   <zorder>btContrastReduce</zorder>
+   <zorder>btBrightnessAdd</zorder>
+   <zorder>btBrightnessReduce</zorder>
+   <zorder>lineEdit_brightness</zorder>
+   <zorder>btOK</zorder>
+   <zorder>btDefault</zorder>
+   <zorder>label_tip</zorder>
+   <zorder>btContrastBar</zorder>
+   <zorder>btBrightnessBar</zorder>
+   <zorder>label_ScanType</zorder>
+   <zorder>btSpeed</zorder>
+   <zorder>btQuality</zorder>
+   <zorder>groupBox_2</zorder>
   </widget>
   <widget class="QPushButton" name="btClose">
    <property name="geometry">

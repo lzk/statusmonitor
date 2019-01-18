@@ -66,7 +66,7 @@ private slots:
 
     void set_Message_Background_Color(UIConfig::EnumStatus s);
 
-    void on_status_ch(const PrinterStatus_struct& status);
+    void onStatusCh(const PrinterStatus_struct& status);
 
     void errorStatus(bool bIsErrorStatus);
 
@@ -87,7 +87,7 @@ private:
 
     QString current_printer;
 
-    BusyRefreshLabel *statusCycle;
+//    BusyRefreshLabel *statusCycle;
     BusyRefreshLabel *cycle;
 
     QStringList printers;

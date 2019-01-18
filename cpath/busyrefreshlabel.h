@@ -7,7 +7,7 @@ class BusyRefreshLabel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit BusyRefreshLabel(QWidget *parent = 0, bool bStatus = false) ;
+    explicit BusyRefreshLabel(QWidget *parent = 0, bool bBusy = false) ;
     void setMinLoops(int loops = 3);
     /*
      * @brief startAnimation start the Animation

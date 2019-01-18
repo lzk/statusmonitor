@@ -6,6 +6,7 @@
 #include <QVariant>
 #include <QTimer>
 #include "uiconfig.h"
+#include <qsettings.h>
 class Worker;
 class UInterface : public QObject
 {
@@ -41,6 +42,7 @@ private:
     int timeval;
 
     QString current_printer;
+
 };
 
 extern UInterface* gUInterface;

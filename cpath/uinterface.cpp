@@ -92,3 +92,5 @@ void UInterface::emitStopScanSignal()
 {
     emit stopScan();
 }
+
+
