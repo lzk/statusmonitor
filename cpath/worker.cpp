@@ -523,5 +523,5 @@ static void scan_callback(void* para)
     ScanSettings* settings = (ScanSettings*)para;
     Worker* worker = (Worker*) settings->callback_para;
     worker->update_scan_progress(settings->progress);
-    LOGLOG("scan progress:%d" ,settings->progress);
+//    LOGLOG("scan progress:%d" ,settings->progress);
 }

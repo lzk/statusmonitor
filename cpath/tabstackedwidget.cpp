@@ -114,7 +114,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
 
 void TabStackedWidget::updateScanProcess(int progress)
 {
-    qDebug()<<"TabStackedWidget:"<<progress;
+//    qDebug()<<"TabStackedWidget:"<<progress;
     ui->progressBar_Scan->setValue(progress);
 }
 
