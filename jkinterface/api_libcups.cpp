@@ -383,7 +383,7 @@ int cups_resolve_uri(const char* device_uri ,char* buffer ,int bufsize)
     const char* resolved_uri;
     resolved_uri = _httpResolveURI(device_uri, buffer,
                               bufsize, _HTTP_RESOLVE_DEFAULT, NULL, NULL);
-    return resolved_uri != NULL;
+    return resolved_uri != NULL ?0 :-1;
 }
 
 #include "backend/backend-private.h"

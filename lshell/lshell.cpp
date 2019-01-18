@@ -462,19 +462,34 @@ int device_init(DeviceIO** device)
     return 0;
 }
 
+#include <unistd.h>
 int LShell::writeNoRead(char* wrBuffer ,int wrSize)
 {
-    int ret = device_init(device);
-    if(!ret)
-        ret = (*device)->write(wrBuffer ,wrSize);
+    int ret;
+    for(int i = 0 ;i < 3 ;i++){
+        ret = device_init(device);
+        if(!ret){
+            ret = (*device)->write(wrBuffer ,wrSize);
+        }
+        if(!ret)
+            break;
+        usleep(2  * 100 * 1000);
+    }
     return ret;
 }
 
 int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
 {
-    int ret = device_init(device);
-    if(!ret)
-        ret = (*device)->writeThenRead(wrBuffer ,wrSize ,rdBuffer ,rdSize);
+    int ret;
+    for(int i = 0 ;i < 3 ;i++){
+        ret = device_init(device);
+        if(!ret){
+            ret = (*device)->writeThenRead(wrBuffer ,wrSize ,rdBuffer ,rdSize);
+        }
+        if(!ret)
+            break;
+        usleep(2  * 100 * 1000);
+    }
     return ret;
 }
 

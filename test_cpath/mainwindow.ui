@@ -149,6 +149,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="btn_cancel">
+          <property name="text">
+           <string>cancel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="btn_wifi_get">
           <property name="text">
            <string>wifi get</string>
@@ -215,7 +222,7 @@
      <x>0</x>
      <y>0</y>
      <width>692</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

@@ -17,14 +17,16 @@ public:
     ~Worker();
     void setPrinters(PrinterInfo_struct* ps);
     DeviceIO* getDevice(const char* device_uri);
+    void update_scan_progress(int progress);
     
 signals:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
+    void signal_update_scan_progress(int progress);//(0 - 100)
     
 public slots:
     void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void getPrinters();
-    void set_cancel(bool);
+    void cancel();
 
 private:
     int cmd_status;

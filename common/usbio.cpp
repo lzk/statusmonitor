@@ -3,6 +3,18 @@
 #include <string.h>
 #include "log.h"
 //vid:0x0550 pid:0x0175
+#include <QString>
+static int _getpidvid(const QString& ,int* pid ,int* vid)
+{
+    if(!pid || !vid)
+        return -1;
+    *pid = -1;
+    *vid = -1;
+    return 0;
+}
+
+int (* getpidvid)(const QString& modelname ,int* pid ,int* vid) = _getpidvid;
+
 #include <QMutex>
 static QMutex mutex;
 UsbIO::UsbIO()
@@ -71,7 +83,7 @@ int UsbIO::getDeviceId(char *buffer, int bufsize)
 }
 
 #include <QUrl>
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
 int UsbIO::resolveUrl(const char* url)
@@ -80,12 +92,13 @@ int UsbIO::resolveUrl(const char* url)
     if(ret)
         return ret;
     QString tmp_serial;
-#if QT_VERSION_MAJOR > 4
-    tmp_serial = QUrlQuery(QUrl(url)).queryItemValue("serial");
-    interface = QUrlQuery(QUrl(url)).queryItemValue("interface").toInt();
+    QUrl printer_url = QUrl(url);
+#if QT_VERSION > 0x050000
+    tmp_serial = QUrlQuery(printer_url).queryItemValue("serial");
+    interface = QUrlQuery(printer_url).queryItemValue("interface").toInt();
 #else
-    tmp_serial = QUrl(url).queryItemValue("serial");
-    interface = QUrl(url).queryItemValue("interface").toInt();
+    tmp_serial = printer_url.queryItemValue("serial");
+    interface = printer_url.queryItemValue("interface").toInt();
 #endif
     if(tmp_serial.isEmpty()){
         memset(this->serial ,0 ,sizeof(this->serial));
@@ -93,6 +106,11 @@ int UsbIO::resolveUrl(const char* url)
     }else{
         strcpy(this->serial ,tmp_serial.toLatin1().constData());
     }
+    QString modelname = printer_url.host() + printer_url.path();
+    LOGLOG("rosolve printer uri:%s" ,url);
+    LOGLOG("model name:%s" ,modelname.toLatin1().constData());
+    getpidvid(modelname ,&pid ,&vid);
+    LOGLOG("device's vid:0x%02x ,pid:0x%02x ,serial:%s" ,vid ,pid ,serial);
     return ret;
 }
 

@@ -220,92 +220,104 @@ void calculate_parameters(ScanSettings* scan_settings)
 {
     Calc_Data *pCalc = &scan_settings->calc_data;
     UiSettings* settings = &scan_settings->settings;
+    Image_Data_Struct* source = &pCalc->source;
+    Image_Data_Struct* target = &pCalc->target;
 
     switch (settings->scan_dpi) {
     case Scan_100DPI:
-        pCalc->dpi_x = pCalc->dpi_y = 100;
+        target->dpi_x = target->dpi_y = 100;
         break;
     case Scan_200DPI:
-        pCalc->dpi_x = pCalc->dpi_y = 200;
+        target->dpi_x = target->dpi_y = 200;
         break;
     case Scan_600DPI:
-        pCalc->dpi_x = pCalc->dpi_y = 600;
+        target->dpi_x = target->dpi_y = 600;
         break;
     case Scan_1200DPI:
-        pCalc->dpi_x = pCalc->dpi_y = 1200;
+        target->dpi_x = target->dpi_y = 1200;
         break;
     case Scan_300DPI:
     default:
-        pCalc->dpi_x = pCalc->dpi_y = 300;
+        target->dpi_x = target->dpi_y = 300;
         break;
     }
 
-    pCalc->source_pixel_resolution = pCalc->dpi_x;
-    pCalc->source_motor_resolution = pCalc->dpi_x;
-    if(pCalc->dpi_x < 300){
-        pCalc->source_pixel_resolution = 300;
-        pCalc->source_motor_resolution = 300;
-    }else if(pCalc->dpi_x == 1200){
-        pCalc->source_motor_resolution = 600;
+    source->dpi_x = target->dpi_x;
+    source->dpi_y = target->dpi_y;
+    if(source->dpi_x < 300){
+        source->dpi_x = 300;
+        source->dpi_y = 300;
+    }else if(source->dpi_y == 1200){
+        source->dpi_y = 600;
     }
 
     float scan_width = scan_size_array[settings->scan_size].width;
     float scan_height = scan_size_array[settings->scan_size].height;
     int pixel_alignment = 32;
 
-    pCalc->pixels_per_line = scan_width * pCalc->source_pixel_resolution / UNIT_FACTOR;
-    pCalc->source_total_lines = scan_height * pCalc->source_motor_resolution / UNIT_FACTOR;
+    source->pixels_per_line = scan_width * source->dpi_x / UNIT_FACTOR;
+    source->total_lines = scan_height * source->dpi_y / UNIT_FACTOR;
+    source->pixels_per_line = ((source->pixels_per_line + pixel_alignment -1) / pixel_alignment) * pixel_alignment;
 
-    pCalc->source_pixels_per_line = ((pCalc->pixels_per_line + pixel_alignment -1) / pixel_alignment) * pixel_alignment;
+    target->pixels_per_line = scan_width * target->dpi_x / UNIT_FACTOR;
+    target->pixels_per_line += 7;
+    target->pixels_per_line /= 8;
+    target->pixels_per_line *= 8;
 
+    switch (settings->colorModel) {
+    case Black_White:
+        target->bits_per_pixel = 1;
+        source->bits_per_pixel = 8;
+        break;
+    case Grayscale:
+        target->bits_per_pixel = 8;
+        source->bits_per_pixel = 8;
+        break;
+    case Color:
+    default:
+        target->bits_per_pixel = 24;
+        source->bits_per_pixel = 24;
+        break;
+    }
+
+    pCalc->source_size = source->pixels_per_line * source->total_lines * source->bits_per_pixel / 8;
 }
 
 void caculate_image_trans_data(ScanSettings* settings)
 {
     ImageTransInfo* info = settings->info;
-    ImageInfo* target = &info->target_image_info;
+    ImageInfo* trans_target = &info->target_image_info;
+    Calc_Data *pCalc = &settings->calc_data;
+    Image_Data_Struct* source = &pCalc->source;
+    Image_Data_Struct* target = &pCalc->target;
 
-    info->format = ImageTransFormat_Raw;
-    info->mode = ImageTransMode_rawToBmp;
-
-    info->source_pixelsOfWidth = settings->calc_data.source_pixels_per_line;
-    info->source_dpi_x = settings->calc_data.source_pixel_resolution;
-    info->source_dpi_y = settings->calc_data.source_motor_resolution;
-    info->source_total_lines = settings->calc_data.source_total_lines;
-
-
-    target->Resolution = settings->calc_data.dpi_x;
-    info->source_lines_per_10_lines = info->source_dpi_y * 10 / target->Resolution;
-    LOGLOG("source_lines_per_10_lines is:%d" ,info->source_lines_per_10_lines);
-    target->PixelsOfWidth = settings->calc_data.pixels_per_line
-            * target->Resolution / info->source_dpi_x;
-    target->PixelsOfWidth += 7;
-    target->PixelsOfWidth /= 8;
-    target->PixelsOfWidth *= 8;
-    LOGLOG("target->PixelsOfWidth is:%d" ,target->PixelsOfWidth);
-    target->TotalScanLines = info->source_total_lines * 10 / info->source_lines_per_10_lines;
-    LOGLOG("target->TotalScanLines is:%d" ,target->TotalScanLines);
-
-    info->source_line_buf_size = info->source_pixelsOfWidth;
-    info->target_line_buf_size = target->PixelsOfWidth;
-    switch (settings->settings.colorModel) {
-    case Black_White:
-        target->BitsPerPixel = 1;
-//        info->source_line_buf_size /= 8;
-        info->target_line_buf_size /= 8;
-        break;
-    case Grayscale:
-        target->BitsPerPixel = 8;
-        break;
-    case Color:
-    default:
-        target->BitsPerPixel = 24;
-        info->source_line_buf_size *= 3;
-        info->target_line_buf_size *= 3;
-        break;
+    if(settings->settings.scan_type == Hight_Speed){
+        info->source_format = ImageTransFormat_jpg;
+        info->target_format = ImageTransFormat_bmp;
+    }else{
+        info->source_format = ImageTransFormat_raw;
+        info->target_format = ImageTransFormat_bmp;
     }
+
+    info->source_pixelsOfWidth = source->pixels_per_line;
+    info->source_dpi_x = source->dpi_x;
+    info->source_dpi_y = source->dpi_y;
+    info->source_total_lines = source->total_lines;
+
+
+    trans_target->Resolution = target->dpi_x;
+    info->source_lines_per_10_lines = source->dpi_y * 10 / target->dpi_y;
+    LOGLOG("source_lines_per_10_lines is:%d" ,info->source_lines_per_10_lines);
+    trans_target->PixelsOfWidth = target->pixels_per_line;
+    LOGLOG("trans_target->PixelsOfWidth is:%d" ,trans_target->PixelsOfWidth);
+    trans_target->TotalScanLines = target->total_lines = source->total_lines * 10 / info->source_lines_per_10_lines;
+    LOGLOG("trans_target->TotalScanLines is:%d" ,trans_target->TotalScanLines);
+
+    info->source_line_buf_size = source->pixels_per_line * source->bits_per_pixel / 8;
+    info->target_line_buf_size = target->pixels_per_line * target->bits_per_pixel / 8;
+    trans_target->BitsPerPixel = target->bits_per_pixel;
     LOGLOG("source_pixelsOfWidth is:%d" ,info->source_pixelsOfWidth);
-    LOGLOG("target->PixelsOfWidth is:%d" ,target->PixelsOfWidth);
+    LOGLOG("trans_target->PixelsOfWidth is:%d" ,trans_target->PixelsOfWidth);
 
     info->image_trans_parameter.gamma = 1000;
     info->image_trans_parameter.brightness = settings->settings.brightness;
@@ -316,8 +328,10 @@ void caculate_image_trans_data(ScanSettings* settings)
 
 SCANINFO get_parameters(ScanSettings* scan_settings)
 {
-    Calc_Data *pCalc = &scan_settings->calc_data;
     UiSettings* settings = &scan_settings->settings;
+    Calc_Data *pCalc = &scan_settings->calc_data;
+    Image_Data_Struct* source = &pCalc->source;
+//    Image_Data_Struct* target = &pCalc->target;
 
     SCANINFO scan_info;
     scan_info.nScanSrc = SOURCE_FLATBED;
@@ -384,14 +398,14 @@ SCANINFO get_parameters(ScanSettings* scan_settings)
     scan_info.nIntensity = 0;                        // Intensity
     scan_info.nContrast = 0;                            // Contrast
 
-    scan_info.nXResolution = pCalc->source_pixel_resolution;                        // X resolution
-    scan_info.nYResoultion = pCalc->source_motor_resolution;                        // Y resolution
+    scan_info.nXResolution = source->dpi_x;                        // X resolution
+    scan_info.nYResoultion = source->dpi_y;                        // Y resolution
 
     scan_info.nXPosition = 0;                        // X position (left) of scanner window settings (4x)
     scan_info.nYPosition = 0;                        // Y position (top) of scanner window settings
 
-    scan_info.nXExtent = pCalc->source_pixels_per_line;                            // X Extent (number of pixels in a line) of scanner window (32x)
-    scan_info.nYExtent = pCalc->source_total_lines;                            // Y Extent (number of lines) of scanner window (32x)
+    scan_info.nXExtent = source->pixels_per_line;                            // X Extent (number of pixels in a line) of scanner window (32x)
+    scan_info.nYExtent = source->total_lines;                            // Y Extent (number of lines) of scanner window (32x)
 
     scan_info.nDitherPattern = 0;                    // Dither Pattern
     scan_info.nNegative = 0;                        // Negative
@@ -405,6 +419,11 @@ SCANINFO get_parameters(ScanSettings* scan_settings)
     scan_info.nNeedDataAlignment = 1;                // Need Data Alignment: 0 - FALSE, 1 - TRUE
     scan_info.nDelayBetweenRead = 0;                // Delay between read: milliseconds
     scan_info.nMaximumBufferSize = 0;                // Maximum buffer size in scanner
+
+    if(settings->scan_type == Hight_Speed){
+        scan_info.nCompression = 1;
+        scan_info.nSupportedCompressionType = 1;
+    }
     LOGLOG("%s: Res=%d, xPos=%d, yPos=%d, W=%d, H=%d, Mode=%d. exit!\n", __FUNCTION__, scan_info.nXResolution, scan_info.nXPosition, scan_info.nYPosition, scan_info.nXExtent, scan_info.nYExtent, scan_info.nBitsPerPixel);
 
     return scan_info;

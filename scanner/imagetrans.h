@@ -9,8 +9,9 @@ enum{
 };
 
 enum{
-    ImageTransFormat_Raw,
-    ImageTransFormat_Bmp,
+    ImageTransFormat_raw,
+    ImageTransFormat_bmp,
+    ImageTransFormat_jpg,
 };
 
 enum{
@@ -41,8 +42,8 @@ typedef struct
     int source_total_lines;
     int source_pixelsOfWidth;
 
-    int format;
-    int mode;
+    int source_format;
+    int target_format;
 
     char* resume_buffer;
     int resume_buf_size;

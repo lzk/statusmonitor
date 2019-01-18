@@ -565,3 +565,8 @@ void MainWindow::on_btn_password_set_clicked()
     value.setValue<cmdst_passwd>(device_data);
     gUInterface->setCmd(UIConfig::LS_CMD_PASSWD_set ,current_printer ,value);
 }
+
+void MainWindow::on_btn_cancel_clicked()
+{
+    gUInterface->cancel_work();
+}
