@@ -40,7 +40,7 @@
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>12</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -69,8 +69,8 @@
     <font>
      <family>Arial</family>
      <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -104,7 +104,7 @@ QPushButton:pressed{
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>12</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -132,7 +132,7 @@ QPushButton:pressed{
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>14</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="text">
@@ -187,7 +187,7 @@ QPushButton:pressed{
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>12</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -282,8 +282,8 @@ QPushButton:pressed{
     <font>
      <family>Arial</family>
      <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -327,10 +327,10 @@ QPushButton:hover{
   <widget class="QCheckBox" name="checkBox_isDHCP">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>50</x>
      <y>18</y>
-     <width>181</width>
-     <height>17</height>
+     <width>251</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -342,8 +342,8 @@ QPushButton:hover{
     <rect>
      <x>320</x>
      <y>18</y>
-     <width>171</width>
-     <height>17</height>
+     <width>181</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -362,7 +362,7 @@ QPushButton:hover{
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>14</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="text">
@@ -395,6 +395,8 @@ QPushButton:hover{
    </property>
   </widget>
   <zorder>label_gateway_error</zorder>
+  <zorder>label_ipaddr_error</zorder>
+  <zorder>label_submask_error</zorder>
   <zorder>btApply</zorder>
   <zorder>label_gateWayAddress</zorder>
   <zorder>lineEdit_address</zorder>
@@ -406,8 +408,6 @@ QPushButton:hover{
   <zorder>checkBox_isManualAddress</zorder>
   <zorder>label_ManualAddress</zorder>
   <zorder>label_address_2</zorder>
-  <zorder>label_ipaddr_error</zorder>
-  <zorder>label_submask_error</zorder>
  </widget>
  <resources/>
  <connections/>
