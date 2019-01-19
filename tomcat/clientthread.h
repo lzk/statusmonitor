@@ -32,6 +32,8 @@ public:
     QString m_result;
     int m_trans_back;
     int jobid;
+    bool print_check_flag;
+    int finger_checked_result;
 
     bool m_cancel;
     bool m_timeout;

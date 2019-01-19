@@ -42,6 +42,10 @@ private slots:
 
     void on_checkBox_record_clicked();
 
+    void on_btn_prepage_clicked();
+
+    void on_btn_nextpage_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -74,6 +78,7 @@ private:
 
     bool record_printlist;
 //    QString password;
+    int jobs_page;
 };
 
 #endif // MAINWINDOW_H

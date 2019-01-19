@@ -13,12 +13,13 @@ class UInterface : public QObject
 public:
     explicit UInterface(QObject *parent = 0);
     ~UInterface();
-    void setCmd(int cmd ,QVariant data = QVariant());
+    void setCmd(int cmd ,const QString& printer_name ,QVariant data = QVariant());
     void setTimer(int timeVal = 0);
     void setcurrentPrinter(const QString& str){current_printer = str;}
+    void setCurrentPrinterCmd(int cmd ,QVariant data = QVariant());
     
 signals:
-    void cmdToWorker(int cmd ,QVariant data = QVariant());
+    void cmdToWorker(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
 
 private slots:

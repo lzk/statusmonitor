@@ -13,6 +13,7 @@ TEMPLATE = app
 
 DEFINES += "TOMCAT=1"
 
+include("../jkinterface/jkinterface.pri")
 include(../toec/toec.pri)
 include(../common/common.pri)
 include("../statusmonitor/statusmonitor.pri")
@@ -24,14 +25,16 @@ SOURCES += \
     changepassword.cpp \
     checkfingerdialog.cpp \
     fingerhandler.cpp \
-    clientthread.cpp
+    clientthread.cpp \
+    watcher.cpp
 
 HEADERS  += mainwindow.h \
     enterpassword.h \
     changepassword.h \
     checkfingerdialog.h \
     fingerhandler.h \
-    clientthread.h
+    clientthread.h \
+    watcher.h
 
 FORMS    += mainwindow.ui \
     enterpassword.ui \

@@ -1,10 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>image/toner.jpg</file>
-        <file>image/timg.gif</file>
         <file>image/app_icon.png</file>
-        <file>image/c_unknown.png</file>
-        <file>image/c0.png</file>
         <file>image/c5.png</file>
         <file>image/c10.png</file>
         <file>image/c20.png</file>
@@ -16,8 +12,6 @@
         <file>image/c80.png</file>
         <file>image/c90.png</file>
         <file>image/c100.png</file>
-        <file>image/k_unknown.png</file>
-        <file>image/k0.png</file>
         <file>image/k5.png</file>
         <file>image/k10.png</file>
         <file>image/k20.png</file>
@@ -30,8 +24,6 @@
         <file>image/k90.png</file>
         <file>image/k100.png</file>
         <file>image/logo.png</file>
-        <file>image/m_unknown.png</file>
-        <file>image/m0.png</file>
         <file>image/m5.png</file>
         <file>image/m10.png</file>
         <file>image/m20.png</file>
@@ -47,8 +39,6 @@
         <file>image/status_error.png</file>
         <file>image/status_normal.png</file>
         <file>image/status_warning.png</file>
-        <file>image/y_unknown.png</file>
-        <file>image/y0.png</file>
         <file>image/y5.png</file>
         <file>image/y10.png</file>
         <file>image/y20.png</file>
@@ -60,5 +50,19 @@
         <file>image/y80.png</file>
         <file>image/y90.png</file>
         <file>image/y100.png</file>
+        <file>image/finger.gif</file>
+        <file>image/info.png</file>
+        <file>image/Load_Paper.png</file>
+        <file>image/MisfeedJAM.png</file>
+        <file>image/NoCassete.png</file>
+        <file>image/OpenCover.gif</file>
+        <file>image/OpenRearCover.png</file>
+        <file>image/Rear_PaperJam.png</file>
+        <file>image/t_0.png</file>
+        <file>image/t_unkonwn.png</file>
+        <file>image/toner.png</file>
+        <file>image/TrayError.png</file>
+        <file>image/TrayReady.png</file>
+        <file>image/TrayWarnning.png</file>
     </qresource>
 </RCC>

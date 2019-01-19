@@ -5,7 +5,7 @@
 #include <QStringList>
 #include "status.h"
 #include "jkinterface.h"
-class StatusManager
+class StatusManager: public FileLocker
 {
 public:
     StatusManager();
@@ -17,11 +17,6 @@ public:
     int savePrinterToFile(Printer_struct* printer);
     int getPrintersFromFile(CALLBACK_getPrinters ,void*);
 
-private:
-    int lock(const char* path);
-    int trylock(const char* path);
-    int unlock();
-    FILE* fp;
 };
 
 #endif // STATUSMANAGER_H

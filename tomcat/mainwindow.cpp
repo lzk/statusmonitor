@@ -11,7 +11,6 @@
 //#include <QMessageBox>
 #include "commonapi.h"
 #define TEST 0
-static const QString app_name = QString::fromUtf8("打印机状态监视器");
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -27,8 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
-    gUInterface->setCmd(UIConfig::CMD_GetPrinters);
-    gUInterface->setCmd(UIConfig::CMD_GetDefaultPrinter);
+    gUInterface->setCmd(UIConfig::CMD_GetPrinters ,QString());
+//    gUInterface->setCmd(UIConfig::CMD_GetDefaultPrinter);
 //    gUInterface->setTimer(6);
 
     QVariant value;
@@ -192,7 +191,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         QVariant sys_password;
         appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
         if(!password.compare(sys_password.toString())){
-            gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer);
+            gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer ,jobs_page);
         }
     }
 #else
@@ -225,7 +224,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         break;
     case 3:
 #if !TEST
-        gUInterface->setCmd(UIConfig::CMD_GetPrinters);
+        gUInterface->setCmd(UIConfig::CMD_GetPrinters ,QString());
 #else
     {
         ui->tableWidget_printers->setRowCount(1);
@@ -260,15 +259,13 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
     QString y_uri = ":/image/";
     QString k_uri = ":/image/";
     if(c < 0){
-        c_uri += "c_unknown";
+        c_uri += "t_unknown";
     }else if(c < 5){
-        c_uri += "c0";
+        c_uri += "t_0";
     }else if(c < 10){
         c_uri += "c5";
     }else if(c < 20){
         c_uri += "c10";
-    }else if(c < 20){
-        c_uri += "c20";
     }else if(c < 30){
         c_uri += "c20";
     }else if(c < 40){
@@ -289,15 +286,13 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
         c_uri += "c100";
     }
     if(m < 0){
-        m_uri += "m_unknown";
+        m_uri += "t_unknown";
     }else if(m < 5){
-        m_uri += "m0";
+        m_uri += "t_0";
     }else if(m < 10){
         m_uri += "m5";
     }else if(m < 20){
         m_uri += "m10";
-    }else if(m < 20){
-        m_uri += "m20";
     }else if(m < 30){
         m_uri += "m20";
     }else if(m < 40){
@@ -318,15 +313,13 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
         m_uri += "m100";
     }
     if(y < 0){
-        y_uri += "y_unknown";
+        y_uri += "t_unknown";
     }else if(y < 5){
-        y_uri += "y0";
+        y_uri += "t_0";
     }else if(y < 10){
         y_uri += "y5";
     }else if(y < 20){
         y_uri += "y10";
-    }else if(y < 20){
-        y_uri += "y20";
     }else if(y < 30){
         y_uri += "y20";
     }else if(y < 40){
@@ -347,15 +340,13 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
         y_uri += "y100";
     }
     if(k < 0){
-        k_uri += "k_unknown";
+        k_uri += "t_unknown";
     }else if(k < 5){
-        k_uri += "k0";
+        k_uri += "t_0";
     }else if(k < 10){
         k_uri += "k5";
     }else if(k < 20){
         k_uri += "k10";
-    }else if(k < 20){
-        k_uri += "k20";
     }else if(k < 30){
         k_uri += "k20";
     }else if(k < 40){
@@ -585,8 +576,12 @@ void MainWindow::updatePrinter(const QVariant& data)
     int base = 0;
     ui->tableWidget_printers->setRowCount(printerInfos.length());
     printers.clear();
+    int index_of_defaultprinter = 0;
     for(int i = 0 ;i < printerInfos.length() ;i++){
         printerInfo = printerInfos.at(i);
+        if(printerInfo.printer.isDefault){
+            index_of_defaultprinter =  i;
+        }
         printers << printerInfo.printer.name;
         QTableWidgetItem* item;
         item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printerInfo.printer.name)));
@@ -601,6 +596,16 @@ void MainWindow::updatePrinter(const QVariant& data)
 //        gUInterface->setCmd(UIConfig::CMD_GetStatus ,printerInfo.printer.name);
     }
     ui->tableWidget_printers->setColumnHidden(1 ,true);
+    if(printers.isEmpty()){
+        LOGLOG("no printers");
+        setcurrentPrinter(QString());
+//        gUInterface->setTimer(0);
+        return;
+    }else if(printers.contains(current_printer)){
+//        setcurrentPrinter(current_printer);
+    }else{
+        setcurrentPrinter(printers.at(index_of_defaultprinter));
+    }
 }
 
 void MainWindow::updateOtherStatus(const QString& printer ,const PrinterStatus_struct& status)
@@ -629,7 +634,18 @@ void MainWindow::updateOtherStatus(const QString& printer ,const PrinterStatus_s
 void MainWindow::updateJobHistory(const QVariant& data)
 {
     int base = 0;
-    QStringList job_history = data.toStringList();
+    Jobs_struct jobs = data.value<Jobs_struct>();
+    jobs_page = jobs.current_page;
+    if(jobs_page == 0)
+        ui->btn_prepage->setEnabled(false);
+    else
+        ui->btn_prepage->setEnabled(true);
+    if(jobs_page < jobs.pages - 1){
+        ui->btn_nextpage->setEnabled(true);
+    }else{
+        ui->btn_nextpage->setEnabled(false);
+    }
+    QStringList job_history = jobs.job_list;
     ui->tableWidget_jobs->setRowCount(job_history.length());
     base = 0;
     for(int i = 0 ;i < job_history.length() ;i++){
@@ -690,4 +706,18 @@ void MainWindow::on_checkBox_record_clicked()
     }else{
         ui->checkBox_record->setChecked(record_printlist);
     }
+}
+
+void MainWindow::on_btn_prepage_clicked()
+{
+    if(jobs_page){
+        jobs_page--;
+        gUInterface->setCurrentPrinterCmd(UIConfig::CMD_GetJobs ,jobs_page);
+    }
+}
+
+void MainWindow::on_btn_nextpage_clicked()
+{
+    jobs_page++;
+    gUInterface->setCurrentPrinterCmd(UIConfig::CMD_GetJobs ,jobs_page);
 }

@@ -1,14 +1,29 @@
 #ifndef TOMCAT_H
 #define TOMCAT_H
 
-#include "fingermanager.h"
+typedef
+struct{
+    int id;
+    int is_finger_enable;
+    int is_finger_checked;
+}
+    Job_history;
+
+#include <QStringList>
+typedef struct
+{
+    int pages;
+    int current_page;
+    QStringList job_list;
+}
+    Jobs_struct;
 
 class Tomcat
 {
 public:
     Tomcat();
-
-    int getJobHistory(CALLBACK_getJobHistory callback,void* para);
+    static int save_job_history(Job_history* job);
+    static int get_job_history(Jobs_struct* jobs);
 };
 
 #endif // TOMCAT_H

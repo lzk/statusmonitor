@@ -28,19 +28,10 @@ unix {
     INSTALLS += target
 }
 
-HEADERS += \
-    tomcat.h \
-    toecconfig.h
-
 SOURCES += \
-    tomcat.cpp
-
-SOURCES += \
-    $${PWD}/finger.cpp \
     $${PWD}/fingermanager.cpp \
 
 
 HEADERS += \
-    $${PWD}/finger.h \
     $${PWD}/fingermanager.h \
     $${PWD}/filter_check_finger.h \

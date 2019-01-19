@@ -19,8 +19,8 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
 
     ui->buttonBox->removeButton(ui->buttonBox->button(QDialogButtonBox::Ok));
 
-    ui->label_gif->setPixmap(QPixmap(":/image/timg.gif"));
-//    movie = new QMovie(":/image/timg.gif");
+    ui->label_gif->setPixmap(QPixmap(":/image/finger.gif"));
+//    movie = new QMovie(":/image/finger.gif");
 //    ui->label_gif->setMovie(movie);
 
     timer.setInterval(1000);
@@ -68,7 +68,7 @@ void CheckFingerDialog::start_check_finger(int jobid)
     if(jobid != this->jobid)
         return;
     timer.start();
-    movie = new QMovie(":/image/timg.gif");
+    movie = new QMovie(":/image/finger.gif");
     ui->label_gif->setMovie(movie);
     movie->start();
 //    raise();

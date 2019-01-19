@@ -48,7 +48,10 @@ void StatusThread::run()
             if (abort)
                 return;
             device = devicemanager.getDevice(printer.deviceUri);
-            result = getStatusFromDevice(device ,&status);
+            result = -1;
+            if(device->isConnected()){
+                result = getStatusFromDevice(device ,&status);
+            }
             if(result){
                 LOGLOG("get status from device %s:fail!" ,printer.name);
                 memset(&status ,0 ,sizeof(status));
@@ -58,7 +61,7 @@ void StatusThread::run()
                 LOGLOG("get status from device %s:success!" ,printer.name);
                 LOGLOG("status:0x%02x" ,status.PrinterStatus);
                 if(IsStatusAbnormal(status.PrinterStatus)){
-                    status.PrinterStatus = PS_OFFLINE;
+//                    status.PrinterStatus = PS_OFFLINE;
         //            status.PrinterStatus = PS_PAUSED;
                 }
             }

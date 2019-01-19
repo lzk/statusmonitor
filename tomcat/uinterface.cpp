@@ -9,7 +9,7 @@ UInterface::UInterface(QObject *parent) :
     worker->moveToThread(&thread);
     connect(&thread ,SIGNAL(finished()) ,worker ,SLOT(deleteLater()));
 
-    connect(this ,SIGNAL(cmdToWorker(int,QVariant)) ,worker ,SLOT(cmdFromUi(int,QVariant)));
+    connect(this ,SIGNAL(cmdToWorker(int,QString ,QVariant)) ,worker ,SLOT(cmdFromUi(int,QString ,QVariant)));
     connect(worker ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SIGNAL(cmdResult(int,int,QVariant)));
     connect(worker ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult_slot(int,int,QVariant)));
 
@@ -26,9 +26,14 @@ UInterface::~UInterface()
     thread.wait();
 }
 
-void UInterface::setCmd(int cmd ,QVariant data)
+void UInterface::setCmd(int cmd ,const QString& printer_name ,QVariant data)
 {
-    cmdToWorker(cmd ,data);
+    cmdToWorker(cmd ,printer_name ,data);
+}
+
+void UInterface::setCurrentPrinterCmd(int cmd ,QVariant data)
+{
+    setCmd(cmd ,current_printer ,data);
 }
 
 void UInterface::setTimer(int timeVal)
@@ -60,3 +65,4 @@ void UInterface::cmdResult_slot(int cmd,int result ,QVariant data)
         break;
     }
 }
+

@@ -2,20 +2,26 @@
 #define UICONFIG_H
 
 #include "statusmonitor.h"
+#include "tomcat.h"
+#include "toecconfig.h"
 #include <QObject>
 #include <QMetaType>
 
-#ifdef QT_NO_DEBUG
+extern const QString app_name;
+
+#ifndef SERVER_PATH
+#ifdef LOONGSON
 #define SERVER_PATH "/var/spool/cups/tmp/tjgd1zsm.domain"
 #else
 #define SERVER_PATH "/tmp/tjgd1zsm.domain"
 #endif
+#endif
 
 Q_DECLARE_METATYPE(PrinterInfo_struct)
 Q_DECLARE_METATYPE(QList<PrinterInfo_struct>)
-#ifdef TOMCAT
-Q_DECLARE_METATYPE(QList<Job_struct>)
-#endif
+Q_DECLARE_METATYPE(PrinterStatus_struct)
+
+Q_DECLARE_METATYPE(Jobs_struct)
 
 #include "smconfig.h"
 class UIConfig : public QObject ,SMConfig{

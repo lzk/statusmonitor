@@ -14,7 +14,7 @@ UIConfig::UIConfig(QObject *parent) :
 void UIConfig::initConfig()
 {
     //config status server thread
-//    filepath = "/tmp/.tomcat";
+//    status_filename = "/tmp/.tomcat";
     statusKey = "tomcat/status/";
     printersKey = "tomcat/printerlist/";
 //    lockfile = "/tmp/.locktomcat";

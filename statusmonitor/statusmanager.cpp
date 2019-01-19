@@ -9,7 +9,7 @@
 
 static int saveStatus(const char* printer ,PRINTER_STATUS* status)
 {
-    QSettings settings(filepath ,QSettings::defaultFormat());
+    QSettings settings(status_filename ,QSettings::defaultFormat());
     QString key = QString(statusKey) + printer;
 
     settings.beginGroup(key);
@@ -81,7 +81,7 @@ static int saveStatus(const char* printer ,PRINTER_STATUS* status)
 
 static int getStatus(const char* printer ,PRINTER_STATUS* status)
 {
-    QSettings settings(filepath ,QSettings::defaultFormat());
+    QSettings settings(status_filename ,QSettings::defaultFormat());
     QString key = QString(statusKey) + printer;
     if(!settings.allKeys().contains(key + "/PrinterStatus")){
         return -1;
@@ -124,7 +124,7 @@ static int getStatus(const char* printer ,PRINTER_STATUS* status)
 
 static int clear()
 {
-    QSettings settings(filepath ,QSettings::defaultFormat());
+    QSettings settings(status_filename ,QSettings::defaultFormat());
     settings.clear();
     settings.sync();
     return 0;
@@ -132,7 +132,7 @@ static int clear()
 
 static int clearPrinters()
 {
-    QSettings settings(filepath ,QSettings::defaultFormat());
+    QSettings settings(status_filename ,QSettings::defaultFormat());
     QString key = QString(printersKey);
     settings.remove(key);
     settings.sync();
@@ -141,7 +141,7 @@ static int clearPrinters()
 
 static int savePrinter(Printer_struct* printer)
 {
-    QSettings settings(filepath ,QSettings::defaultFormat());
+    QSettings settings(status_filename ,QSettings::defaultFormat());
     QString key = QString(printersKey) +"/" + printer->name;
     settings.beginGroup(key);
     settings.setValue("name" ,printer->name);
@@ -156,7 +156,7 @@ static int savePrinter(Printer_struct* printer)
 
 static int getPrinter(CALLBACK_getPrinters callback,void* para)
 {
-    QSettings settings(filepath ,QSettings::defaultFormat());
+    QSettings settings(status_filename ,QSettings::defaultFormat());
     QString key = QString(printersKey);
     settings.beginGroup(key);
     QStringList printers = settings.childGroups();
@@ -176,66 +176,8 @@ static int getPrinter(CALLBACK_getPrinters callback,void* para)
     }
 }
 
-StatusManager::StatusManager():
-    fp(NULL)
+StatusManager::StatusManager()
 {
-}
-
-int StatusManager::lock(const char* filename)
-{
-    int ret = -1;
-    fp = fopen(filename, "ab+");
-    int fd;
-    if(fp){
-#ifdef Q_OS_MAC
-        fd = fp->_file;
-#else
-        fd = fp->_fileno;
-#endif
-        ret = flock(fd, LOCK_EX);
-        if (ret){
-            fclose(fp);
-            fp = NULL;
-        }
-    }
-    return ret;
-}
-
-int StatusManager::trylock(const char* filename)
-{
-    int ret = -1;
-    fp = fopen(filename, "ab+");
-    int fd;
-    if(fp){
-#ifdef Q_OS_MAC
-        fd = fp->_file;
-#else
-        fd = fp->_fileno;
-#endif
-        if (flock(fd, LOCK_EX | LOCK_NB)){
-            ret = 0;
-        }else{
-            fclose(fp);
-            fp = NULL;
-        }
-    }
-    return ret;
-}
-
-int StatusManager::unlock()
-{
-    if(fp){
-        int fd;
-#ifdef Q_OS_MAC
-        fd = fp->_file;
-#else
-        fd = fp->_fileno;
-#endif
-        flock(fd, LOCK_UN);
-        fclose(fp);
-        fp = NULL;
-    }
-    return 0;
 }
 
 int StatusManager::saveStatusToFile(const char* printer ,PRINTER_STATUS* status)

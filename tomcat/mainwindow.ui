@@ -52,7 +52,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -181,7 +181,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="image.qrc">:/image/k0.png</pixmap>
+                  <pixmap resource="image.qrc">:/image/t_0.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
@@ -253,7 +253,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="image.qrc">:/image/m_unknown.png</pixmap>
+                  <pixmap resource="image.qrc">:/image/t_unkonwn.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
@@ -361,7 +361,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="image.qrc">:/image/toner.jpg</pixmap>
+               <pixmap resource="image.qrc">:/image/toner.png</pixmap>
               </property>
               <property name="scaledContents">
                <bool>true</bool>
@@ -459,14 +459,20 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="btn_prepage">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>上一页</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="btn_nextpage">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>下一页</string>
             </property>

@@ -4,7 +4,7 @@
 #include "jkinterface.h"
 typedef bool (*func_isDeviceSupported)(Printer_struct*);
 
-extern const char* filepath;
+extern const char* status_filename;
 extern const char* statusKey;
 extern const char* printersKey;
 extern const char* lockfile;

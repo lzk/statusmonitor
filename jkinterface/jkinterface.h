@@ -7,5 +7,6 @@
 #include "usbapi_libusb.h"
 #include "deviceio.h"
 #include "jkconfig.h"
+#include "filelocker.h"
 
 #endif // JKINTERFACE_H

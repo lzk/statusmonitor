@@ -1,7 +1,7 @@
 #include "worker.h"
 #include <QVariant>
 #include "uiconfig.h"
-
+#include "tomcat.h"
 #include <QDebug>
 #include <QString>
 
@@ -15,14 +15,15 @@ Worker::~Worker()
 {
 }
 
-void Worker::cmdFromUi(int cmd ,QVariant data)
+void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 {
-    Q_UNUSED(data);
     if(cmd_status)
         return;
     cmd_status = 1;
 
     QVariant value;
+    Printer_struct* printer = get_printer(printer_name);
+    int result = -1;
 
     switch (cmd) {
     case UIConfig::CMD_GetDefaultPrinter:{
@@ -39,35 +40,30 @@ void Worker::cmdFromUi(int cmd ,QVariant data)
         cmdResult(cmd ,0 ,value);
         break;
 
-#ifdef TOMCAT
-    case UIConfig::CMD_GetJobs:{
-        getJobs();
-        value.setValue(jobs);
-        cmdResult(cmd ,0 ,value);
-    }
-        break;
-#endif
-
-    case UIConfig::CMD_GetStatus:{
-        QString printer_name = data.toString();
-        Printer_struct* printer = NULL;
-        foreach (PrinterInfo_struct pi, printers_detail) {
-            if(!printer_name.compare(pi.printer.name)){
-                printer = &pi.printer;
-                break;
-            }
-        }
-        int result = -1;
+    case UIConfig::CMD_GetStatus:
         if(printer){
             PrinterInfo_struct printerInfo;
             strcpy(printerInfo.printer.name ,printer->name);
             PrinterStatus_struct* status = &printerInfo.status;
-            result = m_statusMonitor.getPrinterStatus(printer->name ,status);
+            result = StatusMonitor::getPrinterStatus(printer->name ,status);
             value.setValue(printerInfo);
 
         }
         cmdResult(cmd ,result ,value);
-    }
+        break;
+
+    case UIConfig::CMD_GetJobs:
+        if(printer){
+            Jobs_struct jobs;
+            jobs.current_page = data.toInt();
+            Tomcat::get_job_history(&jobs);
+//            getJobs();
+//            jobs.job_list = this->jobs;
+//            jobs.current_page = 0;
+//            jobs.pages = 1;
+            value.setValue(jobs);
+            cmdResult(cmd ,0 ,value);
+        }
         break;
     default:
         break;
@@ -81,7 +77,7 @@ DeviceIO* Worker::getDevice(const char* device_uri)
     return device;
 }
 
-int callback_getPrinters(void* para,PrinterInfo_struct* ps)
+static int callback_getPrinters(void* para,PrinterInfo_struct* ps)
 {
     Worker* worker = (Worker*)para;
     strcpy(ps->printer.connectTo ,worker->getDevice(ps->printer.deviceUri)->getDeviceAddress());
@@ -99,24 +95,18 @@ void Worker::getPrinters()
 {
     printers.clear();
     printers_detail.clear();
-    m_statusMonitor.getPrinters(callback_getPrinters ,(void*)this);
+    StatusMonitor::getPrinters(callback_getPrinters ,(void*)this);
 }
 
-void Worker::setJobs(const char* str)
+Printer_struct* Worker::get_printer(const QString& printer_name)
 {
-    LOGLOG("job:%s" ,str);
-    jobs << QString(str);
-}
-
-void callback_getJobs(void*para ,const char* str)
-{
-    Worker* worker = (Worker*)para;
-    worker->setJobs(str);
-}
-
-void Worker::getJobs()
-{
-    jobs.clear();
-    m_tomcat.getJobHistory(callback_getJobs ,this);
+    Printer_struct* printer = NULL;
+    for(int i = 0 ;i < printers_detail.count() ;i++){
+        if(!printer_name.compare(printers_detail[i].printer.name)){
+            printer = &printers_detail[i].printer;
+            break;
+        }
+    }
+    return printer;
 }
 
