@@ -14,6 +14,7 @@ public:
     explicit Watcher(QObject *parent = nullptr);
     ~Watcher();
     void run();
+    void timerOut();
 
     int get_printer_info(const QString& printer_name ,PrinterInfo_struct&);
     void setPrinters(PrinterInfo_struct* ps);
@@ -23,14 +24,13 @@ signals:
     void update_printerlist(QList<PrinterInfo_struct>);
 
 public slots:
-    void timerOut();
     void set_current_printer(const QString& printer);
 
 private:
     void getPrinters();
 
 private:
-    QTimer timer;
+    bool abort;
     QMutex mutex;
 private:
     StatusThread* statusThread;

@@ -3,22 +3,27 @@
 #include <QMutexLocker>
 Watcher::Watcher(QObject *parent)
     : QThread(parent)
+    ,abort(false)
 {
     statusThread = new StatusThread();
     statusThread->start();
-
-    connect(&timer ,SIGNAL(timeout()) ,this ,SLOT(timerOut()));
-    timer.start(100);
 }
 
 Watcher::~Watcher()
 {
     delete statusThread;
+    abort = true;
+    wait();
 }
 
 void Watcher::run()
 {
-    exec();
+    forever{
+        if (abort)
+            return;
+        timerOut();
+        usleep(100*1000);
+    }
 }
 
 void Watcher::set_current_printer(const QString& printer)

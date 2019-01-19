@@ -1,7 +1,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#define DEBUG_TO_STDERR 0
+#define DEBUG_TO_STDERR 1
 #include <stdio.h>
 #if DEBUG_TO_STDERR
 #define LOGLOG(format, ...) \

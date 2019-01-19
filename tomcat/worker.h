@@ -31,6 +31,8 @@ private:
     DeviceManager deviceManager;
     DeviceIO* device;
     Printer_struct* get_printer(const QString& printer_name);//get printer exist in system
+
+    Watcher* watcher;
 };
 
 #endif // WORKER_H

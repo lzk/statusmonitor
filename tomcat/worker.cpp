@@ -9,10 +9,13 @@ Worker::Worker(QObject *parent) :
     QObject(parent)
   ,cmd_status(0)
 {
+    watcher = new Watcher;
+    watcher->start();
 }
 
 Worker::~Worker()
 {
+    delete watcher;
 }
 
 void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
