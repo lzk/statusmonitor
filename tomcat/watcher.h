@@ -4,23 +4,26 @@
 #include <QThread>
 #include <QTimer>
 #include "statusmonitor.h"
+#include "devicemanager.h"
 #include <QMutex>
+#include <QStringList>
 class StatusThread;
 
 class Watcher : public QThread
 {
     Q_OBJECT
 public:
-    explicit Watcher(QObject *parent = nullptr);
+    explicit Watcher(DeviceManager* device_manager ,QObject *parent = 0);
     ~Watcher();
     void run();
     void timerOut();
 
+    int get_printer_list(QList<PrinterInfo_struct>&);
     int get_printer_info(const QString& printer_name ,PrinterInfo_struct&);
     void setPrinters(PrinterInfo_struct* ps);
 
 signals:
-    void update_printer_status(PrinterStatus_struct);
+    void update_printer_status(PrinterInfo_struct);
     void update_printerlist(QList<PrinterInfo_struct>);
 
 public slots:
@@ -33,6 +36,7 @@ private:
     bool abort;
     QMutex mutex;
 private:
+    DeviceManager* device_manager;
     StatusThread* statusThread;
     QStringList printers;
     QList<PrinterInfo_struct> printers_detail;

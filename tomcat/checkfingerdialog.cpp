@@ -4,7 +4,8 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QUrl>
-#if QT_VERSION_MAJOR > 4
+
+#if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
 #include "filter_check_finger.h"
@@ -31,7 +32,8 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
     QUrl url(job_info);
 //    QString cmd = url.scheme();
     printer_name = url.host();
-#if QT_VERSION_MAJOR > 4
+
+#if QT_VERSION > 0x050000
     jobid = QUrlQuery(QUrl(url)).queryItemValue("jobid").toInt();
 #else
     jobid = QUrl(url).queryItemValue("jobid").toInt();

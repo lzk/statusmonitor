@@ -8,7 +8,7 @@
 #include <QMetaType>
 
 extern const QString app_name;
-
+extern bool use_status_thread;
 #ifndef SERVER_PATH
 #ifdef LOONGSON
 #define SERVER_PATH "/var/spool/cups/tmp/tjgd1zsm.domain"

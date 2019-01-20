@@ -15,12 +15,13 @@ public:
     ~UInterface();
     void setCmd(int cmd ,const QString& printer_name ,QVariant data = QVariant());
     void setTimer(int timeVal = 0);
-    void setcurrentPrinter(const QString& str){current_printer = str;}
+    void setcurrentPrinter(const QString& str);
     void setCurrentPrinterCmd(int cmd ,QVariant data = QVariant());
     
 signals:
     void cmdToWorker(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
+    void set_current_printer(const QString& printer);
 
 private slots:
     void timerOut();

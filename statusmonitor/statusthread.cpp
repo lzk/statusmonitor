@@ -6,7 +6,7 @@
 
 static int callback_getPrinters(void* para,Printer_struct* ps)
 {
-    StatusThread* st = (StatusThread*)para;
+    StatusThread* st = static_cast<StatusThread*>(para);
     if(isDeviceSupported && isDeviceSupported(ps)){
         st->printers << *ps;
         st->printerlist << ps->name;
@@ -40,9 +40,6 @@ void StatusThread::run()
         printerlist.clear();
         statusmanager.clearPrintersOfFile();
         cupsmanager.getPrinters(callback_getPrinters ,this);
-        //update printer list
-//        statusmanager.clearPrintersOfFile();
-//        statusmanager.savePrintersToFile(printerlist);
 
         foreach (Printer_struct printer, printers) {
             if (abort)

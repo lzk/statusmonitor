@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(app_name);
 //    setWindowIcon(QIcon(":/image/app_icon.png"));
 
-    this->setFixedSize(500 ,380);
+    this->setFixedSize(550 ,400);
     ui->statusUpdate_groupBox->hide();
 
     createSysTray();
@@ -27,8 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
     gUInterface->setCmd(UIConfig::CMD_GetPrinters ,QString());
-//    gUInterface->setCmd(UIConfig::CMD_GetDefaultPrinter);
-//    gUInterface->setTimer(6);
 
     QVariant value;
     appSettings("record" ,value ,QVariant(false));
@@ -606,6 +604,7 @@ void MainWindow::updatePrinter(const QVariant& data)
     }else{
         setcurrentPrinter(printers.at(index_of_defaultprinter));
     }
+    gUInterface->setCurrentPrinterCmd(UIConfig::CMD_GetStatus);
 }
 
 void MainWindow::updateOtherStatus(const QString& printer ,const PrinterStatus_struct& status)

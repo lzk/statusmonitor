@@ -56,7 +56,7 @@ int UsbIO::getDeviceId(char *buffer, int bufsize)
 }
 
 #include <QUrl>
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
 int UsbIO::resolveUrl(const char* url)
@@ -65,7 +65,7 @@ int UsbIO::resolveUrl(const char* url)
     if(ret)
         return ret;
     QString tmp_serial;
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     tmp_serial = QUrlQuery(QUrl(url)).queryItemValue("serial");
     interface = QUrlQuery(QUrl(url)).queryItemValue("interface").toInt();
 #else

@@ -9,7 +9,9 @@ Worker::Worker(QObject *parent) :
     QObject(parent)
   ,cmd_status(0)
 {
-    watcher = new Watcher;
+    watcher = new Watcher(&deviceManager);
+    connect(this ,SIGNAL(set_current_printer(QString)) ,watcher ,SLOT(set_current_printer(QString)));
+    connect(watcher ,SIGNAL(update_printer_status(PrinterInfo_struct)) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
     watcher->start();
 }
 
@@ -38,7 +40,8 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     }
         break;
     case UIConfig::CMD_GetPrinters:
-        getPrinters();
+//        getPrinters();
+        watcher->get_printer_list(printers_detail);
         value.setValue(printers_detail);
         cmdResult(cmd ,0 ,value);
         break;
@@ -60,10 +63,6 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             Jobs_struct jobs;
             jobs.current_page = data.toInt();
             Tomcat::get_job_history(&jobs);
-//            getJobs();
-//            jobs.job_list = this->jobs;
-//            jobs.current_page = 0;
-//            jobs.pages = 1;
             value.setValue(jobs);
             cmdResult(cmd ,0 ,value);
         }
@@ -113,3 +112,10 @@ Printer_struct* Worker::get_printer(const QString& printer_name)
     return printer;
 }
 
+void Worker::update_printer_status(PrinterInfo_struct ps)
+{
+    LOGLOG("watcher update status");
+    QVariant value;
+    value.setValue<PrinterInfo_struct>(ps);
+    cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+}

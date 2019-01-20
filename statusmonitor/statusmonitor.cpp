@@ -7,47 +7,50 @@
 int parsePrinterStatus(PRINTER_STATUS* pStatus ,PrinterStatus_struct* ps)
 {
     ps->PrinterStatus = pStatus->PrinterStatus;
-    LOGLOG("get device status correct:%#.02x" ,pStatus->PrinterStatus);
+//    LOGLOG("get device status correct:%#.02x" ,pStatus->PrinterStatus);
 
     if(pStatus->TonelStatusLevelC & 0x80){
-        LOGLOG("Tonel not installed");
+//        LOGLOG("Tonel not installed");
         ps->TonelStatusLevelC = -1;
     }else{
-        LOGLOG("Tonel has been installed,TonelStatusLevelC level:%d" ,pStatus->TonelStatusLevelC);
+//        LOGLOG("Tonel has been installed,TonelStatusLevelC level:%d" ,pStatus->TonelStatusLevelC);
         ps->TonelStatusLevelC = pStatus->TonelStatusLevelC;
     }
 
     if(pStatus->TonelStatusLevelY & 0x80){
-        LOGLOG("Tonel not installed");
+//        LOGLOG("Tonel not installed");
         ps->TonelStatusLevelY = -1;
     }else{
-        LOGLOG("Tonel has been installed,TonelStatusLevelY level:%d" ,pStatus->TonelStatusLevelY);
+//        LOGLOG("Tonel has been installed,TonelStatusLevelY level:%d" ,pStatus->TonelStatusLevelY);
         ps->TonelStatusLevelY = pStatus->TonelStatusLevelY;
     }
 
     if(pStatus->TonelStatusLevelM & 0x80){
-        LOGLOG("Tonel not installed");
+//        LOGLOG("Tonel not installed");
         ps->TonelStatusLevelM = -1;
     }else{
-        LOGLOG("Tonel has been installed,TonelStatusLevelM level:%d" ,pStatus->TonelStatusLevelM);
+//        LOGLOG("Tonel has been installed,TonelStatusLevelM level:%d" ,pStatus->TonelStatusLevelM);
         ps->TonelStatusLevelM = pStatus->TonelStatusLevelM;
     }
 
     if(pStatus->TonelStatusLevelK & 0x80){
-        LOGLOG("Tonel not installed");
+//        LOGLOG("Tonel not installed");
         ps->TonelStatusLevelK = -1;
     }else{
-        LOGLOG("Tonel has been installed,TonelStatusLevelK level:%d" ,pStatus->TonelStatusLevelK);
+//        LOGLOG("Tonel has been installed,TonelStatusLevelK level:%d" ,pStatus->TonelStatusLevelK);
         ps->TonelStatusLevelK = pStatus->TonelStatusLevelK;
     }
     switch(pStatus->PaperTrayStatus){
     case 0xff:
-        LOGLOG("paper tray status: tray no installed");           ps->trayPaperTrayStatus = 1 ;break;
+//        LOGLOG("paper tray status: tray no installed");
+        ps->trayPaperTrayStatus = 1 ;break;
     case 0xfe:
-        LOGLOG("paper tray status: out of page");                 ps->trayPaperTrayStatus = 2 ;break;
+//        LOGLOG("paper tray status: out of page");
+        ps->trayPaperTrayStatus = 2 ;break;
     case 0:
     default:
-        LOGLOG("paper tray status: ready");                       ps->trayPaperTrayStatus = 0 ;break;
+//        LOGLOG("paper tray status: ready");
+        ps->trayPaperTrayStatus = 0 ;break;
     }
 //    switch(pStatus->job){
 //    case 0:            LOGLOG("executing job: unknow job");            break;
@@ -118,7 +121,7 @@ static int getPrinterList(void* para ,Printer_struct* ps)
 
         struct PrinterInfo_struct pis;
         pis.printer = *ps;
-
+        memset((void*)&pis.status ,0 ,sizeof(pis.status));
     //    if(!StatusMonitor::getPrinterStatus(ps->name ,&pis.status)){
     //        LOGLOG("can not get printer status");
     //    }

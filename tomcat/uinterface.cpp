@@ -9,6 +9,7 @@ UInterface::UInterface(QObject *parent) :
     worker->moveToThread(&thread);
     connect(&thread ,SIGNAL(finished()) ,worker ,SLOT(deleteLater()));
 
+    connect(this ,SIGNAL(set_current_printer(QString)) ,worker ,SIGNAL(set_current_printer(QString)));
     connect(this ,SIGNAL(cmdToWorker(int,QString ,QVariant)) ,worker ,SLOT(cmdFromUi(int,QString ,QVariant)));
     connect(worker ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SIGNAL(cmdResult(int,int,QVariant)));
     connect(worker ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult_slot(int,int,QVariant)));
@@ -64,5 +65,11 @@ void UInterface::cmdResult_slot(int cmd,int result ,QVariant data)
     default:
         break;
     }
+}
+
+void UInterface::setcurrentPrinter(const QString& str)
+{
+    current_printer = str;
+    emit set_current_printer(current_printer);
 }
 

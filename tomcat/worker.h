@@ -19,10 +19,12 @@ public:
     
 signals:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
+    void set_current_printer(const QString& printer);
     
 public slots:
     void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void getPrinters();
+    void update_printer_status(PrinterInfo_struct);
 
 private:
     int cmd_status;

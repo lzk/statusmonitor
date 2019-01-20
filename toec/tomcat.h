@@ -24,6 +24,7 @@ public:
     Tomcat();
     static int save_job_history(Job_history* job);
     static int get_job_history(Jobs_struct* jobs);
+    static int update_job_history();
 };
 
 #endif // TOMCAT_H

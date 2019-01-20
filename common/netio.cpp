@@ -130,7 +130,7 @@ int NetIO::read(char *buffer, int bufsize)
         if (!tcpSocket->waitForReadyRead(15000)){
 //            qDebug()<<"tcp error:"<< tcpSocket->error();
 //            qDebug()<< tcpSocket->errorString();
-            LOGLOG(tcpSocket->errorString().toUtf8().constData());
+            LOGLOG("%s" ,tcpSocket->errorString().toUtf8().constData());
             break;
         }
         bytesAvailable = tcpSocket->bytesAvailable();

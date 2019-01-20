@@ -13,7 +13,7 @@ FileLocker::FileLocker():
 int FileLocker::lock(const char* filename)
 {
     int ret = -1;
-    LOGLOG("pid %ld get file %s lock" ,getpid() ,filename);
+//    LOGLOG("pid %ld get file %s lock" ,getpid() ,filename);
     fp = fopen(filename, "ab+");
     int fd;
     if(fp){
@@ -27,7 +27,7 @@ int FileLocker::lock(const char* filename)
             fclose(fp);
             fp = NULL;
         }
-        LOGLOG("pid %d file %s locked" ,getpid() ,filename);
+//        LOGLOG("pid %d file %s locked" ,getpid() ,filename);
     }else{
     }
     return ret;
@@ -66,7 +66,7 @@ int FileLocker::unlock()
         flock(fd, LOCK_UN);
         fclose(fp);
         fp = NULL;
-        LOGLOG("pid %d unlocked" ,getpid());
+//        LOGLOG("pid %d unlocked" ,getpid());
     }
     return 0;
 }

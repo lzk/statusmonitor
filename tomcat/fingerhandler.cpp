@@ -5,7 +5,7 @@
 #include "jkinterface.h"
 #include "clientthread.h"
 #include <QUrl>
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
 FingerHandler::FingerHandler(ClientThread *_cth)
@@ -59,7 +59,7 @@ int FingerHandler::check_finger(const char* uri ,int id)
 //    QUrl url(cmd);
 //    QString printer = url.host();
 //    int jobid;
-//#if QT_VERSION_MAJOR > 4
+//#if QT_VERSION > 0x050000
 //    jobid = QUrlQuery(QUrl(url)).queryItemValue("jobid").toInt();
 //#else
 //    jobid = QUrl(url).queryItemValue("jobid").toInt();

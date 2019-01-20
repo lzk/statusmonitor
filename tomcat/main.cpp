@@ -23,10 +23,6 @@ int main(int argc, char *argv[])
     }
     UIConfig::initConfig();
 
-//    ServerThread thread_server(SERVER_PATH);
-//    StatusThread statusThread;
-//    statusThread.start();
-
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11
     qputenv("LIBOVERLAY_SCROLLBAR", 0);
@@ -36,17 +32,20 @@ int main(int argc, char *argv[])
 
     AppServer* app_server = new AppServer(SERVER_PATH);
 
-#if QT_VERSION_MAJOR < 5
+#if QT_VERSION < 0x050000
         QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
         QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));
 #endif
+
+    QStringList arguments = QCoreApplication::arguments();
+    if(arguments.contains("-test"))
+        use_status_thread = false;
 
     gUInterface = new UInterface;
 //    qRegisterMetaType<QVariant>("QVariant");
 
     MainWindow* w = new MainWindow;
 
-    QStringList arguments = QCoreApplication::arguments();
     if(!arguments.contains("-hide"))
         w->show();
     

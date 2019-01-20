@@ -5,7 +5,7 @@
 #include "commonapi.h"
 #include "tomcat.h"
 #include <QUrl>
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
 enum{
@@ -24,7 +24,7 @@ int callback_Server(void* para,char* buffer,int bufsize)
     QString cmd = url.scheme();
     QString printer = url.host();
     int jobid;
-#if QT_VERSION_MAJOR > 4
+#if QT_VERSION > 0x050000
     jobid = QUrlQuery(QUrl(url)).queryItemValue("jobid").toInt();
 #else
     jobid = QUrl(url).queryItemValue("jobid").toInt();
