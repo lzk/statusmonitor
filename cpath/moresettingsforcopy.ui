@@ -587,7 +587,7 @@ background: transparent;
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
      <weight>50</weight>
      <italic>false</italic>
      <bold>false</bold>
@@ -597,7 +597,7 @@ background: transparent;
     <string notr="true">
 #btDefault {
 	border-image: url(:/Images/Btn_Gray.png);
-	font: 14pt &quot;微软雅黑&quot;;
+	font: 12pt &quot;微软雅黑&quot;;
 }
 #btDefault:pressed {
 	border-image: url(:/Images/Btn_Gray_Pressed.png);
@@ -830,32 +830,32 @@ QRadioButton::indicator::checked {
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
      <weight>50</weight>
      <italic>false</italic>
      <bold>false</bold>
     </font>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::TabFocus</enum>
+    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="styleSheet">
     <string notr="true">
 #btOK {
 	border-image: url(:/Images/Btn_Green.png);
-	font: 14pt &quot;微软雅黑&quot;;
+	font: 12pt &quot;微软雅黑&quot;;
 	color: rgb(255, 255, 255);
 }
 
 #btOK:pressed {
 	color: rgb(255, 255, 255);
 	border-image: url(:/Images/Btn_Green_Pressed.png);
-	font: 14pt &quot;微软雅黑&quot;;	
+	font: 12pt &quot;微软雅黑&quot;;	
 
 }
 
 #btOK:hover {
-	font: 14pt &quot;微软雅黑&quot;;	
+	font: 12pt &quot;微软雅黑&quot;;	
 	color: rgb(0, 0, 0);
 }</string>
    </property>

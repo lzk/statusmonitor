@@ -700,6 +700,7 @@ QSlider::handle:horizontal {
     <property name="font">
      <font>
       <family>Arial</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="focusPolicy">
@@ -737,6 +738,7 @@ QSlider::handle:horizontal {
     <property name="font">
      <font>
       <family>Arial</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -843,7 +845,7 @@ QSlider::handle:horizontal {
      </font>
     </property>
     <property name="text">
-     <string>ResStr_Scan_Size</string>
+     <string>ResStr_Scan_Type</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

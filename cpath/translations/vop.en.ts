@@ -62,27 +62,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../animationdlg.ui" line="78"/>
+        <location filename="../animationdlg.ui" line="83"/>
         <source>ResStr_Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../animationdlg.ui" line="115"/>
+        <location filename="../animationdlg.ui" line="120"/>
         <source>ResStr_Prompt_Box_will_not_pop_up_next_time</source>
         <translation>The prompt box will not pop up next time.</translation>
     </message>
     <message>
-        <location filename="../animationdlg.ui" line="133"/>
+        <location filename="../animationdlg.ui" line="138"/>
         <source>ResStr_Prompt1</source>
         <translation>Prompt:</translation>
     </message>
     <message>
-        <location filename="../animationdlg.ui" line="182"/>
+        <location filename="../animationdlg.ui" line="187"/>
         <source>ResStr_Prompt2</source>
         <translation>If the operation is not performed within 1 minute, the task will be automatically canceled.</translation>
     </message>
     <message>
-        <location filename="../animationdlg.ui" line="213"/>
+        <location filename="../animationdlg.ui" line="223"/>
         <source>ResStr_OK</source>
         <translation>OK</translation>
     </message>
@@ -105,7 +105,7 @@
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../authenticationdlg.ui" line="151"/>
+        <location filename="../authenticationdlg.ui" line="152"/>
         <source>ResStr_Login</source>
         <translation>Login</translation>
     </message>
@@ -283,7 +283,7 @@
     <name>MemberCenterWidget</name>
     <message>
         <location filename="../membercenterwidget.ui" line="54"/>
-        <location filename="../membercenterwidget.ui" line="1144"/>
+        <location filename="../membercenterwidget.ui" line="1188"/>
         <source>ResStr_Change_Account_Information</source>
         <translation>Change Account Information</translation>
     </message>
@@ -313,52 +313,52 @@
         <translation>Address</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="340"/>
+        <location filename="../membercenterwidget.ui" line="363"/>
         <source>ResStr_Year</source>
         <translation>Year</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="353"/>
+        <location filename="../membercenterwidget.ui" line="381"/>
         <source>ResStr_Month</source>
         <translation>Month</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="371"/>
+        <location filename="../membercenterwidget.ui" line="400"/>
         <source>ResStr_Day</source>
         <translation>Day</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="458"/>
+        <location filename="../membercenterwidget.ui" line="493"/>
         <source>ResStr_OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="491"/>
+        <location filename="../membercenterwidget.ui" line="530"/>
         <source>ResStr_Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="797"/>
+        <location filename="../membercenterwidget.ui" line="841"/>
         <source>ResStr_Return</source>
         <translation>Return</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="819"/>
+        <location filename="../membercenterwidget.ui" line="863"/>
         <source>ResStr_User_Experience</source>
         <translation>User Experience Improvement Program</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1225"/>
+        <location filename="../membercenterwidget.ui" line="1269"/>
         <source>ResStr_Product_Support</source>
         <translation>Product and support</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1250"/>
+        <location filename="../membercenterwidget.ui" line="1294"/>
         <source>ResStr_About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="933"/>
+        <location filename="../membercenterwidget.ui" line="977"/>
         <source>ResStr_Login_</source>
         <translation>Login</translation>
     </message>
@@ -368,19 +368,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="522"/>
+        <location filename="../membercenterwidget.ui" line="562"/>
         <source>ResStr_Women</source>
         <translation>female</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="553"/>
+        <location filename="../membercenterwidget.ui" line="594"/>
         <source>ResStr_Man</source>
         <translation>male</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1104"/>
+        <location filename="../membercenterwidget.ui" line="1148"/>
         <source>ResStr_Member_Center</source>
         <translation>Member Center</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.cpp" line="479"/>
+        <source>ResStr_Email_Format_Error</source>
+        <translation>The E-mail address format is incorrect, Please check you E-mail address and enter again.</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.cpp" line="480"/>
+        <source>ResStr_Error</source>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -653,17 +663,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="978"/>
+        <location filename="../moresettingsforscan.ui" line="848"/>
+        <source>ResStr_Scan_Type</source>
+        <translation>Scan Mode</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforscan.ui" line="980"/>
         <source>ResStr_Photo_2</source>
         <translation>Photo</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="1017"/>
+        <location filename="../moresettingsforscan.ui" line="1019"/>
         <source>ResStr_Text_and_Graph</source>
         <translation>Text/Photo</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="1056"/>
+        <location filename="../moresettingsforscan.ui" line="1058"/>
         <source>ResStr_Text</source>
         <translation>Text</translation>
     </message>
@@ -679,7 +694,6 @@
     </message>
     <message>
         <location filename="../moresettingsforscan.ui" line="330"/>
-        <location filename="../moresettingsforscan.ui" line="846"/>
         <source>ResStr_Scan_Size</source>
         <translation>Scan Area Size</translation>
     </message>
@@ -711,33 +725,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="725"/>
+        <location filename="../moresettingsforscan.ui" line="726"/>
         <source>ResStr_OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="759"/>
+        <location filename="../moresettingsforscan.ui" line="761"/>
         <source>ResStr_Default</source>
         <translation>Default</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="786"/>
+        <location filename="../moresettingsforscan.ui" line="788"/>
         <source>ResStr_The_valid_range_is_0_100__please_confirm_and_enter_again_</source>
         <translation>The valid range is 0 to 100, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="888"/>
+        <location filename="../moresettingsforscan.ui" line="890"/>
         <source>ResStr_Scan_Speed</source>
         <translation>High Speed</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="927"/>
+        <location filename="../moresettingsforscan.ui" line="929"/>
         <source>ResStr_Scan_Quality</source>
         <translation>High Quality</translation>
     </message>
     <message>
         <location filename="../moresettingsforscan.ui" line="26"/>
-        <location filename="../moresettingsforscan.ui" line="1150"/>
+        <location filename="../moresettingsforscan.ui" line="1152"/>
         <source>ResStr_More_Settings</source>
         <translation>More Settings</translation>
     </message>
@@ -745,17 +759,17 @@
 <context>
     <name>PromptDialog</name>
     <message>
-        <location filename="../promptdialog.ui" line="55"/>
+        <location filename="../promptdialog.ui" line="60"/>
         <source>ResStr_No</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../promptdialog.ui" line="94"/>
+        <location filename="../promptdialog.ui" line="104"/>
         <source>ResStr_Yes</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../promptdialog.ui" line="115"/>
+        <location filename="../promptdialog.ui" line="125"/>
         <source>ResStr_Do_you_want_to_exit_the_Lenovo_Printer</source>
         <translation>Do you want to exit the Neo Printing?</translation>
     </message>
@@ -783,7 +797,7 @@
     </message>
     <message>
         <location filename="../settingforipv6.ui" line="50"/>
-        <location filename="../settingforipv6.cpp" line="125"/>
+        <location filename="../settingforipv6.cpp" line="124"/>
         <source>ResStr_The_entered_Gateway_is_wrong__please_confirm_and_enter_again_</source>
         <translation>Invalid Gateway address. Please check and enter again.</translation>
     </message>
@@ -810,7 +824,7 @@
     </message>
     <message>
         <location filename="../settingforipv6.ui" line="197"/>
-        <location filename="../settingforipv6.cpp" line="137"/>
+        <location filename="../settingforipv6.cpp" line="135"/>
         <source>ResStr_The_subnet_mask_input_error__please_input_again_after_confirmation</source>
         <translation>Invalid subnet mask. Please check and enter again.</translation>
     </message>
@@ -845,7 +859,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingforipv6.cpp" line="154"/>
+        <location filename="../settingforipv6.cpp" line="151"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
@@ -983,7 +997,7 @@
     </message>
     <message>
         <location filename="../settingsstackedwidget.ui" line="931"/>
-        <location filename="../settingsstackedwidget.cpp" line="1062"/>
+        <location filename="../settingsstackedwidget.cpp" line="1055"/>
         <source>ResStr_Setting</source>
         <translation>Settings</translation>
     </message>
@@ -1110,70 +1124,85 @@
         <location filename="../settingsstackedwidget.cpp" line="261"/>
         <location filename="../settingsstackedwidget.cpp" line="319"/>
         <location filename="../settingsstackedwidget.cpp" line="378"/>
-        <location filename="../settingsstackedwidget.cpp" line="415"/>
-        <location filename="../settingsstackedwidget.cpp" line="452"/>
-        <location filename="../settingsstackedwidget.cpp" line="489"/>
+        <location filename="../settingsstackedwidget.cpp" line="414"/>
+        <location filename="../settingsstackedwidget.cpp" line="450"/>
+        <location filename="../settingsstackedwidget.cpp" line="486"/>
         <source>ResStr_Setting_Fail</source>
         <translation>Configure failed</translation>
     </message>
     <message>
         <location filename="../settingsstackedwidget.cpp" line="317"/>
         <location filename="../settingsstackedwidget.cpp" line="376"/>
-        <location filename="../settingsstackedwidget.cpp" line="413"/>
-        <location filename="../settingsstackedwidget.cpp" line="450"/>
-        <location filename="../settingsstackedwidget.cpp" line="487"/>
+        <location filename="../settingsstackedwidget.cpp" line="412"/>
+        <location filename="../settingsstackedwidget.cpp" line="448"/>
+        <location filename="../settingsstackedwidget.cpp" line="484"/>
         <source>ResStr_Setting_Successfully_</source>
         <translation>Configured successfully</translation>
     </message>
     <message>
         <location filename="../settingsstackedwidget.cpp" line="385"/>
-        <location filename="../settingsstackedwidget.cpp" line="422"/>
-        <location filename="../settingsstackedwidget.cpp" line="459"/>
+        <location filename="../settingsstackedwidget.cpp" line="421"/>
+        <location filename="../settingsstackedwidget.cpp" line="457"/>
         <source>ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature</source>
         <translation>Turn off the printer and let it cool to room temperature before turning it on again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="834"/>
+        <location filename="../settingsstackedwidget.cpp" line="386"/>
+        <location filename="../settingsstackedwidget.cpp" line="422"/>
+        <location filename="../settingsstackedwidget.cpp" line="458"/>
+        <source>ResStr_Prompt</source>
+        <translation>Prompt</translation>
+    </message>
+    <message>
+        <location filename="../settingsstackedwidget.cpp" line="831"/>
         <source>ResStr_Msg_9</source>
         <translation>The network name must be 1 to 32 characters long. Please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="843"/>
+        <location filename="../settingsstackedwidget.cpp" line="832"/>
+        <location filename="../settingsstackedwidget.cpp" line="840"/>
+        <location filename="../settingsstackedwidget.cpp" line="1329"/>
+        <location filename="../settingsstackedwidget.cpp" line="1337"/>
+        <source>ResStr_Warning</source>
+        <translation>Warning</translation>
+    </message>
+    <message>
+        <location filename="../settingsstackedwidget.cpp" line="839"/>
         <source>ResStr_Msg_3</source>
         <translation>The password must be 8 to 63 ASCII characters or 64 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1070"/>
+        <location filename="../settingsstackedwidget.cpp" line="1062"/>
         <source>ResStr_Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1240"/>
+        <location filename="../settingsstackedwidget.cpp" line="1229"/>
         <source>ResStr_This_operation_will_reset_the_drum</source>
         <translation>This operation will reset the drum status. Please confirm the new drum cartridge has been replaced before performing this.  Do you want to continue?</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1305"/>
+        <location filename="../settingsstackedwidget.cpp" line="1292"/>
         <source>ResStr_This_operation_will_reset_the_toner</source>
         <translation>This operation will reset the toner to 100%. Please confirm the new toner cartridge has been replaced before performing this.  Do you want to continue?</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1341"/>
+        <location filename="../settingsstackedwidget.cpp" line="1328"/>
         <source>ResStr_The_new_password_can_not_be_empty_</source>
         <translation>The new password cannot be empty.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1350"/>
+        <location filename="../settingsstackedwidget.cpp" line="1336"/>
         <source>ResStr_The_passwords_you_entered__are_different__please_try_again_</source>
         <translation>The passwords you entered are different, please try again.</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="858"/>
-        <location filename="../settingsstackedwidget.cpp" line="927"/>
-        <location filename="../settingsstackedwidget.cpp" line="1086"/>
-        <location filename="../settingsstackedwidget.cpp" line="1122"/>
-        <location filename="../settingsstackedwidget.cpp" line="1258"/>
-        <location filename="../settingsstackedwidget.cpp" line="1365"/>
+        <location filename="../settingsstackedwidget.cpp" line="853"/>
+        <location filename="../settingsstackedwidget.cpp" line="921"/>
+        <location filename="../settingsstackedwidget.cpp" line="1077"/>
+        <location filename="../settingsstackedwidget.cpp" line="1112"/>
+        <location filename="../settingsstackedwidget.cpp" line="1246"/>
+        <location filename="../settingsstackedwidget.cpp" line="1350"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
@@ -1186,125 +1215,126 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="177"/>
+        <location filename="../tabstackedwidget.ui" line="185"/>
         <location filename="../tabstackedwidget.cpp" line="29"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="255"/>
-        <location filename="../tabstackedwidget.ui" line="329"/>
+        <location filename="../tabstackedwidget.ui" line="263"/>
+        <location filename="../tabstackedwidget.ui" line="337"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="218"/>
-        <location filename="../tabstackedwidget.ui" line="292"/>
+        <location filename="../tabstackedwidget.ui" line="226"/>
+        <location filename="../tabstackedwidget.ui" line="300"/>
         <source>-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="148"/>
-        <location filename="../tabstackedwidget.ui" line="762"/>
+        <location filename="../tabstackedwidget.ui" line="156"/>
+        <location filename="../tabstackedwidget.ui" line="783"/>
         <source>ResStr_More_Settings</source>
         <translation>More Settings</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="495"/>
+        <location filename="../tabstackedwidget.ui" line="503"/>
         <location filename="../tabstackedwidget.cpp" line="336"/>
         <source>ResStr_ID_Card_Copy</source>
         <translation>ID Card Copy</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="448"/>
+        <location filename="../tabstackedwidget.ui" line="456"/>
         <source>ResStr_Copies_2</source>
         <translation>Copies</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="115"/>
+        <location filename="../tabstackedwidget.ui" line="118"/>
         <location filename="../tabstackedwidget.cpp" line="346"/>
         <location filename="../tabstackedwidget.cpp" line="366"/>
         <source>ResStr_ExtraAdd_Copy</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="427"/>
+        <location filename="../tabstackedwidget.ui" line="435"/>
         <source>ResStr_Density</source>
         <translation>Density</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="559"/>
+        <location filename="../tabstackedwidget.ui" line="567"/>
         <source>ResStr_Duplex_Copy</source>
         <translation>Duplex Copy</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="633"/>
+        <location filename="../tabstackedwidget.ui" line="654"/>
         <source>ResStr_USB_connection_troubleshooting</source>
         <translation>USB connection troubleshooting</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="686"/>
+        <location filename="../tabstackedwidget.ui" line="707"/>
         <source>ResStr_WiFi_connection_troubleshooting</source>
         <translation>Wi-Fi connection troubleshooting</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="789"/>
+        <location filename="../tabstackedwidget.ui" line="815"/>
         <source>ResStr_ExtraAdd_Scan</source>
         <translation>Scan</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="819"/>
+        <location filename="../tabstackedwidget.ui" line="845"/>
         <source>X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="835"/>
+        <location filename="../tabstackedwidget.ui" line="861"/>
         <source>ResStr_Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="870"/>
+        <location filename="../tabstackedwidget.ui" line="896"/>
         <location filename="../tabstackedwidget.cpp" line="60"/>
+        <location filename="../tabstackedwidget.cpp" line="401"/>
         <source>ResStr_Scanned_image_size</source>
         <translation>Scanned image size: </translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="883"/>
+        <location filename="../tabstackedwidget.ui" line="909"/>
         <source>ResStr_Scanning_2</source>
         <translation>Scanning</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="982"/>
+        <location filename="../tabstackedwidget.ui" line="1008"/>
         <source>ResStr_Power_Save</source>
         <translation>Power Save</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="1052"/>
+        <location filename="../tabstackedwidget.ui" line="1078"/>
         <source>ResStr_User_Config</source>
         <translation>More Settings</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="1341"/>
+        <location filename="../tabstackedwidget.ui" line="1367"/>
         <source>ResStr_Modify_Password</source>
         <translation>Modify Password</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="1380"/>
+        <location filename="../tabstackedwidget.ui" line="1406"/>
         <source>ResStr_Soft_AP</source>
         <translation>Soft AP</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="1405"/>
+        <location filename="../tabstackedwidget.ui" line="1431"/>
         <source>ResStr_TCP_IPv4</source>
         <translation>TCP/IPv4</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="1427"/>
+        <location filename="../tabstackedwidget.ui" line="1453"/>
         <source>ResStr_Printer_Wi_Fi</source>
         <translation>Wi-Fi</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="1468"/>
+        <location filename="../tabstackedwidget.ui" line="1494"/>
         <source>ResStr_TCP_IPv6</source>
         <translation>TCP/IPv6</translation>
     </message>
@@ -1314,32 +1344,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="720"/>
+        <location filename="../tabstackedwidget.cpp" line="718"/>
         <source>TIF(*.tif);;PDF(*pdf);;JPG(*jpg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="723"/>
+        <location filename="../tabstackedwidget.cpp" line="721"/>
         <source>TIF(*.tif);;PDF(*pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="730"/>
+        <location filename="../tabstackedwidget.cpp" line="729"/>
         <source>PDF(*pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="745"/>
+        <location filename="../tabstackedwidget.cpp" line="744"/>
         <source>TIF(*.tif)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="787"/>
+        <location filename="../tabstackedwidget.cpp" line="786"/>
         <source>ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_</source>
         <translation>The valid range is 1 to 99, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="725"/>
+        <location filename="../tabstackedwidget.cpp" line="787"/>
+        <source>ResStr_Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="724"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1772,7 +1807,7 @@ Error message:</translation>
     <message>
         <location filename="../wifisettingcell.cpp" line="22"/>
         <location filename="../wifisettingcell.cpp" line="35"/>
-        <location filename="../wifisettingcell.cpp" line="264"/>
+        <location filename="../wifisettingcell.cpp" line="262"/>
         <source>ResStr_No_Security</source>
         <translation>No Security</translation>
     </message>
@@ -1782,9 +1817,9 @@ Error message:</translation>
         <location filename="../wifisettingcell.cpp" line="122"/>
         <location filename="../wifisettingcell.cpp" line="123"/>
         <location filename="../wifisettingcell.cpp" line="128"/>
-        <location filename="../wifisettingcell.cpp" line="308"/>
-        <location filename="../wifisettingcell.cpp" line="309"/>
-        <location filename="../wifisettingcell.cpp" line="314"/>
+        <location filename="../wifisettingcell.cpp" line="306"/>
+        <location filename="../wifisettingcell.cpp" line="307"/>
+        <location filename="../wifisettingcell.cpp" line="312"/>
         <source>ResStr_Connected</source>
         <translation>Connected</translation>
     </message>
@@ -1794,31 +1829,31 @@ Error message:</translation>
         <translation>The password must be 8 to 63 ASCII characters or 64 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="155"/>
-        <location filename="../wifisettingcell.cpp" line="215"/>
+        <location filename="../wifisettingcell.cpp" line="154"/>
+        <location filename="../wifisettingcell.cpp" line="213"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.cpp" line="24"/>
-        <location filename="../wifisettingcell.cpp" line="266"/>
+        <location filename="../wifisettingcell.cpp" line="264"/>
         <source>ResStr_Protected_by_WEP</source>
         <translation>Protected by WEP</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.cpp" line="26"/>
-        <location filename="../wifisettingcell.cpp" line="268"/>
+        <location filename="../wifisettingcell.cpp" line="266"/>
         <source>ResStr_Protected_by_WPA2</source>
         <translation>Protected by WPA2</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.cpp" line="28"/>
-        <location filename="../wifisettingcell.cpp" line="270"/>
+        <location filename="../wifisettingcell.cpp" line="268"/>
         <source>ResStr_Protected_by_Mixed_Mode_PSK</source>
         <translation>Protected by Mixed Mode PSK</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="275"/>
+        <location filename="../wifisettingcell.cpp" line="273"/>
         <source>Protected by </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1889,7 +1924,7 @@ Error message:</translation>
     <message>
         <location filename="../wifisettingwepcell.cpp" line="20"/>
         <location filename="../wifisettingwepcell.cpp" line="26"/>
-        <location filename="../wifisettingwepcell.cpp" line="252"/>
+        <location filename="../wifisettingwepcell.cpp" line="250"/>
         <source>ResStr_Protected_by_WEP</source>
         <translation>Protected by WEP</translation>
     </message>
@@ -1899,9 +1934,9 @@ Error message:</translation>
         <location filename="../wifisettingwepcell.cpp" line="141"/>
         <location filename="../wifisettingwepcell.cpp" line="142"/>
         <location filename="../wifisettingwepcell.cpp" line="147"/>
-        <location filename="../wifisettingwepcell.cpp" line="292"/>
-        <location filename="../wifisettingwepcell.cpp" line="293"/>
-        <location filename="../wifisettingwepcell.cpp" line="298"/>
+        <location filename="../wifisettingwepcell.cpp" line="290"/>
+        <location filename="../wifisettingwepcell.cpp" line="291"/>
+        <location filename="../wifisettingwepcell.cpp" line="296"/>
         <source>ResStr_Connected</source>
         <translation>Connected</translation>
     </message>
@@ -1916,27 +1951,27 @@ Error message:</translation>
         <translation>The password must be 5 or 13 ASCII characters or 10 or 26 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="195"/>
+        <location filename="../wifisettingwepcell.cpp" line="194"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="250"/>
+        <location filename="../wifisettingwepcell.cpp" line="248"/>
         <source>ResStr_No_Security</source>
         <translation>No Security</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="254"/>
+        <location filename="../wifisettingwepcell.cpp" line="252"/>
         <source>ResStr_Protected_by_WPA2</source>
         <translation>Protected by WPA2</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="256"/>
+        <location filename="../wifisettingwepcell.cpp" line="254"/>
         <source>ResStr_Protected_by_Mixed_Mode_PSK</source>
         <translation>Protected by Mixed Mode PSK</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="260"/>
+        <location filename="../wifisettingwepcell.cpp" line="258"/>
         <source>Protected by </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2060,23 +2095,23 @@ Error message:</translation>
         <translation type="obsolete">Configured successfully</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="211"/>
+        <location filename="../wlantitlecell.cpp" line="210"/>
         <source>ResStr_Setting_Fail</source>
         <translation>Configure failed</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="232"/>
-        <location filename="../wlantitlecell.cpp" line="304"/>
+        <location filename="../wlantitlecell.cpp" line="231"/>
+        <location filename="../wlantitlecell.cpp" line="302"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="638"/>
+        <location filename="../wlantitlecell.cpp" line="635"/>
         <source>ResStr_Msg_2</source>
         <translation>The password must be 5 or 13 ASCII characters or 10 or 26 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="647"/>
+        <location filename="../wlantitlecell.cpp" line="643"/>
         <source>ResStr_Msg_3</source>
         <translation>The password must be 8 to 63 ASCII characters or 64 hex characters, please check and enter again.</translation>
     </message>

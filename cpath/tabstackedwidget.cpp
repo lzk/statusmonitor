@@ -398,7 +398,7 @@ void TabStackedWidget::on_btn_MoreSetting_Scan_clicked()
 
 void TabStackedWidget::slots_scan_image_size(float size, int unit)//Added by gavin for setting scan buffer size. 2016-04-08
 {
-    QString labelTitle = "待扫描图片大小:";
+    QString labelTitle = tr("ResStr_Scanned_image_size");
     char sizeText[16] = {0};
     if(unit == 1)
     {
@@ -498,6 +498,7 @@ void TabStackedWidget::on_btn_CopyNumReduce_clicked()
 
 void TabStackedWidget::setCopyStackedWidgetCurrentIndex(int index)
 {
+    ui->copyPage->setHidden(false);
     ui->copyStackedWidget->setCurrentIndex(index);
 }
 
@@ -719,7 +720,8 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
     if(item_list.count() > 1){
         filter = tr("TIF(*.tif);;PDF(*pdf)");
     }
-    QString filename = QFileDialog::getSaveFileName(0 ,tr("Save File"),"/tmp" ,filter,&selectedFilter);
+    QString picPath = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
+    QString filename = QFileDialog::getSaveFileName(0 ,tr("Save File"), picPath,filter,&selectedFilter);
     qDebug()<<filename<<selectedFilter;
     QString temp_filename;
     if(!filename.isEmpty()){
@@ -782,7 +784,7 @@ void TabStackedWidget::on_copyNum_textChanged(const QString &arg1)
     if(arg1 == "0")
     {
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_"));
-        msgWarm->setWindowTitle("ResStr_Error");
+        msgWarm->setWindowTitle(tr("ResStr_Error"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();

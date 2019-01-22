@@ -3,8 +3,8 @@
 static bool _isDeviceSupported(Printer_struct* ps)
 {
 //    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
-    if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
-        return false;
+//    if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
+//        return false;
     return true;
 }
 

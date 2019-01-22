@@ -538,7 +538,7 @@ void MainWindow::errorStatus(bool bIsErrorStatus)
         ui->tabStackedWidget->set_scan_enabled(!bIsErrorStatus);//Added for default enable scan button by gavin 2016-04-14
         ui->tabStackedWidget->set_copy_enabled(!bIsErrorStatus);
 //    }
-//    ui->errorBtn->hide();
+    ui->errorBtn->hide();
 
 }
 

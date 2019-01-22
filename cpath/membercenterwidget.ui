@@ -43,7 +43,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>24</pointsize>
+       <pointsize>20</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -68,7 +68,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>18</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -96,7 +96,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>18</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -124,7 +124,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>18</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -152,7 +152,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>18</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -180,7 +180,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>18</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -264,15 +264,15 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLineEdit" name="le_name">
      <property name="geometry">
       <rect>
-       <x>420</x>
+       <x>390</x>
        <y>257</y>
-       <width>281</width>
+       <width>311</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>16</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -290,7 +290,7 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QSpinBox" name="spinBox_M">
      <property name="geometry">
       <rect>
-       <x>534</x>
+       <x>510</x>
        <y>320</y>
        <width>51</width>
        <height>25</height>
@@ -305,12 +305,21 @@ background-color: rgb(235, 235, 235);</string>
       <string notr="true">QSpinBox{
  background-color:white;
 }</string>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>12</number>
+     </property>
+     <property name="value">
+      <number>1</number>
      </property>
     </widget>
     <widget class="QSpinBox" name="spinBox_D">
      <property name="geometry">
       <rect>
-       <x>628</x>
+       <x>620</x>
        <y>320</y>
        <width>51</width>
        <height>25</height>
@@ -326,15 +335,29 @@ background-color: rgb(235, 235, 235);</string>
  background-color:white;
 }</string>
      </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>31</number>
+     </property>
+     <property name="value">
+      <number>1</number>
+     </property>
     </widget>
     <widget class="QLabel" name="labelYear">
      <property name="geometry">
       <rect>
-       <x>497</x>
+       <x>460</x>
        <y>315</y>
-       <width>31</width>
+       <width>41</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>ResStr_Year</string>
@@ -343,11 +366,16 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="labelMon">
      <property name="geometry">
       <rect>
-       <x>591</x>
+       <x>560</x>
        <y>315</y>
-       <width>31</width>
+       <width>51</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>ResStr_Month</string>
@@ -356,7 +384,7 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="labelDay">
      <property name="geometry">
       <rect>
-       <x>683</x>
+       <x>670</x>
        <y>315</y>
        <width>31</width>
        <height>31</height>
@@ -365,6 +393,7 @@ background-color: rgb(235, 235, 235);</string>
      <property name="font">
       <font>
        <family>Arial</family>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">
@@ -374,16 +403,19 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLineEdit" name="le_mail">
      <property name="geometry">
       <rect>
-       <x>420</x>
+       <x>390</x>
        <y>437</y>
-       <width>281</width>
+       <width>311</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>16</pointsize>
+       <pointsize>12</pointsize>
       </font>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
       <string notr="true">#le_mail{
@@ -393,19 +425,22 @@ background-color: rgb(235, 235, 235);</string>
      <property name="maxLength">
       <number>50</number>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
     </widget>
     <widget class="QLineEdit" name="le_addr">
      <property name="geometry">
       <rect>
-       <x>420</x>
+       <x>390</x>
        <y>497</y>
-       <width>281</width>
+       <width>311</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>16</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -421,6 +456,9 @@ background-color: rgb(235, 235, 235);</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btApply">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>287</x>
@@ -432,33 +470,33 @@ background-color: rgb(235, 235, 235);</string>
      <property name="font">
       <font>
        <family>Arial</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <pointsize>14</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton{
-	border-image:url(:/Images/Btn_Green.png);
-	color: rgb(255, 255, 255);
+      <string notr="true">QPushButton{border-image: url(:/Images/background_scan_btn2.png);color:white;
 }
-QPushButton:hover{
-	border-image:url(:/Images/Btn_Green.png);
-	color:brack;
+QPushButton::hover{
+	color:black;
 }
-QPushButton:pressed{
-	border-image:url(:/Images/Btn_Green_Pressed.png);
-	color:white;
+QPushButton::Pressed{border-image: url(:/Images/Btn_Green_Pressed.png);color:white;
 }
-QPushButton:Disable{	
-	border-image: url(:/Images/Btn_Scan_Disabled.png)；
-}
-</string>
+QPushButton::disabled{
+border-image: url(:/Images/Btn_Scan_Disabled.png) ;
+
+color:white;
+}</string>
      </property>
      <property name="text">
       <string>ResStr_OK</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btCancel">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>458</x>
@@ -470,8 +508,9 @@ QPushButton:Disable{
      <property name="font">
       <font>
        <family>Arial</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <pointsize>14</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -494,15 +533,16 @@ QPushButton:pressed{
     <widget class="QRadioButton" name="btFemale">
      <property name="geometry">
       <rect>
-       <x>560</x>
+       <x>550</x>
        <y>376</y>
-       <width>91</width>
+       <width>101</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="layoutDirection">
@@ -525,15 +565,16 @@ QRadioButton::indicator::checked {
     <widget class="QRadioButton" name="btMan">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>420</x>
        <y>376</y>
-       <width>81</width>
+       <width>91</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="layoutDirection">
@@ -574,7 +615,7 @@ QRadioButton::indicator::checked {
     <widget class="QSpinBox" name="spinBox">
      <property name="geometry">
       <rect>
-       <x>419</x>
+       <x>390</x>
        <y>316</y>
        <width>71</width>
        <height>31</height>
@@ -597,7 +638,10 @@ background-color:white;
       <number>1900</number>
      </property>
      <property name="maximum">
-      <number>2500</number>
+      <number>2050</number>
+     </property>
+     <property name="value">
+      <number>1980</number>
      </property>
     </widget>
     <widget class="QLabel" name="bg_2">
@@ -776,7 +820,7 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>16</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="styleSheet">

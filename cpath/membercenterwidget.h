@@ -75,6 +75,12 @@ private slots:
 
     void cmdResult(int cmd,int result,QVariant data);
 
+    void on_le_name_textEdited(const QString &arg1);
+
+    void on_le_mail_textEdited(const QString &arg1);
+
+    void on_le_addr_textEdited(const QString &arg1);
+
 private:
     Ui::MemberCenterWidget *ui;
 

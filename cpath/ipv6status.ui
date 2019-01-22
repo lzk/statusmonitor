@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>510</width>
+    <width>530</width>
     <height>265</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>510</width>
+    <width>530</width>
     <height>265</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>510</width>
+    <width>530</width>
     <height>265</height>
    </size>
   </property>
@@ -33,14 +33,14 @@
     <rect>
      <x>30</x>
      <y>50</y>
-     <width>151</width>
+     <width>211</width>
      <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -50,7 +50,7 @@
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>260</x>
      <y>80</y>
      <width>251</width>
      <height>16</height>
@@ -59,7 +59,7 @@
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -69,7 +69,7 @@
   <widget class="QLabel" name="label_13">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>260</x>
      <y>170</y>
      <width>251</width>
      <height>16</height>
@@ -78,7 +78,7 @@
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -90,14 +90,14 @@
     <rect>
      <x>30</x>
      <y>20</y>
-     <width>151</width>
+     <width>211</width>
      <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -109,14 +109,14 @@
     <rect>
      <x>30</x>
      <y>170</y>
-     <width>201</width>
+     <width>221</width>
      <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -126,7 +126,7 @@
   <widget class="QLabel" name="label_11">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>260</x>
      <y>110</y>
      <width>251</width>
      <height>16</height>
@@ -135,7 +135,7 @@
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -145,7 +145,7 @@
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>260</x>
      <y>140</y>
      <width>251</width>
      <height>16</height>
@@ -154,7 +154,7 @@
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -172,9 +172,9 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -201,14 +201,14 @@ QPushButton:pressed{
     <rect>
      <x>30</x>
      <y>80</y>
-     <width>151</width>
+     <width>211</width>
      <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -220,14 +220,14 @@ QPushButton:pressed{
     <rect>
      <x>30</x>
      <y>110</y>
-     <width>151</width>
+     <width>211</width>
      <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -239,14 +239,14 @@ QPushButton:pressed{
     <rect>
      <x>30</x>
      <y>140</y>
-     <width>151</width>
+     <width>211</width>
      <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -256,7 +256,7 @@ QPushButton:pressed{
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>260</x>
      <y>50</y>
      <width>251</width>
      <height>16</height>
@@ -265,7 +265,7 @@ QPushButton:pressed{
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -275,7 +275,7 @@ QPushButton:pressed{
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>260</x>
      <y>20</y>
      <width>251</width>
      <height>16</height>
@@ -284,7 +284,7 @@ QPushButton:pressed{
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
