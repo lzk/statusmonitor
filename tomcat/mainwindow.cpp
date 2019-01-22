@@ -26,12 +26,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
-    gUInterface->setCmd(UIConfig::CMD_GetPrinters ,QString());
-
     QVariant value;
     appSettings("record" ,value ,QVariant(false));
     record_printlist = value.toBool();
     ui->checkBox_record->setChecked(record_printlist);
+
+    gUInterface->setCmd(UIConfig::CMD_GetPrinters ,QString());
+
 }
 
 MainWindow::~MainWindow()
@@ -122,9 +123,9 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
     case UIConfig::CMD_GetStatus:{
         PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
         PrinterStatus_struct& status = printerInfo.status;
-        LOGLOG("update status of %s" ,printerInfo.printer.name);
+//        LOGLOG("update status of %s" ,printerInfo.printer.name);
         if(!result){
-            LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
+//            LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
         }else{//get status fail
             LOGLOG("get printer status fail!");
             memset(&status ,-1 ,sizeof(status));
@@ -185,6 +186,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     case 2:
 #if !TEST
     {
+        ui->tableWidget_jobs->clear();
         QString password = getEnterPassword();
         QVariant sys_password;
         appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
@@ -488,8 +490,10 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     QString text;
     int i;
     QString toner_text;
+    const PrinterStatus_struct *ps = &status;
 
     int currStatus = status.PrinterStatus;
+    //update toner text
     bool bShowLowTonerAlert = !!status.LowTonerAlert; // BMS#51330
     if (bShowLowTonerAlert && !IsStatusUnknownToner(currStatus) && StatusMonitor::AnyTonerReachLevel1(status) && !StatusMonitor::IsNonDellTonerMode(status)) {
         if (StatusMonitor::OnlyColorTonerEmpty(status)) {
@@ -505,11 +509,87 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     else {
         toner_text = QString();
     }
-
     ui->textEdit_toner->setText(toner_text);
 
+    //update toner picture
+    QString toner_pic = ":/image/";
+    switch (currStatus) {
+	case PS_ERROR_TRAY_DETACHED:
+        toner_pic += "NoCassete";
+		break;
+    case PS_ERROR_DOOR_OPEN:
+        toner_pic += "OpenRearCover";
+		break;
+    case PS_ERROR_OUT_OF_PAPER:
+        toner_pic += "Load_Paper";
+		break;
+    case PS_ERROR_PAPER_PROBLEM:
+        toner_pic += "Load_Paper";
+		break;
+	case PS_ERROR_PAPER_JAM:
+        if (ps->ErrorCodeGroup == 5 && ps->ErrorCodeID == 15) // Jam at input tray
+            toner_pic += "MisfeedJAM";
+        else
+            toner_pic += "Rear_PaperJam";
+		break;
+    case PS_ERROR_ERROR:
+        toner_pic += "printer";
+		break;
+
+		//	case PS_ERROR_ADF_COVER_OPEN:
+		//DrawTransparentBmps(hDC, 1, bmpID_adfcoveropen, rect, offset_adfcoveropen, RGB(255,0,255));
+		//		DrawBmpList(hDC,adfOpen,rect, RGB(255,0,255));
+		//		break;
+		//	case PS_ERROR_ADF_PAPER_JAM:
+		//DrawTransparentBmps(hDC, 1, bmpID_adfpaperjam, rect, offset_adfpaperjam, RGB(255,0,255));
+		//		DrawBmpList(hDC,adfJam,rect, RGB(255,0,255));
+		//		break;
+	case PS_ERROR_PAGE_ERROR:
+	case PS_ERROR_POWER_OFF:
+	case PS_OFFLINE:
+	case PS_ERROR_OUT_OF_MEMORY:
+	case PS_ERROR_NOT_AVAILABLE:
+	case PS_ERROR_NOT_SUPPORT:
+	case PS_ERROR_OUTPUT_BIN_FULL:
+    case PS_UNKNOWN:
+        toner_pic += "printer";
+		break;
+	case PS_POWER_SAVING:
+	case PS_WARMING_UP:
+	case PS_PRINTING:
+	case PS_PENDING_DELETION:
+	case PS_WAITING:
+	case PS_INITIALIZING:
+    case PS_BUSY:
+        toner_pic += "printer";
+		break;
+    case PS_ERROR_NO_TONER:
+        toner_pic += "toner";
+		break;
+	case PS_ERROR_USER_INTERVENTION_REQUIRED:
+        if (ps->ErrorCodeGroup == 5 && (ps->ErrorCodeID >= 2 && ps->ErrorCodeID <= 9)) {	// Toner not installed
+            toner_pic += "toner";
+		}
+        else if (ps->ErrorCodeGroup == 5 && (ps->ErrorCodeID >= 57 && ps->ErrorCodeID <= 60)) { // Unsupported Toner detected
+            toner_pic += "toner";
+		}
+        else if (ps->ErrorCodeGroup == 4 && ps->ErrorCodeID == 3) { // 04-003
+            toner_pic += "printer";
+		}
+		else { // Maybe there are some other cases (TBD)
+               //DrawTransparentBmps(hDC, 2, bmpID_error, rect, offset_error, RGB(255,0,255));
+            toner_pic += "printer";
+		}
+
+		break;
+    default:
+        toner_pic += "printer";
+        break;
+	}
+    toner_pic += ".png";
+    ui->label_toner->setPixmap(QPixmap(toner_pic));
+
     bool showDetail;
-    const PrinterStatus_struct *ps = &status;
     if (IsStatusVirtual(ps->PrinterStatus) || IsStatusTrans(ps->PrinterStatus) || ps->ErrorCodeGroup == 0 || ps->ErrorCodeID == 0 || ps->PrinterStatus == PS_ERROR_NOT_SUPPORT) {
         showDetail = false;
     }
@@ -526,17 +606,116 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
         }
     }
 
+    QString status_icon = ":/image/";
+    switch (currStatus) {
+	case PS_READY:
+	default:
+        status_icon += "status_normal";
+        break;
+    case PS_PRINTING:
+        status_icon += "status_normal";
+        break;
+	case PS_POWER_SAVING:
+        status_icon += "status_normal";
+        break;
+	case PS_WARMING_UP:
+        status_icon += "status_normal";
+        break;
+	case PS_PENDING_DELETION:
+        status_icon += "status_normal";
+        break;
+	case PS_PAUSED:
+        status_icon += "status_normal";
+        break;
+	case PS_WAITING:
+        status_icon += "status_normal";
+        break;
+	case PS_PROCESSING:
+        status_icon += "status_normal";
+        break;
+	case PS_BUSY:
+        status_icon += "status_normal";
+        break;
+	case PS_OFFLINE:
+        status_icon += "status_warning";
+        break;
+	case PS_TONER_LOW:
+        status_icon += "status_warning";
+        break;
+	case PS_INITIALIZING:
+        status_icon += "status_warning";
+        break;
+	case PS_UNKNOWN:
+        status_icon += "status_warning";
+        break;
+	case PS_ACTIVE:
+        status_icon += "status_warning";
+        break;
+	case PS_MANUAL_FEED_REQUIRED:
+        status_icon += "status_warning";
+        break;
+	case PS_ERROR_PAPER_JAM:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_DOOR_OPEN:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_ADF_COVER_OPEN:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_ADF_PAPER_JAM:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_OUT_OF_MEMORY:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_OUT_OF_PAPER:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_PAPER_PROBLEM:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_NO_TONER:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_PAGE_ERROR:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_NOT_AVAILABLE:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_OUTPUT_BIN_FULL:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_NOT_SUPPORT:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_USER_INTERVENTION_REQUIRED:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_POWER_OFF:
+        status_icon += "status_error";
+        break;
+	case PS_ERROR_TRAY_DETACHED:
+        status_icon += "status_warning";
+        break;
+	case PS_ERROR_ERROR:
+        status_icon += "status_error";
+        break;
+	}
+    status_icon += ".png";
+    //update status string
     text = "<html><head/><body>";
     if(!showDetail){
-        text += QString() + "<p><img src=\":/image/status_normal.png\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
+        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
     }else{
         ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize);
         if(!ei.error || !ei.errorString){
-            text += QString() + "<p><img src=\":/image/status_normal.png\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
+            text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
             goto CODE_ERROR;
         }
 
-        text += QString() + "<p><img src=\":/image/status_normal.png\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
+        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
         text += "<br/>";
         text += QString() + "<p>" + ei.error->code + "</p>";
         for(i = 0 ;i < ei.errorString->lines ;i++){
@@ -630,6 +809,7 @@ void MainWindow::updateOtherStatus(const QString& printer ,const PrinterStatus_s
 
 }
 
+#include "tomcat.h"
 void MainWindow::updateJobHistory(const QVariant& data)
 {
     int base = 0;
@@ -654,27 +834,27 @@ void MainWindow::updateJobHistory(const QVariant& data)
             break;
         qDebug()<<"columns:"<<columns;
         QTableWidgetItem* item;
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(1)));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_printername)));
         ui->tableWidget_jobs->setItem(i ,base+0 ,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(2)));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_hostname)));
         ui->tableWidget_jobs->setItem(i ,base+1,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(3)));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_username)));
         ui->tableWidget_jobs->setItem(i ,base+2,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(4)));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_filename)));
         ui->tableWidget_jobs->setItem(i ,base+3,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(5)));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_pages)));
         ui->tableWidget_jobs->setItem(i ,base+4,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(6)));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_copies)));
         ui->tableWidget_jobs->setItem(i ,base+5,item);
         QDateTime datetime;
-        datetime.setTime_t(QString(columns.at(7)).toLong());
+        datetime.setTime_t(QString(columns.at(JobHistoryIndex_time)).toLong());
         item = new QTableWidgetItem(tr("%1").arg(datetime.toString()));
         ui->tableWidget_jobs->setItem(i ,base+6,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(8)==QString("1")?"是":"否"));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_isFingerEnable)==QString("1")?"是":"否"));
         ui->tableWidget_jobs->setItem(i ,base+7,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(9)==QString("1")?"成功":"失败"));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_isFingerChecked)==QString("1")?"成功":"失败"));
         ui->tableWidget_jobs->setItem(i ,base+8,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(10)==QString("1")?"是":"否"));
+        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_isJobCompleted)==QString("1")?"是":"否"));
         ui->tableWidget_jobs->setItem(i ,base+9,item);
     }
 }

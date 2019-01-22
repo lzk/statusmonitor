@@ -59,7 +59,8 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         break;
 
     case UIConfig::CMD_GetJobs:
-        if(printer){
+    {
+//        if(printer){
             Jobs_struct jobs;
             jobs.current_page = data.toInt();
             Tomcat::get_job_history(&jobs);

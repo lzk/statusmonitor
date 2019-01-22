@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
     if(arguments.contains("-test"))
         use_status_thread = false;
 
+    //worker run first,then show ui
     gUInterface = new UInterface;
-//    qRegisterMetaType<QVariant>("QVariant");
 
     MainWindow* w = new MainWindow;
 
@@ -50,8 +50,8 @@ int main(int argc, char *argv[])
         w->show();
     
     int ret = a.exec();
+    delete w;
     delete app_server;
     delete gUInterface;
-    delete w;
     return ret;
 }

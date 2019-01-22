@@ -15,6 +15,7 @@ public:
     int clearFile();
     int clearPrintersOfFile();
     int savePrinterToFile(Printer_struct* printer);
+    int savePrintersToFile(QList<Printer_struct > printers);
     int getPrintersFromFile(CALLBACK_getPrinters ,void*);
 
 };

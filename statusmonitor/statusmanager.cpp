@@ -245,3 +245,17 @@ int StatusManager::savePrinterToFile(Printer_struct* printer)
     }
     return ret;
 }
+
+int StatusManager::savePrintersToFile(QList<Printer_struct > printers)
+{
+    int ret;
+    ret = lock(lockfile);
+    ret = clearPrinters();
+    if(!ret){
+        foreach (Printer_struct ps, printers) {
+            ret = savePrinter(&ps);
+        }
+        unlock();
+    }
+    return ret;
+}

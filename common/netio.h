@@ -24,6 +24,7 @@ public:
 private:
     QTcpSocket* tcpSocket;
     QHostAddress hostAddress;
+    QString resolved_url;
 };
 
 #endif // NETIO_H

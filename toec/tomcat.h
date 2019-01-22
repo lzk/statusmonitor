@@ -9,6 +9,19 @@ struct{
 }
     Job_history;
 
+enum{
+    JobHistoryIndex_id,
+    JobHistoryIndex_printername,
+    JobHistoryIndex_hostname,
+    JobHistoryIndex_username,
+    JobHistoryIndex_filename,
+    JobHistoryIndex_copies,
+    JobHistoryIndex_isFingerEnable,
+    JobHistoryIndex_isFingerChecked,
+    JobHistoryIndex_pages,
+    JobHistoryIndex_isJobCompleted,
+    JobHistoryIndex_time,
+};
 #include <QStringList>
 typedef struct
 {

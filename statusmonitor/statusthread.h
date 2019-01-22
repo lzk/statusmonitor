@@ -13,18 +13,16 @@ class StatusThread : public QThread
 public:
     explicit StatusThread(QObject *parent = NULL);
     ~StatusThread();
-
     void run();
 
+public:
     QList<Printer_struct> printers;
     QStringList printerlist;
-
     bool abort;
+
 private:
     DeviceManager devicemanager;
     CupsManager cupsmanager;
-
-public:
     StatusManager statusmanager;
 };
 

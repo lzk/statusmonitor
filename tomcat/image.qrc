@@ -59,10 +59,10 @@
         <file>image/OpenRearCover.png</file>
         <file>image/Rear_PaperJam.png</file>
         <file>image/t_0.png</file>
-        <file>image/t_unkonwn.png</file>
         <file>image/toner.png</file>
         <file>image/TrayError.png</file>
         <file>image/TrayReady.png</file>
         <file>image/TrayWarnning.png</file>
+        <file>image/t_unknown.png</file>
     </qresource>
 </RCC>

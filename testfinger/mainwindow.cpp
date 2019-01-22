@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->spinBox->setValue(68);
+    ui->spinBox->setValue(1);
 }
 
 MainWindow::~MainWindow()
