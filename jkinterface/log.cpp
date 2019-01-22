@@ -4,7 +4,7 @@
 #include <time.h>
 #include <sys/timeb.h>
 const char* log_file = "/tmp/loglog.log";
-const char* app_version = "1.0.0.2";
+const char* app_version = "1.0.0.3";
 class JKLog
 {
 public:
