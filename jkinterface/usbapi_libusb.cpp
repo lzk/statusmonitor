@@ -126,7 +126,7 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
     if(pData_device->deviceInfo.serial[0] != NULL){
         get_serial(dev ,devserialNumber);
         if(!strcmp(pData_device->deviceInfo.serial ,devserialNumber)){
-            LOGLOG("found usb device with serial %s" ,devserialNumber);
+//            LOGLOG("found usb device with serial %s" ,devserialNumber);
             pData_device->dev = dev;
             pData_device->udev = udev;
             ret = 0;
@@ -137,7 +137,7 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
     }else{
         if(pData_device->deviceInfo.vid == desc.idVendor
                 && pData_device->deviceInfo.pid == desc.idProduct){
-            LOGLOG("found usb device with vid %x ,pid %x" ,desc.idVendor ,desc.idProduct);
+//            LOGLOG("found usb device with vid %x ,pid %x" ,desc.idVendor ,desc.idProduct);
             pData_device->dev = dev;
             pData_device->udev = udev;
             ret = 0;

@@ -5,7 +5,7 @@
 #include <sys/timeb.h>
 const char* log_file = "/tmp/loglog.log";
 const char* log_app_name = "statusmonitor";
-const char* app_version = "1.0.0.0";
+const char* app_version = "1.0.0.1";
 class JKLog
 {
 public:

@@ -65,6 +65,8 @@ typedef struct
     BYTE	LowTonerAlert;
     BYTE	bReserved1;
     WORD	wReserved2;
+
+    BYTE password[20];
 } PRINTER_STATUS;
 #pragma pack()
 

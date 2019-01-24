@@ -35,9 +35,7 @@ public:
         CMD_GetDefaultPrinter,
         CMD_GetPrinters,
         CMD_GetStatus,
-#ifdef TOMCAT
         CMD_GetJobs,
-#endif
     };
     Q_ENUMS(CmdType)
 };

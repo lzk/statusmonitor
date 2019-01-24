@@ -128,12 +128,11 @@ int getStatusFromDevice(DeviceIO* device ,PRINTER_STATUS* ps)
         return -1;
     }
     int ret = 0;
-    PRINTER_STATUS ps_static;
     char buffer[1024];
     ret = device->getDeviceId(buffer ,sizeof(buffer));
     if(!ret){
 //        LOGLOG("device id:%s" ,buffer);
-        ret = DecodeStatusFromDeviceID(buffer ,&ps_static);
+        ret = DecodeStatusFromDeviceID(buffer ,ps);
     }
     return ret;
 }

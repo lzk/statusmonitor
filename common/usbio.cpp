@@ -83,7 +83,7 @@ int UsbIO::resolveUrl(const char* url)
 
 bool UsbIO::isConnected()
 {
-    return !usb->isConnected(vid ,pid ,serial);
+    return usb->isConnected(vid ,pid ,serial);
 }
 
 const char* UsbIO::getDeviceAddress()

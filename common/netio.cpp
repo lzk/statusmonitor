@@ -65,14 +65,14 @@ int NetIO::open(int port)
     tcpSocket->connectToHost(hostAddress, port);
     if (!tcpSocket->waitForConnected(5000)) {
 //        emit error(tcp_socket.error(), tcp_socket.errorString());
-//        LOG_PARA("err:%d",tcpSocket->error());
-//        LOG_NOPARA("err:" + tcpSocket->errorString());
-        qDebug()<<"tcp error:"<< tcpSocket->error();
-        qDebug()<< tcpSocket->errorString();
+        LOGLOG("tcp error code:%d",tcpSocket->error());
+        LOGLOG("tcp error:%s" , tcpSocket->errorString().toLatin1().constData());
+//        qDebug()<<"tcp error:"<< tcpSocket->error();
+//        qDebug()<< tcpSocket->errorString();
         return -1;
     }
     tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption ,1);
-    qDebug()<<"option:"<<tcpSocket->socketOption(QAbstractSocket::LowDelayOption);
+//    qDebug()<<"option:"<<tcpSocket->socketOption(QAbstractSocket::LowDelayOption);
     return 0;
 
 }

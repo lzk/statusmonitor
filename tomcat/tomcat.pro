@@ -11,8 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = tjgd1zsm
 TEMPLATE = app
 
-DEFINES += "TOMCAT=1"
-
 include("../jkinterface/jkinterface.pri")
 include(../toec/toec.pri)
 include(../common/common.pri)
@@ -54,3 +52,13 @@ HEADERS  += worker.h \
     uinterface.h \
     uiconfig.h \
     appserver.h
+
+#contains(CONFIG ,debug){
+#    DEFINES += DEBUG_TO_STDERR
+#}
+#else
+{
+#contains(QT_ARCH, loongson3a) {
+        DEFINES += LOONGSON
+#}
+}

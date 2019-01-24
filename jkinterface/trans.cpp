@@ -114,9 +114,9 @@ int Trans_Server::createServer(const char* server_path)
         unlink(path);
         listen_fd = -1;
     }
-    char command[256];
-    sprintf(command ,"chmod a+w %s" ,path);
-    system(command);
+//    char command[256];
+//    sprintf(command ,"chmod a+w %s" ,path);
+//    system(command);
     return listen_fd;
 }
 
