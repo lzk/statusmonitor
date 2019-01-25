@@ -23,9 +23,9 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     ui->setupUi(this);
 
     //init copyNum,defaule value is 1;
-    QRegExp rx("^([0-9]|[1-9]\\d)$");
-    QRegExpValidator *pReg = new QRegExpValidator(rx,this);
-    ui->copyNum->setValidator(pReg);
+//    QRegExp rx("^([0-9]|[1-9]\\d)$");
+//    QRegExpValidator *pReg = new QRegExpValidator(rx,this);
+//    ui->copyNum->setValidator(pReg);
     ui->copyNum->setText(tr("1"));
 
     //init Density,default is level2;
@@ -357,7 +357,7 @@ void TabStackedWidget::on_cBox_DuplexCopy_clicked(bool checked)
 
         ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
         ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconEnable.tif);");
-        ui->btn_Copy->setText(tr("双面复印"));
+        ui->btn_Copy->setText(tr("ResStr_Duplex_Copy"));
     }
     else
     {
@@ -420,7 +420,20 @@ void TabStackedWidget::slots_scan_image_size(float size, int unit)//Added by gav
 
 void TabStackedWidget::on_btn_MoreSetting_Copy_clicked()
 {
-    MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),&paramCopy);
+    MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),isDuplexCopyDevice,&paramCopy);
+
+    if(isDuplexCopyDevice)
+    {
+        moreSettingsForCopy->setMinimumHeight(649);
+        moreSettingsForCopy->setMaximumHeight(649);
+    }
+    else
+    {
+        moreSettingsForCopy->setMinimumHeight(498);
+        moreSettingsForCopy->setMaximumHeight(498);
+    }
+
+
     moreSettingsForCopy->exec();
 }
 
@@ -530,9 +543,11 @@ void TabStackedWidget::stopCycleEmit()
 
 void TabStackedWidget::setEnabledDuplexCopy(bool enabled)
 {
+    qDebug()<<"setEnabledDuplexCopy"<<enabled;
     ui->text_DuplexCopy->setHidden(!enabled);
     ui->icon_DuplexCopy->setHidden(!enabled);
     ui->cBox_DuplexCopy->setHidden(!enabled);
+    isDuplexCopyDevice = enabled;
 }
 
 void TabStackedWidget::setEnabledCopyScan(bool enabled)
@@ -598,8 +613,8 @@ void TabStackedWidget::on_btn_Copy_clicked()
         if (paramCopy.promptInfo.isIDCard == true)
         {
             bool enNextShow = true;
-            QString videoTypeStr = "01_JAM";
-            QString languageStr = "SimplifiedChinese";
+//            QString videoTypeStr = "01_JAM";
+//            QString languageStr = "SimplifiedChinese";
             AnimationDlg *aDialog = new AnimationDlg(this, 1, &enNextShow);
             aDialog->setAttribute(Qt::WA_DeleteOnClose);
             if (aDialog->exec() == QDialog::Rejected)
@@ -617,6 +632,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
         paramCopy.outputSize = OutPutSize_Copy_A4;
         paramCopy.isMultiPage = false;
         paramCopy.multiMode = TwoInOne;
+
     }
     else
     {
@@ -658,6 +674,11 @@ void TabStackedWidget::on_btn_Copy_clicked()
     copyPara.dpi = paramCopy.docDpi;
     copyPara.mediaType = paramCopy.docType;
     copyPara.scale = paramCopy.scaling;
+
+    if(isDuplexCopyDevice&&ui->cBox_IsIDCard->isChecked() == true)
+    {
+        copyPara.IDCardMode = paramCopy.idCardCopyMode;
+    }
 
     QVariant data;
     data.setValue<copycmdset>(copyPara);
@@ -781,14 +802,24 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
 
 void TabStackedWidget::on_copyNum_textChanged(const QString &arg1)
 {
-    if(arg1 == "0")
+    qDebug()<<arg1;
+    if(arg1.toInt() < 1)
     {
+        ui->copyNum->setText("1");
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_"));
         msgWarm->setWindowTitle(tr("ResStr_Error"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
-        ui->copyNum->setText("1");
+    }
+    else if(arg1.toInt() > 99)
+    {
+        ui->copyNum->setText("99");
+        SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_"));
+        msgWarm->setWindowTitle(tr("ResStr_Error"));
+        msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint);
+        msgWarm->exec();
     }
 }
 

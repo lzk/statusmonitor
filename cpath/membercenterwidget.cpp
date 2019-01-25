@@ -72,6 +72,7 @@ MemberCenterWidget::~MemberCenterWidget()
 void MemberCenterWidget::on_btLogin_clicked()
 {
     UserLogin *login = new UserLogin(this);
+    login->setWindowTitle(tr("ResStr_Login_"));
     login->exec();
 
     if(login->isLogin())

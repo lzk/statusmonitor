@@ -110,7 +110,6 @@
         <file>Images/MainWindow_Close.PNG</file>
         <file>Images/MainWindow_Min.PNG</file>
         <file>Images/moreSettingForScan.png</file>
-        <file>Images/moreSettings_ Copy.png</file>
         <file>Images/moreSettings_Print.png</file>
         <file>Images/Nin1_1.png</file>
         <file>Images/Nin1_2.png</file>
@@ -199,5 +198,11 @@
         <file>Images/Video/SimplifiedChinese/06_NIn1Copy3_zh.gif</file>
         <file>Images/Startup_ch.tif</file>
         <file>Images/Startup_en.tif</file>
+        <file>Images/A4(1).tif</file>
+        <file>Images/A4(2).tif</file>
+        <file>Images/A4(3).tif</file>
+        <file>Images/A4(4).tif</file>
+        <file>Images/moreSettings_Copy.png</file>
+        <file>Images/moreSettings_Copy_1.png</file>
     </qresource>
 </RCC>

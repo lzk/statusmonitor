@@ -1517,5 +1517,24 @@
 <source>ResStr_DMA_Error</source>
 <target>DMA错误</target>
 </phrase>
-
+    <phrase>
+<source>ResStr_A4Mode_1</source>
+<target>A4模式1</target>
+</phrase>
+    <phrase>
+<source>ResStr_A4Mode_2</source>
+<target>A4模式2</target>
+</phrase>
+    <phrase>
+<source>ResStr_A4Mode_3</source>
+<target>A4模式3</target>
+</phrase>
+    <phrase>
+<source>ResStr_A5Mode</source>
+<target>A5模式</target>
+</phrase>
+    <phrase>
+<source>ResStr_Credentials_Duplex_Copy_Mode</source>
+<target>身份证复印模式</target>
+</phrase>
 </QPH>

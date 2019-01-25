@@ -35,14 +35,13 @@ MoreSettingsForScan::MoreSettingsForScan(QWidget *parent, UiSettings *param) :
     if(!param) //此处往后应改为传入的参数的指针。
     {
         param_scan = &defaultParam;
-        setDefValue();
     }
     else
     {
         param_scan = param;
     }
 
-    showParam();
+    showParam(param);
 
     QListView *listView = new QListView(ui->comboDpi);
     listView->setStyleSheet("QListView::item:selected{background-color:gray;color:white}");
@@ -151,32 +150,30 @@ void MoreSettingsForScan::on_btOK_clicked()
 void MoreSettingsForScan::on_btDefault_clicked()
 {
     setDefValue();
-    showParam();
 }
 
 
 //设置默认值
 void MoreSettingsForScan::setDefValue()
 {
-    if(param_scan == NULL)
-    {
-        param_scan = &defaultParam;
-    }
-    param_scan->scan_doctype = T_Photo;
-    param_scan->scan_dpi = Scan_300DPI;
-    param_scan->colorModel = Color;
-    param_scan->contrast = 50;
-    param_scan->brightness = 50;
-    param_scan->scan_size = Scan_A4;
-    param_scan->scan_type = Hight_Speed;
+    UiSettings tmpParam;
+    UiSettings *defParamScan = &tmpParam;
+    defParamScan->scan_doctype = T_Photo;
+    defParamScan->scan_dpi = Scan_300DPI;
+    defParamScan->colorModel = Color;
+    defParamScan->contrast = 50;
+    defParamScan->brightness = 50;
+    defParamScan->scan_size = Scan_A4;
+    defParamScan->scan_type = Hight_Speed;
+    showParam(defParamScan);
 }
 
 //显示参数到ui
-void MoreSettingsForScan::showParam()
+void MoreSettingsForScan::showParam(UiSettings *param)
 {
     QString text;
 
-    switch(param_scan->scan_doctype)
+    switch(param->scan_doctype)
     {
     case T_Photo:   ui->btPthoto->setChecked(true); break;
     case T_Text_Graph: ui->btPhotoText->setChecked(true); break;
@@ -184,23 +181,23 @@ void MoreSettingsForScan::showParam()
     default: break;
     }
 
-    switch(param_scan->scan_type)
+    switch(param->scan_type)
     {
     case Hight_Speed: ui->btSpeed->setChecked(true); break;
     case Hight_Quality: ui->btQuality->setChecked(true);break;
     default: break;
     }
 
-    ui->comboDpi->setCurrentIndex((int)param_scan->scan_dpi);
-    ui->lineEdit_constrast->setText(text.number(param_scan->contrast));
-    ui->slider_contrast->setValue(param_scan->contrast);
+    ui->comboDpi->setCurrentIndex((int)param->scan_dpi);
+    ui->lineEdit_constrast->setText(text.number(param->contrast));
+    ui->slider_contrast->setValue(param->contrast);
 
-    ui->lineEdit_brightness->setText(text.number(param_scan->brightness));
-    ui->slider_brightness->setValue(param_scan->brightness);
+    ui->lineEdit_brightness->setText(text.number(param->brightness));
+    ui->slider_brightness->setValue(param->brightness);
 
-    ui->comboScanSize->setCurrentIndex((int)param_scan->scan_size);
+    ui->comboScanSize->setCurrentIndex((int)param->scan_size);
 
-    selectMode(param_scan->colorModel);
+    selectMode(param->colorModel);
 }
 
 //设置背景颜色

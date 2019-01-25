@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../membercenter/about.ui" line="69"/>
-        <source>Copyright (C) (2015-2018)</source>
+        <source>Copyright (C) (2019)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -242,11 +242,6 @@
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="109"/>
-        <source>éåº(&amp;Q)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="162"/>
         <source>ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_</source>
         <translation>The scanned images will be deleted after the application is closed. Close application?</translation>
@@ -256,6 +251,11 @@
         <location filename="../mainwindow.cpp" line="631"/>
         <source>ResStr_Ready</source>
         <translation>Ready</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="109"/>
+        <source>ResStr_Exit</source>
+        <translation>Exit</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="641"/>
@@ -359,6 +359,7 @@
     </message>
     <message>
         <location filename="../membercenterwidget.ui" line="977"/>
+        <location filename="../membercenterwidget.cpp" line="75"/>
         <source>ResStr_Login_</source>
         <translation>Login</translation>
     </message>
@@ -383,12 +384,12 @@
         <translation>Member Center</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.cpp" line="479"/>
+        <location filename="../membercenterwidget.cpp" line="480"/>
         <source>ResStr_Email_Format_Error</source>
         <translation>The E-mail address format is incorrect, Please check you E-mail address and enter again.</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.cpp" line="480"/>
+        <location filename="../membercenterwidget.cpp" line="481"/>
         <source>ResStr_Error</source>
         <translation>Error</translation>
     </message>
@@ -510,6 +511,31 @@
         <location filename="../moresettingsforcopy.ui" line="863"/>
         <source>ResStr_OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1427"/>
+        <source>ResStr_A4Mode_1</source>
+        <translation>A4 mode1</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1451"/>
+        <source>ResStr_A4Mode_2</source>
+        <translation>A4 mode2</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1475"/>
+        <source>ResStr_A4Mode_3</source>
+        <translation>A4 mode3</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1499"/>
+        <source>ResStr_A5Mode</source>
+        <translation>A5 mode</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1531"/>
+        <source>ResStr_Credentials_Duplex_Copy_Mode</source>
+        <translation>Credentials Duplex Copy Mode</translation>
     </message>
     <message>
         <location filename="../moresettingsforcopy.ui" line="26"/>
@@ -1263,6 +1289,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="567"/>
+        <location filename="../tabstackedwidget.cpp" line="360"/>
         <source>ResStr_Duplex_Copy</source>
         <translation>Duplex Copy</translation>
     </message>
@@ -1339,11 +1366,6 @@
         <translation>TCP/IPv6</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="360"/>
-        <source>åé¢å¤å°</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../tabstackedwidget.cpp" line="718"/>
         <source>TIF(*.tif);;PDF(*pdf);;JPG(*jpg)</source>
         <translation type="unfinished"></translation>
@@ -1364,12 +1386,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="786"/>
+        <location filename="../tabstackedwidget.cpp" line="788"/>
+        <location filename="../tabstackedwidget.cpp" line="797"/>
         <source>ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_</source>
         <translation>The valid range is 1 to 99, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="787"/>
+        <location filename="../tabstackedwidget.cpp" line="789"/>
+        <location filename="../tabstackedwidget.cpp" line="798"/>
         <source>ResStr_Error</source>
         <translation>Error</translation>
     </message>
@@ -1713,11 +1737,6 @@ Error message:</translation>
 </context>
 <context>
     <name>UserLogin</name>
-    <message>
-        <location filename="../membercenter/userlogin.ui" line="26"/>
-        <source>登录</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../membercenter/userlogin.ui" line="70"/>
         <source>ResStr_Verification_Code</source>

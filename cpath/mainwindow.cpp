@@ -106,7 +106,7 @@ void MainWindow::createSysTray()
 //    restoreAction = new QAction(tr("&Restore"), this);
 //    restoreAction = new QAction(tr("显示(&R)"), this);
 //    connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(showNormal()));
-    quitAction = new QAction(tr("退出(&Q)"), this);
+    quitAction = new QAction(QString("%1(&Q)").arg(tr("ResStr_Exit")),this);
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     trayIconMenu = new QMenu(this);
 //    trayIconMenu->addAction(minimizeAction);
