@@ -154,6 +154,7 @@ public:
     explicit UIConfig(QObject *parent = 0);
 
     static void initConfig();
+    static void exit_app();
     static int getModelSerial(Printer_struct* ps);
     static int GetStatusTypeForUI(EnumStatus status);
     static QString getErrorMsg(EnumStatus status,EnumMachineJob job,bool isAbcPlusModel);

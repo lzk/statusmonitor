@@ -38,19 +38,28 @@ NetIO::~NetIO()
         delete tcpSocket;
 }
 
-int NetIO::resolveUrl(const char* _url)
+int NetIO::resolveUrl(const char* url)
 {
-    int ret = DeviceIO::resolveUrl(_url);
+    if(!url)
+        return -1;
+    QString str_url(url);
+    if((device_uri[0] != 0) && !str_url.compare(device_uri)){
+        return 0;
+    }
+    int ret = DeviceIO::resolveUrl(url);
     if(ret)
         return ret;
-    char uri[256];
-    cups_resolve_uri(_url ,uri ,sizeof(uri));
-    QUrl url(uri);
-    if(url.isEmpty() || url.host().isEmpty())
-        url = QUrl(_url);
-    QString host = url.host();//resolve_uri(url);
-    LOGLOG("net io rosolve printer uri:%s" ,_url);
-    LOGLOG("net io rosolved printer uri:%s" ,url.host().toLatin1().constData());
+    QUrl real_url;
+    if(str_url.startsWith("dnssd://")){
+        char uri[256];
+        cups_resolve_uri(url ,uri ,sizeof(uri));
+        real_url = QUrl(uri);
+    }
+    if(real_url.isEmpty() || real_url.host().isEmpty())
+        real_url = QUrl(url);
+    QString host = real_url.host();//resolve_uri(url);
+//    LOGLOG("net io rosolve printer uri:%s" ,_url);
+//    LOGLOG("net io rosolved printer uri:%s" ,url.host().toLatin1().constData());
     if(host.isEmpty())
         return -1;
     hostAddress = get_ip_address(host);
@@ -65,19 +74,22 @@ int NetIO::type()
 
 int NetIO::open(int port)
 {
+    if(device_is_open){
+        LOGLOG("device is opened");
+        return -1;
+    }
     if(!tcpSocket)
         tcpSocket = new QTcpSocket;
     tcpSocket->connectToHost(hostAddress, port);
     if (!tcpSocket->waitForConnected(5000)) {
-//        emit error(tcp_socket.error(), tcp_socket.errorString());
-//        LOG_PARA("err:%d",tcpSocket->error());
-//        LOG_NOPARA("err:" + tcpSocket->errorString());
-        qDebug()<<"tcp error:"<< tcpSocket->error();
-        qDebug()<< tcpSocket->errorString();
+        LOGLOG("tcpsocket error code:%d",tcpSocket->error());
+        LOGLOG("tcpsocket error:%s" ,tcpSocket->errorString().toLatin1().constData());
+        tcpSocket->close();
         return -1;
     }
-    tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption ,1);
-    qDebug()<<"option:"<<tcpSocket->socketOption(QAbstractSocket::LowDelayOption);
+    device_is_open = true;
+//    tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption ,1);
+//    qDebug()<<"option:"<<tcpSocket->socketOption(QAbstractSocket::LowDelayOption);
     return 0;
 
 }
@@ -89,7 +101,10 @@ int NetIO::close(void)
 //    tcpSocket->disconnectFromHost();
 //    tcpSocket->waitForDisconnected();
 //    tcpSocket->abort();
-    tcpSocket->close();
+    if(device_is_open){
+        device_is_open = false;
+        tcpSocket->close();
+    }
     return 0;
 }
 
@@ -216,9 +231,10 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, s
     if (!udpSocket.waitForConnected(5000)) {
         return -1;
     }
-//    udpSocket.bind(host_address ,161);
+    udpSocket.bind(host_address ,161);
     int ret;
-    ret = udpSocket.writeDatagram((const char*)data ,bytes ,host_address ,161);
+    ret = udpSocket.write((const char*)data ,bytes);
+//    ret = udpSocket.writeDatagram((const char*)data ,bytes ,host_address ,161);
     if(ret != bytes){
         return -1;
     }
@@ -250,3 +266,4 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, s
     }
     return 0;
 }
+

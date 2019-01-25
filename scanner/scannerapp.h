@@ -71,12 +71,13 @@ typedef struct{
 }
     ScanSettings;
 
+struct Printer_struct;
 class Scanner;
-class DeviceIO;
+class DeviceIOManager;
 class ScannerApp
 {
 public:
-    ScannerApp(DeviceIO** _device);
+    ScannerApp(DeviceIOManager* _device_manager);
     ~ScannerApp();
 
 public:
@@ -106,11 +107,11 @@ public:
         ,STATUS_Error_App
     } DEVSTATUS;
 
-    int scan(ScanSettings* settings);
+    int scan(Printer_struct* printer ,ScanSettings* settings);
     void set_cancel(bool cancel);
 private:
     Scanner* scanner;
-    DeviceIO** device;
+    DeviceIOManager* device_manager;
     ImageTrans* image_trans;
 
     pthread_t thread;

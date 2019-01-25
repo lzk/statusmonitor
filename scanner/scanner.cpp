@@ -4,7 +4,7 @@
 
 Scanner::Scanner(ScannerApp* app)
     :scanner_app(app)
-    ,scannner_api(new ScannerApi(app->device))
+    ,scannner_api(new ScannerApi(app->device_manager))
 {
 
 }
@@ -14,13 +14,13 @@ Scanner::~Scanner()
     delete scannner_api;
 }
 
-int Scanner::flat_scan(ScanSettings* settings)
+int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret;
     if(m_cancel)
         return ScannerApp::STATUS_Cancel;
 
-    ret = scannner_api->open();
+    ret = scannner_api->open(printer);
     if(ret){
         LOGLOG("scanning...error:open");
         return ScannerApp::STATUS_Error_Error;
@@ -91,7 +91,7 @@ int Scanner::flat_scan(ScanSettings* settings)
     return ret;
 }
 
-int Scanner::adf_scan(ScanSettings*)
+int Scanner::adf_scan(Printer_struct*  ,ScanSettings*)
 {
     return 0;
 }

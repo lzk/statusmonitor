@@ -4,12 +4,14 @@
 #include <time.h>
 #include <sys/timeb.h>
 const char* log_file = "/tmp/loglog.log";
-const char* app_version = "1.0.0.2";
+const char* log_app_name = "statusmonitor";
+const char* app_version = "1.0.0.1";
 class JKLog
 {
 public:
   JKLog();
   ~JKLog();
+  void init();
   int log(const char*  ,va_list pArgs);
 
 private:
@@ -17,6 +19,18 @@ private:
 };
 
 JKLog::JKLog()
+    :file(NULL)
+{
+
+}
+
+
+JKLog::~JKLog()
+{
+    fclose(file);
+}
+
+void JKLog::init()
 {
     struct timeb tp;
     ftime(&tp);
@@ -31,7 +45,7 @@ JKLog::JKLog()
             ,p_time->tm_hour ,p_time->tm_min ,p_time->tm_sec);
 
     file = fopen(tmp_filename ,"w+");
-    fprintf(file ,"--------VOP v%s-------\n\n" ,app_version);
+    fprintf(file ,"--------%s v%s-------\n\n" ,log_app_name ,app_version);
     fflush(file);
     fclose(file);
 
@@ -54,19 +68,22 @@ JKLog::JKLog()
 //    file = fopen(log_file ,"w+");
 }
 
-JKLog::~JKLog()
-{
-    fclose(file);
-}
-
+#include <QMutex>
+static QMutex mutex_write_log_file;
 int JKLog::log(const char* para ,va_list pArgs)
 {
+    QMutexLocker locker(&mutex_write_log_file);
     int ret = vfprintf(file ,para ,pArgs);
     fflush(file);
     return ret;
 }
 
 static JKLog gJKLog;
+void log_init()
+{
+    gJKLog.init();
+}
+
 int jklog(const char* para ,...)
 {
     int result;

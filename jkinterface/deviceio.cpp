@@ -1,16 +1,9 @@
 #include "deviceio.h"
 #include "log.h"
+#include <string.h>
 #include <unistd.h>
+#include "api_libcups.h"
 #define sleep100ms(x ,y) {if(y) usleep((x)  * 100 * 1000);}
-
-int DeviceIO::open(const char* url ,int port)
-{
-    int ret;
-    ret = resolveUrl(url);
-    if(!ret)
-        ret = open(port);
-    return ret;
-}
 
 int DeviceIO::resolveUrl(const char* url)
 {
@@ -78,4 +71,42 @@ int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSi
         }
     }
     return err;
+}
+
+int DeviceIO::open(Printer_struct* printer ,int port)
+{
+    int ret = 0;
+    ret = resolve(printer);
+    if(!ret)
+        ret = open(port);
+    return ret;
+}
+
+int DeviceIO::resolve(Printer_struct* printer)
+{
+    return resolveUrl(printer->deviceUri);
+}
+
+bool DeviceIO::isConnected(Printer_struct* printer)
+{
+    if(!resolve(printer)){
+        return isConnected();
+    }else
+        return false;
+}
+
+const char* DeviceIO::getDeviceAddress(Printer_struct* printer)
+{
+    if(!resolve(printer)){
+        return getDeviceAddress();
+    }else
+        return NULL;
+}
+
+int DeviceIO::getDeviceId(Printer_struct* printer ,char *buffer, int bufsize)
+{
+    if(!resolve(printer)){
+        return getDeviceId(buffer ,bufsize);
+    }else
+        return -1;
 }

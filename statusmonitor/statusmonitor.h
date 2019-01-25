@@ -37,7 +37,9 @@ public:
     static int getPrinters(CALLBACK_getPrinterInfo ,void*);
     static int getPrintersFromFile(CALLBACK_getPrinterInfo ,void*);
     static int getPrinterStatus(const char* printer ,PrinterStatus_struct* ps);
-    static int getDeviceStatus(DeviceIO* device ,PrinterStatus_struct* ps);
+//    static int getDeviceStatus(DeviceIO* device ,PrinterStatus_struct* ps);
+    static int getDeviceStatus(DeviceIO* device ,Printer_struct* printer ,PrinterStatus_struct* ps);
+    static int getDeviceStatus(DeviceIOManager* device_manager ,Printer_struct* printer ,PrinterStatus_struct* ps);
 
     static bool AnyTonerReachLevel1(const PrinterStatus_struct& m_PrinterStatus);
     static bool IsNonDellTonerMode(const PrinterStatus_struct& m_PrinterStatus);

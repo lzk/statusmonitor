@@ -65,3 +65,35 @@ bool isRunning(const char* server_path)
     return running;
 }
 #endif
+
+#include <QMutex>
+#include <QFile>
+#include <QTextStream>
+static QMutex mutex;
+static const QString tmp_file = "/tmp/lnttmp";
+QString get_string_from_shell_cmd(const QString& cmd ,int mode)
+{
+    QMutexLocker locker(&mutex);
+    QString str;
+    QString _cmd(cmd);
+    _cmd += ">";
+    _cmd += tmp_file;
+//    _cmd += "&&chmod 666 ";
+//    _cmd += tmp_file;
+//    _cmd += " 2>>";
+//    _cmd += log_file;
+    if(!system(_cmd.toLatin1())){
+        QFile fl(tmp_file);
+        if(fl.open(QFile::ReadOnly)){
+            QTextStream in(&fl);
+            if(mode)
+                str = in.readAll();
+            else
+                str = in.readLine();
+            fl.close();
+            fl.remove();
+        }
+    }
+    return str;
+}
+

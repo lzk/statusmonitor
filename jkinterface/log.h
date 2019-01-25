@@ -1,7 +1,8 @@
 #ifndef LOG_H
 #define LOG_H
 
-#define DEBUG_TO_STDERR 0
+extern const char* log_file;
+//#define DEBUG_TO_STDERR 1
 #include <stdio.h>
 #if DEBUG_TO_STDERR
 #define LOGLOG(format, ...) \
@@ -17,4 +18,5 @@ int jklog(const char* ,...);
     jklog("\n"); \
     }
 #endif
+void log_init();
 #endif // LOG_H

@@ -19,9 +19,9 @@ enum{
 class ScannerApi
 {
 public:
-    ScannerApi(DeviceIO** _device);
+    ScannerApi(DeviceIOManager* _device_manager);
 
-    int open();
+    int open(Printer_struct*);
     int close();
     int lock();
     int unlock();
@@ -33,7 +33,8 @@ public:
     int get_scan_data(char* buffer ,int buffer_size);
 
 private:
-    DeviceIO** device;
+    DeviceIO* device;
+    DeviceIOManager* device_manager;
     bool scanner_locked;
     int get_cmd_status();
 };

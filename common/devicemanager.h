@@ -2,20 +2,19 @@
 #define DEVICEMANAGER_H
 
 #include <QString>
-#include "usbio.h"
-#include "netio.h"
-class DeviceManager
+#include "deviceio.h"
+struct Printer_struct;
+class DeviceManager :public DeviceIOManager
 {
 public:
     DeviceManager();
     ~DeviceManager();
-    DeviceIO* getDevice(const char* uri);
-
+    virtual DeviceIO* getDevice(Printer_struct* printer);
     static int getDeviceType(const char* uri);
 private:
     DeviceIO* device;
-    UsbIO* usbIO;
-    NetIO* netIO;
+    DeviceIO* usbIO;
+    DeviceIO* netIO;
     QString device_uri;
 };
 

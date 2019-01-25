@@ -68,6 +68,9 @@ typedef struct
 } PRINTER_STATUS;
 #pragma pack()
 
+struct Printer_struct;
 class DeviceIO;
-int getStatusFromDevice(DeviceIO* device ,PRINTER_STATUS* ps);
+int getStatusFromDevice(DeviceIO* device ,Printer_struct* printer ,PRINTER_STATUS* ps);
+class DeviceIOManager;
+int getStatusFromDevice(DeviceIOManager* device_manager ,Printer_struct* printer ,PRINTER_STATUS* ps);
 #endif // STATUS_H

@@ -10,8 +10,8 @@
 class LShell
 {
 public:
-    LShell(DeviceIO** deviceio)
-        :device(deviceio){}
+    LShell(DeviceIOManager* _device_manager)
+        :device_manager(_device_manager){}
 
 public:
     enum{
@@ -70,12 +70,15 @@ public:
 
 public:
     static void copy_get_defaultPara(copycmdset* p);
+    int open(Printer_struct* printer);
+    int close(void);
 
 private:
     int lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size);
     int writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize);
     int writeNoRead(char* wrBuffer ,int wrSize);
-    DeviceIO** device;
+    DeviceIO* device;
+    DeviceIOManager* device_manager;
 };
 #endif // LSHELL
 
