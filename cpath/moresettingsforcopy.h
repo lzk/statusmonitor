@@ -19,6 +19,7 @@ enum DocDpi_Copy {DocDpi_Copy_DPI300=0, DocDpi_Copy_DPI600};
 enum OutPutSize_Copy {OutPutSize_Copy_letter=0, OutPutSize_Copy_A4, OutPutSize_Copy_A5, OutPutSize_Copy_A6, OutPutSize_Copy_B5, OutPutSize_Copy_B6, OutPutSize_Copy_Executive, OutPutSize_Copy_16K};
 enum MediaType_Copy {MediaType_Copy_Plain=0, MediaType_Copy_Recycled, MediaType_Copy_Thick, MediaType_Copy_Thin, MediaType_Copy_Label};
 enum MultiMode_Copy {OneInOne=0,TwoInOne,FourInOne, NineInOne};
+enum MultiMode_Copy_ID {A4Mode1=0,A4Mode2,A4Mode3,A5Mode};
 
 struct Prompt {
     bool isIDCard;
@@ -35,6 +36,7 @@ struct Param_Copy {
     MediaType_Copy paperType;      //paperType
     bool isMultiPage;         //multi paper In One
     MultiMode_Copy multiMode;
+    int idCardCopyMode;//Credentials Duplex Copy Mode
 
     // infor support : bool idCard; bool nInOne;
 
@@ -63,7 +65,7 @@ class MoreSettingsForCopy : public QDialog
     Q_OBJECT
 
 public:
-    explicit MoreSettingsForCopy(QWidget *parent = 0,bool duplexCopyFlag = false, bool idCardFlay = false, Param_Copy *pParam = NULL);
+    explicit MoreSettingsForCopy(QWidget *parent = 0,bool duplexCopyFlag = false, bool idCardFlay = false,bool isDuplexCopyDevice = false, Param_Copy *pParam = NULL);
     ~MoreSettingsForCopy();
 
 private:
@@ -72,6 +74,7 @@ private:
     int scaling;
     bool _idCardFlag;
     bool _duplexCopyFlag;
+    bool _isDuplexCopyDevice;
     Param_Copy defParam;
     Param_Copy *ParamForCopy;
 
@@ -79,12 +82,15 @@ private:
     QTimer *timer;
     int timeCount;
 
+    int _idCardCopyMode;
+    MultiMode_Copy _multiMode;
+
 
 protected:
     bool isPress;
     void selectMode(MultiMode_Copy mode);
     void setDefault();
-    void showParam();
+    void showParam(Param_Copy *param);
 
 public slots:
     bool eventFilter(QObject *,QEvent *);
@@ -104,19 +110,27 @@ private slots:
     void on_bt2in1_clicked();
     void on_bt4in1_clicked();
     void on_bt9in1_clicked();
-    void on_btID_clicked();
-    void on_btNInOne_clicked();
-    void on_btText_toggled(bool checked);
-    void on_btPicture_toggled(bool checked);
-    void on_docSizeList_currentIndexChanged(int index);
+    void on_btID_clicked(bool checked);
+    void on_btNInOne_clicked(bool checked);
+//    void on_btText_toggled(bool checked);
+//    void on_btPicture_toggled(bool checked);
+//    void on_docSizeList_currentIndexChanged(int index);
     void on_dpiList_currentIndexChanged(int index);
     void on_outPutSizeList_currentIndexChanged(int index);
-    void on_paperTypeList_currentIndexChanged(int index);
+//    void on_paperTypeList_currentIndexChanged(int index);
     void on_btReduce_pressed();
     void on_btReduce_released();
     void on_btAdd_pressed();
     void on_btAdd_released();
     void on_scaling_textEdited(const QString &arg1);
+
+    void enableIDCardCopyMode(bool checked);
+    void selectIDCardCopyMode(int mode);
+    void on_btA4_1_clicked();
+    void on_btA4_2_clicked();
+    void on_btA4_3_clicked();
+    void on_btA4_4_clicked();
+
 };
 
 #endif // MORESETTINGSFORCOPY_H

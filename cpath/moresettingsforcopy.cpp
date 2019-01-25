@@ -7,7 +7,7 @@
 #define MIN_SCALING 25
 #define MAX_SCALING 400
 
-MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bool idCardFlag, Param_Copy *pParam) :
+MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bool idCardFlag,bool isDuplexCopyDevice, Param_Copy *pParam) :
     QDialog(parent),
     ui(new Ui::MoreSettingsForCopy)
 {
@@ -15,6 +15,7 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     scaling = 0;
     _idCardFlag = idCardFlag;
     _duplexCopyFlag = duplexCopyFlag;
+    _isDuplexCopyDevice = isDuplexCopyDevice;
 
     ParamForCopy = pParam;
 
@@ -35,6 +36,56 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     ui->scaling->setValidator(new QIntValidator(0,10000,this));
     ui->scaling->installEventFilter(this);
 
+    if(_isDuplexCopyDevice)
+    {
+        ui->Label_isIDCardCopyMode->show();
+        ui->label_A4_1->show();
+        ui->label_A4_2->show();
+        ui->label_A4_3->show();
+        ui->label_A4_4->show();
+        ui->label_A4_5->show();
+        ui->label_A4_6->show();
+        ui->label_A4_7->show();
+        ui->label_A4_8->show();
+        ui->btA4_1->show();
+        ui->btA4_2->show();
+        ui->btA4_3->show();
+        ui->btA4_4->show();
+
+        this->setStyleSheet("#MoreSettingsForCopy{background-image: url(:/Images/moreSettings_Copy_1.png);background-repeat: repeat;border-image: url();}");
+        QRect geometry = ui->btOK->geometry();
+        geometry.setY(590);
+        ui->btOK->setGeometry(geometry);
+        geometry = ui->btDefault->geometry();
+        geometry.setY(590);
+        ui->btDefault->setGeometry(geometry);
+
+        enableIDCardCopyMode(_idCardFlag);
+
+    }else
+    {
+        ui->Label_isIDCardCopyMode->hide();
+        ui->label_A4_1->hide();
+        ui->label_A4_2->hide();
+        ui->label_A4_3->hide();
+        ui->label_A4_4->hide();
+        ui->label_A4_5->hide();
+        ui->label_A4_6->hide();
+        ui->label_A4_7->hide();
+        ui->label_A4_8->hide();
+        ui->btA4_1->hide();
+        ui->btA4_2->hide();
+        ui->btA4_3->hide();
+        ui->btA4_4->hide();
+
+        this->setStyleSheet("#MoreSettingsForCopy{background-image: url(:/Images/moreSettings_Copy.png);background-repeat: repeat;border-image: url();}");
+        QRect geometry = ui->btOK->geometry();
+        ui->btOK->setGeometry(geometry.x(),431,geometry.width(),geometry.height());
+        geometry = ui->btDefault->geometry();
+        ui->btDefault->setGeometry(geometry.x(),431,geometry.width(),geometry.height());
+
+    }
+
 
     if(_idCardFlag)
     {
@@ -44,12 +95,11 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
         ParamForCopy->outputSize = OutPutSize_Copy_A4;
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
-        showParam();
-
+        showParam(ParamForCopy);
     }
     else
     {
-        showParam();
+        showParam(ParamForCopy);
     }
 
     QListView *listView = new QListView(ui->outPutSizeList);
@@ -71,34 +121,37 @@ void MoreSettingsForCopy::setDefault()
     copycmdset para;
     copycmdset *p = &para;
     memcpy(p ,&default_copy_parameter ,sizeof(default_copy_parameter));
+
+    Param_Copy tmpParam;
+    Param_Copy *defaultParamForCopy = &tmpParam;
     if(!_idCardFlag)
     {
-        ParamForCopy->scaling = (int)p->scale;
-        ParamForCopy->docType = (DocType_Copy)p->scanMode;
-        ParamForCopy->docSize = (DocSize_Copy)p->orgSize;
-        ParamForCopy->docDpi = (DocDpi_Copy)p->dpi;
-        ParamForCopy->outputSize = (OutPutSize_Copy)p->paperSize;
-        ParamForCopy->paperType = (MediaType_Copy)p->mediaType;
-        ParamForCopy->isMultiPage = false;
-        ParamForCopy->multiMode = (MultiMode_Copy)p->nUp;
+        defaultParamForCopy->scaling = (int)p->scale;
+        defaultParamForCopy->docType = (DocType_Copy)p->scanMode;
+        defaultParamForCopy->docSize = (DocSize_Copy)p->orgSize;
+        defaultParamForCopy->docDpi = (DocDpi_Copy)p->dpi;
+        defaultParamForCopy->outputSize = (OutPutSize_Copy)p->paperSize;
+        defaultParamForCopy->paperType = (MediaType_Copy)p->mediaType;
+        defaultParamForCopy->isMultiPage = false;
+        defaultParamForCopy->multiMode = (MultiMode_Copy)p->nUp;
 
-        ParamForCopy->promptInfo.isIDCard = true;
-        ParamForCopy->promptInfo.isMultible = true;
+        defaultParamForCopy->promptInfo.isIDCard = true;
+        defaultParamForCopy->promptInfo.isMultible = true;
 
-        showParam();
+        showParam(defaultParamForCopy);
     }else
     {
-        ParamForCopy->docType = (DocType_Copy)p->scanMode;
-        ParamForCopy->paperType = (MediaType_Copy)p->mediaType;
+        defaultParamForCopy->docType = (DocType_Copy)p->scanMode;
+        defaultParamForCopy->paperType = (MediaType_Copy)p->mediaType;
 
-        ParamForCopy->promptInfo.isIDCard = true;
-        ParamForCopy->promptInfo.isMultible = true;
-        showParam();
+        defaultParamForCopy->promptInfo.isIDCard = true;
+        defaultParamForCopy->promptInfo.isMultible = true;
+        showParam(defaultParamForCopy);
     }
 
 }
 
-void MoreSettingsForCopy::showParam()
+void MoreSettingsForCopy::showParam(Param_Copy *param)
 {
     QString text;
     if(_idCardFlag)
@@ -113,10 +166,10 @@ void MoreSettingsForCopy::showParam()
         ui->label->setDisabled(true);
 
 
-        ui->scaling->setText(text.setNum(ParamForCopy->scaling));
+        ui->scaling->setText(text.setNum(param->scaling));
         ui->scaling->setDisabled(true);
 
-        if(ParamForCopy->docType == DocType_Copy_Photo)
+        if(param->docType == DocType_Copy_Photo)
         {
             ui->btPicture->setChecked(true);
             ui->btText->setChecked(false);
@@ -126,11 +179,11 @@ void MoreSettingsForCopy::showParam()
             ui->btText->setChecked(true);
         }
 
-        ui->docSizeList->setCurrentIndex(ParamForCopy->docSize);
+        ui->docSizeList->setCurrentIndex(param->docSize);
         ui->docSizeList->setDisabled(true);
-        ui->dpiList->setCurrentIndex(ParamForCopy->docDpi);
-        ui->outPutSizeList->setCurrentIndex(ParamForCopy->outputSize);
-        ui->paperTypeList->setCurrentIndex(ParamForCopy->paperType);
+        ui->dpiList->setCurrentIndex(param->docDpi);
+        ui->outPutSizeList->setCurrentIndex(param->outputSize);
+        ui->paperTypeList->setCurrentIndex(param->paperType);
         ui->label_20->setStyleSheet("#label_20 {background-color: rgb(198, 198, 198);border-radius:8px;}");
         ui->label_21->setStyleSheet("#label_21 {background-color: rgb(198, 198, 198);border-radius:8px;}");
         ui->label_22->setStyleSheet("#label_22 {background-color: rgb(198, 198, 198);border-radius:8px;}");
@@ -151,10 +204,10 @@ void MoreSettingsForCopy::showParam()
          QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->dpiList->model());
          if(model2) model2->item(1)->setEnabled(false);
 
-        if(ParamForCopy->isMultiPage)
+        if(param->isMultiPage)
         {
              ui->isNinOne->setChecked(true);
-             selectMode(ParamForCopy->multiMode);
+             selectMode(param->multiMode);
         }
         else
         {
@@ -163,15 +216,23 @@ void MoreSettingsForCopy::showParam()
 
         ui->isNinOne->setDisabled(true);
 
-        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
-        on_btID_clicked();  //ParamForCopy->promptInfo.isIDCard = true;
-        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
-        on_btNInOne_clicked();  //ParamForCopy->promptInfo.isMultible
+//        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
+        ui->btID->setChecked(param->promptInfo.isIDCard);  //ParamForCopy->promptInfo.isIDCard = true;
+        on_btID_clicked(param->promptInfo.isIDCard);
+//        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
+        ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
+        on_btNInOne_clicked(param->promptInfo.isMultible);
+
+        if(_isDuplexCopyDevice)
+        {
+            selectIDCardCopyMode(param->idCardCopyMode);
+        }
+
     }else if (_duplexCopyFlag)
     {
-        ui->scaling->setText(text.setNum(ParamForCopy->scaling));
+        ui->scaling->setText(text.setNum(param->scaling));
 
-        if(ParamForCopy->docType == DocType_Copy_Photo)
+        if(param->docType == DocType_Copy_Photo)
         {
             ui->btPicture->setChecked(true);
             ui->btText->setChecked(false);
@@ -180,15 +241,15 @@ void MoreSettingsForCopy::showParam()
             ui->btPicture->setChecked(false);
             ui->btText->setChecked(true);
         }
-        ui->docSizeList->setCurrentIndex(ParamForCopy->docSize);
-        ui->dpiList->setCurrentIndex(ParamForCopy->docDpi);
-        ui->outPutSizeList->setCurrentIndex(ParamForCopy->outputSize);
-        ui->paperTypeList->setCurrentIndex(ParamForCopy->paperType);
+        ui->docSizeList->setCurrentIndex(param->docSize);
+        ui->dpiList->setCurrentIndex(param->docDpi);
+        ui->outPutSizeList->setCurrentIndex(param->outputSize);
+        ui->paperTypeList->setCurrentIndex(param->paperType);
 
-        if(ParamForCopy->isMultiPage)
+        if(param->isMultiPage)
         {
              ui->isNinOne->setChecked(true);
-             selectMode(ParamForCopy->multiMode);
+             selectMode(param->multiMode);
 
              //设置outPutSizeList的a6，b6两种格式不可用
              QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
@@ -242,16 +303,18 @@ void MoreSettingsForCopy::showParam()
             }
         }
 
-        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
-        on_btID_clicked();  //ParamForCopy->promptInfo.isIDCard = true;
-        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
-        on_btNInOne_clicked();  //ParamForCopy->promptInfo.isMultible
+//        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
+        ui->btID->setChecked(param->promptInfo.isIDCard);   //ParamForCopy->promptInfo.isIDCard = true;
+        on_btID_clicked(param->promptInfo.isIDCard);
+//        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
+        ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
+        on_btNInOne_clicked(param->promptInfo.isMultible);
     }
     else
     {
-        ui->scaling->setText(text.setNum(ParamForCopy->scaling));
+        ui->scaling->setText(text.setNum(param->scaling));
 
-        if(ParamForCopy->docType == DocType_Copy_Photo)
+        if(param->docType == DocType_Copy_Photo)
         {
             ui->btPicture->setChecked(true);
             ui->btText->setChecked(false);
@@ -260,15 +323,15 @@ void MoreSettingsForCopy::showParam()
             ui->btPicture->setChecked(false);
             ui->btText->setChecked(true);
         }
-        ui->docSizeList->setCurrentIndex(ParamForCopy->docSize);
-        ui->dpiList->setCurrentIndex(ParamForCopy->docDpi);
-        ui->outPutSizeList->setCurrentIndex(ParamForCopy->outputSize);
-        ui->paperTypeList->setCurrentIndex(ParamForCopy->paperType);
+        ui->docSizeList->setCurrentIndex(param->docSize);
+        ui->dpiList->setCurrentIndex(param->docDpi);
+        ui->outPutSizeList->setCurrentIndex(param->outputSize);
+        ui->paperTypeList->setCurrentIndex(param->paperType);
 
-        if(ParamForCopy->isMultiPage)
+        if(param->isMultiPage)
         {
              ui->isNinOne->setChecked(true);
-             selectMode(ParamForCopy->multiMode);
+             selectMode(param->multiMode);
 
              //设置outPutSizeList的a6，b6两种格式不可用
              QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
@@ -286,10 +349,12 @@ void MoreSettingsForCopy::showParam()
             ui->label_22->setStyleSheet("#label_22 {background-color: rgb(198, 198, 198);border-radius:8px;}");
         }
 
-        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
-        on_btID_clicked();  //ParamForCopy->promptInfo.isIDCard = true;
-        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
-        on_btNInOne_clicked();  //ParamForCopy->promptInfo.isMultible
+//        ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
+        ui->btID->setChecked(param->promptInfo.isIDCard);  //ParamForCopy->promptInfo.isIDCard = true;
+        on_btID_clicked(param->promptInfo.isIDCard);
+//        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
+        ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
+        on_btNInOne_clicked(param->promptInfo.isMultible);
     }
 }
 
@@ -302,6 +367,32 @@ void MoreSettingsForCopy::on_btOK_clicked()
 {
 //    QDebug() << "here is on_btOK_clicked()";
     //printf("hello");
+
+    ParamForCopy->scaling = ui->scaling->text().toInt();
+    if(ui->btPicture->isChecked())
+    {
+        ParamForCopy->docType = DocType_Copy_Photo;
+    }else if(ui->btText->isChecked())
+    {
+        ParamForCopy->docType = DocType_Copy_Text;
+    }
+    ParamForCopy->docSize = DocSize_Copy(ui->docSizeList->currentIndex());
+    ParamForCopy->docDpi = DocDpi_Copy(ui->dpiList->currentIndex());
+    ParamForCopy->outputSize = OutPutSize_Copy(ui->outPutSizeList->currentIndex());
+    ParamForCopy->paperType = MediaType_Copy(ui->paperTypeList->currentIndex());
+    ParamForCopy->isMultiPage = ui->isNinOne->isChecked();
+    if(ParamForCopy->isMultiPage)
+    {
+        ParamForCopy->multiMode = _multiMode;
+    }
+    ParamForCopy->promptInfo.isIDCard = ui->btID->isChecked();
+    qDebug()<<"ParamForCopy->promptInfo.isIDCard"<<ParamForCopy->promptInfo.isIDCard;
+    ParamForCopy->promptInfo.isMultible = ui->btNInOne->isChecked();
+
+    if(_idCardFlag && _isDuplexCopyDevice)
+    {
+        ParamForCopy->idCardCopyMode = _idCardCopyMode;
+    }
 
     this->close();
 }
@@ -362,14 +453,14 @@ void MoreSettingsForCopy::on_btAdd_clicked()
     QString text =  ui->scaling->text();
     int tmp = text.toInt();
 
-    if((tmp >= MIN_SCALING)&&(tmp < MAX_SCALING) && (!ParamForCopy->isMultiPage))
+    if((tmp >= MIN_SCALING)&&(tmp < MAX_SCALING) && (!ui->isNinOne->isChecked()))
     {
         ui->label_tip->hide();
-        ParamForCopy->scaling = tmp + 1;
-        ui->scaling->setText(text.setNum(ParamForCopy->scaling));
+        tmp++;
+        ui->scaling->setText(text.setNum(tmp));
     }else
     {
-        if(!ParamForCopy->isMultiPage)
+        if(!ui->isNinOne->isChecked())
         {
         //    ParamForCopy->scaling = 100 + 1;
         //    ui->scaling->setText(text.setNum(ParamForCopy->scaling));
@@ -413,14 +504,14 @@ void MoreSettingsForCopy::on_scaling_editingFinished()
     if(tmp > MAX_SCALING || tmp < MIN_SCALING)
     {
         ui->scaling->setText(text.setNum(100));
-        ParamForCopy->scaling = 100;
+//        ParamForCopy->scaling = 100;
         ui->scaling->setStyleSheet("#scaling {border:transparent;}");
         ui->btReduce->setEnabled(true);
         ui->btAdd->setEnabled(true);
         ui->btOK->setEnabled(true);
     }
     else{
-        ParamForCopy->scaling = tmp;
+//        ParamForCopy->scaling = tmp;
         ui->scaling->setStyleSheet("#scaling {border:transparent;}");
      }
 }
@@ -451,6 +542,171 @@ void MoreSettingsForCopy::on_scaling_textEdited(const QString &arg1)
 
 
 /***************************************
+*    name:       on_isIDCardCopyMode_toggled
+*    param:      bool checked;
+*   function:   enable the N in One function and show the early selection;
+*
+****************************************/
+void MoreSettingsForCopy::enableIDCardCopyMode(bool checked)
+{
+    QStandardItemModel *model1 = qobject_cast<QStandardItemModel *>(ui->docSizeList->model());
+    QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+    if(checked)
+    {
+        ui->Label_isIDCardCopyMode->setEnabled(true);
+        ui->label_A4_5->setEnabled(true);
+        ui->label_A4_6->setEnabled(true);
+        ui->label_A4_7->setEnabled(true);
+        ui->label_A4_8->setEnabled(true);
+
+//        ParamForCopy->isIDCardCopyMode = true;
+
+       switch (_idCardCopyMode)
+       {
+           case A4Mode1: ui->label_A4_1->setStyleSheet("#label_A4_1 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+           case A4Mode2: ui->label_A4_2->setStyleSheet("#label_A4_2 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+           case A4Mode3: ui->label_A4_3->setStyleSheet("#label_A4_3 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+           case A5Mode: ui->label_A4_4->setStyleSheet("#label_A4_4 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+           default:break;
+       }
+
+       model1->item(1)->setEnabled(false);
+       model1->item(2)->setEnabled(false);
+       model1->item(3)->setEnabled(false);
+       model1->item(4)->setEnabled(false);
+
+       model2->item(0)->setEnabled(false);
+       model2->item(2)->setEnabled(false);
+       model2->item(3)->setEnabled(false);
+       model2->item(4)->setEnabled(false);
+       model2->item(5)->setEnabled(false);
+       model2->item(6)->setEnabled(false);
+       model2->item(7)->setEnabled(false);
+
+       ui->docSizeList->setCurrentIndex(0);
+       ui->outPutSizeList->setCurrentIndex(1);
+    }
+    else{
+        ui->Label_isIDCardCopyMode->setEnabled(false);
+        ui->label_A4_5->setEnabled(false);
+        ui->label_A4_6->setEnabled(false);
+        ui->label_A4_7->setEnabled(false);
+        ui->label_A4_8->setEnabled(false);
+
+//        ParamForCopy->isIDCardCopyMode = false;
+
+        switch (_idCardCopyMode)
+        {
+            case A4Mode1: ui->label_A4_1->setStyleSheet("#label_A4_1 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
+            case A4Mode2: ui->label_A4_2->setStyleSheet("#label_A4_2 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
+            case A4Mode3: ui->label_A4_3->setStyleSheet("#label_A4_3 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
+            case A5Mode: ui->label_A4_4->setStyleSheet("#label_A4_4 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
+            default:break;
+        }
+        model1->item(1)->setEnabled(true);
+        model1->item(2)->setEnabled(true);
+        model1->item(3)->setEnabled(true);
+        model1->item(4)->setEnabled(true);
+
+        model2->item(0)->setEnabled(true);
+        model2->item(2)->setEnabled(true);
+        model2->item(3)->setEnabled(true);
+        model2->item(4)->setEnabled(true);
+        model2->item(5)->setEnabled(true);
+        model2->item(6)->setEnabled(true);
+        model2->item(7)->setEnabled(true);
+
+
+    }
+}
+
+/***************************************
+*    name:       Credentials Duplex Copy Mode
+*    param1:     MultiMode checked;
+*   function:    Mode support 4 options: A4 mode1, A4 mode2, A4 mode3, A5 mode.
+*
+****************************************/
+void MoreSettingsForCopy::selectIDCardCopyMode(int mode)
+{
+    QStandardItemModel *model1 = qobject_cast<QStandardItemModel *>(ui->docSizeList->model());
+    QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+    switch (_idCardCopyMode)
+    {
+        case A4Mode1: ui->label_A4_1->setStyleSheet("#label_A4_1 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
+        case A4Mode2: ui->label_A4_2->setStyleSheet("#label_A4_2 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
+        case A4Mode3: ui->label_A4_3->setStyleSheet("#label_A4_3 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
+        case A5Mode: ui->label_A4_4->setStyleSheet("#label_A4_4 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
+        default:break;
+    }
+
+    _idCardCopyMode = mode;
+
+    switch (_idCardCopyMode)
+    {
+        case A4Mode1: ui->label_A4_1->setStyleSheet("#label_A4_1 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+        case A4Mode2: ui->label_A4_2->setStyleSheet("#label_A4_2 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+        case A4Mode3: ui->label_A4_3->setStyleSheet("#label_A4_3 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+        case A5Mode: ui->label_A4_4->setStyleSheet("#label_A4_4 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+        default:break;
+    }
+
+    if(_idCardCopyMode == A5Mode)
+    {
+        model1->item(0)->setEnabled(false);
+        model1->item(2)->setEnabled(false);
+        model1->item(3)->setEnabled(false);
+        model1->item(4)->setEnabled(false);
+
+        model2->item(0)->setEnabled(false);
+        model2->item(1)->setEnabled(false);
+        model2->item(3)->setEnabled(false);
+        model2->item(4)->setEnabled(false);
+        model2->item(5)->setEnabled(false);
+        model2->item(6)->setEnabled(false);
+        model2->item(7)->setEnabled(false);
+        ui->docSizeList->setCurrentIndex(1);
+        ui->outPutSizeList->setCurrentIndex(2);
+    }else
+    {
+        model1->item(1)->setEnabled(false);
+        model1->item(2)->setEnabled(false);
+        model1->item(3)->setEnabled(false);
+        model1->item(4)->setEnabled(false);
+
+        model2->item(0)->setEnabled(false);
+        model2->item(2)->setEnabled(false);
+        model2->item(3)->setEnabled(false);
+        model2->item(4)->setEnabled(false);
+        model2->item(5)->setEnabled(false);
+        model2->item(6)->setEnabled(false);
+        model2->item(7)->setEnabled(false);
+        ui->docSizeList->setCurrentIndex(0);
+        ui->outPutSizeList->setCurrentIndex(1);
+    }
+}
+
+void MoreSettingsForCopy::on_btA4_1_clicked()
+{
+    if(_idCardFlag&&_isDuplexCopyDevice)    selectIDCardCopyMode(A4Mode1);
+}
+
+void MoreSettingsForCopy::on_btA4_2_clicked()
+{
+    if(_idCardFlag&&_isDuplexCopyDevice)    selectIDCardCopyMode(A4Mode2);
+}
+
+void MoreSettingsForCopy::on_btA4_3_clicked()
+{
+    if(_idCardFlag&&_isDuplexCopyDevice)    selectIDCardCopyMode(A4Mode3);
+//     ui->label_30->setText("here");
+}
+
+void MoreSettingsForCopy::on_btA4_4_clicked()
+{
+    if(_idCardFlag&&_isDuplexCopyDevice)    selectIDCardCopyMode(A5Mode);
+}
+
+/***************************************
 *    name:       on_isNinOne_toggled
 *    param:      bool checked;
 *   function:   enable the N in One function and show the early selection;
@@ -468,9 +724,7 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
         ui->label_1->setDisabled(true);
         ui->label->setDisabled(true);
 
-        ParamForCopy->isMultiPage = true;
-
-       switch (ParamForCopy->multiMode)
+       switch (_multiMode)
        {
            case TwoInOne: ui->label_20->setStyleSheet("#label_20 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
            case FourInOne: ui->label_21->setStyleSheet("#label_21 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
@@ -489,9 +743,7 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
         ui->label_1->setEnabled(true);
         ui->label->setEnabled(true);
 
-        ParamForCopy->isMultiPage = false;
-
-        switch (ParamForCopy->multiMode)
+        switch (_multiMode)
         {
             case TwoInOne: ui->label_20->setStyleSheet("#label_20 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
             case FourInOne: ui->label_21->setStyleSheet("#label_21 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
@@ -511,7 +763,7 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
 ****************************************/
 void MoreSettingsForCopy::selectMode(MultiMode_Copy mode)
 {
-    switch (ParamForCopy->multiMode)
+    switch (_multiMode)
     {
         case TwoInOne: ui->label_20->setStyleSheet("#label_20 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
         case FourInOne: ui->label_21->setStyleSheet("#label_21 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
@@ -519,9 +771,9 @@ void MoreSettingsForCopy::selectMode(MultiMode_Copy mode)
         default:break;
     }
 
-    ParamForCopy->multiMode = mode;
+    _multiMode = mode;
 
-    switch (ParamForCopy->multiMode)
+    switch (_multiMode)
     {
         case TwoInOne:  ui->label_20->setStyleSheet("#label_20 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
         case FourInOne: ui->label_21->setStyleSheet("#label_21 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
@@ -532,24 +784,26 @@ void MoreSettingsForCopy::selectMode(MultiMode_Copy mode)
 
 void MoreSettingsForCopy::on_bt2in1_clicked()
 {
-    if(ParamForCopy->isMultiPage)    selectMode(TwoInOne);
+    if(ui->isNinOne->isChecked())    selectMode(TwoInOne);
 }
 
 void MoreSettingsForCopy::on_bt4in1_clicked()
 {
-    if(ParamForCopy->isMultiPage)    selectMode(FourInOne);
+    if(ui->isNinOne->isChecked())    selectMode(FourInOne);
 //     ui->label_30->setText("here");
 }
 
 void MoreSettingsForCopy::on_bt9in1_clicked()
 {
-    if(ParamForCopy->isMultiPage)    selectMode(NineInOne);
+    if(ui->isNinOne->isChecked())    selectMode(NineInOne);
 }
 
-void MoreSettingsForCopy::on_btID_clicked()
+void MoreSettingsForCopy::on_btID_clicked(bool checked)
 {
-    ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
-    if(ParamForCopy->promptInfo.isIDCard)
+    qDebug()<<"on_btID_clicked"<<checked;
+//    ParamForCopy->promptInfo.isIDCard = !ParamForCopy->promptInfo.isIDCard;
+//    ui->btID->setChecked(!checked);
+    if(checked)
     {
         ui->btID->setStyleSheet("#btID {border-image: url(:/Images/CheckBox_Open.png);}");
     }
@@ -559,10 +813,11 @@ void MoreSettingsForCopy::on_btID_clicked()
     }
 }
 
-void MoreSettingsForCopy::on_btNInOne_clicked()
+void MoreSettingsForCopy::on_btNInOne_clicked(bool checked)
 {
-    ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
-    if(ParamForCopy->promptInfo.isMultible)
+//    ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
+//    ui->btNInOne->setChecked(!checked);
+    if(checked)
     {
         ui->btNInOne->setStyleSheet("#btNInOne {border-image: url(:/Images/CheckBox_Open.png);}");
     }
@@ -572,32 +827,32 @@ void MoreSettingsForCopy::on_btNInOne_clicked()
     }
 }
 
-void MoreSettingsForCopy::on_btText_toggled(bool checked)
-{
-    if(checked)
-    {
-        ParamForCopy->docType = DocType_Copy_Text;
-    }
-}
+//void MoreSettingsForCopy::on_btText_toggled(bool checked)
+//{
+//    if(checked)
+//    {
+//        ParamForCopy->docType = DocType_Copy_Text;
+//    }
+//}
 
-void MoreSettingsForCopy::on_btPicture_toggled(bool checked)
-{
-    if(checked)
-    {
-        ParamForCopy->docType = DocType_Copy_Photo;
-    }
-}
+//void MoreSettingsForCopy::on_btPicture_toggled(bool checked)
+//{
+//    if(checked)
+//    {
+//        ParamForCopy->docType = DocType_Copy_Photo;
+//    }
+//}
 
-void MoreSettingsForCopy::on_docSizeList_currentIndexChanged(int index)
-{
-    ParamForCopy->docSize = DocSize_Copy(index);
-}
+//void MoreSettingsForCopy::on_docSizeList_currentIndexChanged(int index)
+//{
+//    ParamForCopy->docSize = DocSize_Copy(index);
+//}
 
 void MoreSettingsForCopy::on_dpiList_currentIndexChanged(int index)
 {
     if(_idCardFlag)
     {
-         ParamForCopy->docDpi = DocDpi_Copy_DPI300;
+//         ParamForCopy->docDpi = DocDpi_Copy_DPI300;
          ui->dpiList->setCurrentIndex(1);
     }else
     {
@@ -622,13 +877,13 @@ void MoreSettingsForCopy::on_outPutSizeList_currentIndexChanged(int index)
             ui->isNinOne->setEnabled(true);
         }
     }
-    ParamForCopy->outputSize = OutPutSize_Copy(index);
+//    ParamForCopy->outputSize = OutPutSize_Copy(index);
 }
 
-void MoreSettingsForCopy::on_paperTypeList_currentIndexChanged(int index)
-{
-    ParamForCopy->paperType = MediaType_Copy(index);
-}
+//void MoreSettingsForCopy::on_paperTypeList_currentIndexChanged(int index)
+//{
+//    ParamForCopy->paperType = MediaType_Copy(index);
+//}
 
 bool MoreSettingsForCopy::eventFilter(QObject *watched, QEvent *event)
 {

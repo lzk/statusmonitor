@@ -35,7 +35,7 @@ private:
     UiSettings defaultParam;
 
     void setDefValue();     //设置默认值
-    void showParam();       //显示参数到ui
+    void showParam(UiSettings *param);       //显示参数到ui
     void selectMode(int model);  //选择色彩模式
     void setBgColor(QPushButton *button, QString *color);     //设置背景颜色
 

@@ -101,6 +101,8 @@ private:
 
     bool enabledScanCopy;
     bool enabledWiFi;
+
+    bool isOfflineStart;
 };
 
 #endif // MAINWINDOW_H

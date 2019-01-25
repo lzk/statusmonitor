@@ -106,7 +106,7 @@ void MainWindow::createSysTray()
 //    restoreAction = new QAction(tr("&Restore"), this);
 //    restoreAction = new QAction(tr("显示(&R)"), this);
 //    connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(showNormal()));
-    quitAction = new QAction(tr("退出(&Q)"), this);
+    quitAction = new QAction(QString("%1(&Q)").arg(tr("ResStr_Exit")),this);
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     trayIconMenu = new QMenu(this);
 //    trayIconMenu->addAction(minimizeAction);
@@ -538,7 +538,7 @@ void MainWindow::errorStatus(bool bIsErrorStatus)
         ui->tabStackedWidget->set_scan_enabled(!bIsErrorStatus);//Added for default enable scan button by gavin 2016-04-14
         ui->tabStackedWidget->set_copy_enabled(!bIsErrorStatus);
 //    }
-//    ui->errorBtn->hide();
+    ui->errorBtn->hide();
 
 }
 

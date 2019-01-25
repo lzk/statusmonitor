@@ -34,6 +34,11 @@
      <height>35</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
 border-image: url(:/Images/Btn_Gray.png) 16;
@@ -63,6 +68,11 @@ color:white;
      <width>126</width>
      <height>35</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>

@@ -9,6 +9,8 @@
 #include <qstringlist.h>
 #include "uinterface.h"
 #include <qsettings.h>
+#include "log.h"
+#include "settingwarming.h"
 
 MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     QWidget(parent),
@@ -70,13 +72,14 @@ MemberCenterWidget::~MemberCenterWidget()
 void MemberCenterWidget::on_btLogin_clicked()
 {
     UserLogin *login = new UserLogin(this);
+    login->setWindowTitle(tr("ResStr_Login_"));
     login->exec();
 
     if(login->isLogin())
     {
         loginPhone = login->getPhone();
         currentUser.mobile = loginPhone;
-        ui->login_name->setText( loginPhone );
+        ui->login_name->setText(loginPhone );
         ui->btLogin->setDisabled(true);
         ui->login_arrow->hide();
         isLogin = true;
@@ -170,6 +173,7 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
         if(user["realName"].toString() != NULL)
         {
             ui->le_name->setText(user["realName"].toString());
+            ui->le_name->setCursorPosition(0);
         }
         else
         {
@@ -203,6 +207,7 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
         if(user["email"].toString() != NULL)
         {
             ui->le_mail->setText(user["email"].toString());
+            ui->le_mail->setCursorPosition(0);
         }
         else
         {
@@ -212,6 +217,7 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
         if(user["address"].toString() != NULL)
         {
             ui->le_addr->setText(user["address"].toString());
+            ui->le_addr->setCursorPosition(0);
         }
         else
         {
@@ -324,8 +330,8 @@ void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
     QVariantMap result = parser.parse(strJsonText.toUtf8(),&ok).toMap();
     if(result["success"].toBool() == true)
     {
-        ui->le_name->setText(result["message"].toString());
-        ui->btLogin->setText(QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone));
+//        ui->le_name->setText(result["message"].toString());
+        ui->login_name->setText(QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone));
         ui->stackedWidget->setCurrentIndex(1);
     }
     else
@@ -365,7 +371,6 @@ void MemberCenterWidget::on_btExpe_clicked()
             crmTimer->stop();
         }
     }
-
 }
 
 void MemberCenterWidget::uploadCRM()
@@ -468,10 +473,60 @@ void MemberCenterWidget::on_pushButton_clicked()
 
 void MemberCenterWidget::on_btApply_clicked()
 {
+    QRegExp rx2("^([a-zA-Z0-9_\-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)"
+                "|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})$");
+   if( !rx2.exactMatch(ui->le_mail->text()) )
+   {
+       SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Email_Format_Error"));
+       msgWarm->setWindowTitle(tr("ResStr_Error"));
+       msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                               & ~Qt::WindowMinimizeButtonHint);
+       msgWarm->exec();
+         return;
+   }
+
     setUserInfo();
 }
 
 void MemberCenterWidget::on_btProduct_clicked()
 {
     QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/home_abc.aspx"));
+}
+
+/*disable btApply button if not all the le_name,le_email,le_addr have got value*/
+void MemberCenterWidget::on_le_name_textEdited(const QString &arg1)
+{
+    if(ui->le_addr->text().isEmpty() || ui->le_mail->text().isEmpty() || ui->le_name->text().isEmpty())
+    {
+        ui->btApply->setEnabled(false);
+    }
+    else
+    {
+        ui->btApply->setEnabled(true);
+    }
+}
+
+void MemberCenterWidget::on_le_mail_textEdited(const QString &arg1)
+{
+
+    if(ui->le_addr->text().isEmpty() || ui->le_mail->text().isEmpty() || ui->le_name->text().isEmpty())
+    {
+        ui->btApply->setEnabled(false);
+    }
+    else
+    {
+        ui->btApply->setEnabled(true);
+    }
+}
+
+void MemberCenterWidget::on_le_addr_textEdited(const QString &arg1)
+{
+    if(ui->le_addr->text().isEmpty() || ui->le_mail->text().isEmpty() || ui->le_name->text().isEmpty())
+    {
+        ui->btApply->setDisabled(true);
+    }
+    else
+    {
+        ui->btApply->setEnabled(true);
+    }
 }

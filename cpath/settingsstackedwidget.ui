@@ -899,10 +899,10 @@ QRadioButton::indicator::checked {
    <widget class="QPushButton" name="btIPv6Setting">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>70</x>
       <y>80</y>
-      <width>100</width>
-      <height>30</height>
+      <width>131</width>
+      <height>35</height>
      </rect>
     </property>
     <property name="font">
@@ -934,15 +934,15 @@ color: rgb(255, 255, 255);
    <widget class="QPushButton" name="btIPv6Status">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>70</x>
       <y>170</y>
-      <width>100</width>
-      <height>30</height>
+      <width>131</width>
+      <height>35</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <pointsize>12</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>

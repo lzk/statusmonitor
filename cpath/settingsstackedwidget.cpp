@@ -383,7 +383,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             if(!result)
             {
                 SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
-                warming->setWindowTitle("ResStr_Prompt");
+                warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
@@ -419,7 +419,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             if(!result)
             {
                 SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
-                warming->setWindowTitle("ResStr_Prompt");
+                warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
@@ -455,7 +455,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             if(!result)
             {
                 SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
-                warming->setWindowTitle("ResStr_Prompt");
+                warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
@@ -829,7 +829,7 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
     if(ssid_len < 1)
     {
         SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_9"));
-        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();
@@ -837,7 +837,7 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
     else if(psd_len < 8)
     {
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Msg_3"));
-        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
@@ -1326,7 +1326,7 @@ void SettingsStackedWidget::on_btApply_clicked()
     if(ui->lineEdit_newPassWord->text().isEmpty())
     {
         SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_The_new_password_can_not_be_empty_"));
-        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
@@ -1334,7 +1334,7 @@ void SettingsStackedWidget::on_btApply_clicked()
     else if(ui->lineEdit_confirm->text() != ui->lineEdit_newPassWord->text())
     {
         SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_The_passwords_you_entered__are_different__please_try_again_"));
-        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
