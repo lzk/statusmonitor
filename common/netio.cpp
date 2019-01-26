@@ -4,6 +4,7 @@
 #include <QUrl>
 #include "api_libcups.h"
 #include "log.h"
+
 QHostAddress get_ip_address(const QString& host)
 {
     QHostAddress hostAddress;
@@ -29,7 +30,7 @@ QHostAddress get_ip_address(const QString& host)
 NetIO::NetIO():
     tcpSocket(NULL)
 {
-
+    ifdelay = 0;
 }
 NetIO::~NetIO()
 {
@@ -37,15 +38,28 @@ NetIO::~NetIO()
         delete tcpSocket;
 }
 
-int NetIO::resolveUrl(const char* _url)
+int NetIO::resolveUrl(const char* url)
 {
-    int ret = DeviceIO::resolveUrl(_url);
+    if(!url)
+        return -1;
+    QString str_url(url);
+    if((device_uri[0] != 0) && !str_url.compare(device_uri)){
+        return 0;
+    }
+    int ret = DeviceIO::resolveUrl(url);
     if(ret)
         return ret;
-    char uri[256];
-    cups_resolve_uri(_url ,uri ,sizeof(uri));
-    QUrl url(uri);
-    QString host = url.host();//resolve_uri(url);
+    QUrl real_url;
+    if(str_url.startsWith("dnssd://")){
+        char uri[256];
+        cups_resolve_uri(url ,uri ,sizeof(uri));
+        real_url = QUrl(uri);
+    }
+    if(real_url.isEmpty() || real_url.host().isEmpty())
+        real_url = QUrl(url);
+    QString host = real_url.host();//resolve_uri(url);
+//    LOGLOG("net io rosolve printer uri:%s" ,_url);
+//    LOGLOG("net io rosolved printer uri:%s" ,url.host().toLatin1().constData());
     if(host.isEmpty())
         return -1;
     hostAddress = get_ip_address(host);
@@ -60,18 +74,21 @@ int NetIO::type()
 
 int NetIO::open(int port)
 {
+    if(device_is_open){
+        LOGLOG("device is opened");
+        return -1;
+    }
     if(!tcpSocket)
         tcpSocket = new QTcpSocket;
     tcpSocket->connectToHost(hostAddress, port);
     if (!tcpSocket->waitForConnected(5000)) {
-//        emit error(tcp_socket.error(), tcp_socket.errorString());
-        LOGLOG("tcp error code:%d",tcpSocket->error());
-        LOGLOG("tcp error:%s" , tcpSocket->errorString().toLatin1().constData());
-//        qDebug()<<"tcp error:"<< tcpSocket->error();
-//        qDebug()<< tcpSocket->errorString();
+        LOGLOG("tcpsocket error code:%d",tcpSocket->error());
+        LOGLOG("tcpsocket error:%s" ,tcpSocket->errorString().toLatin1().constData());
+        tcpSocket->close();
         return -1;
     }
-    tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption ,1);
+    device_is_open = true;
+//    tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption ,1);
 //    qDebug()<<"option:"<<tcpSocket->socketOption(QAbstractSocket::LowDelayOption);
     return 0;
 
@@ -84,12 +101,18 @@ int NetIO::close(void)
 //    tcpSocket->disconnectFromHost();
 //    tcpSocket->waitForDisconnected();
 //    tcpSocket->abort();
-    tcpSocket->close();
+    if(device_is_open){
+        device_is_open = false;
+        tcpSocket->close();
+    }
     return 0;
 }
 
 int NetIO::write(char *buffer, int bufsize)
 {
+    if(!device_is_open){
+		return -1;
+	}
     if(!tcpSocket)
         return -1;
 //    int state = tcpSocket->state();
@@ -106,6 +129,9 @@ int NetIO::write(char *buffer, int bufsize)
 
 int NetIO::read(char *buffer, int bufsize)
 {
+    if(!device_is_open){
+		return -1;
+	}
     if(!tcpSocket)
         return -1;
     int bytesAvailable;
@@ -128,13 +154,20 @@ int NetIO::read(char *buffer, int bufsize)
 #else
     int numRead = 0, numReadTotal = 0;
     do{
-        if (!tcpSocket->waitForReadyRead(15000)){
-//            qDebug()<<"tcp error:"<< tcpSocket->error();
-//            qDebug()<< tcpSocket->errorString();
-            LOGLOG("%s" ,tcpSocket->errorString().toUtf8().constData());
-            break;
-        }
+ //       if (!tcpSocket->waitForReadyRead(15000)){
+ //           LOGLOG("%s" ,tcpSocket->errorString().toUtf8().constData());
+ //           break;
+ //       }
         bytesAvailable = tcpSocket->bytesAvailable();
+        if(bytesAvailable <= 0){
+            if (!tcpSocket->waitForReadyRead(5000)){
+    //            qDebug()<<"tcp error:"<< tcpSocket->error();
+    //            qDebug()<< tcpSocket->errorString();
+                LOGLOG("reading error:" ,tcpSocket->errorString().toUtf8().constData());
+                break;
+            }
+            bytesAvailable = tcpSocket->bytesAvailable();
+        }
         if(bytesAvailable > bufsize - numReadTotal)
             bytesAvailable = bufsize - numReadTotal;
         if(bytesAvailable > 0){
@@ -156,16 +189,91 @@ int NetIO::read(char *buffer, int bufsize)
 
 int NetIO::getDeviceId(char *buffer, int bufsize)
 {
-    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
+    return getDeviceId_without_open(buffer ,bufsize);
+}
+
+static int _platform_net_get_device_id(const QString& device_uri,char *buffer, size_t bufsize);
+int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
+{
+    //some host name can not get device id. change to ipv4 first.
+//    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
+    return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);
 }
 
 bool NetIO::isConnected()
 {
     char buffer[1024];
-    return !snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,sizeof(buffer));
+    return !getDeviceId_without_open(buffer ,sizeof(buffer));
 }
 
 const char* NetIO::getDeviceAddress()
 {
     return hostAddress.toString().toLatin1().constData();
 }
+
+int NetIO::write_bulk(char *buffer, int bufsize ,unsigned int)
+{
+    return write(buffer ,bufsize);
+}
+
+int NetIO::read_bulk(char *buffer, int bufsize ,unsigned int)
+{
+    return read(buffer ,bufsize);
+}
+
+#include <QUdpSocket>
+#include <unistd.h>
+static int _platform_net_get_device_id(const QString& device_uri,char *buffer, size_t bufsize)
+{
+    QHostAddress host_address = get_ip_address(QUrl(device_uri).host());
+//    LOGLOG("get device id from host address:%s" ,host_address.toString().toLatin1().constData());
+
+    const unsigned char data[] =
+    {0x30, 0x2d, 0x02, 0x01, 00, 0x04, 0x06, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0xa0, 0x20,
+            0x02, 0x01, 0x04, 0x02, 0x01, 00, 0x02, 0x01, 00, 0x30, 0x15, 0x30, 0x13, 0x06,
+            0x0f, 0x2b, 0x06, 0x01, 0x04, 0x01, 0x95, 0x0b, 0x01, 0x02, 0x01, 0x02, 0x01,
+     0x01, 0x03, 0x01, 0x05, 00};
+
+    int bytes = sizeof(data);
+
+    QUdpSocket udpSocket;
+    udpSocket.connectToHost(host_address ,161);
+    if (!udpSocket.waitForConnected(5000)) {
+        return -1;
+    }
+    udpSocket.bind(host_address ,161);
+    int ret;
+    ret = udpSocket.write((const char*)data ,bytes);
+//    ret = udpSocket.writeDatagram((const char*)data ,bytes ,host_address ,161);
+    if(ret != bytes){
+        return -1;
+    }
+
+    int times = 0;
+    while (!udpSocket.hasPendingDatagrams()){
+        times ++;
+        usleep( 10 * 1000);//10ms
+        if(times > 500) //5s
+            break;
+    }
+//    qDebug()<<"wait for reading time:"<<times * 10 <<"ms";
+
+    QByteArray ba;
+    while (udpSocket.hasPendingDatagrams()) {
+        QByteArray datagram;
+        datagram.resize(udpSocket.pendingDatagramSize());
+        QHostAddress sender;
+        quint16 senderPort;
+
+        udpSocket.readDatagram(datagram.data(), datagram.size(),
+                                &sender, &senderPort);
+        ba += datagram;
+    }
+    udpSocket.close();
+    if(ba.size() > 60){
+        if(bufsize >= ba.size() - 60)
+            memcpy(buffer ,ba.data() + 59 ,ba.size() - 60);
+    }
+    return 0;
+}
+

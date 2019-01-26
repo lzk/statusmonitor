@@ -24,7 +24,7 @@ public:
 
 signals:
     void update_printer_status(PrinterInfo_struct);
-    void update_printerlist(QList<PrinterInfo_struct>);
+    void update_printerlist();
 
 public slots:
     void set_current_printer(const QString& printer);

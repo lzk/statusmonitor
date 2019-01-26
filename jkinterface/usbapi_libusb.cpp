@@ -108,25 +108,23 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
 
     ret = libusb_get_device_descriptor (dev, &desc);
     if (ret < 0){
+        LOGLOG("libusb can not get descriptor");
         return -1;
     }
     ret = libusb_open (dev, &udev);
     if(ret < 0)
         return -1;
+//    LOGLOG("found usb device with vid:0x%x ,pid:0x%x" ,desc.idVendor ,desc.idProduct);
     char devserialNumber[1024];
     if (desc.iSerialNumber){
-        ret = libusb_get_string_descriptor_ascii(udev, desc.iSerialNumber, (unsigned char *)devserialNumber, sizeof(devserialNumber));
-#if DEBUG
-        if (ret > 0)
-            LOGLOG("%.*s  - Serial Number: %s\n", 0,
-            "                    ", devserialNumber);
-#endif
+        ret = libusb_get_string_descriptor_ascii(udev, desc.iSerialNumber, (unsigned char *)devserialNumber, sizeof(devserialNumber));        
+//        LOGLOG("found usb device with serial:%s" ,devserialNumber);
     }
 
     if(pData_device->deviceInfo.serial[0] != NULL){
         get_serial(dev ,devserialNumber);
         if(!strcmp(pData_device->deviceInfo.serial ,devserialNumber)){
-//            LOGLOG("found usb device with serial %s" ,devserialNumber);
+ //           LOGLOG("get device success via serial");
             pData_device->dev = dev;
             pData_device->udev = udev;
             ret = 0;
@@ -137,7 +135,7 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
     }else{
         if(pData_device->deviceInfo.vid == desc.idVendor
                 && pData_device->deviceInfo.pid == desc.idProduct){
-//            LOGLOG("found usb device with vid %x ,pid %x" ,desc.idVendor ,desc.idProduct);
+//            LOGLOG("get device success via vid&pid");
             pData_device->dev = dev;
             pData_device->udev = udev;
             ret = 0;
@@ -151,7 +149,7 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
     return ret;
 }
 
-int config(libusb_device *dev ,libusb_device_handle *udev)
+int UsbApi::config(libusb_device *dev ,libusb_device_handle *udev)
 {
     int result;
 
@@ -161,26 +159,26 @@ int config(libusb_device *dev ,libusb_device_handle *udev)
 
     result = libusb_get_configuration (udev, &config);
     if (result < 0){
-        LOGLOG("get_device_id: Could not get configuration for device (err %d)\n", result);
+        LOGLOG("libusb: Could not get configuration for device (err %d)\n", result);
         return result;
     }
 
     if (config == 0){
-        LOGLOG("get_device_id: Device not configured?\n");
+        LOGLOG("libusb: Device not configured?\n");
         return 1;
     }
 
     result = libusb_get_device_descriptor (dev, &desc);
     if (result < 0)
     {
-        LOGLOG("get_device_id: Could not get device descriptor for device  (err %d)\n", result);
+        LOGLOG("libusb: Could not get device descriptor for device  (err %d)\n", result);
         return result;
     }
 
     result = libusb_get_config_descriptor (dev, 0, &config0);
     if (result < 0)
     {
-        LOGLOG("get_device_id: Could not get config[0] descriptor for device (err %d)\n", result);
+        LOGLOG("libusb: Could not get config[0] descriptor for device (err %d)\n", result);
         return result;
     }
 
@@ -188,26 +186,46 @@ int config(libusb_device *dev ,libusb_device_handle *udev)
     if (desc.bNumConfigurations > 1)
     {
 #ifdef DEBUG
-        LOGLOG("get_device_id: More than one configuration (%d), choosing first config (%d)\n", desc.bNumConfigurations, config0->bConfigurationValue);
+        LOGLOG("libusb: More than one configuration (%d), choosing first config (%d)\n", desc.bNumConfigurations, config0->bConfigurationValue);
 #endif
     }
     result = libusb_set_configuration (udev, config0->bConfigurationValue);
 
+    const struct libusb_interface_descriptor* p_inter;
+    int num;
+    int type,direction;
+    for(int interface = 0 ;interface < config0->bNumInterfaces ;interface++){
+        if(interface > 1)
+            break;
+
+        p_inter = &config0->interface[interface].altsetting[0];
+        num = p_inter->bNumEndpoints;
+        for(int i = 0 ;i < num ;i++){
+            type = p_inter->endpoint[i].bmAttributes & LIBUSB_TRANSFER_TYPE_MASK;
+            if(type == LIBUSB_TRANSFER_TYPE_BULK) {
+                direction = p_inter->endpoint[i].bEndpointAddress & LIBUSB_ENDPOINT_DIR_MASK;
+                if(direction == LIBUSB_ENDPOINT_IN)
+                    bulk_in[interface] = p_inter->endpoint[i].bEndpointAddress;
+                else
+                    bulk_out[interface] = p_inter->endpoint[i].bEndpointAddress;
+            }
+        }
+    }
     libusb_free_config_descriptor (config0);
 
     if (result < 0)
     {
 #ifdef DEBUG
-        LOGLOG("get_device_id: libusb complained: %s\n", my_libusb_strerror (result));
+        LOGLOG("libusb: libusb complained: %s\n", my_libusb_strerror (result));
 #endif
         if (result == LIBUSB_ERROR_ACCESS)
         {
-            LOGLOG("get_device_id: Make sure you run as root or set appropriate permissions\n");
+            LOGLOG("libusb: Make sure you run as root or set appropriate permissions\n");
         }
         else if (result == LIBUSB_ERROR_BUSY)
         {
 #ifdef DEBUG
-            LOGLOG("get_device_id: Maybe the kernel scanner driver or usblp claims the interface? Ignoring this error...\n");
+            LOGLOG("libusb: Maybe the kernel scanner driver or usblp claims the interface? Ignoring this error...\n");
 #endif
             result = 0;
         }
@@ -221,6 +239,7 @@ int claimInterface(libusb_device_handle* udev ,int interface){
     /* Check whether a kernel driver is attached to interface #0. If so, we'll
      * need to detach it.
      */
+//    result = libusb_reset_device(udev);
     result = libusb_kernel_driver_active(udev, interface);
 
     if (result == 1) { //un-mount usbhid driver
@@ -228,28 +247,28 @@ int claimInterface(libusb_device_handle* udev ,int interface){
         result = libusb_detach_kernel_driver(udev, interface);
 #ifdef DEBUG
         if(!result)
-            LOGLOG("get_device_id: usb_detach_kernel_driver_np : success\n");
+            LOGLOG("libusb: usb_detach_kernel_driver_np : success\n");
 #endif
     }
 #ifdef DEBUG
     else
     {
-        LOGLOG("get_device_id: Nokernel driver is active \n");
+        LOGLOG("libusb: Nokernel driver is active \n");
     }
 #endif
     /* Claim the interface */
     result = libusb_claim_interface (udev, interface);
     if (result < 0)
     {
-      LOGLOG("get_device_id: libusb complained: %s\n", my_libusb_strerror (result));
+      LOGLOG("libusb: libusb complained: %s\n", my_libusb_strerror (result));
       if (result == LIBUSB_ERROR_ACCESS)
       {
-          LOGLOG("get_device_id: Make sure you run as root or set appropriate permissions\n");
+          LOGLOG("libusb: Make sure you run as root or set appropriate permissions\n");
           return result;
       }
       else if (result == LIBUSB_ERROR_BUSY)
       {
-          LOGLOG("get_device_id: Maybe the kernel scanner driver claims the scanner's interface?\n");
+          LOGLOG("libusb: Maybe the kernel scanner driver claims the scanner's interface?\n");
           return result;
        }
     }
@@ -307,6 +326,7 @@ int UsbApi::exit()
 
 int UsbApi::open(int vid, int pid, const char *serial ,int interface)
 {
+//    interface = 0;
     struct_device data;
     memset((void*)&data ,0 ,sizeof(data));
     data.deviceInfo.vid = vid;
@@ -314,10 +334,13 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
     if(serial)
         strcpy(data.deviceInfo.serial ,serial);
     int ret = getDeviceWithSerial(&data);
-    if(ret)
+    if(ret){
+        LOGLOG("libusb can not get device");
         return ret;
+    }
     g_device = data.dev;
     g_dev_h = data.udev;
+    libusb_reset_device(g_dev_h);
     ret = config(g_device ,g_dev_h);
     if(ret){
         LOGLOG("libusb can not config");
@@ -325,17 +348,20 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
         return ret;
     }
     g_interface = interface;
+//    ret = claimInterface(g_dev_h ,0);
     ret = claimInterface(g_dev_h ,g_interface);
     if(ret){
         LOGLOG("libusb can not claim interface:%d" ,g_interface);
         libusb_close(g_dev_h);
         return ret;
     }
+//    LOGLOG("libusb open success ,bulkin address:0x%02x" ,bulk_in);
     return ret;
 }
 
 int UsbApi::close()
 {
+//    releaseInterface(g_dev_h ,0);
     releaseInterface(g_dev_h ,g_interface);
 
     libusb_close(g_dev_h);
@@ -360,14 +386,14 @@ bool UsbApi::isConnected(int vid, int pid, const char *serial)
 int UsbApi::write(char* buffer ,int bufsize)
 {
     int doneByte; //for return values
-    doneByte = libusb_control_transfer(g_dev_h, LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_ENDPOINT_IN |
-                                       LIBUSB_RECIPIENT_INTERFACE, 0x4D, 0x3C2B, (g_interface ==1? 0x0100 : 0),
+//    doneByte = libusb_control_transfer(g_dev_h, LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_OUT |LIBUSB_RECIPIENT_INTERFACE,
+//                                       0x4D, 0x3C2B, (g_interface ==1? 0x0100 : 0),
+//                                       (unsigned char *) buffer, bufsize, 5000);
+    doneByte = libusb_control_transfer(g_dev_h, 0x41, 0x4D, 0x3C2B, (g_interface ==1? 0x0100 : 0),
             (unsigned char *) buffer, bufsize, 5000);
-//    doneByte = libusb_control_transfer(g_dev_h, 0x41, 0x4D, 0x3C2B, (g_interface ==1? 0x0100 : 0),
-//            (unsigned char *) buffer, bufsize, 5000);
 
     if (doneByte < 0) {
-        LOGLOG("USBWrite: Control write failed\n");
+        LOGLOG("libusb: control write error:%d" ,doneByte);
         *buffer = '\0';
     }
     return doneByte;
@@ -377,12 +403,15 @@ int UsbApi::write(char* buffer ,int bufsize)
 int UsbApi::read(char* buffer ,int bufsize)
 {
     int doneByte; //for return values
+//    doneByte = libusb_control_transfer(g_dev_h, LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_IN | LIBUSB_RECIPIENT_INTERFACE,
+//                                       0x00, 0x00, (g_interface ==1? 0x0100 : 0),
+//                                       (unsigned char *) buffer, bufsize, 5000);
     doneByte = libusb_control_transfer(g_dev_h, 0xc1, 0x00, 0x00, (g_interface ==1? 0x0100 : 0),
             (unsigned char *) buffer, bufsize, 5000);
 
 
     if (doneByte < 0) {
-        LOGLOG("USBRead: Control read failed\n");
+        LOGLOG("libusb: control read error:%d" ,doneByte);
         *buffer = '\0';
     }
     return doneByte;
@@ -390,13 +419,18 @@ int UsbApi::read(char* buffer ,int bufsize)
 
 int UsbApi::getDeviceId(char *buffer, int bufsize)
 {
+//    int
+//    ret = libusb_control_transfer(g_dev_h, LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_ENDPOINT_IN | LIBUSB_RECIPIENT_INTERFACE,
+//                                  0x00, 0x01,(g_interface ==1? 0x0100 : 0),
+//                                  (unsigned char *) buffer, bufsize, 5000);
+
     int
     ret = libusb_control_transfer(g_dev_h, (0x01 << 5) | 0x80 | 0x01, 0x00, 0x01,
                                   (g_interface ==1? ((1 << 8) | 0) : 0), (unsigned char *) buffer, bufsize, 5000);
 
     if (ret < 0)
     {
-        LOGLOG("get_device_id: get 1284 fail\n");
+        LOGLOG("libusb: get device id error:%d" ,ret);
         *buffer = '\0';
         return -1;
     }
@@ -450,4 +484,33 @@ int UsbApi::getDeviceAddress(int vid, int pid, const char *serial ,int* address)
         libusb_close(data.udev);
     }
     return ret;
+}
+
+int UsbApi::write_bulk(char* buffer ,int bufsize ,unsigned int interface)
+{
+    if(interface > 1)
+        return -1;
+    int ret;
+    int actual_length;
+    ret = libusb_bulk_transfer(g_dev_h ,bulk_out[interface] , (unsigned char *) buffer, bufsize, &actual_length, 5000);
+    if(ret < 0){
+        LOGLOG("libusb bulk write error:%d" ,ret);
+        return ret;
+    }else
+        return actual_length;
+}
+
+int UsbApi::read_bulk(char* buffer ,int bufsize ,unsigned int interface)
+{
+    if(interface > 1)
+        return -1;
+    int ret;
+    int actual_length;
+    ret = libusb_bulk_transfer(g_dev_h ,bulk_in[interface] , (unsigned char *) buffer, bufsize, &actual_length, 30000);
+    if(ret < 0){
+        LOGLOG("libusb bulk read error:%d" ,ret);
+        return ret;
+    }
+    else
+        return actual_length;
 }

@@ -30,6 +30,7 @@ public:
     explicit UIConfig(QObject *parent = 0);
 
     static void initConfig();
+    static void exit_app();
 public:
     enum CmdType{
         CMD_GetDefaultPrinter,

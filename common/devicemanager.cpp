@@ -1,32 +1,42 @@
 #include "devicemanager.h"
 #include "jkinterface.h"
+#include "usbio.h"
+#include "netio.h"
 DeviceManager::DeviceManager()
     :device(NULL)
+    ,usbIO(new UsbIO)
+    ,netIO(new NetIO)
 {
 
 }
 
-DeviceIO* DeviceManager::getDevice(const char* device_uri)
+DeviceManager::~DeviceManager()
 {
-    int type = getDeviceType(device_uri);
+    delete usbIO;
+    delete netIO;
+}
+
+DeviceIO* DeviceManager::getDevice(Printer_struct* printer)
+{
+    int type = getDeviceType(printer->deviceUri);
     switch (type) {
     case DeviceIO::Type_usb:
-        device = &usbIO;
+        device = usbIO;
         break;
 
     case DeviceIO::Type_net:
-        device = &netIO;
+        device = netIO;
         break;
 
     default:
         device = NULL;
         break;
     }
-    if(this->device_uri.compare(device_uri)){
+    if(device_uri.compare(printer->deviceUri)){
 //        LOGLOG("update device:%s" ,device_uri);
-        this->device_uri = device_uri;
+        this->device_uri = printer->deviceUri;
         if(device){
-            device->resolveUrl(device_uri);
+            device->resolve(printer);
         }
     }
     return device;

@@ -13,6 +13,7 @@ SOURCES += \
     $${PWD}/log.cpp \
     $${PWD}/trans.cpp \
     $$PWD/jkconfig.cpp \
+    $$PWD/deviceio.cpp \
     $$PWD/filelocker.cpp
 
 

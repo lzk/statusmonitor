@@ -8,7 +8,6 @@ UInterface* gUInterface;
 #include "commonapi.h"
 #include "statusthread.h"
 #include "appserver.h"
-#include <QFile>
 void quit(int)
 {
     LOGLOG("SIGINT quit");
@@ -53,7 +52,6 @@ int main(int argc, char *argv[])
     delete w;
     delete app_server;
     delete gUInterface;
-    QFile::remove(status_filename);
-    QFile::remove(lockfile);
+    UIConfig::exit_app();
     return ret;
 }

@@ -14,10 +14,10 @@ UIConfig::UIConfig(QObject *parent) :
 void UIConfig::initConfig()
 {
     //config status server thread
-//    status_filename = "/tmp/.tomcat";
+//    status_file = "/tmp/.tomcat";
     statusKey = "tomcat/status/";
     printersKey = "tomcat/printerlist/";
-//    lockfile = "/tmp/.locktomcat";
+//    status_lock_file = "/tmp/.locktomcat";
 
     //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;

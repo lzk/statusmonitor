@@ -50,13 +50,18 @@ public:
     bool isConnected(int vid, int pid, const char *serial);
     int getDeviceAddress(int vid, int pid, const char *serial ,int* address);
 
+    int write_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
+    int read_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
 private:
     int getDeviceWithSerial(struct_device*);
+    int config(libusb_device *dev ,libusb_device_handle *udev);
 
 private:
     int g_interface;
     libusb_device *g_device;
     libusb_device_handle *g_dev_h;
+    int bulk_in[2];
+    int bulk_out[2];
 };
 
 #endif // USBAPI_LIBUSB_H

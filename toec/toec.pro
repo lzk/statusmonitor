@@ -36,11 +36,11 @@ HEADERS += \
     $${PWD}/fingermanager.h \
     $${PWD}/filter_check_finger.h \
 
-#contains(CONFIG ,debug){
-#    DEFINES += DEBUG_TO_STDERR
-#}
-#else
-{
+
+CONFIG(debug ,debug|release){
+    DEFINES += DEBUG_TO_STDERR
+}else{
+    DEFINES += DEBUG_TO_STDERR
 #contains(QT_ARCH, loongson3a) {
         DEFINES += LOONGSON
 #}

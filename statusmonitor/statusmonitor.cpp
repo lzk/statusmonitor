@@ -96,14 +96,56 @@ int StatusMonitor::getPrinterStatus(const char* printer ,PrinterStatus_struct* p
     return ret;
 }
 
-int StatusMonitor::getDeviceStatus(DeviceIO* device ,PrinterStatus_struct* ps)
+//int StatusMonitor::getDeviceStatus(DeviceIO* device ,PrinterStatus_struct* ps)
+//{
+//    PRINTER_STATUS status;
+//    int ret = getStatusFromDevice(device ,&status);
+//    if(ret){
+//        memset(&status ,0 ,sizeof(status));
+////        status.PrinterStatus = PS_ERROR_POWER_OFF;
+//        status.PrinterStatus = PS_UNKNOWN;
+//    }else{
+////        if(IsStatusAbnormal(status.PrinterStatus)){
+////            status.PrinterStatus = PS_OFFLINE;
+////            status.PrinterStatus = PS_PAUSED;
+////        }
+//    }
+//    parsePrinterStatus(&status ,ps);
+//    return 0;
+////    return ret;
+//}
+
+int StatusMonitor::getDeviceStatus(DeviceIO* device ,Printer_struct* printer ,PrinterStatus_struct* ps)
 {
-    PRINTER_STATUS ps_static;
-    int ret = getStatusFromDevice(device ,&ps_static);
-    if(!ret){
-        ret = parsePrinterStatus(&ps_static ,ps);
+    if(!device || !printer || !ps){
+        return -1;
     }
+    int ret = -1;
+    PRINTER_STATUS status;
+    if(device->isConnected(printer) || (device->type() == DeviceIO::Type_usb)){
+        ret = getStatusFromDevice(device ,printer ,&status);
+    }
+    if(ret){
+        memset(&status ,0 ,sizeof(status));
+//        status.PrinterStatus = PS_ERROR_POWER_OFF;
+        status.PrinterStatus = PS_UNKNOWN;
+    }else{
+//        if(IsStatusAbnormal(status.PrinterStatus)){
+//            status.PrinterStatus = PS_OFFLINE;
+//            status.PrinterStatus = PS_PAUSED;
+//        }
+    }
+    parsePrinterStatus(&status ,ps);
     return ret;
+}
+
+int StatusMonitor::getDeviceStatus(DeviceIOManager* device_manager ,Printer_struct* printer ,PrinterStatus_struct* ps)
+{
+    if(!device_manager || !printer || !ps){
+        return -1;
+    }
+    DeviceIO* device = device_manager->getDevice(printer);
+    return getDeviceStatus(device ,printer ,ps);
 }
 
 struct PrinterList_para_struct
@@ -131,6 +173,14 @@ static int getPrinterList(void* para ,Printer_struct* ps)
         }
     }
     return ret;
+}
+
+int StatusMonitor::getPrintersFromFile(CALLBACK_getPrinterInfo callback,void* para)
+{
+    struct PrinterList_para_struct pl_para;
+    pl_para.callback = callback;
+    pl_para.para = para;
+    return StatusManager().getPrintersFromFile(getPrinterList ,(void*)&pl_para);
 }
 
 int StatusMonitor::getPrinters(CALLBACK_getPrinterInfo callback,void* para)

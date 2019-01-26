@@ -18,9 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(app_name);
 //    setWindowIcon(QIcon(":/image/app_icon.png"));
+//    ui->menuBar->hide();
+//    ui->statusBar->hide();
+    ui->mainToolBar->hide();
 
-    this->setFixedSize(550 ,400);
+    this->setFixedSize(600 ,500);
     ui->statusUpdate_groupBox->hide();
+    ui->tableWidget_jobs->setFocusPolicy(Qt::ClickFocus);
+//    ui->tableWidget_printers->setFocusPolicy(Qt::NoFocus);
 
     createSysTray();
 
@@ -186,7 +191,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     case 2:
 #if !TEST
     {
-        ui->tableWidget_jobs->clear();
+//        ui->tableWidget_jobs->clearContents();
+        ui->tableWidget_jobs->setRowCount(0);
         QString password = getEnterPassword();
         QVariant sys_password;
         appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
@@ -716,23 +722,32 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     status_icon += ".png";
     //update status string
     text = "<html><head/><body>";
-    text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
 
     ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize);
     if(!ei.error || !ei.errorString){
+        text += QString() + "<p>" + get_Status_string(status) + "</p>";
+//        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
         text += "</body></html>";
         ui->label_status->setText(text);
         ui->label_detail->setText("");
     }else{
+        text += QString() + "<p>" + ei.errorString->title + "</p>";
 //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
 //        text += "<br/>";
-//        text += QString() + "<p>" + ei.error->code + "</p>";
+        text += QString() + "<p>" + ei.error->code + "</p>";
         text += "</body></html>";
         ui->label_status->setText(text);
 
         text = "<html><head/><body>";
+        const char* extra_string = "";
         for(i = 0 ;i < ei.errorString->lines ;i++){
 //            text += "<br/>";
+            if(ei.errorString->mediaInfo){
+                if(i == ei.errorString->lines -2)
+                    extra_string = ei.paperSizeString;
+                else if(i == ei.errorString->lines - 1)
+                    extra_string = ei.paperTypeString;
+            }
             switch (i) {
             case 0:
                 text += QString() + "<p>" + ei.errorString->line0 + "</p>";
@@ -741,13 +756,13 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
                 text += QString() + "<p>" + ei.errorString->line1 + "</p>";
                 break;
             case 2:
-                text += QString() + "<p>" + ei.errorString->line2 + "</p>";
+                text += QString() + "<p>" + ei.errorString->line2 + extra_string + "</p>";
                 break;
             case 3:
-                text += QString() + "<p>" + ei.errorString->line3 + "</p>";
+                text += QString() + "<p>" + ei.errorString->line3 + extra_string + "</p>";
                 break;
             case 4:
-                text += QString() + "<p>" + ei.errorString->line4 + "</p>";
+                text += QString() + "<p>" + ei.errorString->line4 + extra_string + "</p>";
                 break;
             default:
                 break;
@@ -838,30 +853,30 @@ void MainWindow::updateJobHistory(const QVariant& data)
         ui->btn_nextpage->setEnabled(false);
     }
 
-    ui->tableWidget_jobs->clear();
+//    ui->tableWidget_jobs->clear();
     QStringList job_history = jobs.job_list;
     ui->tableWidget_jobs->setRowCount(job_history.length());
     QTableWidgetItem* item;
-    item = new QTableWidgetItem(QString::fromUtf8("打印机名称"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(0, item);
-    item = new QTableWidgetItem(QString::fromUtf8("计算机名称"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(1, item);
-    item = new QTableWidgetItem(QString::fromUtf8("用户名称"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(2, item);
-    item = new QTableWidgetItem(QString::fromUtf8("文件名称"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(3, item);
-    item = new QTableWidgetItem(QString::fromUtf8("页数"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(4, item);
-    item = new QTableWidgetItem(QString::fromUtf8("份数"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(5, item);
-    item = new QTableWidgetItem(QString::fromUtf8("打印时间"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(6, item);
-    item = new QTableWidgetItem(QString::fromUtf8("是否通过指纹验证"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(7, item);
-    item = new QTableWidgetItem(QString::fromUtf8("验证结果"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(8, item);
-    item = new QTableWidgetItem(QString::fromUtf8("打印结果"));
-    ui->tableWidget_jobs->setHorizontalHeaderItem(9, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("打印机名称"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(0, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("计算机名称"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(1, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("用户名称"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(2, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("文件名称"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(3, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("页数"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(4, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("份数"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(5, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("打印时间"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(6, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("是否通过指纹验证"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(7, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("验证结果"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(8, item);
+//    item = new QTableWidgetItem(QString::fromUtf8("打印结果"));
+//    ui->tableWidget_jobs->setHorizontalHeaderItem(9, item);
 
     base = 0;
     for(int i = 0 ;i < job_history.length() ;i++){

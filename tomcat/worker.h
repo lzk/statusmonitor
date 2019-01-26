@@ -15,7 +15,6 @@ public:
     explicit Worker(QObject *parent = 0);
     ~Worker();
     void setPrinters(PrinterInfo_struct* ps);
-    DeviceIO* getDevice(const char* device_uri);
     
 signals:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
@@ -25,12 +24,13 @@ public slots:
     void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void getPrinters();
     void update_printer_status(PrinterInfo_struct);
+    void update_printerlist();
 
 private:
     int cmd_status;
     QStringList printers;
     QList<PrinterInfo_struct> printers_detail;
-    DeviceManager deviceManager;
+    DeviceManager* deviceManager;
     DeviceIO* device;
     Printer_struct* get_printer(const QString& printer_name);//get printer exist in system
 

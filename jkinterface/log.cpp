@@ -68,9 +68,11 @@ void JKLog::init()
 //    file = fopen(log_file ,"w+");
 }
 
-
+//#include <QMutex>
+//static QMutex mutex_write_log_file;
 int JKLog::log(const char* para ,va_list pArgs)
 {
+//    QMutexLocker locker(&mutex_write_log_file);
     if(!file)
         return -1;
     int ret = vfprintf(file ,para ,pArgs);

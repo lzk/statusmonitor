@@ -8,16 +8,19 @@
 Worker::Worker(QObject *parent) :
     QObject(parent)
   ,cmd_status(0)
+  ,deviceManager(new DeviceManager)
 {
-    watcher = new Watcher(&deviceManager);
+    watcher = new Watcher(deviceManager);
     connect(this ,SIGNAL(set_current_printer(QString)) ,watcher ,SLOT(set_current_printer(QString)));
     connect(watcher ,SIGNAL(update_printer_status(PrinterInfo_struct)) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
+    connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()));
     watcher->start();
 }
 
 Worker::~Worker()
 {
     delete watcher;
+    delete deviceManager;
 }
 
 void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
@@ -74,16 +77,10 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     cmd_status = 0;
 }
 
-DeviceIO* Worker::getDevice(const char* device_uri)
-{
-    device = deviceManager.getDevice(device_uri);
-    return device;
-}
-
 static int callback_getPrinters(void* para,PrinterInfo_struct* ps)
 {
     Worker* worker = (Worker*)para;
-    strcpy(ps->printer.connectTo ,worker->getDevice(ps->printer.deviceUri)->getDeviceAddress());
+//    strcpy(ps->printer.connectTo ,worker->getDevice(ps->printer.deviceUri)->getDeviceAddress());
     worker->setPrinters(ps);
     return 1;
 }
@@ -115,8 +112,17 @@ Printer_struct* Worker::get_printer(const QString& printer_name)
 
 void Worker::update_printer_status(PrinterInfo_struct ps)
 {
-    LOGLOG("watcher update status");
+    LOGLOG("watcher update status:%02x" ,ps.status.PrinterStatus);
     QVariant value;
     value.setValue<PrinterInfo_struct>(ps);
     cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+}
+
+void Worker::update_printerlist()
+{
+    LOGLOG("watcher update printer list");
+    QVariant value;
+    watcher->get_printer_list(printers_detail);
+    value.setValue(printers_detail);
+    cmdResult(UIConfig::CMD_GetPrinters ,0 ,value);
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>485</height>
+    <width>600</width>
+    <height>544</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,13 +31,13 @@
      <widget class="QLabel" name="logo_label">
       <property name="minimumSize">
        <size>
-        <width>550</width>
+        <width>600</width>
         <height>50</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>550</width>
+        <width>600</width>
         <height>50</height>
        </size>
       </property>
@@ -70,6 +70,9 @@
           <property name="topMargin">
            <number>10</number>
           </property>
+          <property name="rightMargin">
+           <number>30</number>
+          </property>
           <item alignment="Qt::AlignTop">
            <widget class="QGroupBox" name="status_groupBox">
             <property name="minimumSize">
@@ -86,6 +89,9 @@
             </property>
             <property name="title">
              <string>打印状态：</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
@@ -116,6 +122,19 @@
             </layout>
            </widget>
           </item>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item alignment="Qt::AlignTop">
            <widget class="QLabel" name="label_printer">
             <property name="minimumSize">
@@ -138,19 +157,6 @@
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
          </layout>
         </item>
         <item>
@@ -158,13 +164,13 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>100</height>
+            <height>150</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>16777215</width>
-            <height>100</height>
+            <height>150</height>
            </size>
           </property>
           <property name="text">
@@ -364,8 +370,8 @@
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:13pt;&quot;&gt;黑色墨盒已经用尽，请及时更换。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;黑色墨盒已经用尽，请及时更换。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -409,6 +415,9 @@ p, li { white-space: pre-wrap; }
          <widget class="QTableWidget" name="tableWidget_jobs">
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="tabKeyNavigation">
+           <bool>false</bool>
           </property>
           <column>
            <property name="text">
@@ -524,6 +533,12 @@ p, li { white-space: pre-wrap; }
          <widget class="QTableWidget" name="tableWidget_printers">
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="tabKeyNavigation">
+           <bool>false</bool>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
           </property>
           <column>
            <property name="text">
@@ -664,8 +679,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>550</width>
-     <height>26</height>
+     <width>600</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>

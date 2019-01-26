@@ -53,11 +53,9 @@ HEADERS  += worker.h \
     uiconfig.h \
     appserver.h
 
-#contains(CONFIG ,debug){
-#    DEFINES += DEBUG_TO_STDERR
-#}
-#else
-{
+CONFIG(debug ,debug|release){
+    DEFINES += DEBUG_TO_STDERR
+}else{
 #contains(QT_ARCH, loongson3a) {
         DEFINES += LOONGSON
 #}

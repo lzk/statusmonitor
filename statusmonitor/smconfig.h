@@ -4,10 +4,10 @@
 #include "jkinterface.h"
 typedef bool (*func_isDeviceSupported)(Printer_struct*);
 
-extern const char* status_filename;
+extern const char* status_file;
 extern const char* statusKey;
 extern const char* printersKey;
-extern const char* lockfile;
+extern const char* status_lock_file;
 extern func_isDeviceSupported isDeviceSupported;
 class SMConfig : public JKConfig
 {

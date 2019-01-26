@@ -44,18 +44,23 @@ void Watcher::timerOut()
 {
     //update printer list
     getPrinters();
-    mutex.lock();
-    current_printers = printers;
-    current_printers_detail = printers_detail;
-    mutex.unlock();
+//    mutex.lock();
+//    current_printers = printers;
+//    current_printers_detail = printers_detail;
+//    mutex.unlock();
 
     for(int i = 0 ;i < printers_detail.count() ;i++){
         if (abort)
             return;
-        strcpy(printers_detail[i].printer.connectTo ,device_manager->getDevice(printers_detail[i].printer.deviceUri)->getDeviceAddress());
+        strcpy(printers_detail[i].printer.connectTo
+               ,device_manager->getDevice(&printers_detail[i].printer)->getDeviceAddress(&printers_detail[i].printer));
     }
     mutex.lock();
-    current_printers_detail = printers_detail;
+    if(current_printers != printers){
+        current_printers = printers;
+        current_printers_detail = printers_detail;
+        emit update_printerlist();
+    }
     mutex.unlock();
 
     //update current printer status

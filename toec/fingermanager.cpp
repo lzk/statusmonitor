@@ -2,7 +2,7 @@
 #include "jkinterface.h"
 #include "filter_check_finger.h"
 #include "toecconfig.h"
-
+#include <string.h>
 const char* ui_server_path = SERVER_PATH;
 FingerManager::FingerManager()
 {

@@ -9,7 +9,7 @@
 
 static int saveStatus(const char* printer ,PRINTER_STATUS* status)
 {
-    QSettings settings(status_filename ,QSettings::defaultFormat());
+    QSettings settings(status_file ,QSettings::defaultFormat());
     QString key = QString(statusKey) + printer;
 
     settings.beginGroup(key);
@@ -81,7 +81,7 @@ static int saveStatus(const char* printer ,PRINTER_STATUS* status)
 
 static int getStatus(const char* printer ,PRINTER_STATUS* status)
 {
-    QSettings settings(status_filename ,QSettings::defaultFormat());
+    QSettings settings(status_file ,QSettings::defaultFormat());
     QString key = QString(statusKey) + printer;
     if(!settings.allKeys().contains(key + "/PrinterStatus")){
         return -1;
@@ -124,7 +124,7 @@ static int getStatus(const char* printer ,PRINTER_STATUS* status)
 
 static int clear()
 {
-    QSettings settings(status_filename ,QSettings::defaultFormat());
+    QSettings settings(status_file ,QSettings::defaultFormat());
     settings.clear();
     settings.sync();
     return 0;
@@ -132,7 +132,7 @@ static int clear()
 
 static int clearPrinters()
 {
-    QSettings settings(status_filename ,QSettings::defaultFormat());
+    QSettings settings(status_file ,QSettings::defaultFormat());
     QString key = QString(printersKey);
     settings.remove(key);
     settings.sync();
@@ -141,7 +141,7 @@ static int clearPrinters()
 
 static int savePrinter(Printer_struct* printer)
 {
-    QSettings settings(status_filename ,QSettings::defaultFormat());
+    QSettings settings(status_file ,QSettings::defaultFormat());
     QString key = QString(printersKey) +"/" + printer->name;
     settings.beginGroup(key);
     settings.setValue("name" ,printer->name);
@@ -156,7 +156,7 @@ static int savePrinter(Printer_struct* printer)
 
 static int getPrinter(CALLBACK_getPrinters callback,void* para)
 {
-    QSettings settings(status_filename ,QSettings::defaultFormat());
+    QSettings settings(status_file ,QSettings::defaultFormat());
     QString key = QString(printersKey);
     settings.beginGroup(key);
     QStringList printers = settings.childGroups();
@@ -183,7 +183,7 @@ StatusManager::StatusManager()
 int StatusManager::saveStatusToFile(const char* printer ,PRINTER_STATUS* status)
 {
     int ret;
-    ret = lock(lockfile);
+    ret = lock(status_lock_file);
     if(!ret){
         ret = saveStatus(printer ,status);
         unlock();
@@ -194,7 +194,7 @@ int StatusManager::saveStatusToFile(const char* printer ,PRINTER_STATUS* status)
 int StatusManager::getStatusFromFile(const char* printer ,PRINTER_STATUS* status)
 {
     int ret;
-    ret = lock(lockfile);
+    ret = lock(status_lock_file);
     if(!ret){
         ret = getStatus(printer ,status);
         unlock();
@@ -205,7 +205,7 @@ int StatusManager::getStatusFromFile(const char* printer ,PRINTER_STATUS* status
 int StatusManager::clearFile()
 {
     int ret;
-    ret = lock(lockfile);
+    ret = lock(status_lock_file);
     if(!ret){
         ret = clear();
         unlock();
@@ -216,7 +216,7 @@ int StatusManager::clearFile()
 int StatusManager::clearPrintersOfFile()
 {
     int ret;
-    ret = lock(lockfile);
+    ret = lock(status_lock_file);
     if(!ret){
         ret = clearPrinters();
         unlock();
@@ -227,7 +227,7 @@ int StatusManager::clearPrintersOfFile()
 int StatusManager::getPrintersFromFile(CALLBACK_getPrinters callback,void* para)
 {
     int ret;
-    ret = lock(lockfile);
+    ret = lock(status_lock_file);
     if(!ret){
         ret = getPrinter(callback ,para);
         unlock();
@@ -238,7 +238,7 @@ int StatusManager::getPrintersFromFile(CALLBACK_getPrinters callback,void* para)
 int StatusManager::savePrinterToFile(Printer_struct* printer)
 {
     int ret;
-    ret = lock(lockfile);
+    ret = lock(status_lock_file);
     if(!ret){
         ret = savePrinter(printer);
         unlock();
@@ -249,7 +249,7 @@ int StatusManager::savePrinterToFile(Printer_struct* printer)
 int StatusManager::savePrintersToFile(QList<Printer_struct > printers)
 {
     int ret;
-    ret = lock(lockfile);
+    ret = lock(status_lock_file);
     ret = clearPrinters();
     if(!ret){
         foreach (Printer_struct ps, printers) {
