@@ -3,7 +3,6 @@
 
 #include <QHostAddress>
 #include "deviceio.h"
-#include "jkinterface.h"
 class QTcpSocket;
 class NetIO :public DeviceIO
 {
@@ -12,7 +11,6 @@ public:
     ~NetIO();
 
     virtual int type();
-//    virtual int open(const char* url ,int port = 0);
     virtual int close(void);
     virtual int write(char *buffer, int bufsize);
     virtual int read(char *buffer, int bufsize);
@@ -26,6 +24,7 @@ protected:
     virtual int getDeviceId(char *buffer, int bufsize);
     virtual int resolveUrl(const char* url);
     virtual const char* getDeviceAddress();
+
 private:
     QTcpSocket* tcpSocket;
     QHostAddress hostAddress;

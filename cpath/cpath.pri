@@ -9,9 +9,11 @@ include(../scanner/scanner.pri)
 SOURCES += \
     $${PWD}/worker.cpp \
     $${PWD}/uinterface.cpp \
-    $${PWD}/uiconfig.cpp
+    $${PWD}/uiconfig.cpp \
+    $$PWD/watcher.cpp
 
 HEADERS  += \
     $${PWD}/worker.h \
     $${PWD}/uinterface.h \
-    $${PWD}/uiconfig.h
+    $${PWD}/uiconfig.h \
+    $$PWD/watcher.h

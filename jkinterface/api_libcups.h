@@ -41,7 +41,7 @@ typedef struct Job_struct{
     int pages_completed;
     int copies;
     int state;
-    long timet;
+    long long timet;
 
 }
     Job_struct;

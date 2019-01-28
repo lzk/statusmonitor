@@ -6,7 +6,6 @@ LIBS += -L$${PWD}/../libs -lusb-1.0  -lcups
 
 macx: LIBS += -L/Volumes/work/software/libusb
 
-
 SOURCES += \
     $${PWD}/usbapi_libusb.cpp \
     $${PWD}/testlibusb.c \
@@ -14,7 +13,8 @@ SOURCES += \
     $${PWD}/log.cpp \
     $${PWD}/trans.cpp \
     $$PWD/jkconfig.cpp \
-    $$PWD/deviceio.cpp
+    $$PWD/deviceio.cpp \
+    $$PWD/filelocker.cpp
 
 
 HEADERS += \
@@ -24,4 +24,9 @@ HEADERS += \
     $${PWD}/trans.h \
     $$PWD/jkinterface.h \
     $$PWD/deviceio.h \
-    $$PWD/jkconfig.h
+    $$PWD/jkconfig.h \
+    $$PWD/filelocker.h
+
+macx:{
+    DEFINES += JK_OS_MAC
+}

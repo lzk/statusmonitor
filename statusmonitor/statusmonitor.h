@@ -1,6 +1,7 @@
 #ifndef STATUSMONITOR_H
 #define STATUSMONITOR_H
 
+#include "status.h"
 #include "jkinterface.h"
 #include "error.h"
 typedef
@@ -27,6 +28,7 @@ typedef struct PrinterInfo_struct
     Printer_struct printer;
 }
     PrinterInfo_struct;
+
 typedef int (*CALLBACK_getPrinterInfo)(void* ,PrinterInfo_struct*);
 class StatusMonitor
 {

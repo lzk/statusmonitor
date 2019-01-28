@@ -3,16 +3,15 @@
 
 #include "usbapi_libusb.h"
 #include "deviceio.h"
-#include "jkinterface.h"
+#include "filelocker.h"
 #include <QString>
-class UsbIO :public DeviceIO
+class UsbIO :public DeviceIO ,public FileLocker
 {
 public:
     UsbIO();
     ~UsbIO();
 
     virtual int type();
-//    virtual int open(const char* url ,int port = 0);
     virtual int close(void);
     virtual int write(char *buffer, int bufsize);
     virtual int read(char *buffer, int bufsize);
@@ -27,11 +26,15 @@ protected:
     virtual int getDeviceId(char *buffer, int bufsize);
     virtual int resolveUrl(const char* url);
     virtual const char* getDeviceAddress();
+
+private:
+    bool is_device_scanning();
 private:
     UsbApi* usb;
 
 private:
     int interface;
+    int bus;
     int address;
     int vid;
     int pid;

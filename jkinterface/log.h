@@ -1,10 +1,9 @@
 #ifndef LOG_H
 #define LOG_H
 
-extern const char* log_file;
 //#define DEBUG_TO_STDERR 1
 #include <stdio.h>
-#if DEBUG_TO_STDERR
+#ifdef DEBUG_TO_STDERR
 #define LOGLOG(format, ...) \
 { \
 fprintf(stderr ,format ,##__VA_ARGS__); \

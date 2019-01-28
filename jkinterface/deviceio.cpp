@@ -100,7 +100,7 @@ const char* DeviceIO::getDeviceAddress(Printer_struct* printer)
     if(!resolve(printer)){
         return getDeviceAddress();
     }else
-        return NULL;
+        return "";
 }
 
 int DeviceIO::getDeviceId(Printer_struct* printer ,char *buffer, int bufsize)

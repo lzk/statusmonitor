@@ -7,6 +7,7 @@
 #include "lshellstruct.h"
 #include "scannerapp.h"
 
+extern bool use_status_thread;
 #define SERVER_PATH "/tmp/test.domain"
 
 Q_DECLARE_METATYPE(PrinterInfo_struct)

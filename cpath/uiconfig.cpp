@@ -51,11 +51,17 @@ UIConfig::UIConfig(QObject *parent) :
 {
 }
 
+//log file var
 extern const char* log_app_name;
 extern const char* app_version;
+//scan control var
 extern const char* lock_scan_file;
-extern int error_printing;
-extern int error_scanning;
+extern const char* lock_scan_info_file;
+//usb error control var
+extern int usb_error_printing;
+extern int usb_error_scanning;
+extern int usb_error_usb_locked;
+extern int usb_error_busy;
 void UIConfig::initConfig()
 {
     //config status server thread
@@ -66,10 +72,12 @@ void UIConfig::initConfig()
 
     //usb special config
     lock_scan_file = "/tmp/.lenovo_m10x_lock";
-    error_printing = Printing;
-    error_scanning = ScannerBusy;
+    lock_scan_info_file = "/tmp/.lenovo_m10x_used";
+    usb_error_printing = Printing;
+    usb_error_scanning = ScanScanning;
+    usb_error_busy = Processing;
 
-    //config tomcat supported printer model
+    //config supported printer model
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 

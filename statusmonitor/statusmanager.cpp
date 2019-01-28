@@ -176,66 +176,8 @@ static int getPrinter(CALLBACK_getPrinters callback,void* para)
     }
 }
 
-StatusManager::StatusManager():
-    fp(NULL)
+StatusManager::StatusManager()
 {
-}
-
-int StatusManager::lock(const char* filename)
-{
-    int ret = -1;
-    fp = fopen(filename, "ab+");
-    int fd;
-    if(fp){
-#ifdef Q_OS_MAC
-        fd = fp->_file;
-#else
-        fd = fp->_fileno;
-#endif
-        ret = flock(fd, LOCK_EX);
-        if (ret){
-            fclose(fp);
-            fp = NULL;
-        }
-    }
-    return ret;
-}
-
-int StatusManager::trylock(const char* filename)
-{
-    int ret = -1;
-    fp = fopen(filename, "ab+");
-    int fd;
-    if(fp){
-#ifdef Q_OS_MAC
-        fd = fp->_file;
-#else
-        fd = fp->_fileno;
-#endif
-        if (flock(fd, LOCK_EX | LOCK_NB)){
-            ret = 0;
-        }else{
-            fclose(fp);
-            fp = NULL;
-        }
-    }
-    return ret;
-}
-
-int StatusManager::unlock()
-{
-    if(fp){
-        int fd;
-#ifdef Q_OS_MAC
-        fd = fp->_file;
-#else
-        fd = fp->_fileno;
-#endif
-        flock(fd, LOCK_UN);
-        fclose(fp);
-        fp = NULL;
-    }
-    return 0;
 }
 
 int StatusManager::saveStatusToFile(const char* printer ,PRINTER_STATUS* status)
@@ -299,6 +241,20 @@ int StatusManager::savePrinterToFile(Printer_struct* printer)
     ret = lock(status_lock_file);
     if(!ret){
         ret = savePrinter(printer);
+        unlock();
+    }
+    return ret;
+}
+
+int StatusManager::savePrintersToFile(QList<Printer_struct > printers)
+{
+    int ret;
+    ret = lock(status_lock_file);
+    ret = clearPrinters();
+    if(!ret){
+        foreach (Printer_struct ps, printers) {
+            ret = savePrinter(&ps);
+        }
         unlock();
     }
     return ret;

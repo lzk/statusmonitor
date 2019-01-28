@@ -14,10 +14,18 @@ Worker::Worker(QObject *parent) :
   ,lshell(new LShell(deviceManager))
   ,scanner(new ScannerApp(deviceManager))
 {
+    watcher = new Watcher(deviceManager);
+    connect(this ,SIGNAL(set_current_printer(QString)) ,watcher ,SLOT(set_current_printer(QString)));
+    connect(watcher ,SIGNAL(update_printer_status(PrinterInfo_struct))
+            ,this ,SLOT(update_printer_status(PrinterInfo_struct))
+            ,Qt::DirectConnection);
+    connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()));
+    watcher->start();
 }
 
 Worker::~Worker()
 {
+    delete watcher;
     delete deviceManager;
     delete lshell;
     delete scanner;
@@ -489,4 +497,21 @@ static void scan_callback(void* para)
     Worker* worker = (Worker*) settings->callback_para;
     worker->update_scan_progress(settings->progress);
 //    LOGLOG("scan progress:%d" ,settings->progress);
+}
+
+void Worker::update_printer_status(PrinterInfo_struct ps)
+{
+    LOGLOG("watcher update status:%02x" ,ps.status.PrinterStatus);
+    QVariant value;
+    value.setValue<PrinterInfo_struct>(ps);
+    cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+}
+
+void Worker::update_printerlist()
+{
+    LOGLOG("watcher update printer list");
+    QVariant value;
+    watcher->get_printer_list(printers_detail);
+    value.setValue(printers_detail);
+    cmdResult(UIConfig::CMD_GetPrinters ,0 ,value);
 }

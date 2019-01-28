@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
 
 //    ServerThread* thread_server = new ServerThread(SERVER_PATH);
 //    thread_server->start();
-//    StatusThread* statusThread = new StatusThread;
-//    statusThread->start();
 
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11
@@ -73,6 +71,10 @@ int main(int argc, char *argv[])
         QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
         QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));
 #endif
+
+    QStringList arguments = QCoreApplication::arguments();
+    if(arguments.contains("-test"))
+        use_status_thread = false;
 
     gUInterface = new UInterface;
     QTranslator trans;
@@ -115,7 +117,6 @@ int main(int argc, char *argv[])
         a.processEvents();
     }
 
-    QStringList arguments = QCoreApplication::arguments();
     if(!arguments.contains("-hide"))
         w.show();
     splash->finish(&w);

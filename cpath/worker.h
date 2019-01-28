@@ -9,6 +9,7 @@
 #include "devicemanager.h"
 #include "lshell.h"
 #include "scannerapp.h"
+#include "watcher.h"
 class Worker : public QObject
 {
     Q_OBJECT
@@ -21,11 +22,14 @@ public:
 signals:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
     void signal_update_scan_progress(int progress);//(0 - 100)
+    void set_current_printer(const QString& printer);
     
 public slots:
     void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void getPrinters();
     void cancel();
+    void update_printer_status(PrinterInfo_struct);
+    void update_printerlist();
 
 private:
     int cmd_status;
@@ -34,6 +38,8 @@ private:
     LShell* lshell;
     ScannerApp* scanner;
     QList<PrinterInfo_struct> printers_detail;
+
+    Watcher* watcher;
 
     Printer_struct* get_printer(const QString& printer_name);//get printer exist in system
 };

@@ -54,6 +54,7 @@ bool isRunning(const char* server_path)
     int ret = tc.tryConnectToServer();
     switch (ret) {
     case 0:
+        LOGLOG("There has been a same app running!");
         break;
     case -2:
         running = false;

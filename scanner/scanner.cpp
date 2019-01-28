@@ -14,6 +14,10 @@ Scanner::~Scanner()
     delete scannner_api;
 }
 
+extern int usb_error_printing;
+extern int usb_error_scanning;
+extern int usb_error_usb_locked;
+extern int usb_error_busy;
 int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret;
@@ -32,6 +36,7 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
         return ret;
     }
 
+    usb_error_usb_locked = usb_error_scanning;
     ret = scannner_api->set_parameters(settings);
     if(ret){
         LOGLOG("scanning...error:set parameters");
@@ -81,6 +86,7 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     scannner_api->stop();
 
  ERROR_RETURN:
+    usb_error_usb_locked = usb_error_busy;
     int aa = scannner_api->unlock();
     if(aa){
         LOGLOG("scanner unlock error:%d" ,aa);

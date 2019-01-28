@@ -8,6 +8,7 @@ UInterface::UInterface(QObject *parent) :
     worker->moveToThread(&thread);
     connect(&thread ,SIGNAL(finished()) ,worker ,SLOT(deleteLater()));
 
+    connect(this ,SIGNAL(set_current_printer(QString)) ,worker ,SIGNAL(set_current_printer(QString)));
     connect(this ,SIGNAL(cmdToWorker(int,QString ,QVariant)) ,worker ,SLOT(cmdFromUi(int,QString ,QVariant)));
     connect(worker ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SIGNAL(cmdResult(int,int,QVariant)));
     connect(worker ,SIGNAL(signal_update_scan_progress(int)) ,this ,SIGNAL(signal_update_scan_progress(int)));
@@ -39,12 +40,12 @@ void UInterface::setCurrentPrinterCmd(int cmd ,QVariant data)
 
 void UInterface::setTimer(int timeVal)
 {
-    this->timeval = timeVal;
-    if(timeVal < 1)
-        timer.stop();
-    else{
-        timer.start(timeVal * 1000);
-    }
+//    this->timeval = timeVal;
+//    if(timeVal < 1)
+//        timer.stop();
+//    else{
+//        timer.start(timeVal * 1000);
+//    }
 }
 
 void UInterface::timerOut()
@@ -77,6 +78,7 @@ void UInterface::cmdResult_slot(int cmd,int result ,QVariant data)
 void UInterface::setcurrentPrinter(const QString& str)
 {
     current_printer = str;
+    emit set_current_printer(current_printer);
 }
 
 void UInterface::cancel_work()

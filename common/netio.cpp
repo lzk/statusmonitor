@@ -4,7 +4,7 @@
 #include <QUrl>
 #include "api_libcups.h"
 #include "log.h"
-#include <QDebug>
+
 QHostAddress get_ip_address(const QString& host)
 {
     QHostAddress hostAddress;
@@ -110,6 +110,9 @@ int NetIO::close(void)
 
 int NetIO::write(char *buffer, int bufsize)
 {
+    if(!device_is_open){
+		return -1;
+	}
     if(!tcpSocket)
         return -1;
 //    int state = tcpSocket->state();
@@ -126,6 +129,9 @@ int NetIO::write(char *buffer, int bufsize)
 
 int NetIO::read(char *buffer, int bufsize)
 {
+    if(!device_is_open){
+		return -1;
+	}
     if(!tcpSocket)
         return -1;
     int bytesAvailable;
@@ -148,6 +154,10 @@ int NetIO::read(char *buffer, int bufsize)
 #else
     int numRead = 0, numReadTotal = 0;
     do{
+ //       if (!tcpSocket->waitForReadyRead(15000)){
+ //           LOGLOG("%s" ,tcpSocket->errorString().toUtf8().constData());
+ //           break;
+ //       }
         bytesAvailable = tcpSocket->bytesAvailable();
         if(bytesAvailable <= 0){
             if (!tcpSocket->waitForReadyRead(5000)){

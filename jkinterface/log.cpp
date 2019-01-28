@@ -24,10 +24,10 @@ JKLog::JKLog()
 
 }
 
-
 JKLog::~JKLog()
 {
-    fclose(file);
+    if(file)
+        fclose(file);
 }
 
 void JKLog::init()
@@ -73,6 +73,8 @@ static QMutex mutex_write_log_file;
 int JKLog::log(const char* para ,va_list pArgs)
 {
     QMutexLocker locker(&mutex_write_log_file);
+    if(!file)
+        return -1;
     int ret = vfprintf(file ,para ,pArgs);
     fflush(file);
     return ret;
