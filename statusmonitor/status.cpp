@@ -122,14 +122,29 @@ int DecodeStatusFromDeviceID(char* device_id, PRINTER_STATUS* status)
     return 0;
 }
 
-int getStatusFromDevice(DeviceIO* device ,PRINTER_STATUS* ps)
+//int getStatusFromDevice(DeviceIO* device ,PRINTER_STATUS* ps)
+//{
+//    if(!device || !ps){
+//        return -1;
+//    }
+//    int ret = 0;
+//    char buffer[1024];
+//    ret = device->getDeviceId(buffer ,sizeof(buffer));
+//    if(!ret){
+////        LOGLOG("device id:%s" ,buffer);
+//        ret = DecodeStatusFromDeviceID(buffer ,ps);
+//    }
+//    return ret;
+//}
+
+int getStatusFromDevice(DeviceIO* device ,Printer_struct* printer ,PRINTER_STATUS* ps)
 {
-    if(!device || !ps){
+    if(!device || !printer || !ps){
         return -1;
     }
     int ret = 0;
     char buffer[1024];
-    ret = device->getDeviceId(buffer ,sizeof(buffer));
+    ret = device->getDeviceId(printer ,buffer ,sizeof(buffer));
     if(!ret){
 //        LOGLOG("device id:%s" ,buffer);
         ret = DecodeStatusFromDeviceID(buffer ,ps);
@@ -137,3 +152,11 @@ int getStatusFromDevice(DeviceIO* device ,PRINTER_STATUS* ps)
     return ret;
 }
 
+int getStatusFromDevice(DeviceIOManager* device_manager ,Printer_struct* printer ,PRINTER_STATUS* ps)
+{
+    if(!device_manager || !printer || !ps){
+        return -1;
+    }
+    DeviceIO* device = device_manager->getDevice(printer);
+    return getStatusFromDevice(device ,printer ,ps);
+}

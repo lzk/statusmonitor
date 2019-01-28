@@ -429,29 +429,40 @@ SCANINFO get_parameters(ScanSettings* scan_settings)
     return scan_info;
 }
 
-ScannerApi::ScannerApi(DeviceIO** _device)
-    :device(_device)
+ScannerApi::ScannerApi(DeviceIOManager* _device_manager)
+    :device_manager(_device_manager)
     ,scanner_locked(false)
 {
 
 }
 
-int ScannerApi::open()
+int ScannerApi::open(Printer_struct* printer)
 {
-    int ret = (*device)->open(53010);
+    device = device_manager->getDevice(printer);
+    if(!device)
+        return -1;
+    int port = 0;
+    if(device->type() == DeviceIO::Type_net){
+        port = 53010;
+    }
+    int ret = device->open(printer ,port);
     return ret;
 }
 int ScannerApi::close()
 {
-    (*device)->close();
+    if(!device)
+        return -1;
+    device->close();
     return 0;
 }
 
 int ScannerApi::get_cmd_status()
 {
+    if(!device)
+        return -1;
     int ret;
     StatusRsp statusRsp = {0};
-    ret = (*device)->read_bulk((char*)&statusRsp ,sizeof(statusRsp) ,0);
+    ret = device->read_bulk((char*)&statusRsp ,sizeof(statusRsp) ,0);
     if(ret < 0){
         return ret;
     }
@@ -469,12 +480,14 @@ int ScannerApi::lock()
     {
         return 0;
     }
+    if(!device)
+        return -1;
     ScanCmd cmd = {CMDID_CMDHEAD, CMDID_LOCKSCANNER};
 
     int ret;
 
     for(int i = 0 ;i < 10 ;i++){
-        ret = (*device)->write_bulk((char*)&cmd ,sizeof(cmd) ,0);
+        ret = device->write_bulk((char*)&cmd ,sizeof(cmd) ,0);
         if(ret < 0){
             return ret;
         }
@@ -497,6 +510,8 @@ int ScannerApi::lock()
 
 int ScannerApi::unlock()
 {
+    if(!device)
+        return -1;
     if(!scanner_locked)
     {
         return 0;
@@ -505,7 +520,7 @@ int ScannerApi::unlock()
 
     int ret;
     for(int i = 0 ;i < 3 ;i++){
-        ret = (*device)->write_bulk((char*)&cmd ,sizeof(cmd) ,0);
+        ret = device->write_bulk((char*)&cmd ,sizeof(cmd) ,0);
         if(ret == sizeof(cmd)){
             break;
         }
@@ -525,12 +540,14 @@ int ScannerApi::unlock()
 
 int ScannerApi::set_parameters(ScanSettings* settings)
 {
+    if(!device)
+        return -1;
     ScanInfoCmd cmd = {CMDID_CMDHEAD, CMDID_SETSCANNERINFO};
     cmd.scanInfo = get_parameters(settings);
 
     int ret;
 
-    ret = (*device)->write_bulk((char*)&cmd ,sizeof(cmd) ,0);
+    ret = device->write_bulk((char*)&cmd ,sizeof(cmd) ,0);
     if(ret < 0){
         return ret;
     }
@@ -550,10 +567,12 @@ int ScannerApi::stop()
 
 int ScannerApi::abort()
 {
+    if(!device)
+        return -1;
     AbortScanCmd cmd = {CMDID_CMDHEAD, CMDID_ABORTSCAN};
     int ret;
 
-    ret = (*device)->write_bulk((char*)&cmd ,sizeof(cmd) ,0);
+    ret = device->write_bulk((char*)&cmd ,sizeof(cmd) ,0);
     if(ret < 0){
         return ret;
     }
@@ -579,9 +598,11 @@ int ScannerApi::abort()
 
 int ScannerApi::get_scan_status(ScanStatus* status)
 {
+    if(!device)
+        return -1;
     int ret;
     ScanDataRsp statusRsp = {0};
-    ret = (*device)->read_bulk((char*)&statusRsp ,sizeof(statusRsp) ,0);
+    ret = device->read_bulk((char*)&statusRsp ,sizeof(statusRsp) ,0);
     if(ret < 0){
         return ret;
     }
@@ -599,7 +620,9 @@ int ScannerApi::get_scan_status(ScanStatus* status)
 
 int ScannerApi::get_scan_data(char* buffer ,int buffer_size)
 {
+    if(!device)
+        return -1;
     int ret;
-    ret = (*device)->read_bulk(buffer, buffer_size ,0);
+    ret = device->read_bulk(buffer, buffer_size ,0);
     return ret;
 }

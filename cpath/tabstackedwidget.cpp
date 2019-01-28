@@ -817,7 +817,12 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
     if(item_list.count() > 1){
         filter = tr("TIF(*.tif);;PDF(*pdf)");
     }
+#if QT_VERSION > 0x050000
+    QStringList pathlist = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
+    QString picPath = pathlist.isEmpty() ?QString() :pathlist.at(0);
+#else
     QString picPath = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
+#endif
     QString filename = QFileDialog::getSaveFileName(0 ,tr("Save File"), picPath,filter,&selectedFilter);
     qDebug()<<filename<<selectedFilter;
     QString temp_filename;

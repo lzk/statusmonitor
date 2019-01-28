@@ -41,7 +41,7 @@ static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
     }else if(makeAndModel.startsWith("lenovo/M7268W")){
         *pid = 0x563a;
     }
-    return 0;
+    return (*pid == -1) ?-1 :0;
 }
 extern
 int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
@@ -51,17 +51,37 @@ UIConfig::UIConfig(QObject *parent) :
 {
 }
 
+extern const char* log_app_name;
+extern const char* app_version;
+extern const char* lock_scan_file;
+extern int error_printing;
+extern int error_scanning;
 void UIConfig::initConfig()
 {
     //config status server thread
-//    filepath = "/tmp/.hornet";
-    statusKey = "test/status/";
-    printersKey = "test/printerlist/";
-//    lockfile = "/tmp/.hornet";
+    status_file = "/tmp/.lntstatus";
+    statusKey = "statusmonitor/status/";
+    printersKey = "statusmonitor/printerlist/";
+    status_lock_file = "/tmp/.locklntstatus";
+
+    //usb special config
+    lock_scan_file = "/tmp/.lenovo_m10x_lock";
+    error_printing = Printing;
+    error_scanning = ScannerBusy;
 
     //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
+
+    log_app_name = "lenovo cpath";
+    app_version = "1.0.0.4.beta";
+    log_init();
+}
+#include <QFile>
+void UIConfig::exit_app()
+{
+//    QFile::remove(filepath);
+//    QFile::remove(lockfile);
 }
 
 int UIConfig::getModelSerial(Printer_struct* ps)

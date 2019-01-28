@@ -105,8 +105,8 @@ static void image_trans_thread(void *reference)
 }
 
 
-ScannerApp::ScannerApp(DeviceIO** _device)
-    :device(_device)
+ScannerApp::ScannerApp(DeviceIOManager* _device_manager)
+    :device_manager(_device_manager)
 {
     scanner = new Scanner(this);
     image_trans = new ImageTrans;
@@ -241,7 +241,7 @@ int ScannerApp::trans_process(ScanSettings* settings)
 }
 
 #define Test_Jerry 1
-int ScannerApp::scan(ScanSettings* settings)
+int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret = 0;
     ImageTransInfo image_trans_info;
@@ -265,7 +265,7 @@ int ScannerApp::scan(ScanSettings* settings)
     if(settings->callback)
         settings->callback(settings);
     settings->received_bytes = 0;
-    ret = scanner->flat_scan(settings);
+    ret = scanner->flat_scan(printer ,settings);
 //    exit_scan(settings);
     scan_buffer_exit();
     delete [] source_buf;

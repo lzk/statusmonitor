@@ -141,7 +141,7 @@ static const unsigned char INIT_VALUE = 0xfe;
 
 int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
 {
-    if(!device && !(*device))
+    if(!device && !(device))
         return ERR_no_device;
 
     int direct=0 ,data_buffer_size=0;
@@ -428,12 +428,12 @@ void LShell::copy_get_defaultPara(copycmdset* p)
     memcpy(p ,&default_copy_parameter ,sizeof(default_copy_parameter));
 }
 
-int device_init(DeviceIO** device)
+int device_init(DeviceIO* device)
 {
-    if(!device || !(*device))
+    if(!device)
         return -1;
     int ret = 0;
-    int device_type = (*device)->type();
+    int device_type = device->type();
     if(device_type == DeviceIO::Type_net){
         return 0;
     }else if(device_type == DeviceIO::Type_unknown){
@@ -441,7 +441,7 @@ int device_init(DeviceIO** device)
     }
 
     char buffer[1460];
-    ret = (*device)->getDeviceId_without_open(buffer ,sizeof(buffer));
+    ret = device->getDeviceId_without_open(buffer ,sizeof(buffer));
     if(ret){
         char inBuffer[522] = {0};
         char outBuffer[12] = {0};
@@ -452,24 +452,26 @@ int device_init(DeviceIO** device)
         inBuffer[3] = 0x55;
         inBuffer[4] = 0xe0;
         inBuffer[5] = 0x2b;
-        (*device)->write_bulk(inBuffer ,10 ,1);
-        (*device)->write_bulk(inBuffer+10 ,512 ,1);
+        device->write_bulk(inBuffer ,10 ,1);
+        device->write_bulk(inBuffer+10 ,512 ,1);
 
-        (*device)->read_bulk(outBuffer ,sizeof(outBuffer) ,1);
+        device->read_bulk(outBuffer ,sizeof(outBuffer) ,1);
     }
 
-    (*device)->read(buffer ,sizeof(buffer));
+    device->read(buffer ,sizeof(buffer));
     return 0;
 }
 
 #include <unistd.h>
 int LShell::writeNoRead(char* wrBuffer ,int wrSize)
 {
+    if(!device)
+        return -1;
     int ret;
     for(int i = 0 ;i < 3 ;i++){
         ret = device_init(device);
         if(!ret){
-            ret = (*device)->write(wrBuffer ,wrSize);
+            ret = device->write(wrBuffer ,wrSize);
         }
         if(!ret)
             break;
@@ -480,11 +482,13 @@ int LShell::writeNoRead(char* wrBuffer ,int wrSize)
 
 int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
 {
+    if(!device)
+        return -1;
     int ret;
     for(int i = 0 ;i < 3 ;i++){
         ret = device_init(device);
         if(!ret){
-            ret = (*device)->writeThenRead(wrBuffer ,wrSize ,rdBuffer ,rdSize);
+            ret = device->writeThenRead(wrBuffer ,wrSize ,rdBuffer ,rdSize);
         }
         if(!ret)
             break;
@@ -493,3 +497,21 @@ int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize
     return ret;
 }
 
+int LShell::open(Printer_struct* printer)
+{
+    int port = 1;
+    device = device_manager->getDevice(printer);
+    if(!device)
+        return -1;
+    if(device->type() == DeviceIO::Type_net){
+        port = 9100;
+    }
+    return device->open(printer ,port);
+}
+
+int LShell::close(void)
+{
+    if(!device)
+        return -1;
+    return device->close();
+}

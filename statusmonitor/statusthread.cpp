@@ -49,8 +49,7 @@ void StatusThread::run()
         foreach (Printer_struct printer, printers) {
             if (abort)
                 return;
-            device = devicemanager->getDevice(printer.deviceUri);
-            result = getStatusFromDevice(device ,&status);
+            result = getStatusFromDevice(devicemanager ,&printer ,&status);
             if(result){
                 LOGLOG("get status from device %s:fail!" ,printer.name);
                 memset(&status ,0 ,sizeof(status));

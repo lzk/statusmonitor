@@ -16,7 +16,6 @@ public:
     explicit Worker(QObject *parent = 0);
     ~Worker();
     void setPrinters(PrinterInfo_struct* ps);
-    DeviceIO* getDevice(const char* device_uri);
     void update_scan_progress(int progress);
     
 signals:
@@ -31,11 +30,10 @@ public slots:
 private:
     int cmd_status;
     QStringList printers;
-    DeviceIO* device;
+    DeviceManager* deviceManager;
     LShell* lshell;
     ScannerApp* scanner;
     QList<PrinterInfo_struct> printers_detail;
-    DeviceManager deviceManager;
 
     Printer_struct* get_printer(const QString& printer_name);//get printer exist in system
 };

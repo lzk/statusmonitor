@@ -1,8 +1,8 @@
 #include "smconfig.h"
-const char* filepath = "/tmp/.statusmonitor";
+const char* status_file = "/tmp/.statusmonitor";
 const char* statusKey = "printer/status/";
 const char* printersKey = "printer/mdl/";
-const char* lockfile = "/tmp/.lockstatusmonitor";
+const char* status_lock_file = "/tmp/.lockstatusmonitor";
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
