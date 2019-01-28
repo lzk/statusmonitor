@@ -10,27 +10,6 @@ namespace Ui {
 class MemberCenterWidget;
 }
 
-typedef struct UserInfo
-{
-    QString mobile;
-    QString email;
-    QString realName;
-    QString address;
-    QString sex;        //1:Man  0:Woman
-    QString birthDate;
-    QString mobileCode;
-}StrUserInfo;
-
-typedef struct CRM_PrintInfo
-{
-    QString strDeviceCode;
-    QString strMobileNumber;
-    QString strPlatform;
-    QString strVersion;
-    QDateTime time;
-    QString strSign;
-}StrCRM_PrintInfo;
-
 class MemberCenterWidget : public QWidget
 {
     Q_OBJECT
@@ -42,6 +21,7 @@ public:
 
 public slots:
     void setSW(QStackedWidget* _sw, QPushButton * _bt);
+    void startCRM();
 
 private slots:
     void on_btLogin_clicked();
@@ -62,7 +42,7 @@ private slots:
 
     QString getHostMacAddress();
 
-    void setUserInfo();
+    void setUserInfo(QString fullName, QString birthDay, int sex, QString email, QString address);
 
     void replyFinish_set(QNetworkReply* reply);
     void replyFinish_uploadCRM(QNetworkReply* reply);
@@ -72,6 +52,7 @@ private slots:
     void on_btProduct_clicked();
 
     void uploadCRM();
+//    void uploadUserInfo();
 
     void cmdResult(int cmd,int result,QVariant data);
 
@@ -87,13 +68,12 @@ private:
     QStackedWidget* sw;
     QPushButton *bt;
     bool isLogin;
-    StrUserInfo currentUser;
     QString m_strKey;
 
     QTimer *crmTimer;
+//    QTimer *userTimer;
+    bool isNotShowWarning;
     bool m_bCRM;
-
-//    QSettings settings;
 };
 
 #endif // MEMBERCENTERWIDGET_H

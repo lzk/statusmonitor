@@ -10,5 +10,4 @@ typedef struct {
    int wepKeyID;
 } APInfo;
 
-
 #endif // TYPEDEFINE_H

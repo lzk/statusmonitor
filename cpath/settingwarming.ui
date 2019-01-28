@@ -40,7 +40,6 @@
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>14</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -59,7 +58,7 @@ QLabel{
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="warningLabel">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -77,7 +76,27 @@ border-image: url(:/Images/Warning.tif);
     <string/>
    </property>
   </widget>
+  <widget class="BusyRefreshLabel" name="busyLabel">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>40</y>
+     <width>58</width>
+     <height>54</height>
+    </rect>
+   </property>
+  </widget>
+  <zorder>label</zorder>
+  <zorder>busyLabel</zorder>
+  <zorder>warningLabel</zorder>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BusyRefreshLabel</class>
+   <extends>QLabel</extends>
+   <header>busyrefreshlabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

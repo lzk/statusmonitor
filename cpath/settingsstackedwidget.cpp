@@ -107,32 +107,9 @@ SettingsStackedWidget::~SettingsStackedWidget()
 
 void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
 {
-    if(this->isEnabled()){
+//    if(this->isEnabled()){
         switch(cmd)
         {
-//        case UIConfig::CMD_WIFI_refresh_plus:
-//            LOGLOG("CMD_WIFI_refresh_plus enter");
-//            if(!result || UIConfig::WarmingUp == result){ //when the machine is warmming up, the err will be STATUS_WarmingUp
-//                isDoingCMD = false;
-//                retryTimes = 0;
-//            }
-//            else {
-//                if(!isDoingCMD)
-//                {
-//                    isDoingCMD = true;
-//                    retryTimes = RETRYTIMERS;
-//                }
-//                if(retryTimes > 0){
-//                    retryTimes--;
-//                    gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
-//                }
-//                else{
-//                    isDoingCMD = false;
-//                }
-//            }
-//            if(!isDoingCMD)
-//                emit cycleStop();
-//            break;
         case UIConfig::LS_CMD_WIFI_Get_SoftAp:
             if(!result || UIConfig::WarmingUp == result)
             {
@@ -163,7 +140,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 }
             }
             if(!isDoingCMD)
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
             break;
         case UIConfig::LS_CMD_WIFI_Set_SoftAp:
             if(!result){
@@ -188,7 +165,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             if(!isDoingCMD)
             {
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
                 QString deviceMsg;
                 if(!result)
                     deviceMsg = tr("ResStr_Msg_1");
@@ -225,7 +202,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 }
             }
             if(!isDoingCMD) {
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
             }
             break;
 
@@ -253,7 +230,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             if(!isDoingCMD)
             {
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
                 QString deviceMsg;
                 if(!result)
                     deviceMsg = tr("ResStr_Msg_1");
@@ -286,7 +263,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                     isDoingCMD = false;
                 }
             }
-            emit cycleStop();
+            gUInterface->emitEnableCycleAnimation(false);
             break;
         case UIConfig::LS_CMD_PRN_PSaveTime_Set:
             if(!result) {
@@ -311,7 +288,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             if(!isDoingCMD)
             {
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
                 QString deviceMsg;
                 if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
@@ -345,7 +322,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 }
             }
             if(!isDoingCMD)
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
             break;
         case UIConfig::LS_CMD_PRN_Set_UserConfig:
             if(!result)
@@ -370,7 +347,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             if(!isDoingCMD)
             {
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
                 QString deviceMsg;
                 if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
@@ -382,7 +359,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
         case UIConfig::LS_CMD_PRN_FusingScReset:
             if(!result)
             {
-                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
+                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), 1);
                 warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -406,7 +383,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             if(!isDoingCMD)
             {
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
                 QString deviceMsg;
                 if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
@@ -418,7 +395,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
         case UIConfig::LS_CMD_PRN_DrumReset:
             if(!result)
             {
-                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
+                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), 1);
                 warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -442,7 +419,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             if(!isDoingCMD)
             {
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
                 QString deviceMsg;
                 if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
@@ -454,7 +431,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
         case UIConfig::LS_CMD_PRN_TonerReset:
             if(!result)
             {
-                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), true);
+                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), 1);
                 warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -478,7 +455,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             if(!isDoingCMD)
             {
-                emit cycleStop();
+                gUInterface->emitEnableCycleAnimation(false);
                 QString deviceMsg;
                 if(!result)
                     deviceMsg = tr("ResStr_Setting_Successfully_");
@@ -507,15 +484,18 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 }
             }
             if(!isDoingCMD)
-                emit cycleStop();
+            {
+                gUInterface->emitEnableCycleAnimation(false);
+                QString deviceMsg;
+                if(!result)
+                    deviceMsg = tr("ResStr_Setting_Successfully_");
+                else
+                    deviceMsg = tr("ResStr_Setting_Fail");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+            }
             break;
         default: break;
         }
-    }else{
-        emit cycleStop();
-        isDoingCMD = false;
-        retryTimes = 0;
-    }
 }
 
 void SettingsStackedWidget::changeStackIndex(int index)
@@ -523,51 +503,44 @@ void SettingsStackedWidget::changeStackIndex(int index)
     switch(index)
     {
     case 0:                                     //wifi setting
-        //if(CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
             titelCell->setCurrentIndex(0);
             titelCell->on_btFlesh_clicked();
 //            gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
         }
         break;
     case 1:                                     //softAP setting
-        //if(CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_Get_SoftAp);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
         }
         break;
     case 2:                                    // ip settting
-        //if(CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
             QVariant data;
             data.setValue<net_info_st>(info_ipv4);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_GetV4);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
         }
         break;
     case 3:                                    // ip settting
-        //if(CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
         }
         break;
     case 4:                                    // power save time setting
-        //if(CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_PSaveTime_Get);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
         }
         break;
     case 5:                                   // advance setting
-        //if(CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Get_UserConfig);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
         }
         break;
     case 6:                                   //new password setting
-        //if(CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
         }
         break;
@@ -846,7 +819,7 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
     {
         if(!isLogn)                                     //if have not confirmed, show the authentication dialog;
         {
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
             AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
             dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
@@ -861,7 +834,7 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
             QString psw = ui->lineEdit_Password_AP->text();
             memset(softap.pwd, 0, 64);
             memcpy(softap.pwd, psw.left(32).toLatin1(), 64);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
             softap.wifiEnable = isAPOpen ? 7 : 1 ;
             QVariant data;
             data.setValue<cmdst_softap>(softap);
@@ -870,7 +843,7 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
         }
         else
         {
-            emit cycleStop();
+            gUInterface->emitEnableCycleAnimation(false);
         }
     }
 
@@ -914,7 +887,7 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
     }
     if(!isLogn)
     {
-        emit cycleStart();
+        gUInterface->emitEnableCycleAnimation(true);
         AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
@@ -926,11 +899,11 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
         QVariant data;
         data.setValue<net_info_st>(info_ipv4);
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_SetV4,data);
-        emit cycleStart();
+        gUInterface->emitEnableCycleAnimation(true);
     }
     else
     {
-        emit cycleStop();
+        gUInterface->emitEnableCycleAnimation(false);
     }
 
     ui->btApply_IPConfig->setFocus();
@@ -1070,7 +1043,7 @@ void SettingsStackedWidget::on_btApply_userconfig_clicked()
 {
     if(!isLogn )//&& CMD_STATUS_COMPLETE == device->get_cmdStatus())
     {
-        emit cycleStart();
+        gUInterface->emitEnableCycleAnimation(true);
         AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
@@ -1086,7 +1059,7 @@ void SettingsStackedWidget::on_btApply_userconfig_clicked()
             userconfig.LowHumidityMode = (isLowHumidity ? 1 : 0);
             userconfig.PlateControlMode = (isConrtolM ? 0 : 2);
             userconfig.PrimaryCoolingMode = (isCoolingM ? 1 : 0);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
             QVariant data;
             data.setValue<cmdst_userconfig>(userconfig);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Set_UserConfig,data);
@@ -1094,7 +1067,7 @@ void SettingsStackedWidget::on_btApply_userconfig_clicked()
     }
     else
     {
-        emit cycleStop();
+        gUInterface->emitEnableCycleAnimation(false);
     }
 }
 
@@ -1105,7 +1078,7 @@ void SettingsStackedWidget::on_btApply_Timeout_clicked()
 {
     if(!isLogn )//&& CMD_STATUS_COMPLETE == device->get_cmdStatus())
     {
-        emit cycleStart();
+        gUInterface->emitEnableCycleAnimation(true);
         AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
@@ -1119,12 +1092,12 @@ void SettingsStackedWidget::on_btApply_Timeout_clicked()
             QVariant data;
             data.setValue<cmdst_PSave_time>(psavetm);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_PSaveTime_Set,data);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
         //}
     }
     else
     {
-        emit cycleStop();
+        gUInterface->emitEnableCycleAnimation(false);
     }
 }
 
@@ -1231,7 +1204,7 @@ void SettingsStackedWidget::on_btDrumReset_clicked()
     if (pDialog->exec() == QDialog::Accepted)
     {
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_DrumReset);
-        emit cycleStart();
+        gUInterface->emitEnableCycleAnimation(true);
     }
 }
 
@@ -1239,7 +1212,7 @@ void SettingsStackedWidget::on_btErrorClear_clicked()
 {
     if(!isLogn)// && CMD_STATUS_COMPLETE == device->get_cmdStatus())
     {
-        emit cycleStart();
+        gUInterface->emitEnableCycleAnimation(true);
         AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
@@ -1249,11 +1222,11 @@ void SettingsStackedWidget::on_btErrorClear_clicked()
     if(isLogn)
     {
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_FusingScReset);
-        emit cycleStart();
+        gUInterface->emitEnableCycleAnimation(true);
     }
     else
     {
-        emit cycleStop();
+        gUInterface->emitEnableCycleAnimation(false);
     }
 }
 
@@ -1294,7 +1267,7 @@ void SettingsStackedWidget::on_btTonerReset_clicked()
     if (pDialog->exec() == QDialog::Accepted)
     {
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_TonerReset);
-        emit cycleStart();
+        gUInterface->emitEnableCycleAnimation(true);
     }
 }
 
@@ -1343,7 +1316,7 @@ void SettingsStackedWidget::on_btApply_clicked()
     {
         if(!isLogn)// && CMD_STATUS_COMPLETE == device->get_cmdStatus())
         {
-            cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
             AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
             dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
@@ -1358,11 +1331,11 @@ void SettingsStackedWidget::on_btApply_clicked()
             QVariant data;
             data.setValue<cmdst_passwd>(passwd);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PASSWD_set,data);
-            emit cycleStart();
+            gUInterface->emitEnableCycleAnimation(true);
         }
         else
         {
-            emit cycleStop();
+            gUInterface->emitEnableCycleAnimation(false);
         }
     }
 }

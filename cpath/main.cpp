@@ -12,6 +12,7 @@ UInterface* gUInterface;
 #include <qsplashscreen.h>
 #include <qdesktopwidget.h>
 #include <qelapsedtimer.h>
+#include <qsettings.h>
 
 #ifndef Q_OS_DARWIN
 //extern "C"{
@@ -81,6 +82,11 @@ int main(int argc, char *argv[])
         trans.load(QLocale(QLocale::English),"vop" ,"." ,":/translations");
     }
     a.installTranslator(&trans);
+
+    QCoreApplication::setOrganizationName("Lenovo");
+    QCoreApplication::setApplicationName("VOP");
+    QSettings settings;
+    qDebug()<<settings.fileName();
 
     QSplashScreen *splash = new QSplashScreen;
     QString lan = QLocale::system().name();

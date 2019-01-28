@@ -124,30 +124,44 @@ void MoreSettingsForCopy::setDefault()
 
     Param_Copy tmpParam;
     Param_Copy *defaultParamForCopy = &tmpParam;
-    if(!_idCardFlag)
-    {
-        defaultParamForCopy->scaling = (int)p->scale;
-        defaultParamForCopy->docType = (DocType_Copy)p->scanMode;
-        defaultParamForCopy->docSize = (DocSize_Copy)p->orgSize;
-        defaultParamForCopy->docDpi = (DocDpi_Copy)p->dpi;
-        defaultParamForCopy->outputSize = (OutPutSize_Copy)p->paperSize;
-        defaultParamForCopy->paperType = (MediaType_Copy)p->mediaType;
-        defaultParamForCopy->isMultiPage = false;
-        defaultParamForCopy->multiMode = (MultiMode_Copy)p->nUp;
+//    if(!_idCardFlag)
+//    {
+//        defaultParamForCopy->scaling = (int)p->scale;
+//        defaultParamForCopy->docType = (DocType_Copy)p->scanMode;
+//        defaultParamForCopy->docSize = (DocSize_Copy)p->orgSize;
+//        defaultParamForCopy->docDpi = (DocDpi_Copy)p->dpi;
+//        defaultParamForCopy->outputSize = (OutPutSize_Copy)p->paperSize;
+//        defaultParamForCopy->paperType = (MediaType_Copy)p->mediaType;
+//        defaultParamForCopy->isMultiPage = false;
+//        defaultParamForCopy->multiMode = (MultiMode_Copy)p->nUp;
 
-        defaultParamForCopy->promptInfo.isIDCard = true;
-        defaultParamForCopy->promptInfo.isMultible = true;
+//        defaultParamForCopy->promptInfo.isIDCard = true;
+//        defaultParamForCopy->promptInfo.isMultible = true;
 
-        showParam(defaultParamForCopy);
-    }else
-    {
-        defaultParamForCopy->docType = (DocType_Copy)p->scanMode;
-        defaultParamForCopy->paperType = (MediaType_Copy)p->mediaType;
+//        showParam(defaultParamForCopy);
+//    }else
+//    {
+//        defaultParamForCopy->docType = (DocType_Copy)p->scanMode;
+//        defaultParamForCopy->paperType = (MediaType_Copy)p->mediaType;
 
-        defaultParamForCopy->promptInfo.isIDCard = true;
-        defaultParamForCopy->promptInfo.isMultible = true;
-        showParam(defaultParamForCopy);
-    }
+//        defaultParamForCopy->promptInfo.isIDCard = true;
+//        defaultParamForCopy->promptInfo.isMultible = true;
+//        showParam(defaultParamForCopy);
+//    }
+    defaultParamForCopy->scaling = (int)p->scale;
+    defaultParamForCopy->docType = (DocType_Copy)p->scanMode;
+    defaultParamForCopy->docSize = (DocSize_Copy)p->orgSize;
+    defaultParamForCopy->docDpi = (DocDpi_Copy)p->dpi;
+    defaultParamForCopy->outputSize = (OutPutSize_Copy)p->paperSize;
+    defaultParamForCopy->paperType = (MediaType_Copy)p->mediaType;
+    defaultParamForCopy->isMultiPage = false;
+    defaultParamForCopy->multiMode = (MultiMode_Copy)p->nUp;
+    _multiMode = (MultiMode_Copy)p->nUp;
+
+    defaultParamForCopy->promptInfo.isIDCard = true;
+    defaultParamForCopy->promptInfo.isMultible = true;
+
+    showParam(defaultParamForCopy);
 
 }
 
@@ -279,11 +293,11 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
             }
         }
 
-        //设置outPutSizeList的出了letter,a4,a5,b5其他都不可用
+        //设置outPutSizeList的出了a4其他都不可用
         QStandardItemModel *model1 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
         for(int i=0; i<8; i++)
         {
-            if((i != 0)&&(i != 1)&& (i != 2) && (i != 4) && (model1 != NULL))
+            if((i!=1) && (model1 != NULL))
             {
                 model1->item(i)->setEnabled(false);
                //此处设置combobox的下拉选项字体显示灰色
@@ -717,23 +731,42 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
     QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
     if(checked)
     {
-        ui->label_30->setEnabled(true);
-        ui->label_31->setEnabled(true);
-        ui->label_32->setEnabled(true);
-        ui->scaling->setDisabled(true);
-        ui->label_1->setDisabled(true);
-        ui->label->setDisabled(true);
+        if(ui->outPutSizeList->currentIndex() == 0 || ui->outPutSizeList->currentIndex() == 1)
+        {
+            ui->label_30->setEnabled(true);
+            ui->label_31->setEnabled(true);
+            ui->label_32->setEnabled(true);
+            ui->scaling->setDisabled(true);
+            ui->label_1->setDisabled(true);
+            ui->label->setDisabled(true);
 
-       switch (_multiMode)
-       {
-           case TwoInOne: ui->label_20->setStyleSheet("#label_20 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
-           case FourInOne: ui->label_21->setStyleSheet("#label_21 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
-           case NineInOne: ui->label_22->setStyleSheet("#label_22 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
-           default:break;
-       }
+            if(!_multiMode)
+            {
+                _multiMode = TwoInOne;
+            }
+           switch (_multiMode)
+           {
+               case TwoInOne: ui->label_20->setStyleSheet("#label_20 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+               case FourInOne: ui->label_21->setStyleSheet("#label_21 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+               case NineInOne: ui->label_22->setStyleSheet("#label_22 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+               default:break;
+           }
 
-       model->item(3)->setEnabled(false);
-       model->item(5)->setEnabled(false);
+           model->item(3)->setEnabled(false);
+           model->item(5)->setEnabled(false);
+        }
+        else
+        {
+            ui->label_30->setEnabled(true);
+            ui->label_1->setDisabled(true);
+            ui->label->setDisabled(true);
+            ui->bt4in1->setEnabled(false);
+            ui->bt9in1->setEnabled(false);
+            _multiMode = TwoInOne;
+            ui->label_20->setStyleSheet("#label_20 {background-color: rgb(157, 157, 157);border-radius:8px;}");
+            model->item(3)->setEnabled(false);
+            model->item(5)->setEnabled(false);
+        }
     }
     else{
         ui->label_30->setDisabled(true);
@@ -742,6 +775,8 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
         ui->scaling->setEnabled(true);
         ui->label_1->setEnabled(true);
         ui->label->setEnabled(true);
+        ui->bt4in1->setEnabled(true);
+        ui->bt9in1->setEnabled(true);
 
         switch (_multiMode)
         {
@@ -750,8 +785,10 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
             case NineInOne: ui->label_22->setStyleSheet("#label_22 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
             default:break;
         }
-        model->item(3)->setEnabled(true);
-        model->item(5)->setEnabled(true);
+        for(int i = 0; i < model->rowCount();i++)
+        {
+            model->item(i)->setEnabled(true);
+        }
     }
 }
 
@@ -784,18 +821,63 @@ void MoreSettingsForCopy::selectMode(MultiMode_Copy mode)
 
 void MoreSettingsForCopy::on_bt2in1_clicked()
 {
-    if(ui->isNinOne->isChecked())    selectMode(TwoInOne);
+    if(ui->isNinOne->isChecked())
+    {
+        selectMode(TwoInOne);
+        QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+        for(int i = 0; i < model->rowCount();i++)
+        {
+            if(i == 3 || i == 5)
+            {
+                model->item(i)->setEnabled(false);
+            }
+            else
+            {
+                model->item(i)->setEnabled(true);
+            }
+        }
+    }
 }
 
 void MoreSettingsForCopy::on_bt4in1_clicked()
 {
-    if(ui->isNinOne->isChecked())    selectMode(FourInOne);
+    if(ui->isNinOne->isChecked())
+    {
+        selectMode(FourInOne);
+        QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+        for(int i = 0; i < model->rowCount();i++)
+        {
+            if(i == 0 || i == 1)
+            {
+                model->item(i)->setEnabled(true);
+            }
+            else
+            {
+                model->item(i)->setEnabled(false);
+            }
+        }
+    }
 //     ui->label_30->setText("here");
 }
 
 void MoreSettingsForCopy::on_bt9in1_clicked()
 {
-    if(ui->isNinOne->isChecked())    selectMode(NineInOne);
+    if(ui->isNinOne->isChecked())
+    {
+        selectMode(NineInOne);
+        QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+        for(int i = 0; i < model->rowCount();i++)
+        {
+            if(i == 0 || i == 1)
+            {
+                model->item(i)->setEnabled(true);
+            }
+            else
+            {
+                model->item(i)->setEnabled(false);
+            }
+        }
+    }
 }
 
 void MoreSettingsForCopy::on_btID_clicked(bool checked)
@@ -875,6 +957,24 @@ void MoreSettingsForCopy::on_outPutSizeList_currentIndexChanged(int index)
         else
         {
             ui->isNinOne->setEnabled(true);
+            if(ui->isNinOne->isChecked())
+            {
+                if(index == 0 || index == 1)
+                {
+                    ui->bt4in1->setEnabled(true);
+                    ui->bt9in1->setEnabled(true);
+                    ui->label_31->setEnabled(true);
+                    ui->label_32->setEnabled(true);
+                }
+                else
+                {
+                    ui->bt4in1->setEnabled(false);
+                    ui->bt9in1->setEnabled(false);
+                    ui->label_31->setEnabled(false);
+                    ui->label_32->setEnabled(false);
+                }
+                ui->label_30->setEnabled(true);
+            }
         }
     }
 //    ParamForCopy->outputSize = OutPutSize_Copy(index);

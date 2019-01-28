@@ -15,6 +15,8 @@
 #include <qurl.h>
 #include <qapplication.h>
 #include "scannerapp.h"
+#include "qsettings.h"
+#include "lshell.h"
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
@@ -63,10 +65,10 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
 
-    connect(ui->settingStackedWidget,SIGNAL(cycleStart()),this,SLOT(startCycleEmit()));
-    connect(ui->settingStackedWidget,SIGNAL(cycleStop()),this,SLOT(stopCycleEmit()));
-    connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStartFromWT()),this,SLOT(startCycleEmit()));
-    connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStopFromWT()),this,SLOT(stopCycleEmit()));
+//    connect(ui->settingStackedWidget,SIGNAL(cycleStart()),this,SLOT(startCycleEmit()));
+//    connect(ui->settingStackedWidget,SIGNAL(cycleStop()),this,SLOT(stopCycleEmit()));
+//    connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStartFromWT()),this,SLOT(startCycleEmit()));
+//    connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStopFromWT()),this,SLOT(stopCycleEmit()));
     connect(gUInterface,SIGNAL(signal_update_scan_progress(int)),this,SLOT(updateScanProcess(int)));
 }
 
@@ -75,6 +77,31 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
     switch(cmd)
     {
     case UIConfig::LS_CMD_COPY:
+    {
+        qDebug()<<"LS_CMD_COPY"<<result;
+        if(result != 0)
+        {
+            gUInterface->setDeviceMsgFrmUI(tr("ResStr_Copy_Fail"),result);
+            if(result == LShell::ERR_Printer_busy)
+            {
+                SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_The_machine_is_busy__please_try_later_"),2);
+                busyWarning->setWindowTitle(tr("ResStr_Error"));
+
+                busyWarning->setWindowFlags(busyWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                busyWarning->exec();
+            }
+            else if (result == LShell::ERR_Printer_error)
+            {
+                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
+                errorWarning->setWindowTitle(tr("ResStr_Error"));
+
+                errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                errorWarning->exec();
+            }
+        }
+    }
 
         break;
     case UIConfig::CMD_Scan:
@@ -531,15 +558,15 @@ void TabStackedWidget::set_setting_enabled(bool enabled)
     ui->settingStackedWidget->setEnabled(enabled);
 }
 
-void TabStackedWidget::startCycleEmit()
-{
-    emit cycleStartFromTab();
-}
+//void TabStackedWidget::startCycleEmit()
+//{
+//    emit cycleStartFromTab();
+//}
 
-void TabStackedWidget::stopCycleEmit()
-{
-    emit cycleStopFromTab();
-}
+//void TabStackedWidget::stopCycleEmit()
+//{
+//    emit cycleStopFromTab();
+//}
 
 void TabStackedWidget::setEnabledDuplexCopy(bool enabled)
 {
@@ -636,7 +663,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
     }
     else
     {
-        if (paramCopy.promptInfo.isMultible == true)
+        if (paramCopy.promptInfo.isMultible == true && paramCopy.isMultiPage == true)
         {
             bool enNextShow = true;
 //            QString videoTypeStr = "06_Nin1Copy";
@@ -680,9 +707,58 @@ void TabStackedWidget::on_btn_Copy_clicked()
         copyPara.IDCardMode = paramCopy.idCardCopyMode;
     }
 
+    if(ui->cBox_IsIDCard == false && ui->cBox_DuplexCopy == false)
+    {
+        QSettings settings;
+        settings.beginGroup("CopyParam");
+        settings.setValue("Scaling",paramCopy.scaling);
+        settings.setValue("DocType",paramCopy.docType);
+        settings.setValue("DocSize",paramCopy.docSize);
+        settings.setValue("DPI",paramCopy.docDpi);
+        settings.setValue("OutputSize",paramCopy.outputSize);
+        settings.setValue("PaperType",paramCopy.paperType);
+        settings.setValue("IsNin1",paramCopy.isMultiPage);
+        settings.setValue("MultiMode",paramCopy.multiMode);
+        settings.setValue("PromotIDCard",paramCopy.promptInfo.isIDCard);
+        settings.setValue("PromotMultible",paramCopy.promptInfo.isMultible);
+        settings.endGroup();
+    }
+
     QVariant data;
     data.setValue<copycmdset>(copyPara);
     gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_COPY,data);
+}
+
+void TabStackedWidget::recoverCopyMode()
+{
+    ui->cBox_IsIDCard->setChecked(false);
+    ui->cBox_DuplexCopy->setChecked(false);
+    ui->cBox_IsIDCard->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+    ui->icon_IDCardCopy->setStyleSheet("border-image: url(:/Images/IDCardCopyIconDisable.png);");
+    ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+    ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconDisable.tif);");
+    ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));
+
+    QSettings settings;
+    settings.beginGroup("CopyParam");
+    if(settings.contains("Scaling"))
+    {
+        paramCopy.scaling = settings.value("Scaling").toInt();
+        paramCopy.docType = (DocType_Copy)settings.value("DocType").toInt();
+        paramCopy.docSize = (DocSize_Copy)settings.value("DocSize").toInt();
+        paramCopy.docDpi = (DocDpi_Copy)settings.value("DPI").toInt();
+        paramCopy.outputSize = (OutPutSize_Copy)settings.value("OutputSize").toInt();
+        paramCopy.paperType = (MediaType_Copy)settings.value("PaperType").toInt();
+        paramCopy.isMultiPage = settings.value("IsNin1").toBool();
+        paramCopy.multiMode = (MultiMode_Copy)settings.value("MultiMode").toInt();
+        paramCopy.promptInfo.isIDCard = settings.value("PromotIDCard").toBool();
+        paramCopy.promptInfo.isMultible = settings.value("PromotMultible").toBool();
+    }
+    else
+    {
+        setDefault_Copy();
+    }
+    settings.endGroup();
 }
 
 #define _QT_PDF 1
@@ -834,10 +910,10 @@ void TabStackedWidget::on_TUSBBtn_3_clicked()
     QString helpPath;
     if(lan == "en_US")
     {
-        helpPath = helpPath.append("/usr/share/lnthrvop/mht/HelpFile/Help/English/USB.mht");
+        helpPath = "/usr/share/lnthrvop/html/HelpFile/Help/English/USB.htm";
     }else if (lan == "zh_CN")
     {
-        helpPath = helpPath.append("/usr/share/lnthrvop/mht/HelpFile/Help/SimplifiedChinese/USB.mht");
+        helpPath = "/usr/share/lnthrvop/html/HelpFile/Help/SimplifiedChinese/USB.htm";
     }
     qDebug()<<helpPath;
     QDesktopServices::openUrl(QUrl(helpPath));
@@ -849,10 +925,10 @@ void TabStackedWidget::on_TWiFiBtn_3_clicked()
     QString helpPath;
     if(lan == "en_US")
     {
-        helpPath = "/usr/share/lnthrvop/HelpFile/mht/Help/English/Wi-Fi.mht";
+        helpPath = "/usr/share/lnthrvop/html/HelpFile/Help/English/Wi-Fi.htm";
     }else if (lan == "zh_CN")
     {
-        helpPath = "/usr/share/lnthrvop/HelpFile/mht/Help/SimplifiedChinese/Wi-Fi.mht";
+        helpPath = "/usr/share/lnthrvop/html/HelpFile/Help/SimplifiedChinese/Wi-Fi.htm";
     }
     QDesktopServices::openUrl(QUrl(helpPath));
 }

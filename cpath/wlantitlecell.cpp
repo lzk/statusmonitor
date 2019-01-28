@@ -130,7 +130,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
         }
         if(!isDoingCMD)
         {
-            emit cycleStopFromWT();
+            gUInterface->emitEnableCycleAnimation(false);
         }
         break;
     case UIConfig::LS_CMD_WIFI_apply:
@@ -151,7 +151,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             }
             else
             {
-                emit cycleStopFromWT();
+                gUInterface->emitEnableCycleAnimation(false);
             }
             if((is_wifi_now_on == true && isWlanOn == false) || (is_wifi_now_on == false && isWlanOn == true) )
             {
@@ -159,7 +159,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 deviceMsg = tr("ResStr_Msg_1");
                 gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
 
-                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_1"), true);
+                SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_1"), 1);
                 warming->setWindowTitle("ResStr_Prompt1");
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -192,7 +192,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
 //                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
 //                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
 //                }
-                emit cycleStopFromWT();
+                gUInterface->emitEnableCycleAnimation(false);
                 isDoingCMD = false;
                 times = 0;
             }
@@ -224,7 +224,7 @@ void WlanTitleCell::on_btWLANON1_clicked()
     isWitch = true;
     if(!*islogin)
     {
-        emit cycleStartFromWT();
+        gUInterface->emitEnableCycleAnimation(true);
         AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
@@ -243,8 +243,7 @@ void WlanTitleCell::on_btWLANON1_clicked()
             QVariant value;
             value.setValue<cmdst_wifi_get>(wifi_para);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            emit cycleStartFromWT();
-
+            gUInterface->emitEnableCycleAnimation(true);
         }
         else
         {
@@ -263,12 +262,12 @@ void WlanTitleCell::on_btWLANON1_clicked()
             QVariant value;
             value.setValue<cmdst_wifi_get>(wifi_para);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            emit cycleStartFromWT();
+            gUInterface->emitEnableCycleAnimation(true);
         }
     }
     else
     {
-        emit cycleStopFromWT();
+        gUInterface->emitEnableCycleAnimation(false);
     }
 
 }
@@ -295,7 +294,7 @@ void WlanTitleCell::on_btWLANON2_clicked()
     isWitch = true;
     if(!*islogin)
     {
-        emit cycleStartFromWT();
+        gUInterface->emitEnableCycleAnimation(true);
         AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
@@ -315,8 +314,7 @@ void WlanTitleCell::on_btWLANON2_clicked()
             value.setValue<cmdst_wifi_get>(wifi_para);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
 
-            emit cycleStartFromWT();
-
+            gUInterface->emitEnableCycleAnimation(true);
         }
         else
         {
@@ -335,12 +333,12 @@ void WlanTitleCell::on_btWLANON2_clicked()
             QVariant value;
             value.setValue<cmdst_wifi_get>(wifi_para);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            emit cycleStartFromWT();
+            gUInterface->emitEnableCycleAnimation(true);
         }
     }
     else
     {
-        emit cycleStopFromWT();
+        gUInterface->emitEnableCycleAnimation(false);
     }
 }
 
@@ -411,12 +409,12 @@ void WlanTitleCell::addCell(QString ssid, EncrypType type, APInfo info, bool isC
 void WlanTitleCell::getConnectAction(QWidget* w)
 {
     connect(this, SIGNAL(statusChange()), qobject_cast<QWidget *>(apList.at(currentAPID)), SLOT(changeStatus()));
-    emit cycleStartFromWT();
+    gUInterface->emitEnableCycleAnimation(true);
 }
 
 void WlanTitleCell::getConnectResult(QWidget* w, bool s)
 {
-    emit cycleStopFromWT();
+    gUInterface->emitEnableCycleAnimation(false);
     if(s)
     {
         if(currentAPID != apList.indexOf(w))
@@ -552,7 +550,7 @@ void WlanTitleCell::on_btFlesh_clicked()
    aList.clear();
 
    LOGLOG("cycleStartFromWT");
-    emit cycleStartFromWT();
+   gUInterface->emitEnableCycleAnimation(true);
 
     gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
 

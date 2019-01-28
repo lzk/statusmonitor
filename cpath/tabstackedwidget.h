@@ -19,8 +19,6 @@ public:
     explicit TabStackedWidget(QWidget *parent = 0);
     ~TabStackedWidget();
 
-   // SettingsStackedWidget *settingsStackedWidget;
-
 public slots:
     void on_btn_WiFi_clicked();
     void on_btn_PowerSave_clicked();
@@ -33,6 +31,8 @@ public slots:
     void setEnabledDuplexCopy(bool enabled);
     void setEnabledCopyScan(bool enabled);
     void setEnabledWifi(bool enabled);
+
+    void recoverCopyMode();
 
 private slots:
     void on_cBox_IsIDCard_clicked(bool checked);
@@ -67,8 +67,8 @@ private slots:
 
     void on_btn_CopyNumReduce_clicked();
 
-    void startCycleEmit();
-    void stopCycleEmit();
+//    void startCycleEmit();
+//    void stopCycleEmit();
 
     void on_btn_Copy_clicked();
 
@@ -107,9 +107,9 @@ private:
 
     UiSettings paramScan;
 
-signals:
-    void cycleStartFromTab();
-    void cycleStopFromTab();
+//signals:
+//    void cycleStartFromTab();
+//    void cycleStopFromTab();
 };
 
 #endif // TABSTACKEDWIDGET_H

@@ -9,6 +9,8 @@
 #include <qmenu.h>
 #include <qdesktopservices.h>
 #include <qlistview.h>
+#include <qsettings.h>
+#include "membercenter/experiencepro.h"
 
 //#define DEBUG
 
@@ -37,15 +39,17 @@ MainWindow::MainWindow(QWidget *parent) :
 //    connect(gUInterface, SIGNAL(updateStatus(QVariant)),this,SLOT(updateStatus(QVariant)));
     connect(gUInterface,SIGNAL(startScan()),this, SLOT(startScan()));
     connect(gUInterface,SIGNAL(stopScan()),this,SLOT(stopScan()));
-
-//    statusCycle = new BusyRefreshLabel(ui->deviceMsgWidget,true);
-//    ui->statusCycle->hide();
+    connect(gUInterface,SIGNAL(signalEnabledCycleAnimation(bool)),this,SLOT(enableCycleAnimation(bool)));
 
     ui->cycleWidget->hide();
     ui->errorBtn->hide();
 #ifndef DEBUG
     gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
-    errorStatus(true);
+    isOfflineStart = true;
+    enabledScanCopy = true;
+    enableTroubleshootingPage(true);
+    isStartCopy = false;
+
 #else
     qDebug()<<"Status_Ready";
     printers << QString("Lenovo Pro");
@@ -79,13 +83,22 @@ MainWindow::MainWindow(QWidget *parent) :
     cycle = new BusyRefreshLabel(ui->cycleWidget,true);
     cycle->setGeometry(385,280,80,80);
 
-    connect(ui->tabStackedWidget,SIGNAL(cycleStartFromTab()),this,SLOT(startCycleAnimation()));
-    connect(ui->tabStackedWidget,SIGNAL(cycleStopFromTab()),this,SLOT(stopCycleAnimation()));
-
     createSysTray();
 
-    QCoreApplication::setOrganizationName("Lenovo");
-    QCoreApplication::setApplicationName("VOP");
+    QSettings settings;
+    QVariant vCRM = settings.value("enableCRM");
+    if(vCRM.isNull())
+    {
+        bool bCRM = false;
+        ExperiencePro *exp = new ExperiencePro(this,bCRM);
+        exp->exec();
+        bCRM = exp->isStartCRM();
+        if(bCRM)
+        {
+            ui->memberCenterWidget->startCRM();
+        }
+        settings.setValue("enableCRM",bCRM);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -249,8 +262,6 @@ void MainWindow::on_SettingImgBtn_clicked()
 
 void MainWindow::on_refreshBtn_clicked()
 {
-//    statusCycle->setGeometry(70,37,20,19);
-
     if(ui->tabStackedWidget->currentIndex() != 0 && enabledScanCopy)
     {
         on_Copy_clicked();
@@ -265,6 +276,15 @@ void MainWindow::on_refreshBtn_clicked()
 void MainWindow::cmdResult(int cmd,int result ,QVariant data)
 {
     switch(cmd){
+    case UIConfig::LS_CMD_COPY:
+    {
+        qDebug()<<"LS_CMD_COPY";
+        if(!result)
+        {
+            isStartCopy = true;
+        }
+    }
+        break;
 
     case UIConfig::CMD_GetPrinters:{
         if(!result){
@@ -313,7 +333,7 @@ void MainWindow::updatePrinter(const QVariant& data)
     if(printers.isEmpty()){
         LOGLOG("no printers");
         setcurrentPrinter(QString());
-        errorStatus(true);
+//        errorStatus(true);
         gUInterface->setTimer(0);
         return;
     }else if(printers.contains(current_printer)){
@@ -326,7 +346,7 @@ void MainWindow::updatePrinter(const QVariant& data)
     gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
     gUInterface->setTimer(6);
 
-    if(enabledScanCopy)
+    if(enabledScanCopy && (!isOfflineStart))
     {
         on_Copy_clicked();
     }
@@ -349,6 +369,7 @@ void MainWindow::setcurrentPrinter(const QString& str)
         qDebug()<<"printer"<<&printerInfo.printer<<"    modelType:"<<modelType;
         if((modelType & UIConfig::ModelSerial_M) == UIConfig::ModelSerial_M)//M:3in1
         {
+            enableMPrinter(true);
             if((modelType & UIConfig::Model_D) == UIConfig::Model_D)//MD:3in1,duplex copy
             {
                 ui->tabStackedWidget->setEnabledDuplexCopy(true);
@@ -357,58 +378,74 @@ void MainWindow::setcurrentPrinter(const QString& str)
             {
                 ui->tabStackedWidget->setEnabledDuplexCopy(false);
             }
-            enabledScanCopy = true;
-            ui->tabStackedWidget->setEnabledCopyScan(true);
-            ui->Copy->show();
-            ui->CopyImgBtn->show();
-            ui->Scan->show();
-            ui->ScanImgBtn->show();
-            ui->Setting->setEnabled(true);
-            ui->SettingImgBtn->setEnabled(true);
-
-            QRect sRect = QRect(ui->Scan->geometry().x()+ui->Scan->geometry().width(),ui->Scan->geometry().y(),111,25);
-            QRect sIRect = QRect((ui->ScanImgBtn->geometry().x()+ui->ScanImgBtn->geometry().width() - 1),ui->ScanImgBtn->geometry().y(),111,77);
-            ui->Setting->setGeometry(sRect);
-            ui->SettingImgBtn->setGeometry(sIRect);
-
-            on_Copy_clicked();
         }
         else//L:only print
         {
-            enabledScanCopy = false;
-            ui->tabStackedWidget->setEnabledCopyScan(false);
-            ui->Copy->hide();
-            ui->CopyImgBtn->hide();
-            ui->Scan->hide();
-            ui->ScanImgBtn->hide();
-            ui->tabStackedWidget->setCurrentIndex(2);
-
-            ui->Setting->setGeometry(ui->Copy->geometry());
-            ui->SettingImgBtn->setGeometry(ui->CopyImgBtn->geometry());
-            ui->Setting->setStyleSheet(selectState + "border-radius:7px;");
-            ui->Setting->setEnabled(false);
-            ui->SettingImgBtn->setEnabled(false);
-
-            ui->tabStackedWidget->setCurrentIndex(2);
+            enableMPrinter(false);
         }
         if((modelType & UIConfig::Model_W) == UIConfig::Model_W)//W:WIFI
         {
             enabledWiFi = true;
             ui->tabStackedWidget->setEnabledWifi(true);
+            if(!isOfflineStart && (!enabledScanCopy))
+            {
+                ui->tabStackedWidget->on_btn_WiFi_clicked();
+            }
         }
         else
         {
             enabledWiFi = false;
             ui->tabStackedWidget->setEnabledWifi(false);
-            ui->tabStackedWidget->on_btn_PowerSave_clicked();
+            if(!isOfflineStart && (!enabledScanCopy))
+            {
+                ui->tabStackedWidget->on_btn_PowerSave_clicked();
+            }
         }
     }
 }
 
-void MainWindow::updateToner(int c ,int m ,int y ,int k)
+void MainWindow::enableMPrinter(bool enabled)
 {
-}
+    if(enabled)
+    {
+        enabledScanCopy = true;
+        ui->tabStackedWidget->setEnabledCopyScan(true);
+        ui->Copy->show();
+        ui->CopyImgBtn->show();
+        ui->Scan->show();
+        ui->ScanImgBtn->show();
 
+        QRect sRect = QRect(ui->Scan->geometry().x()+ui->Scan->geometry().width(),ui->Scan->geometry().y(),111,25);
+        QRect sIRect = QRect((ui->ScanImgBtn->geometry().x()+ui->ScanImgBtn->geometry().width() - 1),ui->ScanImgBtn->geometry().y(),111,77);
+        ui->Setting->setGeometry(sRect);
+        ui->SettingImgBtn->setGeometry(sIRect);
+    }
+    else
+    {
+        enabledScanCopy = false;
+        ui->Copy->hide();
+        ui->CopyImgBtn->hide();
+        ui->Scan->hide();
+        ui->ScanImgBtn->hide();
+
+        ui->Setting->setGeometry(ui->Copy->geometry().x(),ui->Copy->geometry().y(),ui->Copy->geometry().width(),ui->Copy->geometry().height());
+        ui->SettingImgBtn->setGeometry(ui->CopyImgBtn->geometry());
+        ui->Setting->setStyleSheet(selectState + "border-radius:7px;");
+        ui->Setting->setEnabled(false);
+        ui->SettingImgBtn->setEnabled(false);
+
+        if(!isOfflineStart)
+        {
+            ui->tabStackedWidget->setEnabledCopyScan(false);
+            ui->tabStackedWidget->setCurrentIndex(2);
+        }
+    }
+
+    if(isOfflineStart)
+    {
+        enableTroubleshootingPage(true);
+    }
+}
 
 void MainWindow::updateStatus(QVariant data)
 {
@@ -490,7 +527,7 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
         if(ui->tabStackedWidget->currentIndex() != 0)
         {
             LOGLOG("on_deviceNameBox_currentIndexChanged");
-            if(enabledScanCopy)
+            if(enabledScanCopy&&(!isOfflineStart))
             {
                 on_Copy_clicked();
             }
@@ -499,47 +536,89 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
     }
 #endif
 
-
 }
 
-void MainWindow::errorStatus(bool bIsErrorStatus)
+void MainWindow::enableTroubleshootingPage(bool enabled)
 {
-    ui->tabStackedWidget->setCopyStackedWidgetCurrentIndex(bIsErrorStatus);
-
-    if(enabledScanCopy == true)
+    if(enabledScanCopy)
     {
-        ui->CopyImgBtn->setEnabled(!bIsErrorStatus);
-        ui->ScanImgBtn->setEnabled(!bIsErrorStatus);
-        ui->SettingImgBtn->setEnabled(!bIsErrorStatus);
+        ui->tabStackedWidget->setCopyStackedWidgetCurrentIndex(enabled);
+        ui->CopyImgBtn->setEnabled(!enabled);
+        ui->ScanImgBtn->setEnabled(!enabled);
+        ui->SettingImgBtn->setEnabled(!enabled);
 
-        ui->Copy->setEnabled(!bIsErrorStatus);
-        ui->Scan->setEnabled(!bIsErrorStatus);
-        ui->Setting->setEnabled(!bIsErrorStatus);
-    }
+        ui->Copy->setEnabled(!enabled);
+        ui->Scan->setEnabled(!enabled);
+        ui->Setting->setEnabled(!enabled);
 
-    if(bIsErrorStatus)
-    {
-        ui->Copy->setStyleSheet("background-color: white;color:gray;border-top-right-radius:0px;border-bottom-right-radius:0px");
-        ui->Scan->setStyleSheet("background-color: white;color:gray;border-radius:0px");
-        ui->Setting->setStyleSheet("background-color: white;color:gray;border-top-left-radius:0px;border-bottom-left-radius:0px");
+        if(enabled)
+        {
+            ui->Copy->setStyleSheet("background-color: white;color:gray;border-top-right-radius:0px;border-bottom-right-radius:0px");
+            ui->Scan->setStyleSheet("background-color: white;color:gray;border-radius:0px");
+            ui->Setting->setStyleSheet("background-color: white;color:gray;border-top-left-radius:0px;border-bottom-left-radius:0px");
+        }
+        else
+        {
+
+            ui->Copy->setStyleSheet(selectState + "border-top-right-radius:0px;border-bottom-right-radius:0px");
+            ui->Scan->setStyleSheet(unSelectState + "border-radius:0px");
+            ui->Setting->setStyleSheet(unSelectState + "border-top-left-radius:0px;border-bottom-left-radius:0px");
+        }
     }
     else
-    { 
+    {
+        if(enabled)
+        {
+            ui->tabStackedWidget->setCopyStackedWidgetCurrentIndex(1);
+            ui->Setting->setStyleSheet("background-color: white;color:gray;border-radius:7px;");
+        }
+        else
+        {
+            ui->tabStackedWidget->setCopyStackedWidgetCurrentIndex(0);
+            enableAllFunction(false);
+            ui->tabStackedWidget->setEnabledCopyScan(false);
+            ui->tabStackedWidget->setCurrentIndex(2);
+            ui->Setting->setStyleSheet(selectState + "border-radius:7px;");
+        }
+    }
+}
+
+void MainWindow::updateTonerCarStatus(int toner)
+{
+    if(toner<0)
+    {
+        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Disable.tif);");
+        ui->btCar->setEnabled(false);
+    }
+    else if(toner < 11)
+    {
+        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Warn.png);");
+        ui->btCar->setEnabled(true);
+    }
+    else if(toner < 30)
+    {
         ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png);");
         ui->btCar->setEnabled(true);
     }
+    else
+    {
+        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png);");
+        ui->btCar->setEnabled(true);
+    }
+}
 
-    ui->btCar->setEnabled(!bIsErrorStatus);
-
-    ui->tabStackedWidget->set_setting_enabled(!bIsErrorStatus);
-
-//    if(ui->deviceNameBox->isEnabled())
-//    {
-        ui->tabStackedWidget->set_scan_enabled(!bIsErrorStatus);//Added for default enable scan button by gavin 2016-04-14
-        ui->tabStackedWidget->set_copy_enabled(!bIsErrorStatus);
-//    }
-    ui->errorBtn->hide();
-
+void MainWindow::enableAllFunction(bool enabled)
+{
+    if(enabledScanCopy)
+    {
+        ui->tabStackedWidget->set_setting_enabled(enabled);
+        ui->tabStackedWidget->set_scan_enabled(enabled);//Added for default enable scan button by gavin 2016-04-14
+        ui->tabStackedWidget->set_copy_enabled(enabled);
+    }
+    else
+    {
+        ui->tabStackedWidget->set_setting_enabled(enabled);
+    }
 }
 
 void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
@@ -608,12 +687,11 @@ void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
     }
 }
 
-
 void MainWindow::onStatusCh(const PrinterStatus_struct& status)
 {
     ui->label_10->setStyleSheet("QLabel{color:break;}");
     ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
-    errorStatus(false);
+    updateTonerCarStatus(status.TonelStatusLevelK);
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
     QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,UIConfig::UnknowJob,0);
@@ -633,9 +711,21 @@ void MainWindow::updateStatusPanel(int status)
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
-
-
+        enableAllFunction(true);
+        ui->errorBtn->hide();
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+
+        if(isOfflineStart)
+        {
+            isOfflineStart = false;
+            enableTroubleshootingPage(false);
+        }
+        emit signalCloseAnimationDlg();
+        if(isStartCopy)
+        {
+            isStartCopy = false;
+            ui->tabStackedWidget->recoverCopyMode();
+        }
         break;
     case UIConfig::Status_Sleep:
         ui->label_6->setText(tr("ResStr_Sleep"));
@@ -643,6 +733,15 @@ void MainWindow::updateStatusPanel(int status)
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
+        enableAllFunction(true);
+        ui->errorBtn->hide();
+        ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+        if(isOfflineStart)
+        {
+            isOfflineStart = false;
+            enableTroubleshootingPage(false);
+        }
+        emit signalCloseAnimationDlg();
         break;
     case UIConfig::Status_Offline:
         ui->label_6->setText(tr("ResStr_Offline"));
@@ -650,14 +749,12 @@ void MainWindow::updateStatusPanel(int status)
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(110, 110, 110);}");
-
-        ui->tabStackedWidget->set_copy_enabled(false);
-        ui->tabStackedWidget->set_setting_enabled(false);
-        ui->tabStackedWidget->set_scan_enabled(false); //Added for disable scan button when offline by gavin 2016-04-14
+        enableAllFunction(false);
+        ui->errorBtn->hide();
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
         ui->mofenProgressBar->setValue(0);
-        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Disable.tif);");
-        ui->btCar->setEnabled(false);
+        updateTonerCarStatus(-1);
+        emit signalCloseAnimationDlg();
         break;
     case UIConfig::Status_Busy:
         ui->label_6->setText(tr("ResStr_Busy"));
@@ -665,8 +762,14 @@ void MainWindow::updateStatusPanel(int status)
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
-
+        ui->errorBtn->hide();
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+        if(isOfflineStart)
+        {
+            isOfflineStart = false;
+            enableTroubleshootingPage(false);
+        }
+        emit signalCloseAnimationDlg();
         break;
     case UIConfig::Status_Error:
         ui->label_6->setText(tr("ResStr_Error"));
@@ -674,9 +777,14 @@ void MainWindow::updateStatusPanel(int status)
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: red;}");
+        enableAllFunction(true);
         ui->errorBtn->show();
-
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Red.png);");
+        if(isOfflineStart)
+        {
+            isOfflineStart = false;
+            enableTroubleshootingPage(false);
+        }
         break;
     default:
         break;
@@ -693,19 +801,35 @@ void MainWindow::setDeviceMsg(const QString& msg, int result)
     ui->label_10->setText(msg);
 }
 
-void MainWindow::startCycleAnimation()
+void MainWindow::enableCycleAnimation(bool enabled)
 {
-    qDebug()<<"startCycleAnimation";
-    ui->cycleWidget->show();
-    cycle->startAnimation(20);
+    if(enabled)
+    {
+        qDebug()<<"startCycleAnimation";
+        ui->cycleWidget->show();
+        cycle->startAnimation(20);
+    }
+    else
+    {
+        qDebug()<<"stopCycleAnimation";
+        ui->cycleWidget->hide();
+        cycle->stopAnimation();
+    }
 }
 
-void MainWindow::stopCycleAnimation()
-{
-    qDebug()<<"stopCycleAnimation";
-    ui->cycleWidget->hide();
-    cycle->stopAnimation();
-}
+//void MainWindow::startCycleAnimation()
+//{
+//    qDebug()<<"startCycleAnimation";
+//    ui->cycleWidget->show();
+//    cycle->startAnimation(20);
+//}
+
+//void MainWindow::stopCycleAnimation()
+//{
+//    qDebug()<<"stopCycleAnimation";
+//    ui->cycleWidget->hide();
+//    cycle->stopAnimation();
+//}
 
 void MainWindow::startScan()
 {
@@ -739,6 +863,7 @@ void MainWindow::on_errorBtn_clicked()
 {
     bool enNextShow = false;
     AnimationDlg *aDialog = new AnimationDlg(this, 0xBD, &enNextShow);
+    connect(this,SIGNAL(signalCloseAnimationDlg()),aDialog,SLOT(close()));
     aDialog->setAttribute(Qt::WA_DeleteOnClose);
     if (aDialog->exec() == QDialog::Rejected)
     {

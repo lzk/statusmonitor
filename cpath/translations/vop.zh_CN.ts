@@ -242,39 +242,39 @@
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="162"/>
+        <location filename="../mainwindow.cpp" line="174"/>
         <source>ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_</source>
         <translation>应用关闭后，扫描图片将会被删除，是否关闭，请确认？</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="57"/>
-        <location filename="../mainwindow.cpp" line="631"/>
+        <location filename="../mainwindow.cpp" line="60"/>
+        <location filename="../mainwindow.cpp" line="699"/>
         <source>ResStr_Ready</source>
         <translation>待机</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="109"/>
+        <location filename="../mainwindow.cpp" line="121"/>
         <source>ResStr_Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="641"/>
+        <location filename="../mainwindow.cpp" line="716"/>
         <source>ResStr_Sleep</source>
         <translation>休眠</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="386"/>
-        <location filename="../mainwindow.cpp" line="648"/>
+        <location filename="../mainwindow.cpp" line="732"/>
         <source>ResStr_Offline</source>
         <translation>离线</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="663"/>
+        <location filename="../mainwindow.cpp" line="745"/>
         <source>ResStr_Busy</source>
         <translation>工作中</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="672"/>
+        <location filename="../mainwindow.cpp" line="760"/>
         <source>ResStr_Error</source>
         <translation>错误</translation>
     </message>
@@ -283,7 +283,7 @@
     <name>MemberCenterWidget</name>
     <message>
         <location filename="../membercenterwidget.ui" line="54"/>
-        <location filename="../membercenterwidget.ui" line="1188"/>
+        <location filename="../membercenterwidget.ui" line="1191"/>
         <source>ResStr_Change_Account_Information</source>
         <translation>修改账户信息</translation>
     </message>
@@ -338,28 +338,28 @@
         <translation>取  消</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="841"/>
+        <location filename="../membercenterwidget.ui" line="844"/>
         <source>ResStr_Return</source>
         <translation>返回</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="863"/>
+        <location filename="../membercenterwidget.ui" line="866"/>
         <source>ResStr_User_Experience</source>
         <translation>用户体验改善计划</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1269"/>
+        <location filename="../membercenterwidget.ui" line="1272"/>
         <source>ResStr_Product_Support</source>
         <translation>产品与支持</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1294"/>
+        <location filename="../membercenterwidget.ui" line="1297"/>
         <source>ResStr_About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="977"/>
-        <location filename="../membercenterwidget.cpp" line="75"/>
+        <location filename="../membercenterwidget.ui" line="980"/>
+        <location filename="../membercenterwidget.cpp" line="95"/>
         <source>ResStr_Login_</source>
         <translation>登录</translation>
     </message>
@@ -379,17 +379,17 @@
         <translation>男</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1148"/>
+        <location filename="../membercenterwidget.ui" line="1151"/>
         <source>ResStr_Member_Center</source>
         <translation>会员中心</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.cpp" line="480"/>
+        <location filename="../membercenterwidget.cpp" line="568"/>
         <source>ResStr_Email_Format_Error</source>
         <translation>邮件地址格式不正确，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.cpp" line="481"/>
+        <location filename="../membercenterwidget.cpp" line="569"/>
         <source>ResStr_Error</source>
         <translation>错误</translation>
     </message>
@@ -397,235 +397,235 @@
 <context>
     <name>MoreSettingsForCopy</name>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="55"/>
-        <location filename="../moresettingsforcopy.ui" line="421"/>
+        <location filename="../moresettingsforcopy.ui" line="61"/>
+        <location filename="../moresettingsforcopy.ui" line="433"/>
         <source>ResStr_On</source>
         <translation>开</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="88"/>
-        <location filename="../moresettingsforcopy.ui" line="1046"/>
+        <location filename="../moresettingsforcopy.ui" line="94"/>
+        <location filename="../moresettingsforcopy.ui" line="1064"/>
         <source>ResStr_A4</source>
         <translation>A4</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="93"/>
-        <location filename="../moresettingsforcopy.ui" line="1051"/>
+        <location filename="../moresettingsforcopy.ui" line="99"/>
+        <location filename="../moresettingsforcopy.ui" line="1069"/>
         <source>ResStr_A5</source>
         <translation>A5</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="98"/>
-        <location filename="../moresettingsforcopy.ui" line="1061"/>
+        <location filename="../moresettingsforcopy.ui" line="104"/>
+        <location filename="../moresettingsforcopy.ui" line="1079"/>
         <source>ResStr_B5</source>
         <translation>B5</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="103"/>
-        <location filename="../moresettingsforcopy.ui" line="1041"/>
+        <location filename="../moresettingsforcopy.ui" line="109"/>
+        <location filename="../moresettingsforcopy.ui" line="1059"/>
         <source>ResStr_Letter</source>
         <translation>Letter</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="108"/>
-        <location filename="../moresettingsforcopy.ui" line="1071"/>
+        <location filename="../moresettingsforcopy.ui" line="114"/>
+        <location filename="../moresettingsforcopy.ui" line="1089"/>
         <source>ResStr_Executive</source>
         <translation>Executive</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="128"/>
+        <location filename="../moresettingsforcopy.ui" line="134"/>
         <source>ResStr_Output_Size</source>
         <translation>输出纸张尺寸</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="150"/>
+        <location filename="../moresettingsforcopy.ui" line="156"/>
         <source>ResStr_Tips_for_Copying</source>
         <translation>复印操作提示</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="252"/>
+        <location filename="../moresettingsforcopy.ui" line="258"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="271"/>
+        <location filename="../moresettingsforcopy.ui" line="277"/>
         <source>ResStr_Media_Type</source>
         <translation>纸张类型</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="443"/>
+        <location filename="../moresettingsforcopy.ui" line="455"/>
         <source>ResStr_Document_Size</source>
         <translation>原稿尺寸</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="467"/>
+        <location filename="../moresettingsforcopy.ui" line="479"/>
         <source>ResStr_2_in_1</source>
         <translation>2合1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="525"/>
+        <location filename="../moresettingsforcopy.ui" line="537"/>
         <source>ResStr_9_in_1</source>
         <translation>9合1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="547"/>
+        <location filename="../moresettingsforcopy.ui" line="559"/>
         <source>ResStr_Scaling</source>
         <translation>缩放比例</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="572"/>
+        <location filename="../moresettingsforcopy.ui" line="584"/>
         <source>ResStr_The_valid_range_is_25_400__please_confirm_and_enter_again_</source>
         <translation>有效值输入范围为25%到400%，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="612"/>
+        <location filename="../moresettingsforcopy.ui" line="624"/>
         <source>ResStr_Default</source>
         <translation>默  认</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="646"/>
+        <location filename="../moresettingsforcopy.ui" line="658"/>
         <source>132</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="725"/>
+        <location filename="../moresettingsforcopy.ui" line="743"/>
         <source>ResStr_DPI</source>
         <translation>分辨率</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="761"/>
+        <location filename="../moresettingsforcopy.ui" line="779"/>
         <source>—</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="780"/>
+        <location filename="../moresettingsforcopy.ui" line="798"/>
         <source>ResStr_Scanning_Mode</source>
         <translation>原稿类型</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="812"/>
+        <location filename="../moresettingsforcopy.ui" line="830"/>
         <source>ResStr_N_in_1_Copy</source>
         <translation>N合1复印</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="863"/>
+        <location filename="../moresettingsforcopy.ui" line="881"/>
         <source>ResStr_OK</source>
         <translation>确  定</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1427"/>
+        <location filename="../moresettingsforcopy.ui" line="1445"/>
         <source>ResStr_A4Mode_1</source>
         <translation>A4模式1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1451"/>
+        <location filename="../moresettingsforcopy.ui" line="1469"/>
         <source>ResStr_A4Mode_2</source>
         <translation>A4模式2</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1475"/>
+        <location filename="../moresettingsforcopy.ui" line="1493"/>
         <source>ResStr_A4Mode_3</source>
         <translation>A4模式3</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1499"/>
+        <location filename="../moresettingsforcopy.ui" line="1517"/>
         <source>ResStr_A5Mode</source>
         <translation>A5模式</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1531"/>
+        <location filename="../moresettingsforcopy.ui" line="1539"/>
         <source>ResStr_Credentials_Duplex_Copy_Mode</source>
         <translation>身份证复印模式</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="26"/>
-        <location filename="../moresettingsforcopy.ui" line="887"/>
+        <location filename="../moresettingsforcopy.ui" line="32"/>
+        <location filename="../moresettingsforcopy.ui" line="905"/>
         <source>ResStr_More_Settings</source>
         <translation>更多设置</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="911"/>
+        <location filename="../moresettingsforcopy.ui" line="929"/>
         <source>ResStr_4_in_1</source>
         <translation>4合1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="933"/>
-        <location filename="../moresettingsforcopy.ui" line="1199"/>
+        <location filename="../moresettingsforcopy.ui" line="951"/>
+        <location filename="../moresettingsforcopy.ui" line="1217"/>
         <source>ResStr_Off</source>
         <translation>关</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="967"/>
+        <location filename="../moresettingsforcopy.ui" line="985"/>
         <source>300 × 300 dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="972"/>
+        <location filename="../moresettingsforcopy.ui" line="990"/>
         <source>600 × 600 dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="992"/>
+        <location filename="../moresettingsforcopy.ui" line="1010"/>
         <source>ResStr_ID_Card</source>
         <translation>身份证</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1013"/>
+        <location filename="../moresettingsforcopy.ui" line="1031"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1096"/>
+        <location filename="../moresettingsforcopy.ui" line="1114"/>
         <source>ResStr_N_in_1</source>
         <translation>N合1</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1147"/>
+        <location filename="../moresettingsforcopy.ui" line="1165"/>
         <source>ResStr_Text</source>
         <translation>文本</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1179"/>
+        <location filename="../moresettingsforcopy.ui" line="1197"/>
         <source>ResStr_Photo</source>
         <translation>照片</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="381"/>
+        <location filename="../moresettingsforcopy.ui" line="393"/>
         <source>ResStr_Plain_Paper</source>
         <translation>普通纸</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="386"/>
+        <location filename="../moresettingsforcopy.ui" line="398"/>
         <source>ResStr_Recycled_Paper</source>
         <translation>再生纸</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="391"/>
+        <location filename="../moresettingsforcopy.ui" line="403"/>
         <source>ResStr_Thick_Paper</source>
         <translation>厚纸</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="396"/>
+        <location filename="../moresettingsforcopy.ui" line="408"/>
         <source>ResStr_Thin_Paper</source>
         <translation>薄纸</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="401"/>
+        <location filename="../moresettingsforcopy.ui" line="413"/>
         <source>ResStr_Label</source>
         <translation>标签</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1056"/>
+        <location filename="../moresettingsforcopy.ui" line="1074"/>
         <source>ResStr_A6</source>
         <translation>A6</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1066"/>
+        <location filename="../moresettingsforcopy.ui" line="1084"/>
         <source>ResStr_B6</source>
         <translation>B6</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1076"/>
+        <location filename="../moresettingsforcopy.ui" line="1094"/>
         <source>ResStr_16K</source>
         <translation>16K</translation>
     </message>
@@ -1023,7 +1023,7 @@
     </message>
     <message>
         <location filename="../settingsstackedwidget.ui" line="931"/>
-        <location filename="../settingsstackedwidget.cpp" line="1055"/>
+        <location filename="../settingsstackedwidget.cpp" line="1028"/>
         <source>ResStr_Setting</source>
         <translation>设置</translation>
     </message>
@@ -1140,95 +1140,97 @@
         <translation>确认密码</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="194"/>
-        <location filename="../settingsstackedwidget.cpp" line="259"/>
+        <location filename="../settingsstackedwidget.cpp" line="171"/>
+        <location filename="../settingsstackedwidget.cpp" line="236"/>
         <source>ResStr_Msg_1</source>
         <translation>设定成功，机器重启后生效。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="196"/>
-        <location filename="../settingsstackedwidget.cpp" line="261"/>
-        <location filename="../settingsstackedwidget.cpp" line="319"/>
-        <location filename="../settingsstackedwidget.cpp" line="378"/>
-        <location filename="../settingsstackedwidget.cpp" line="414"/>
-        <location filename="../settingsstackedwidget.cpp" line="450"/>
-        <location filename="../settingsstackedwidget.cpp" line="486"/>
+        <location filename="../settingsstackedwidget.cpp" line="173"/>
+        <location filename="../settingsstackedwidget.cpp" line="238"/>
+        <location filename="../settingsstackedwidget.cpp" line="296"/>
+        <location filename="../settingsstackedwidget.cpp" line="355"/>
+        <location filename="../settingsstackedwidget.cpp" line="391"/>
+        <location filename="../settingsstackedwidget.cpp" line="427"/>
+        <location filename="../settingsstackedwidget.cpp" line="463"/>
+        <location filename="../settingsstackedwidget.cpp" line="493"/>
         <source>ResStr_Setting_Fail</source>
         <translation>设定失败</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="317"/>
-        <location filename="../settingsstackedwidget.cpp" line="376"/>
-        <location filename="../settingsstackedwidget.cpp" line="412"/>
-        <location filename="../settingsstackedwidget.cpp" line="448"/>
-        <location filename="../settingsstackedwidget.cpp" line="484"/>
+        <location filename="../settingsstackedwidget.cpp" line="294"/>
+        <location filename="../settingsstackedwidget.cpp" line="353"/>
+        <location filename="../settingsstackedwidget.cpp" line="389"/>
+        <location filename="../settingsstackedwidget.cpp" line="425"/>
+        <location filename="../settingsstackedwidget.cpp" line="461"/>
+        <location filename="../settingsstackedwidget.cpp" line="491"/>
         <source>ResStr_Setting_Successfully_</source>
         <translation>设定成功</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="385"/>
-        <location filename="../settingsstackedwidget.cpp" line="421"/>
-        <location filename="../settingsstackedwidget.cpp" line="457"/>
+        <location filename="../settingsstackedwidget.cpp" line="362"/>
+        <location filename="../settingsstackedwidget.cpp" line="398"/>
+        <location filename="../settingsstackedwidget.cpp" line="434"/>
         <source>ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature</source>
         <translation>请关闭打印机，直到打印机冷却到室温后再开启打印机。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="386"/>
-        <location filename="../settingsstackedwidget.cpp" line="422"/>
-        <location filename="../settingsstackedwidget.cpp" line="458"/>
+        <location filename="../settingsstackedwidget.cpp" line="363"/>
+        <location filename="../settingsstackedwidget.cpp" line="399"/>
+        <location filename="../settingsstackedwidget.cpp" line="435"/>
         <source>ResStr_Prompt</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="831"/>
+        <location filename="../settingsstackedwidget.cpp" line="804"/>
         <source>ResStr_Msg_9</source>
         <translation>网络名称必须是1到32个字符，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="832"/>
-        <location filename="../settingsstackedwidget.cpp" line="840"/>
-        <location filename="../settingsstackedwidget.cpp" line="1329"/>
-        <location filename="../settingsstackedwidget.cpp" line="1337"/>
+        <location filename="../settingsstackedwidget.cpp" line="805"/>
+        <location filename="../settingsstackedwidget.cpp" line="813"/>
+        <location filename="../settingsstackedwidget.cpp" line="1302"/>
+        <location filename="../settingsstackedwidget.cpp" line="1310"/>
         <source>ResStr_Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="839"/>
+        <location filename="../settingsstackedwidget.cpp" line="812"/>
         <source>ResStr_Msg_3</source>
         <translation>密码必须是8到63个ASCII字符或者64个十六进制字符，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1062"/>
+        <location filename="../settingsstackedwidget.cpp" line="1035"/>
         <source>ResStr_Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1229"/>
+        <location filename="../settingsstackedwidget.cpp" line="1202"/>
         <source>ResStr_This_operation_will_reset_the_drum</source>
         <translation>本操作将会重置感光鼓状态，请确认更换新的感光鼓后再执行本操作。是否继续？</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1292"/>
+        <location filename="../settingsstackedwidget.cpp" line="1265"/>
         <source>ResStr_This_operation_will_reset_the_toner</source>
         <translation>本操作将会重置墨粉余量为100%，请确认更换新的墨粉盒后再执行本操作。是否继续？</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1328"/>
+        <location filename="../settingsstackedwidget.cpp" line="1301"/>
         <source>ResStr_The_new_password_can_not_be_empty_</source>
         <translation>新密码不能为空。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1336"/>
+        <location filename="../settingsstackedwidget.cpp" line="1309"/>
         <source>ResStr_The_passwords_you_entered__are_different__please_try_again_</source>
         <translation>输入密码不一致，请重新输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="853"/>
-        <location filename="../settingsstackedwidget.cpp" line="921"/>
-        <location filename="../settingsstackedwidget.cpp" line="1077"/>
-        <location filename="../settingsstackedwidget.cpp" line="1112"/>
-        <location filename="../settingsstackedwidget.cpp" line="1246"/>
-        <location filename="../settingsstackedwidget.cpp" line="1350"/>
+        <location filename="../settingsstackedwidget.cpp" line="826"/>
+        <location filename="../settingsstackedwidget.cpp" line="894"/>
+        <location filename="../settingsstackedwidget.cpp" line="1050"/>
+        <location filename="../settingsstackedwidget.cpp" line="1085"/>
+        <location filename="../settingsstackedwidget.cpp" line="1219"/>
+        <location filename="../settingsstackedwidget.cpp" line="1323"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>管理员权限认证</translation>
     </message>
@@ -1242,7 +1244,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="185"/>
-        <location filename="../tabstackedwidget.cpp" line="29"/>
+        <location filename="../tabstackedwidget.cpp" line="30"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1266,7 +1268,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="503"/>
-        <location filename="../tabstackedwidget.cpp" line="336"/>
+        <location filename="../tabstackedwidget.cpp" line="362"/>
         <source>ResStr_ID_Card_Copy</source>
         <translation>身份证复印</translation>
     </message>
@@ -1277,8 +1279,8 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="118"/>
-        <location filename="../tabstackedwidget.cpp" line="346"/>
-        <location filename="../tabstackedwidget.cpp" line="366"/>
+        <location filename="../tabstackedwidget.cpp" line="372"/>
+        <location filename="../tabstackedwidget.cpp" line="392"/>
         <source>ResStr_ExtraAdd_Copy</source>
         <translation>复印</translation>
     </message>
@@ -1289,7 +1291,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="567"/>
-        <location filename="../tabstackedwidget.cpp" line="360"/>
+        <location filename="../tabstackedwidget.cpp" line="386"/>
         <source>ResStr_Duplex_Copy</source>
         <translation>双面复印</translation>
     </message>
@@ -1320,8 +1322,8 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="896"/>
-        <location filename="../tabstackedwidget.cpp" line="60"/>
-        <location filename="../tabstackedwidget.cpp" line="401"/>
+        <location filename="../tabstackedwidget.cpp" line="61"/>
+        <location filename="../tabstackedwidget.cpp" line="427"/>
         <source>ResStr_Scanned_image_size</source>
         <translation>待扫描图片大小：</translation>
     </message>
@@ -1366,39 +1368,56 @@
         <translation>打印机IPv6地址</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="718"/>
+        <location filename="../tabstackedwidget.cpp" line="782"/>
         <source>TIF(*.tif);;PDF(*pdf);;JPG(*jpg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="721"/>
+        <location filename="../tabstackedwidget.cpp" line="785"/>
         <source>TIF(*.tif);;PDF(*pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="729"/>
+        <location filename="../tabstackedwidget.cpp" line="793"/>
         <source>PDF(*pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="744"/>
+        <location filename="../tabstackedwidget.cpp" line="808"/>
         <source>TIF(*.tif)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="788"/>
-        <location filename="../tabstackedwidget.cpp" line="797"/>
+        <location filename="../tabstackedwidget.cpp" line="852"/>
+        <location filename="../tabstackedwidget.cpp" line="861"/>
         <source>ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_</source>
         <translation>有效值输入范围为1到99，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="789"/>
-        <location filename="../tabstackedwidget.cpp" line="798"/>
+        <location filename="../tabstackedwidget.cpp" line="86"/>
+        <location filename="../tabstackedwidget.cpp" line="95"/>
+        <location filename="../tabstackedwidget.cpp" line="853"/>
+        <location filename="../tabstackedwidget.cpp" line="862"/>
         <source>ResStr_Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="724"/>
+        <location filename="../tabstackedwidget.cpp" line="85"/>
+        <source>ResStr_The_machine_is_busy__please_try_later_</source>
+        <translation>机器正在工作中，请稍后再试。</translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="94"/>
+        <source>ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_</source>
+        <translation>机器故障，操作无法进行。</translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="101"/>
+        <source>ResStr_Copy_Fail</source>
+        <translation>复印失败</translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="788"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2118,17 +2137,17 @@
     </message>
     <message>
         <location filename="../wlantitlecell.cpp" line="231"/>
-        <location filename="../wlantitlecell.cpp" line="302"/>
+        <location filename="../wlantitlecell.cpp" line="301"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>管理员权限认证</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="635"/>
+        <location filename="../wlantitlecell.cpp" line="633"/>
         <source>ResStr_Msg_2</source>
         <translation>密码必须是5/13个ASCII字符或者10/26个十六进制字符，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="643"/>
+        <location filename="../wlantitlecell.cpp" line="641"/>
         <source>ResStr_Msg_3</source>
         <translation>密码必须是8到63个ASCII字符或者64个十六进制字符，请确认后再次输入。</translation>
     </message>

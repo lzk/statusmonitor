@@ -99,9 +99,9 @@ private:
     bool m_isLogin;
     int times;
 
-signals:
-    void cycleStartFromWT();
-    void cycleStopFromWT();
+//signals:
+//    void cycleStartFromWT();
+//    void cycleStopFromWT();
 };
 
 #endif // WLANTITLECELL_H

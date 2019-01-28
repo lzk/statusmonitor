@@ -99,4 +99,9 @@ void UInterface::emitStopScanSignal()
     emit stopScan();
 }
 
+void UInterface::emitEnableCycleAnimation(bool enabled)
+{
+    emit signalEnabledCycleAnimation(enabled);
+}
+
 
