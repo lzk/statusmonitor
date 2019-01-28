@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
+    <width>605</width>
     <height>800</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>640</width>
+    <width>605</width>
     <height>800</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>640</width>
+    <width>605</width>
     <height>800</height>
    </size>
   </property>
@@ -32,7 +32,7 @@
    <property name="geometry">
     <rect>
      <x>181</x>
-     <y>669</y>
+     <y>674</y>
      <width>34</width>
      <height>34</height>
     </rect>
@@ -87,7 +87,7 @@ QPushButton:pressed{
    <property name="geometry">
     <rect>
      <x>400</x>
-     <y>669</y>
+     <y>674</y>
      <width>34</width>
      <height>34</height>
     </rect>
@@ -123,15 +123,15 @@ QPushButton::Pressed{
   <widget class="QLabel" name="label_msg1">
    <property name="geometry">
     <rect>
-     <x>213</x>
-     <y>570</y>
+     <x>200</x>
+     <y>560</y>
      <width>211</width>
-     <height>41</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>21</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -145,7 +145,7 @@ QPushButton::Pressed{
    <property name="geometry">
     <rect>
      <x>290</x>
-     <y>660</y>
+     <y>670</y>
      <width>44</width>
      <height>44</height>
     </rect>
@@ -170,9 +170,9 @@ QPushButton::Pressed{
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>610</y>
-     <width>641</width>
-     <height>41</height>
+     <y>600</y>
+     <width>605</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="font">
@@ -223,6 +223,14 @@ color: rgb(255, 255, 255);
     <string>ResStr_OK</string>
    </property>
   </widget>
+  <zorder>bt_back</zorder>
+  <zorder>btCancel</zorder>
+  <zorder>bt_next</zorder>
+  <zorder>radioButton</zorder>
+  <zorder>label_msg1</zorder>
+  <zorder>bt_pause_play</zorder>
+  <zorder>btOK</zorder>
+  <zorder>label_msg2</zorder>
  </widget>
  <resources/>
  <connections/>

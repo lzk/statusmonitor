@@ -15,7 +15,7 @@ class SettingWarming : public QDialog
     Q_OBJECT
 
 public:
-    explicit SettingWarming(QWidget *parent = 0, QString text = "", bool showLabel = false);
+    explicit SettingWarming(QWidget *parent = 0, QString text = "", int wType = 0);//0:warning image, 1:no image, 2:busyImage
     ~SettingWarming();
     Ui::SettingWarming *ui;
 protected:

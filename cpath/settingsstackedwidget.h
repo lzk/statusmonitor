@@ -124,9 +124,9 @@ private slots:
 
     void on_btApply_clicked();
 
-signals:
-    void cycleStart();
-    void cycleStop();
+//signals:
+//    void cycleStart();
+//    void cycleStop();
 };
 
 #endif // SETTINGSSTACKEDWIDGET_H

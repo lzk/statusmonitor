@@ -54,7 +54,7 @@ private slots:
 
     void setcurrentPrinter(const QString& str);
 
-    void updateToner(int c ,int m ,int y ,int k);
+    void enableMPrinter(bool enabled);
 
     void updateStatus(QVariant data);
 
@@ -66,18 +66,21 @@ private slots:
 
     void set_Message_Background_Color(UIConfig::EnumStatus s);
 
+    void enableTroubleshootingPage(bool enabled);
     void onStatusCh(const PrinterStatus_struct& status);
     void updateStatusPanel(int);
 
-    void errorStatus(bool bIsErrorStatus);
+    void updateTonerCarStatus(int toner);
+    void enableAllFunction(bool enabled);
 
     void setDeviceMsg(const QString& msg, int result);
 
     void startScan();
     void stopScan();
 
-    void startCycleAnimation();
-    void stopCycleAnimation();
+    void enableCycleAnimation(bool enabled);
+//    void startCycleAnimation();
+//    void stopCycleAnimation();
 
     void on_errorBtn_clicked();
 
@@ -103,6 +106,11 @@ private:
     bool enabledWiFi;
 
     bool isOfflineStart;
+
+    bool isStartCopy;
+
+signals:
+    void signalCloseAnimationDlg();
 };
 
 #endif // MAINWINDOW_H

@@ -68,6 +68,10 @@ void UserLogin::replyFinish_check(QNetworkReply* reply)
         if(result["success"].toBool())
         {
             m_loginSuccess = true;
+
+            QSettings settings;
+            settings.setValue("loginPhone",ui->le_userName->text());
+            settings.setValue("password",ui->le_autoCode->text());
             close();
         }
         else

@@ -15,11 +15,11 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     ui->setupUi(this);
     connect(ui->btOK,SIGNAL(clicked()),this,SLOT(accept()));
     connect(ui->btCancel,SIGNAL(clicked()),this,SLOT(reject()));
-    this->resize(QSize(640,800));
+    this->resize(QSize(531,521));
     this->setWindowFlags(Qt::Dialog);
     label = new QLabel(this);
     label->setContentsMargins(0,0,0,0);
-    label->setGeometry(0, 0, 640, 640);
+    label->setGeometry(30, 30, 531, 521);
     label->setAlignment(Qt::AlignCenter);
     QFont font;
     font.setPointSize(30);

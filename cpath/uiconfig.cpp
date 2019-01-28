@@ -73,9 +73,9 @@ void UIConfig::initConfig()
     //usb special config
     lock_scan_file = "/tmp/.lenovo_m10x_lock";
     lock_scan_info_file = "/tmp/.lenovo_m10x_used";
-    usb_error_printing = Printing;
-    usb_error_scanning = ScanScanning;
-    usb_error_busy = Processing;
+    usb_error_printing = Usb_Printing;
+    usb_error_scanning = Usb_Scanning;
+    usb_error_busy = Usb_Locked;
 
     //config supported printer model
     isDeviceSupported = _isDeviceSupported;

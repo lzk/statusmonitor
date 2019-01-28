@@ -24,47 +24,66 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);color:gray}");
 
     crmTimer = new QTimer(this);
+//    userTimer = new QTimer(this);
 
     connect(crmTimer,SIGNAL(timeout()),this,SLOT(uploadCRM()));
+//    connect(userTimer,SIGNAL(timeout()),this,SLOT(uploadUserInfo()));
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
 
-//    loginPhone = settings.value("loginPhone").toString();
-////    loginPhone = "13640834424";
-//    qDebug()<<"loginPhone"<<loginPhone;
-//    if(loginPhone != NULL)
-//    {
-//        currentUser.mobile = loginPhone;
-//        ui->login_name->setText( loginPhone );
-//        ui->btLogin->setDisabled(true);
-//        ui->login_arrow->hide();
-//        isLogin = true;
-//        //userInfo(true);
-//        ui->btloginImg->setStyleSheet("QPushButton{"
-//                                       "border-image: url(:/Images/Logon_Active.png);}"
-//                                       "QPushButton:pressed{"
-//                                       "border-image: url(:/Images/Logon_Normal.png);}");
-//        ui->btloginImg2->setStyleSheet("QPushButton{"
-//                                       "border-image: url(:/Images/Logon_Active.png);}"
-//                                       "QPushButton:pressed{"
-//                                       "border-image: url(:/Images/Logon_Normal.png)}");
+    QSettings settings;
+    loginPhone = settings.value("loginPhone").toString();
+    if(loginPhone != NULL)
+    {
+        QString loginName;
+        settings.beginGroup(loginPhone);
+        loginName = settings.value("loginName").toString();
+        settings.endGroup();
+        if(loginName != NULL)
+        {
+            ui->login_name->setText(loginName);
+        }
+        else
+        {
+            ui->login_name->setText(loginPhone);
+        }
+        ui->btLogin->setDisabled(true);
+        ui->login_arrow->hide();
+        isLogin = true;
+        //userInfo(true);
+        ui->btloginImg->setStyleSheet("QPushButton{"
+                                       "border-image: url(:/Images/Logon_Active.png);}"
+                                       "QPushButton:pressed{"
+                                       "border-image: url(:/Images/Logon_Normal.png);}");
+        ui->btloginImg2->setStyleSheet("QPushButton{"
+                                       "border-image: url(:/Images/Logon_Active.png);}"
+                                       "QPushButton:pressed{"
+                                       "border-image: url(:/Images/Logon_Normal.png)}");
 
-//        ui->btChInfo->setEnabled(true);
-//        ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);}");
+        ui->btChInfo->setEnabled(true);
+        ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);}");
 
-//        qDebug()<<"m_bCRM";
-//        m_bCRM = settings.value("enableCRM").toBool();
-//        if(m_bCRM)
-//        {
-//            crmTimer->start(30*60*1000);//30min
-//        }
-//    }
+        m_bCRM = settings.value("enableCRM").toBool();
+        qDebug()<<"m_bCRM"<<m_bCRM;
+
+        if(m_bCRM)
+        {
+            crmTimer->start(30*60*1000);//30min
+        }
+    }
 }
 
 MemberCenterWidget::~MemberCenterWidget()
 {
-//    settings.setValue("enableCRM",m_bCRM);
-//    settings.setValue("loginPhone",loginPhone);
+    QSettings settings;
+
+    if(loginPhone != NULL)
+    {
+        settings.beginGroup(loginPhone);
+        settings.setValue("loginName",ui->login_name->text());
+        settings.endGroup();
+    }
+    settings.setValue("enableCRM",m_bCRM);
 
     delete ui;
 }
@@ -78,7 +97,6 @@ void MemberCenterWidget::on_btLogin_clicked()
     if(login->isLogin())
     {
         loginPhone = login->getPhone();
-        currentUser.mobile = loginPhone;
         ui->login_name->setText(loginPhone );
         ui->btLogin->setDisabled(true);
         ui->login_arrow->hide();
@@ -174,10 +192,12 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
         {
             ui->le_name->setText(user["realName"].toString());
             ui->le_name->setCursorPosition(0);
+            ui->login_name->setText(QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone));
         }
         else
         {
             ui->le_name->setText("");
+            ui->login_name->setText(loginPhone);
         }
 
         QDate birthDate = user["birthDate"].toDate();
@@ -201,7 +221,7 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
         else
         {
             ui->btFemale->setChecked(false);
-            ui->btMan->setChecked(false);
+            ui->btMan->setChecked(true);
         }
 
         if(user["email"].toString() != NULL)
@@ -224,8 +244,26 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
             ui->le_addr->setText("");
         }
     }
+    else
+    {
+        ui->le_name->setText("");
+        ui->login_name->setText(loginPhone);
+        ui->btFemale->setChecked(false);
+        ui->btMan->setChecked(true);
+        ui->le_mail->setText("");
+        ui->le_mail->setText("");
+    }
 
+    if(ui->le_name->text() == "" || ui->le_mail->text() == "" || ui->le_addr->text() == "")
+    {
+        ui->btApply->setEnabled(false);
+    }
+    else
+    {
+        ui->btApply->setEnabled(true);
+    }
     ui->btChInfo->setEnabled(true);
+    gUInterface->emitEnableCycleAnimation(false);
     ui->stackedWidget->setCurrentIndex(0);
     reply->deleteLater();
 }
@@ -248,27 +286,21 @@ QString MemberCenterWidget::getHostMacAddress()
     return strMacAddr;
 }
 
-void MemberCenterWidget::setUserInfo()
+void MemberCenterWidget::setUserInfo(QString fullName, QString birthDay, int sex, QString email, QString address)
 {
     QString baseUrl = "http://crm.iprintworks.cn/api/app_userinfo";
     QUrl url(baseUrl);
 
-    QString realName = ui->le_name->text();
+    QString realName = fullName;
 
-    QDate birthDate;
-    birthDate.setDate(ui->spinBox->value(),ui->spinBox_M->value(),ui->spinBox_D->value());
-    QString strBirthDay = birthDate.toString("yyyy-MM-dd");
+
+    QString strBirthDay = birthDay;
     qDebug()<<"strBirthDay:"<<strBirthDay;
 
-    int nSex = 0x01;
+    int nSex = sex;
 
-    if(ui->btFemale->isChecked())
-    {
-        nSex = 0x00;
-    }
-
-    QString strEmail = ui->le_mail->text();
-    QString strAddress = ui->le_addr->text();
+    QString strEmail = email;
+    QString strAddress = address;
 
     QDateTime dateTime;
     QString time = dateTime.currentDateTime().toString("yyyyMMddHHmmss");
@@ -322,6 +354,11 @@ void MemberCenterWidget::setUserInfo()
 
 void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
 {
+//    if(isNotShowWarning == false)
+//    {
+        gUInterface->emitEnableCycleAnimation(false);
+//    }
+
     QString strJsonText = reply->readAll();
     qDebug()<<"replyFinish_set"<<strJsonText.toUtf8();
 
@@ -330,17 +367,44 @@ void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
     QVariantMap result = parser.parse(strJsonText.toUtf8(),&ok).toMap();
     if(result["success"].toBool() == true)
     {
-//        ui->le_name->setText(result["message"].toString());
         ui->login_name->setText(QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone));
         ui->stackedWidget->setCurrentIndex(1);
+//        userTimer->stop();
     }
     else
     {
-        QMessageBox *message = new QMessageBox(this);
-        message->setWindowTitle(QString::fromLocal8Bit("错误"));
-        message->setIconPixmap(QPixmap(":/Images/Warning.tif"));
-        message->setText(QString::fromLocal8Bit("修改账户信息失败。"));
-        message->exec();
+//        if(isNotShowWarning == false)
+//        {
+            QMessageBox *message = new QMessageBox(this);
+            message->setWindowTitle(QString::fromLocal8Bit("错误"));
+            message->setIconPixmap(QPixmap(":/Images/Warning.tif"));
+            message->setText(QString::fromLocal8Bit("修改账户信息失败。"));
+            message->exec();
+//        }
+
+//        QString fullName = ui->le_name->text();
+
+//        QDate birthDate;
+//        birthDate.setDate(ui->spinBox->value(),ui->spinBox_M->value(),ui->spinBox_D->value());
+//        QString birthDay = birthDate.toString("yyyy-MM-dd");
+//        int sex = 0x01;
+
+//        if(ui->btFemale->isChecked())
+//        {
+//            sex = 0x00;
+//        }
+//        QString email = ui->le_mail->text();
+//        QString address = ui->le_addr->text();
+//        QSettings settings;
+//        settings.beginGroup(loginPhone);
+//        settings.setValue("fullName",fullName);
+//        settings.setValue("birthDay",birthDay);
+//        settings.setValue("sex",sex);
+//        settings.setValue("email",email);
+//        settings.setValue("address",address);
+//        settings.endGroup();
+
+//        userTimer->start(1*60*1000);//30min
     }
     reply->deleteLater();
 }
@@ -349,10 +413,19 @@ void MemberCenterWidget::on_btChInfo_clicked()
 {
     getUserInfo();
     ui->btChInfo->setEnabled(false);
+    gUInterface->emitEnableCycleAnimation(true);
+}
+
+void MemberCenterWidget::startCRM()
+{
+    MemberCenterWidget::uploadCRM();
+    crmTimer->start(30*60*1000);//30min
 }
 
 void MemberCenterWidget::on_btExpe_clicked()
 {
+    QSettings settings;
+    m_bCRM = settings.value("enableCRM").toBool();
     ExperiencePro *exp = new ExperiencePro(this,m_bCRM);
     exp->exec();
 
@@ -362,8 +435,7 @@ void MemberCenterWidget::on_btExpe_clicked()
         if(m_bCRM)
         {
             qDebug()<<"start crm";
-            MemberCenterWidget::uploadCRM();
-            crmTimer->start(30*60*1000);//30min
+            startCRM();
         }
         else
         {
@@ -372,6 +444,21 @@ void MemberCenterWidget::on_btExpe_clicked()
         }
     }
 }
+
+//void MemberCenterWidget::uploadUserInfo()
+//{
+//    qDebug()<<"uploadUserInfo";
+//    QSettings settings;
+//    settings.beginGroup(loginPhone);
+//    QString fullName = settings.value("fullName").toString();
+//    QString birthDay = settings.value("birthDay").toString();
+//    int sex = settings.value("sex").toInt();
+//    QString email = settings.value("email").toString();
+//    QString address = settings.value("address").toString();
+//    settings.endGroup();
+//    isNotShowWarning = true;
+//    setUserInfo(fullName,birthDay,sex,email,address);
+//}
 
 void MemberCenterWidget::uploadCRM()
 {
@@ -485,7 +572,22 @@ void MemberCenterWidget::on_btApply_clicked()
          return;
    }
 
-    setUserInfo();
+   QString fullName = ui->le_name->text();
+
+   QDate birthDate;
+   birthDate.setDate(ui->spinBox->value(),ui->spinBox_M->value(),ui->spinBox_D->value());
+   QString birthDay = birthDate.toString("yyyy-MM-dd");
+   int sex = 0x01;
+
+   if(ui->btFemale->isChecked())
+   {
+       sex = 0x00;
+   }
+   QString email = ui->le_mail->text();
+   QString address = ui->le_addr->text();
+   isNotShowWarning = false;
+   setUserInfo(fullName,birthDay,sex,email,address);
+   gUInterface->emitEnableCycleAnimation(true);
 }
 
 void MemberCenterWidget::on_btProduct_clicked()

@@ -593,6 +593,9 @@ QRadioButton::indicator::checked {
      <property name="text">
       <string>ResStr_Man</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
     <widget class="QPushButton" name="btloginImg">
      <property name="geometry">

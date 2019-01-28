@@ -22,6 +22,7 @@ public:
     void setDeviceMsgFrmUI(const QString& str, int result);
     void emitStartScanSignal();
     void emitStopScanSignal();
+    void emitEnableCycleAnimation(bool enabled);
     
 signals:
     void cmdToWorker(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
@@ -32,6 +33,7 @@ signals:
     void stopScan();
     void signal_update_scan_progress(int progress);//(0 - 100)
     void set_current_printer(const QString& printer);
+    void signalEnabledCycleAnimation(bool enabled);
 
 private slots:
     void timerOut();

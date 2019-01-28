@@ -126,6 +126,9 @@ public:
         Unknown                     = 0xF0, // status added by SW
         Offline                     = 0xF1, // status added by SW
         PowerOff                    = 0xF2 // status added by SW
+        ,Usb_Locked
+        ,Usb_Printing
+        ,Usb_Scanning
     }EnumStatus;
 
     typedef enum
