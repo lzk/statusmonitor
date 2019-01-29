@@ -426,8 +426,8 @@ void MoreSettingsForCopy::on_btReduce_clicked()
     if((tmp > MIN_SCALING)&&(tmp <= MAX_SCALING)&&(!ParamForCopy->isMultiPage))
     {
         ui->label_tip->hide();
-        ParamForCopy->scaling = tmp - 1;
-        ui->scaling->setText(text.setNum(ParamForCopy->scaling));
+        tmp--;
+        ui->scaling->setText(text.setNum(tmp));
     }else
     {
         if(!ParamForCopy->isMultiPage)

@@ -78,7 +78,6 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
     {
     case UIConfig::LS_CMD_COPY:
     {
-        qDebug()<<"LS_CMD_COPY"<<result;
         if(result != 0)
         {
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Copy_Fail"),result);
@@ -106,7 +105,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
         break;
     case UIConfig::CMD_Scan:
     {
-
+        qDebug()<<"CMD_Scan"<<result;
         if(!result)
         {
             ScanSettings scanSettings = data.value<ScanSettings>();

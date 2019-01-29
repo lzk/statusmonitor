@@ -28,6 +28,7 @@ public:
 
 //    BusyRefreshLabel *cycle;
     APInfo *currentAp;
+    void emptyWifiList();
 
 public slots:
     void updateAP();

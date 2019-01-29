@@ -302,6 +302,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
             updateStatus(data);
         }else{//get status fail
             LOGLOG("get printer status fail!");
+            updateStatusPanel(UIConfig::Status_Offline);
         }
     }
         break;
@@ -339,8 +340,8 @@ void MainWindow::updatePrinter(const QVariant& data)
     }else if(printers.contains(current_printer)){
         ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
     }else{
-        setcurrentPrinter(printers.at(index_of_defaultprinter));
         ui->deviceNameBox->setCurrentIndex(index_of_defaultprinter);
+        setcurrentPrinter(printers.at(index_of_defaultprinter));
     }
 
     gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
@@ -414,6 +415,12 @@ void MainWindow::enableMPrinter(bool enabled)
         ui->CopyImgBtn->show();
         ui->Scan->show();
         ui->ScanImgBtn->show();
+        ui->Copy->setEnabled(true);
+        ui->CopyImgBtn->setEnabled(true);
+        ui->Scan->setEnabled(true);
+        ui->ScanImgBtn->setEnabled(true);
+        ui->Setting->setEnabled(true);
+        ui->SettingImgBtn->setEnabled(true);
 
         QRect sRect = QRect(ui->Scan->geometry().x()+ui->Scan->geometry().width(),ui->Scan->geometry().y(),111,25);
         QRect sIRect = QRect((ui->ScanImgBtn->geometry().x()+ui->ScanImgBtn->geometry().width() - 1),ui->ScanImgBtn->geometry().y(),111,77);
