@@ -414,6 +414,12 @@ void MainWindow::enableMPrinter(bool enabled)
         ui->CopyImgBtn->show();
         ui->Scan->show();
         ui->ScanImgBtn->show();
+        ui->Copy->setEnabled(true);
+        ui->CopyImgBtn->setEnabled(true);
+        ui->Scan->setEnabled(true);
+        ui->ScanImgBtn->setEnabled(true);
+        ui->Setting->setEnabled(true);
+        ui->SettingImgBtn->setEnabled(true);
 
         QRect sRect = QRect(ui->Scan->geometry().x()+ui->Scan->geometry().width(),ui->Scan->geometry().y(),111,25);
         QRect sIRect = QRect((ui->ScanImgBtn->geometry().x()+ui->ScanImgBtn->geometry().width() - 1),ui->ScanImgBtn->geometry().y(),111,77);
@@ -694,10 +700,14 @@ void MainWindow::onStatusCh(const PrinterStatus_struct& status)
     }else if(status.PrinterStatus == UIConfig::Usb_Printing){
         QString errMsg = UIConfig::getErrorMsg(UIConfig::Printing ,UIConfig::UnknowJob,0);
         ui->label_10->setText(errMsg);
+        set_Message_Background_Color(UIConfig::Printing);
+        updateStatusPanel(UIConfig::Printing);
         return;
     }else if(status.PrinterStatus == UIConfig::Usb_Scanning){
         QString errMsg = UIConfig::getErrorMsg(UIConfig::ScanScanning ,UIConfig::UnknowJob,0);
         ui->label_10->setText(errMsg);
+        set_Message_Background_Color(UIConfig::ScanScanning);
+        updateStatusPanel(UIConfig::ScanScanning);
         return;
     }
     ui->label_10->setStyleSheet("QLabel{color:break;}");
@@ -705,7 +715,7 @@ void MainWindow::onStatusCh(const PrinterStatus_struct& status)
     updateTonerCarStatus(status.TonelStatusLevelK);
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
-    QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,UIConfig::UnknowJob,0);
+    QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);
 
     ui->label_10->setText(errMsg);
     set_Message_Background_Color((UIConfig::EnumStatus)status.PrinterStatus);

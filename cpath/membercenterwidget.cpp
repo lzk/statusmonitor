@@ -418,14 +418,13 @@ void MemberCenterWidget::on_btChInfo_clicked()
 
 void MemberCenterWidget::startCRM()
 {
+    m_bCRM = true;
     MemberCenterWidget::uploadCRM();
     crmTimer->start(30*60*1000);//30min
 }
 
 void MemberCenterWidget::on_btExpe_clicked()
 {
-    QSettings settings;
-    m_bCRM = settings.value("enableCRM").toBool();
     ExperiencePro *exp = new ExperiencePro(this,m_bCRM);
     exp->exec();
 

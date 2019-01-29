@@ -76,13 +76,14 @@ void UIConfig::initConfig()
     usb_error_printing = Usb_Printing;
     usb_error_scanning = Usb_Scanning;
     usb_error_busy = Usb_Locked;
+    usb_error_usb_locked = usb_error_busy;
 
     //config supported printer model
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo cpath";
-    app_version = "1.0.0.4.beta";
+    app_version = "1.0.0.4";
     log_init();
 }
 #include <QFile>
