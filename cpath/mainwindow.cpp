@@ -701,10 +701,14 @@ void MainWindow::onStatusCh(const PrinterStatus_struct& status)
     }else if(status.PrinterStatus == UIConfig::Usb_Printing){
         QString errMsg = UIConfig::getErrorMsg(UIConfig::Printing ,UIConfig::UnknowJob,0);
         ui->label_10->setText(errMsg);
+        set_Message_Background_Color(UIConfig::Printing);
+        updateStatusPanel(UIConfig::Printing);
         return;
     }else if(status.PrinterStatus == UIConfig::Usb_Scanning){
         QString errMsg = UIConfig::getErrorMsg(UIConfig::ScanScanning ,UIConfig::UnknowJob,0);
         ui->label_10->setText(errMsg);
+        set_Message_Background_Color(UIConfig::ScanScanning);
+        updateStatusPanel(UIConfig::ScanScanning);
         return;
     }
     ui->label_10->setStyleSheet("QLabel{color:break;}");
@@ -712,7 +716,7 @@ void MainWindow::onStatusCh(const PrinterStatus_struct& status)
     updateTonerCarStatus(status.TonelStatusLevelK);
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
-    QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,UIConfig::UnknowJob,0);
+    QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);
 
     ui->label_10->setText(errMsg);
     set_Message_Background_Color((UIConfig::EnumStatus)status.PrinterStatus);

@@ -54,13 +54,15 @@ void StatusThread::run()
                 continue;
             result = getStatusFromDevice(devicemanager ,&printer ,&status);
             if(result){
-                LOGLOG("get status from device %s:fail!" ,printer.name);
+                LOGLOG("get status from device %s:fail!result %d" ,printer.name ,result);
                 memset(&status ,0 ,sizeof(status));
 //                status.PrinterStatus = PS_ERROR_POWER_OFF;
                 if(result == usb_error_printing)
                     status.PrinterStatus = usb_error_printing;
                 else if(result == usb_error_scanning)
                     status.PrinterStatus = usb_error_scanning;
+                else if(result == usb_error_busy)
+                    status.PrinterStatus = usb_error_busy;
                 else
                     status.PrinterStatus = PS_UNKNOWN;
 //                status.TonelStatusLevelC = -1;

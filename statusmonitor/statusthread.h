@@ -30,8 +30,8 @@ private:
     CupsManager cupsmanager;
     StatusManager statusmanager;
 
-    QMutex mutex;
     QString current_printer;
+    QMutex mutex;
 };
 
 #endif // STATUSTHREAD_H

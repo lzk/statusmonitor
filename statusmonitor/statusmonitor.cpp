@@ -78,6 +78,7 @@ int parsePrinterStatus(PRINTER_STATUS* pStatus ,PrinterStatus_struct* ps)
     ps->PaperType = pStatus->PaperType;
     ps->LowTonerAlert = pStatus->LowTonerAlert;
     ps->NonDellTonerMode = pStatus->NonDellTonerMode;
+    ps->job = pStatus->bPhyPrinterStatus;
     return 0;
 }
 

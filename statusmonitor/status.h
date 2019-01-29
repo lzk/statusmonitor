@@ -60,7 +60,7 @@ typedef struct
     BYTE	NonDellTonerMode;
     BYTE	AioStatus;
     //BYTE	bReserved;
-    BYTE	bPhyPrinterStatus;
+    BYTE	bPhyPrinterStatus;//job
     //WORD	wReserved1;
     BYTE	LowTonerAlert;
     BYTE	bReserved1;

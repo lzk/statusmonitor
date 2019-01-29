@@ -241,14 +241,14 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, s
     if (!udpSocket.waitForConnected(5000)) {
         return -1;
     }
-    udpSocket.bind(host_address ,161);
     int ret;
-    ret = udpSocket.write((const char*)data ,bytes);
-//    ret = udpSocket.writeDatagram((const char*)data ,bytes ,host_address ,161);
+//    ret = udpSocket.write((const char*)data ,bytes);
+    ret = udpSocket.writeDatagram((const char*)data ,bytes ,host_address ,161);
     if(ret != bytes){
         return -1;
     }
 
+//    udpSocket.bind(host_address ,161);
     int times = 0;
     while (!udpSocket.hasPendingDatagrams()){
         times ++;
