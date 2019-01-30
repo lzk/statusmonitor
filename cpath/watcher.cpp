@@ -85,6 +85,7 @@ void Watcher::timerOut()
                     ||(status.PaperType != p_current_printer_status->PaperType)
                     ||(status.NonDellTonerMode != p_current_printer_status->NonDellTonerMode)
                     ||(status.LowTonerAlert != p_current_printer_status->LowTonerAlert)
+                    ||(status.job != p_current_printer_status->job)
                     ){
                 *p_current_printer_status = status;
                 current_printers_detail[index].status = status;

@@ -11,6 +11,7 @@ public:
     int createServer(const char* server_path = 0);
     int readThenWrite(int fd ,CALLBACK_Server callback ,void* para);
     int any_client_connected();
+    const char* get_server_path(){return path;}
 
 private:
     int listen_fd;

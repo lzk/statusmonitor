@@ -23,7 +23,7 @@ int setSockNonBlock(int sock)
     }
     return 0;
 }
-#if GLIBC_2_15
+#ifdef GLIBC_2_15
 int select_fd(int fd)
 {
     fd_set readfds;
@@ -125,7 +125,7 @@ int Trans_Server::any_client_connected()
     if(listen_fd < 0){
         return -1;
     }
-#if GLIBC_2_15
+#ifdef GLIBC_2_15
     if(select_fd(listen_fd))
         return -1;
 #endif
@@ -168,6 +168,7 @@ Trans_Client::Trans_Client(const char* server_path)
     memset(path ,0 ,sizeof(path));
     if(server_path)
         strcpy(path ,server_path);
+    LOGLOG("try to get server path:%s" ,server_path);
 
 }
 
@@ -219,7 +220,7 @@ int Trans_Client::writeThenRead(char* buffer ,int bufsize)
         LOGLOG("cannot creat socket");
         return -1;
     }
-#if GLIBC_2_15
+#ifdef GLIBC_2_15
     setSockNonBlock(connect_fd);
 #endif
     srv_addr.sun_family=AF_UNIX;
@@ -240,7 +241,7 @@ int Trans_Client::writeThenRead(char* buffer ,int bufsize)
     }
 
     while (true) {
-#if GLIBC_2_15
+#ifdef GLIBC_2_15
         ret = select_fd(connect_fd);
         if(ret == -1){
             ret = -4;

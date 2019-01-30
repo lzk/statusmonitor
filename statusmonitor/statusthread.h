@@ -32,6 +32,7 @@ private:
 
     QString current_printer;
     QMutex mutex;
+    PRINTER_STATUS status;
 };
 
 #endif // STATUSTHREAD_H

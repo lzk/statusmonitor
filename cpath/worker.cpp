@@ -44,14 +44,6 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     int result = -1;
 
     switch (cmd) {
-    case UIConfig::CMD_GetDefaultPrinter:{
-        QString default_printer;
-        if(!printers.isEmpty())
-            default_printer= printers.first();
-        value.setValue(default_printer);
-        cmdResult(cmd ,0 ,value);
-    }
-        break;
     case UIConfig::CMD_GetPrinters:
         getPrinters();
         value.setValue(printers_detail);

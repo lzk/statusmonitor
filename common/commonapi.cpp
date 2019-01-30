@@ -16,7 +16,7 @@ bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultVal
     return result;
 }
 #if 1
-#include <QApplication>
+#include <QCoreApplication>
 #include <QLocalSocket>
  #include <QLocalServer>
 #include <QFile>

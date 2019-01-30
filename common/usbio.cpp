@@ -4,9 +4,6 @@
 #include "log.h"
 #include <QString>
 #include "commonapi.h"
-//#include <sys/file.h>
-//#include <unistd.h>
-//#include <sys/stat.h>
 
 const char* lock_scan_file = "/tmp/.scanner_lock";
 const char* lock_scan_info_file = "/tmp/.scanner_info_lock";
@@ -27,21 +24,6 @@ bool printer_is_printing(const QString& printer_name)
     return !printer_jobs.isEmpty();
 }
 
-//bool scanner_locked()
-//{
-//    bool locked = false;
-//    int altolock = open(lock_scan_file ,O_WRONLY|O_CREAT ,0666);
-//    fchmod(altolock ,0666);
-//    if(altolock < 0){
-//        locked = true;
-//        LOGLOG("scanner locked by sane driver");
-//    }else{
-//        int ret = flock(altolock ,LOCK_EX | LOCK_NB);
-//        close(altolock);
-//        locked = !!ret;
-//    }
-//    return locked;
-//}
 
 static int _getpidvid(const QString& ,int* pid ,int* vid)
 {
@@ -137,17 +119,15 @@ int UsbIO::open(int port)
         LOGLOG("usb device:%s locked" ,printer_name.toLatin1().constData());
         return usb_error_usb_locked;
     }
-    mutex.unlock();
     ret = usb->open(vid ,pid ,serial ,interface);
     if(ret){
     }else{
         device_is_open = true;
-        mutex.lock();
 //        locked_address = address;
 //        locked_bus = bus;
         locked_printers << QString(device_uri);
-        mutex.unlock();
     }
+    mutex.unlock();
     return ret;
 }
 
