@@ -6,7 +6,7 @@
 #include "commonapi.h"
 #include "cupsmanager.h"
 #include "statusmanager.h"
-
+#include <QMutex>
 class StatusThread : public QThread
 {
     Q_OBJECT
@@ -15,6 +15,9 @@ public:
     ~StatusThread();
 
     void run();
+
+public slots:
+    void set_current_printer(const QString& printer);
 
 public:
     QList<Printer_struct> printers;
@@ -26,6 +29,10 @@ private:
     DeviceManager* devicemanager;
     CupsManager cupsmanager;
     StatusManager statusmanager;
+
+    QString current_printer;
+    QMutex mutex;
+    PRINTER_STATUS status;
 };
 
 #endif // STATUSTHREAD_H

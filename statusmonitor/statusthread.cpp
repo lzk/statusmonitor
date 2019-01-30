@@ -30,10 +30,13 @@ StatusThread::~StatusThread()
     delete devicemanager;
 }
 
+extern int usb_error_printing;
+extern int usb_error_scanning;
+extern int usb_error_usb_locked;
+extern int usb_error_busy;
 void StatusThread::run()
 {
-    PRINTER_STATUS status;
-    DeviceIO* device;
+    PRINTER_STATUS printer_status;
     int result;
     forever {
         if (abort)
@@ -47,17 +50,34 @@ void StatusThread::run()
         foreach (Printer_struct printer, printers) {
             if (abort)
                 return;
-            result = getStatusFromDevice(devicemanager ,&printer ,&status);
+            mutex.lock();
+            if(current_printer.compare(printer.name)){
+                mutex.unlock();
+                continue;
+            }
+            mutex.unlock();
+            result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
             if(result){
-                LOGLOG("get status from device %s:fail!" ,printer.name);
-                memset(&status ,0 ,sizeof(status));
+                LOGLOG("get status from device %s:fail!result %d" ,printer.name ,result);
+                QMutexLocker locker(&mutex);
+                status.PrinterStatus = result;
 //                status.PrinterStatus = PS_ERROR_POWER_OFF;
-                status.PrinterStatus = PS_UNKNOWN;
+//                if(result == usb_error_printing)
+//                    status.PrinterStatus = usb_error_printing;
+//                else if(result == usb_error_scanning)
+//                    status.PrinterStatus = usb_error_scanning;
+//                else if(result == usb_error_busy)
+//                    status.PrinterStatus = usb_error_busy;
+//                else
+//                    status.PrinterStatus = PS_UNKNOWN;
 //                status.TonelStatusLevelC = -1;
 //                status.TonelStatusLevelM = -1;
 //                status.TonelStatusLevelY = -1;
 //                status.TonelStatusLevelK = -1;
             }else{
+                QMutexLocker locker(&mutex);
+                status = printer_status;
+//                memcpy(&status ,&printer_status ,sizeof(status));
 //                LOGLOG("get status from device %s:success!" ,printer.name);
 //                LOGLOG("status:0x%02x" ,status.PrinterStatus);
 //                if(IsStatusAbnormal(status.PrinterStatus)){
@@ -69,4 +89,11 @@ void StatusThread::run()
         }
         sleep(6);
     }
+}
+
+void StatusThread::set_current_printer(const QString& printer)
+{
+    QMutexLocker locker(&mutex);
+    current_printer = printer;
+    memset(&status ,0 ,sizeof(status));
 }

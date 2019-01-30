@@ -18,7 +18,7 @@ static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
         return -1;
     *vid = 0x0efd;
     *pid = -1;
-    if(makeAndModel.startsWith("TOEC/OEP3300CDN")){
+    if(makeAndModel.startsWith("toec/OEP3300CDN")){
         *pid = 0x002c;
     }
     return (*pid == -1) ?-1 :0;
@@ -45,6 +45,7 @@ void UIConfig::initConfig()
 
     //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;
+    getpidvid = _getpidvid;
 
     log_app_name = "tomcat";
     app_version = "1.0.1";
