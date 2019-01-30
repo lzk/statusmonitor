@@ -25,8 +25,8 @@ enum{
 #include <QStringList>
 typedef struct
 {
-    int pages;
-    int current_page;
+    unsigned int pages;
+    unsigned int current_page;
     QStringList job_list;
 }
     Jobs_struct;

@@ -5,9 +5,9 @@ const QString app_name = QString::fromUtf8("打印机状态监视器");
 static bool _isDeviceSupported(Printer_struct* ps)
 {
 //    LOGLOG("tomcat found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
-    if(!QString(ps->makeAndModel).startsWith("Lenovo M101DW"))
+//    if(!QString(ps->makeAndModel).startsWith("Lenovo M101DW"))
 //    if(!QString(ps->makeAndModel).startsWith("Lenovo M7208W"))
-//    if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
+    if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
         return false;
     return true;
 }
@@ -35,8 +35,6 @@ extern const char* log_app_name;
 extern const char* app_version;
 void UIConfig::initConfig()
 {
-    log_app_name = "tomcat";
-    app_version = "1.0.1";
     //config status server thread
     status_file = "/tmp/.toecstatus";
     statusKey = "statusmonitor/status/";
@@ -47,6 +45,9 @@ void UIConfig::initConfig()
 
     //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;
+
+    log_app_name = "tomcat";
+    app_version = "1.0.1";
     log_init();
 }
 

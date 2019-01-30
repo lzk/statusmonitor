@@ -69,7 +69,7 @@ void MainWindow::createSysTray()
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":/image/app_icon.png"));
+    trayIcon->setIcon(QIcon(":/image/TrayReady.png"));
 
     connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
@@ -197,6 +197,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         QVariant sys_password;
         appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
         if(!password.compare(sys_password.toString())){
+            jobs_page = 0;
             gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer ,jobs_page);
         }
     }
@@ -622,103 +623,124 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
         }
     }
 
+    int warning_status = 0;
     QString status_icon = ":/image/";
-    switch (currStatus) {
-	case PS_READY:
-	default:
-        status_icon += "status_normal";
-        break;
-    case PS_PRINTING:
-        status_icon += "status_normal";
-        break;
-	case PS_POWER_SAVING:
-        status_icon += "status_normal";
-        break;
-	case PS_WARMING_UP:
-        status_icon += "status_normal";
-        break;
-	case PS_PENDING_DELETION:
-        status_icon += "status_normal";
-        break;
-	case PS_PAUSED:
-        status_icon += "status_normal";
-        break;
-	case PS_WAITING:
-        status_icon += "status_normal";
-        break;
-	case PS_PROCESSING:
-        status_icon += "status_normal";
-        break;
-	case PS_BUSY:
-        status_icon += "status_normal";
-        break;
-	case PS_OFFLINE:
+//    switch (currStatus) {
+//	case PS_READY:
+//	default:
+//        warning_status = 0;
+//        break;
+//    case PS_PRINTING:
+//        warning_status = 0;
+//        break;
+//	case PS_POWER_SAVING:
+//        warning_status = 0;
+//        break;
+//	case PS_WARMING_UP:
+//        warning_status = 0;
+//        break;
+//	case PS_PENDING_DELETION:
+//        warning_status = 0;
+//        break;
+//	case PS_PAUSED:
+//        warning_status = 0;
+//        break;
+//	case PS_WAITING:
+//        warning_status = 0;
+//        break;
+//	case PS_PROCESSING:
+//        warning_status = 0;
+//        break;
+//	case PS_BUSY:
+//        warning_status = 0;
+//        break;
+//	case PS_OFFLINE:
+//        warning_status = 1;
+//        break;
+//	case PS_TONER_LOW:
+//        warning_status = 1;
+//        break;
+//	case PS_INITIALIZING:
+//        warning_status = 1;
+//        break;
+//	case PS_UNKNOWN:
+//        warning_status = 1;
+//        break;
+//	case PS_ACTIVE:
+//        warning_status = 1;
+//        break;
+//	case PS_MANUAL_FEED_REQUIRED:
+//        warning_status = 1;
+//        break;
+//	case PS_ERROR_PAPER_JAM:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_DOOR_OPEN:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_ADF_COVER_OPEN:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_ADF_PAPER_JAM:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_OUT_OF_MEMORY:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_OUT_OF_PAPER:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_PAPER_PROBLEM:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_NO_TONER:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_PAGE_ERROR:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_NOT_AVAILABLE:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_OUTPUT_BIN_FULL:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_NOT_SUPPORT:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_USER_INTERVENTION_REQUIRED:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_POWER_OFF:
+//        warning_status = 2;
+//        break;
+//	case PS_ERROR_TRAY_DETACHED:
+//        warning_status = 1;
+//        break;
+//	case PS_ERROR_ERROR:
+//        warning_status = 2;
+//        break;
+//	}
+    if(IsStatusError(currStatus)){
+        warning_status = 2;
+    }else if(IsStatusAbnormal(currStatus)){
+        warning_status = 1;
+    }
+    switch (warning_status) {
+    case 1:
+        trayIcon->setIcon(QIcon(":/image/TrayWarnning.png"));
         status_icon += "status_warning";
         break;
-	case PS_TONER_LOW:
-        status_icon += "status_warning";
-        break;
-	case PS_INITIALIZING:
-        status_icon += "status_warning";
-        break;
-	case PS_UNKNOWN:
-        status_icon += "status_warning";
-        break;
-	case PS_ACTIVE:
-        status_icon += "status_warning";
-        break;
-	case PS_MANUAL_FEED_REQUIRED:
-        status_icon += "status_warning";
-        break;
-	case PS_ERROR_PAPER_JAM:
+    case 2:
+        trayIcon->setIcon(QIcon(":/image/TrayError.png"));
         status_icon += "status_error";
         break;
-	case PS_ERROR_DOOR_OPEN:
-        status_icon += "status_error";
+    case 0:
+    default:
+        trayIcon->setIcon(QIcon(":/image/TrayReady.png"));
+        status_icon += "status_normal";
         break;
-	case PS_ERROR_ADF_COVER_OPEN:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_ADF_PAPER_JAM:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_OUT_OF_MEMORY:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_OUT_OF_PAPER:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_PAPER_PROBLEM:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_NO_TONER:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_PAGE_ERROR:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_NOT_AVAILABLE:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_OUTPUT_BIN_FULL:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_NOT_SUPPORT:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_USER_INTERVENTION_REQUIRED:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_POWER_OFF:
-        status_icon += "status_error";
-        break;
-	case PS_ERROR_TRAY_DETACHED:
-        status_icon += "status_warning";
-        break;
-	case PS_ERROR_ERROR:
-        status_icon += "status_error";
-        break;
-	}
+    }
     status_icon += ".png";
     //update status string
     text = "<html><head/><body>";

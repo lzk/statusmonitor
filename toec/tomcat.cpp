@@ -26,7 +26,7 @@ static void callback_getJob(void* para,Job_struct* js)
     char job_history[256];
     sprintf(job_history ,"%d,%s,%s,%s,%s,%d,%d,%d"
             ,js->id ,js->printer ,hostname,js->user_name  ,js->name
-             ,js->copies
+             ,(js->copies < 1) ?1 :js->copies
             ,job->is_finger_enable,job->is_finger_checked//是，成功
             );
 //    sprintf(job_history ,"echo %s >> %s" ,job_history ,job_history_file_name);
@@ -45,6 +45,12 @@ static void callback_getJob(void* para,Job_struct* js)
 int Tomcat::save_job_history(Job_history* job)
 {
     cups_get_job(callback_getJob ,(void*)job);
+    return 0;
+}
+
+bool sort_jobs(const QString &s1, const QString &s2)
+{
+    return s1.toInt() < s2.toInt();
 }
 
 int Tomcat::get_job_history(Jobs_struct* pJobs)
@@ -56,6 +62,7 @@ int Tomcat::get_job_history(Jobs_struct* pJobs)
     QStringList jobs = settings.childGroups();
     settings.endGroup();
 
+    qSort(jobs.begin() ,jobs.end() ,sort_jobs);
     int num_of_jobs = jobs.count();
     pJobs->pages = num_of_jobs / jobs_per_page + 1;
     if(pJobs->current_page > pJobs->pages)
@@ -76,6 +83,7 @@ int Tomcat::get_job_history(Jobs_struct* pJobs)
                            .arg(settings.value(key + "time").toInt());
     }
     mutex.unlock();
+    return 0;
 }
 
 static void callback_updatJobList(void* para,Job_struct* js)
@@ -104,4 +112,5 @@ int Tomcat::update_job_history()
     settings.endGroup();
     mutex.unlock();
     cups_get_job(callback_updatJobList ,(void*)&jobs);
+    return 0;
 }

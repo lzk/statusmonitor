@@ -48,7 +48,7 @@ public:
     int write(char* buffer ,int bufsize);
     int read(char* buffer ,int bufsize);
     bool isConnected(int vid, int pid, const char *serial);
-    int getDeviceAddress(int vid, int pid, const char *serial ,int* address);
+    int getDeviceAddress(int vid, int pid, const char *serial ,int* address ,int* bus = 0);
 
     int write_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
     int read_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);

@@ -467,7 +467,7 @@ int UsbApi::getDeviceId(char *buffer, int bufsize)
     return 0;
 }
 
-int UsbApi::getDeviceAddress(int vid, int pid, const char *serial ,int* address)
+int UsbApi::getDeviceAddress(int vid, int pid, const char *serial ,int* address ,int* bus)
 {
     struct_device data;
     memset((void*)&data ,0 ,sizeof(data));
@@ -477,10 +477,12 @@ int UsbApi::getDeviceAddress(int vid, int pid, const char *serial ,int* address)
         strcpy(data.deviceInfo.serial ,serial);
     int ret = getDeviceWithSerial(&data);
     if(!ret){
-//        *address = libusb_get_bus_number(data.dev);
-//        LOGLOG("bus number:%d" ,*address);
         *address = libusb_get_device_address(data.dev);
 //        LOGLOG("address:%d" ,*address);
+        if(bus){
+            *bus = libusb_get_bus_number(data.dev);
+//            LOGLOG("bus number:%d" ,*bus);
+        }
         libusb_close(data.udev);
     }
     return ret;

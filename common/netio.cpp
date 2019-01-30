@@ -160,7 +160,7 @@ int NetIO::read(char *buffer, int bufsize)
  //       }
         bytesAvailable = tcpSocket->bytesAvailable();
         if(bytesAvailable <= 0){
-            if (!tcpSocket->waitForReadyRead(5000)){
+            if (!tcpSocket->waitForReadyRead(30000)){
     //            qDebug()<<"tcp error:"<< tcpSocket->error();
     //            qDebug()<< tcpSocket->errorString();
                 LOGLOG("reading error:" ,tcpSocket->errorString().toUtf8().constData());
@@ -241,7 +241,6 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, s
     if (!udpSocket.waitForConnected(5000)) {
         return -1;
     }
-    udpSocket.bind(host_address ,161);
     int ret;
     ret = udpSocket.write((const char*)data ,bytes);
 //    ret = udpSocket.writeDatagram((const char*)data ,bytes ,host_address ,161);
@@ -249,6 +248,7 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, s
         return -1;
     }
 
+//    udpSocket.bind(host_address ,161);
     int times = 0;
     while (!udpSocket.hasPendingDatagrams()){
         times ++;

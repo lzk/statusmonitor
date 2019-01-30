@@ -1,4 +1,5 @@
 #include "serverthread.h"
+
 ServerThread::ServerThread(const char* server_path ,QObject *parent)
     : QThread(parent)
 {
