@@ -2,7 +2,6 @@
 #define WATCHER_H
 
 #include <QThread>
-#include <QTimer>
 #include "statusmonitor.h"
 #include "devicemanager.h"
 #include <QMutex>
@@ -33,9 +32,6 @@ private:
     void getPrinters();
 
 private:
-    bool abort;
-    QMutex mutex;
-private:
     DeviceManager* device_manager;
     StatusThread* statusThread;
     QStringList printers;
@@ -45,6 +41,10 @@ private:
     QStringList current_printers;
     QList<PrinterInfo_struct> current_printers_detail;
     PrinterStatus_struct current_printer_status;
+
+private:
+    bool abort;
+    QMutex mutex;
 };
 
 #endif // WATCHER_H

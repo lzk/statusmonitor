@@ -48,7 +48,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "tomcat";
-    app_version = "1.0.1";
+    app_version = "1.0.2";
     log_init();
 }
 

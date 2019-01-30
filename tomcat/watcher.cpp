@@ -38,22 +38,23 @@ void Watcher::run()
 void Watcher::set_current_printer(const QString& printer)
 {
     current_printer = printer;
+    statusThread->set_current_printer(printer);
 }
 
 void Watcher::timerOut()
 {
     //update printer list
     getPrinters();
-//    mutex.lock();
-//    current_printers = printers;
-//    current_printers_detail = printers_detail;
-//    mutex.unlock();
-
+    Printer_struct* printer;
+    DeviceIO* dio;
     for(int i = 0 ;i < printers_detail.count() ;i++){
         if (abort)
             return;
-        strcpy(printers_detail[i].printer.connectTo
-               ,device_manager->getDevice(&printers_detail[i].printer)->getDeviceAddress(&printers_detail[i].printer));
+        printer = &printers_detail[i].printer;
+        dio = device_manager->getDevice(printer);
+        if(dio)
+            strcpy(printer->connectTo
+               ,dio->getDeviceAddress(printer));
     }
     mutex.lock();
     if(current_printers != printers){
