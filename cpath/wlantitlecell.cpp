@@ -528,6 +528,26 @@ void WlanTitleCell::onTimeout()
 
 }
 
+void WlanTitleCell::emptyWifiList()
+{
+    while(!(apList.isEmpty()))
+   {
+       currentSize.setHeight( currentSize.height() - qobject_cast<QWidget *>(apList.last())->size().height() - 1);
+       widget->resize(currentSize);
+       widget->setMinimumHeight(currentSize.height());
+
+       this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
+       this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
+       disconnect(qobject_cast<QWidget *>(apList.last()), SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
+       pageLayout.removeWidget(qobject_cast<QWidget *>(apList.last()));
+       apList.last()->deleteLater();
+
+       apList.removeLast();
+       widget->setLayout(&pageLayout);
+   }
+   aList.clear();
+}
+
 void WlanTitleCell::on_btFlesh_clicked()
 {
 //    timer1->start(1000);

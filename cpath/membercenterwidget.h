@@ -52,7 +52,6 @@ private slots:
     void on_btProduct_clicked();
 
     void uploadCRM();
-//    void uploadUserInfo();
 
     void cmdResult(int cmd,int result,QVariant data);
 
@@ -71,7 +70,6 @@ private:
     QString m_strKey;
 
     QTimer *crmTimer;
-//    QTimer *userTimer;
     bool isNotShowWarning;
     bool m_bCRM;
 };

@@ -505,23 +505,46 @@ void SettingsStackedWidget::changeStackIndex(int index)
     case 0:                                     //wifi setting
         {
             titelCell->setCurrentIndex(0);
-            titelCell->on_btFlesh_clicked();
-//            gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
-            gUInterface->emitEnableCycleAnimation(true);
+            if(this->isEnabled() == true)
+            {
+                titelCell->on_btFlesh_clicked();
+                gUInterface->emitEnableCycleAnimation(true);
+            }
+            else
+            {
+                titelCell->emptyWifiList();
+            }
         }
         break;
     case 1:                                     //softAP setting
         {
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_Get_SoftAp);
-            gUInterface->emitEnableCycleAnimation(true);
+            if(this->isEnabled() == true)
+            {
+                gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_Get_SoftAp);
+                gUInterface->emitEnableCycleAnimation(true);
+            }
+            else
+            {
+                ui->lineEdit_SSID_AP->clear();                  //clear the data last time;
+                ui->lineEdit_Password_AP->clear();
+            }
         }
         break;
     case 2:                                    // ip settting
         {
-            QVariant data;
-            data.setValue<net_info_st>(info_ipv4);
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_GetV4);
-            gUInterface->emitEnableCycleAnimation(true);
+            if(this->isEnabled() == true)
+            {
+                QVariant data;
+                data.setValue<net_info_st>(info_ipv4);
+                gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_GetV4);
+                gUInterface->emitEnableCycleAnimation(true);
+            }
+            else
+            {
+                ui->lineEdit_IPAddressv4->setText("0.0.0.0");
+                ui->lineEdit_Gatewayv4->setText("0.0.0.0");
+                ui->lineEdit_Submaskv4->setText("0.0.0.0");
+            }
         }
         break;
     case 3:                                    // ip settting
@@ -530,14 +553,42 @@ void SettingsStackedWidget::changeStackIndex(int index)
         break;
     case 4:                                    // power save time setting
         {
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_PSaveTime_Get);
-            gUInterface->emitEnableCycleAnimation(true);
+            if(this->isEnabled() == true)
+            {
+                gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_PSaveTime_Get);
+                gUInterface->emitEnableCycleAnimation(true);
+            }
+            else
+            {
+                QRegExp rx1("-{0,1}[0-9]{1,2}");
+                QRegExpValidator *validator1 = new QRegExpValidator(rx1,this);
+                ui->lineEdit_TopMargin->setValidator(validator1);
+                ui->lineEdit_LeftMargin->setValidator(validator1);
+                ui->lineEdit_ImageDensity->setValidator(validator1);
+
+                ui->lineEdit_TopMargin->setText("0");
+                ui->lineEdit_LeftMargin->setText("0");
+                ui->lineEdit_ImageDensity->setText("0");
+                ui->btLowHumidity->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+                isLowHumidity = false;
+
+                //ui->label_setting_error->hide();
+                ui->label_TopMargin_error->hide();
+                ui->label_LeftMargin_error->hide();
+                ui->label_ImageDensity_error->hide();
+                ui->lineEdit_TopMargin->installEventFilter(this);
+                ui->lineEdit_LeftMargin->installEventFilter(this);
+                ui->lineEdit_ImageDensity->installEventFilter(this);
+            }
         }
         break;
     case 5:                                   // advance setting
         {
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Get_UserConfig);
-            gUInterface->emitEnableCycleAnimation(true);
+            if(this->isEnabled() == true)
+            {
+                gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Get_UserConfig);
+                gUInterface->emitEnableCycleAnimation(true);
+            }
         }
         break;
     case 6:                                   //new password setting

@@ -302,6 +302,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
             updateStatus(data);
         }else{//get status fail
             LOGLOG("get printer status fail!");
+            updateStatusPanel(UIConfig::Status_Offline);
         }
     }
         break;
@@ -339,8 +340,8 @@ void MainWindow::updatePrinter(const QVariant& data)
     }else if(printers.contains(current_printer)){
         ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
     }else{
-        setcurrentPrinter(printers.at(index_of_defaultprinter));
         ui->deviceNameBox->setCurrentIndex(index_of_defaultprinter);
+        setcurrentPrinter(printers.at(index_of_defaultprinter));
     }
 
     gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);

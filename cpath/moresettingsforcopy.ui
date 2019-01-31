@@ -655,7 +655,7 @@ background: transparent;
 }</string>
    </property>
    <property name="text">
-    <string>132</string>
+    <string>100</string>
    </property>
    <property name="maxLength">
     <number>4</number>

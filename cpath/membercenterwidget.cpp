@@ -24,10 +24,8 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);color:gray}");
 
     crmTimer = new QTimer(this);
-//    userTimer = new QTimer(this);
 
     connect(crmTimer,SIGNAL(timeout()),this,SLOT(uploadCRM()));
-//    connect(userTimer,SIGNAL(timeout()),this,SLOT(uploadUserInfo()));
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
 
@@ -50,7 +48,6 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
         ui->btLogin->setDisabled(true);
         ui->login_arrow->hide();
         isLogin = true;
-        //userInfo(true);
         ui->btloginImg->setStyleSheet("QPushButton{"
                                        "border-image: url(:/Images/Logon_Active.png);}"
                                        "QPushButton:pressed{"
@@ -101,7 +98,6 @@ void MemberCenterWidget::on_btLogin_clicked()
         ui->btLogin->setDisabled(true);
         ui->login_arrow->hide();
         isLogin = true;
-        //userInfo(true);
         ui->btloginImg->setStyleSheet("QPushButton{"
                                        "border-image: url(:/Images/Logon_Active.png);}"
                                        "QPushButton:pressed{"
@@ -354,10 +350,7 @@ void MemberCenterWidget::setUserInfo(QString fullName, QString birthDay, int sex
 
 void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
 {
-//    if(isNotShowWarning == false)
-//    {
-        gUInterface->emitEnableCycleAnimation(false);
-//    }
+    gUInterface->emitEnableCycleAnimation(false);
 
     QString strJsonText = reply->readAll();
     qDebug()<<"replyFinish_set"<<strJsonText.toUtf8();
@@ -369,42 +362,14 @@ void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
     {
         ui->login_name->setText(QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone));
         ui->stackedWidget->setCurrentIndex(1);
-//        userTimer->stop();
     }
     else
     {
-//        if(isNotShowWarning == false)
-//        {
-            QMessageBox *message = new QMessageBox(this);
-            message->setWindowTitle(QString::fromLocal8Bit("错误"));
-            message->setIconPixmap(QPixmap(":/Images/Warning.tif"));
-            message->setText(QString::fromLocal8Bit("修改账户信息失败。"));
-            message->exec();
-//        }
-
-//        QString fullName = ui->le_name->text();
-
-//        QDate birthDate;
-//        birthDate.setDate(ui->spinBox->value(),ui->spinBox_M->value(),ui->spinBox_D->value());
-//        QString birthDay = birthDate.toString("yyyy-MM-dd");
-//        int sex = 0x01;
-
-//        if(ui->btFemale->isChecked())
-//        {
-//            sex = 0x00;
-//        }
-//        QString email = ui->le_mail->text();
-//        QString address = ui->le_addr->text();
-//        QSettings settings;
-//        settings.beginGroup(loginPhone);
-//        settings.setValue("fullName",fullName);
-//        settings.setValue("birthDay",birthDay);
-//        settings.setValue("sex",sex);
-//        settings.setValue("email",email);
-//        settings.setValue("address",address);
-//        settings.endGroup();
-
-//        userTimer->start(1*60*1000);//30min
+        QMessageBox *message = new QMessageBox(this);
+        message->setWindowTitle(QString::fromLocal8Bit("错误"));
+        message->setIconPixmap(QPixmap(":/Images/Warning.tif"));
+        message->setText(QString::fromLocal8Bit("修改账户信息失败。"));
+        message->exec();
     }
     reply->deleteLater();
 }
@@ -443,21 +408,6 @@ void MemberCenterWidget::on_btExpe_clicked()
         }
     }
 }
-
-//void MemberCenterWidget::uploadUserInfo()
-//{
-//    qDebug()<<"uploadUserInfo";
-//    QSettings settings;
-//    settings.beginGroup(loginPhone);
-//    QString fullName = settings.value("fullName").toString();
-//    QString birthDay = settings.value("birthDay").toString();
-//    int sex = settings.value("sex").toInt();
-//    QString email = settings.value("email").toString();
-//    QString address = settings.value("address").toString();
-//    settings.endGroup();
-//    isNotShowWarning = true;
-//    setUserInfo(fullName,birthDay,sex,email,address);
-//}
 
 void MemberCenterWidget::uploadCRM()
 {
