@@ -136,7 +136,7 @@ static const Error_struct error_table[] =
 	,.code = "544-004"
 	,.showMeHowFileName = "smh_loadppr.pdf"
 	,.string_index = MSG_04004
-	}
+    }
 	,{
 		.group = 04
 		,.id = 9
@@ -347,6 +347,13 @@ static const Error_struct error_table[] =
 	,.showMeHowFileName = "smh_replace_toner.pdf"
 	,.string_index = MSG_05072
 	}
+    ,{
+        .group = 05
+        ,.id = 73
+    ,.code = "544-004"
+    ,.showMeHowFileName = "smh_loadppr.pdf"
+    ,.string_index = MSG_04004
+    }
 };
 
 
