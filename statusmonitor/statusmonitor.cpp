@@ -129,7 +129,8 @@ int StatusMonitor::getDeviceStatus(DeviceIO* device ,Printer_struct* printer ,Pr
     if(ret){
         memset(&status ,0 ,sizeof(status));
 //        status.PrinterStatus = PS_ERROR_POWER_OFF;
-        status.PrinterStatus = PS_UNKNOWN;
+//        status.PrinterStatus = PS_UNKNOWN;
+        status.PrinterStatus = ret;
     }else{
 //        if(IsStatusAbnormal(status.PrinterStatus)){
 //            status.PrinterStatus = PS_OFFLINE;

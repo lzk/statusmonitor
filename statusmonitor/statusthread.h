@@ -18,6 +18,7 @@ public:
 
 public slots:
     void set_current_printer(const QString& printer);
+    bool is_locked_get_status();
 
 public:
     QList<Printer_struct> printers;
@@ -26,6 +27,7 @@ public:
     bool abort;
 
 private:
+    bool locker_get_status;
     DeviceManager* devicemanager;
     CupsManager cupsmanager;
     StatusManager statusmanager;

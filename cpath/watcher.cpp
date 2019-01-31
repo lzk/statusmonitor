@@ -36,8 +36,9 @@ void Watcher::run()
 
 void Watcher::set_current_printer(const QString& printer)
 {
+    if(statusThread)
+        statusThread->set_current_printer(printer);
     current_printer = printer;
-    statusThread->set_current_printer(printer);
 }
 
 void Watcher::timerOut()
@@ -64,6 +65,9 @@ void Watcher::timerOut()
     mutex.unlock();
 
     //update current printer status
+    if(statusThread && statusThread->is_locked_get_status()){
+        return;
+    }
     if(!current_printer.isEmpty()){
         PrinterInfo_struct ps;
         int index = get_printer_info(current_printer ,ps);

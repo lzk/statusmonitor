@@ -57,6 +57,7 @@ struct{
 }
     Calc_Data;
 
+struct Printer_struct;
 typedef void (*callback_scan)(void* para);
 typedef struct{
     ImageTransInfo* info;
@@ -68,10 +69,10 @@ typedef struct{
     UiSettings settings;
     Calc_Data calc_data;
     long long received_bytes;
+    Printer_struct* printer;
 }
     ScanSettings;
 
-struct Printer_struct;
 class Scanner;
 class DeviceIOManager;
 class ScannerApp
@@ -118,6 +119,7 @@ private:
     pthread_mutex_t mutex;
 
     int init_scan(ScanSettings* settings);
+    int start_scan(ScanSettings* settings);
     int save_scan_data(ScanSettings* settings ,char* buffer ,int buf_size);
     int exit_scan(ScanSettings* settings);
 

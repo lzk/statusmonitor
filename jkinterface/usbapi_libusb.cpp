@@ -76,7 +76,7 @@ int iterateDevices(usbDeviceHandler handler ,void* handlerData)
     int i;
     for (i = 0; i < ndev; i++){
         dev = devlist[i];
-#if DEBUG
+#ifdef DEBUG
       print_device(dev ,0);
 #endif
         if(handler){
@@ -395,6 +395,8 @@ int UsbApi::write(char* buffer ,int bufsize)
     if (doneByte < 0) {
         LOGLOG("libusb: control write error:%d" ,doneByte);
         *buffer = '\0';
+    }else{
+//        LOGLOG("libusb: control write success:%d" ,doneByte);
     }
     return doneByte;
 
@@ -413,6 +415,8 @@ int UsbApi::read(char* buffer ,int bufsize)
     if (doneByte < 0) {
         LOGLOG("libusb: control read error:%d" ,doneByte);
         *buffer = '\0';
+    }else{
+//        LOGLOG("libusb: control read success:%d" ,doneByte);
     }
     return doneByte;
 }

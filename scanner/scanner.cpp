@@ -47,6 +47,7 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     if(ret){
         goto ERROR_RETURN;
     }
+    scanner_app->start_scan(settings);
 
     ScanStatus status;
     int size;

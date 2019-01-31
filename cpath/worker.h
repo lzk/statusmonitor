@@ -17,7 +17,7 @@ public:
     explicit Worker(QObject *parent = 0);
     ~Worker();
     void setPrinters(PrinterInfo_struct* ps);
-    void update_scan_progress(int progress);
+    void update_scan_progress(Printer_struct* printer ,int progress);
     
 signals:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
@@ -38,10 +38,11 @@ private:
     LShell* lshell;
     ScannerApp* scanner;
     QList<PrinterInfo_struct> printers_detail;
-
+    PrinterInfo_struct current_printer_info;
     Watcher* watcher;
 
     Printer_struct* get_printer(const QString& printer_name);//get printer exist in system
+    bool cmd_status_validate(Printer_struct* printer ,int cmd);
 };
 
 #endif // WORKER_H

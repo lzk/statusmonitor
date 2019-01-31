@@ -67,7 +67,7 @@ private slots:
     void set_Message_Background_Color(UIConfig::EnumStatus s);
 
     void enableTroubleshootingPage(bool enabled);
-    void onStatusCh(const PrinterStatus_struct& status);
+    void onStatusCh(PrinterStatus_struct& status);
     void updateStatusPanel(int);
 
     void updateTonerCarStatus(int toner);

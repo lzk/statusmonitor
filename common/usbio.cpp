@@ -97,7 +97,7 @@ bool UsbIO::is_device_scanning()
 
 int UsbIO::open(int port)
 {
-    (void)(port);
+    (void) port;
     if(device_is_open){
         LOGLOG("device is opened");
         return -1;
@@ -171,7 +171,7 @@ int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
 
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
-    int ret = open();
+    int ret = open(1);
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
@@ -197,15 +197,16 @@ int UsbIO::resolveUrl(const char* url)
     QUrl printer_url = QUrl(url);
 #if QT_VERSION > 0x050000
     tmp_serial = QUrlQuery(printer_url).queryItemValue("serial");
-//    interface = QUrlQuery(printer_url).queryItemValue("interface").toInt();
+    interface = QUrlQuery(printer_url).queryItemValue("interface").toInt();
 #else
     tmp_serial = printer_url.queryItemValue("serial");
-//    interface = printer_url.queryItemValue("interface").toInt();
+    interface = printer_url.queryItemValue("interface").toInt();
 #endif
     QString modelname = printer_url.host() + printer_url.path();
     if(getpidvid(modelname ,&pid ,&vid))
         ret = -1;
     if(tmp_serial.isEmpty()){
+        interface = 1;
         memset(this->serial ,0 ,sizeof(this->serial));
     }else{
         strcpy(this->serial ,tmp_serial.toLatin1().constData());

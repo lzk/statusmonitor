@@ -154,5 +154,6 @@ typedef struct
     UINT8 DHCPv6;
 }net_ipv6_st;
 
+#pragma pack()
 #endif // LSHELLSTRUCT_H
 

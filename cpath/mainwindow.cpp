@@ -693,26 +693,23 @@ void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
     }
 }
 
-void MainWindow::onStatusCh(const PrinterStatus_struct& status)
+void MainWindow::onStatusCh(PrinterStatus_struct& status)
 {
+    bool only_update_status = false;
     if(status.PrinterStatus == UIConfig::Usb_Locked){
         return;
     }else if(status.PrinterStatus == UIConfig::Usb_Printing){
-        QString errMsg = UIConfig::getErrorMsg(UIConfig::Printing ,UIConfig::UnknowJob,0);
-        ui->label_10->setText(errMsg);
-        set_Message_Background_Color(UIConfig::Printing);
-        updateStatusPanel(UIConfig::Printing);
-        return;
+        only_update_status = true;
+        status.PrinterStatus = UIConfig::Printing;
     }else if(status.PrinterStatus == UIConfig::Usb_Scanning){
-        QString errMsg = UIConfig::getErrorMsg(UIConfig::ScanScanning ,UIConfig::UnknowJob,0);
-        ui->label_10->setText(errMsg);
-        set_Message_Background_Color(UIConfig::ScanScanning);
-        updateStatusPanel(UIConfig::ScanScanning);
-        return;
+        only_update_status = true;
+        status.PrinterStatus = UIConfig::ScanScanning;
     }
     ui->label_10->setStyleSheet("QLabel{color:break;}");
-    ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
-    updateTonerCarStatus(status.TonelStatusLevelK);
+    if(!only_update_status){
+        ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
+        updateTonerCarStatus(status.TonelStatusLevelK);
+    }
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
     QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);

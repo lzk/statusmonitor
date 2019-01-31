@@ -58,7 +58,7 @@ void StatusThread::run()
             mutex.unlock();
             result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
             if(result){
-                LOGLOG("get status from device %s:fail!result %d" ,printer.name ,result);
+                LOGLOG("get status from device %s:fail!result:0x%02x" ,printer.name ,result);
                 QMutexLocker locker(&mutex);
                 status.PrinterStatus = result;
 //                status.PrinterStatus = PS_ERROR_POWER_OFF;
@@ -86,6 +86,9 @@ void StatusThread::run()
 //                }
             }
             statusmanager.saveStatusToFile(printer.name ,&status);
+            mutex.lock();
+            locker_get_status = false;
+            mutex.unlock();
         }
         sleep(6);
     }
@@ -96,4 +99,11 @@ void StatusThread::set_current_printer(const QString& printer)
     QMutexLocker locker(&mutex);
     current_printer = printer;
     memset(&status ,0 ,sizeof(status));
+    locker_get_status = true;
+}
+
+bool StatusThread::is_locked_get_status()
+{
+    QMutexLocker locker(&mutex);
+    return locker_get_status;
 }

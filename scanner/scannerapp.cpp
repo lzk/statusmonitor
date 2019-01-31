@@ -244,6 +244,7 @@ int ScannerApp::trans_process(ScanSettings* settings)
 int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret = 0;
+    settings->printer = printer;
     ImageTransInfo image_trans_info;
     settings->info = &image_trans_info;
     calculate_parameters(settings);
@@ -261,9 +262,6 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     }
 
     set_cancel(false);
-    settings->progress = 0;
-    if(settings->callback)
-        settings->callback(settings);
     settings->received_bytes = 0;
     ret = scanner->flat_scan(printer ,settings);
 //    exit_scan(settings);
@@ -271,7 +269,7 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     delete [] source_buf;
 #endif
     if(!ret){
-        settings->progress  = 100;
+        settings->progress  = -2;
         if(settings->callback)
             settings->callback(settings);
         trans_process(settings);
@@ -282,4 +280,11 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 void ScannerApp::set_cancel(bool cancel)
 {
     scanner->set_cancel(cancel);
+}
+
+int ScannerApp::start_scan(ScanSettings* settings)
+{
+    settings->progress = -1;//start
+    if(settings->callback)
+        settings->callback(settings);
 }

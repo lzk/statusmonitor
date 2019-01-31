@@ -20,6 +20,7 @@ typedef struct _COMM_HEADER
     // data append
     UINT8 subcmd;
 }COMM_HEADER;
+#pragma pack()
 
 typedef enum _CMD_ID
 {
@@ -499,7 +500,7 @@ int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize
 
 int LShell::open(Printer_struct* printer)
 {
-    int port = 1;
+    int port = 0;
     device = device_manager->getDevice(printer);
     if(!device)
         return -1;
