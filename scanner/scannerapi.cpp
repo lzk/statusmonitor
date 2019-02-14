@@ -255,30 +255,30 @@ void calculate_parameters(ScanSettings* scan_settings)
     float scan_height = scan_size_array[settings->scan_size].height;
     int pixel_alignment = 32;
 
-    source->pixels_per_line = scan_width * source->dpi_x / UNIT_FACTOR;
-    source->total_lines = scan_height * source->dpi_y / UNIT_FACTOR;
-    source->pixels_per_line = ((source->pixels_per_line + pixel_alignment -1) / pixel_alignment) * pixel_alignment;
-
-    target->pixels_per_line = scan_width * target->dpi_x / UNIT_FACTOR;
-    target->pixels_per_line += 7;
-    target->pixels_per_line /= 8;
-    target->pixels_per_line *= 8;
-
     switch (settings->colorModel) {
     case Black_White:
         target->bits_per_pixel = 1;
         source->bits_per_pixel = 8;
+        pixel_alignment = 32;//save bmp use 32 alignment
         break;
     case Grayscale:
         target->bits_per_pixel = 8;
         source->bits_per_pixel = 8;
+        pixel_alignment = 4;
         break;
     case Color:
     default:
         target->bits_per_pixel = 24;
         source->bits_per_pixel = 24;
+        pixel_alignment = 4;
         break;
     }
+    source->pixels_per_line = scan_width * source->dpi_x / UNIT_FACTOR;
+    source->total_lines = scan_height * source->dpi_y / UNIT_FACTOR;
+    source->pixels_per_line = (source->pixels_per_line + 31) & ~31;
+
+    target->pixels_per_line = scan_width * target->dpi_x / UNIT_FACTOR;
+    target->pixels_per_line = (target->pixels_per_line + pixel_alignment - 1) & ~(pixel_alignment - 1);
 
     pCalc->source_size = source->pixels_per_line * source->total_lines * source->bits_per_pixel / 8;
 }

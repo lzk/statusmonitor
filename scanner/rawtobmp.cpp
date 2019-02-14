@@ -15,7 +15,6 @@ typedef struct
     uint32_t bfOffBits;
 }
     BitmapFileHeader;
-#pragma pack()
 
 typedef struct
 {
@@ -33,7 +32,9 @@ typedef struct
 
 }
     BitmapInfoHeader;
+#pragma pack()
 
+#pragma pack(1)
 typedef struct
 {
     uint8_t rgbBlue;
@@ -42,6 +43,7 @@ typedef struct
     uint8_t rgbReserved;
 }
     RgbQuad;
+#pragma pack()
 
 RawToBmp::RawToBmp()
 {
