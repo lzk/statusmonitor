@@ -8,6 +8,8 @@ ChangePassword::ChangePassword(const QString& _password ,QWidget *parent) :
     password(_password)
 {
     ui->setupUi(this);
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText("确定");
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("取消");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     connect(ui->lineEdit_new ,SIGNAL(textEdited(QString)) ,this ,SLOT(on_lineEdit_old_textEdited(QString)));
     connect(ui->lineEdit_confirm ,SIGNAL(textEdited(QString)) ,this ,SLOT(on_lineEdit_old_textEdited(QString)));

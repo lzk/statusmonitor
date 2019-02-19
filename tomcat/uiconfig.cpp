@@ -7,7 +7,7 @@ static bool _isDeviceSupported(Printer_struct* ps)
 //    LOGLOG("tomcat found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
 //    if(!QString(ps->makeAndModel).startsWith("Lenovo M101DW"))
 //    if(!QString(ps->makeAndModel).startsWith("Lenovo M7208W"))
-    if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
+    if(!QString(ps->makeAndModel).startsWith("1OEP3300CDN"))
         return false;
     return true;
 }
@@ -48,7 +48,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "tomcat";
-    app_version = "1.0.2";
+    app_version = "1.0.3beta";
     log_init();
 }
 

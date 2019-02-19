@@ -41,6 +41,32 @@ void Watcher::set_current_printer(const QString& printer)
     statusThread->set_current_printer(printer);
 }
 
+int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterInfo_struct> & ps2)
+{
+    if(ps1.count() != ps2.count())
+        return -1;
+    int ret = 0;
+    const PrinterInfo_struct* pps1,*pps2;
+    for(int i = 0 ;i < ps1.count() ;i++){
+        pps1 = &ps1.at(i);
+        pps2 = &ps2.at(i);
+        if(strcmp(pps1->printer.connectTo ,pps2->printer.connectTo)){
+            ret = -1;
+            break;
+        }else if(strcmp(pps1->printer.name ,pps2->printer.name)){
+            ret = -1;
+            break;
+        }else if(strcmp(pps1->printer.deviceUri ,pps2->printer.deviceUri)){
+            ret = -1;
+            break;
+        }else if(strcmp(pps1->printer.makeAndModel ,pps2->printer.makeAndModel)){
+            ret = -1;
+            break;
+        }
+    }
+    return ret;
+}
+
 void Watcher::timerOut()
 {
     //update printer list
@@ -57,7 +83,8 @@ void Watcher::timerOut()
                ,dio->getDeviceAddress(printer));
     }
     mutex.lock();
-    if(current_printers != printers){
+    if(printerlist_compare(current_printers_detail ,printers_detail)){
+//    if(current_printers != printers){
         current_printers = printers;
         current_printers_detail = printers_detail;
         emit update_printerlist();

@@ -23,7 +23,6 @@
         <file>image/k80.png</file>
         <file>image/k90.png</file>
         <file>image/k100.png</file>
-        <file>image/logo.png</file>
         <file>image/m5.png</file>
         <file>image/m10.png</file>
         <file>image/m20.png</file>
@@ -64,5 +63,7 @@
         <file>image/TrayReady.png</file>
         <file>image/TrayWarnning.png</file>
         <file>image/t_unknown.png</file>
+        <file>image/logo.bmp</file>
+        <file>image/banner.png</file>
     </qresource>
 </RCC>
