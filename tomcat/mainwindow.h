@@ -5,6 +5,7 @@
 #include <QVariant>
 #include "uiconfig.h"
 #include <QSystemTrayIcon>
+#include "about.h"
 
 class QMenu;
 class QAction;
@@ -28,6 +29,7 @@ protected:
 
 private slots:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
+    void about();
 
     void on_tabWidget_currentChanged(int index);
 
@@ -48,6 +50,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    About* about_dialog;
 
     QString current_printer;
 
@@ -70,7 +73,8 @@ private:
 
 //    QAction *minimizeAction;
 //    QAction *maximizeAction;
-    QAction *restoreAction;
+//    QAction *restoreAction;
+    QAction *aboutAction;
     QAction *quitAction;
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

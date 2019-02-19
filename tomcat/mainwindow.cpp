@@ -8,12 +8,13 @@
 #include <QAction>
 #include <QMenu>
 #include <QCloseEvent>
-//#include <QMessageBox>
+#include <QMessageBox>
 #include "commonapi.h"
 #define TEST 0
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
+  ,about_dialog(NULL)
 {
     ui->setupUi(this);
     setWindowTitle(app_name);
@@ -43,6 +44,19 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    if(about_dialog){
+        delete about_dialog;
+    }
+}
+
+void MainWindow::about()
+{
+    if(!about_dialog){
+        about_dialog = new About;
+    }
+//    if(about_dialog->isHidden())
+        about_dialog->show();
+        about_dialog->raise();
 }
 
 void MainWindow::createSysTray()
@@ -58,12 +72,15 @@ void MainWindow::createSysTray()
 //    restoreAction = new QAction(tr("&Restore"), this);
 //    restoreAction = new QAction(tr("显示(&R)"), this);
 //    connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(showNormal()));
+    aboutAction = new QAction(tr("关于..."), this);
+    connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(about()));
     quitAction = new QAction(tr("退出(&Q)"), this);
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     trayIconMenu = new QMenu(this);
 //    trayIconMenu->addAction(minimizeAction);
 //    trayIconMenu->addAction(maximizeAction);
 //    trayIconMenu->addAction(restoreAction);
+    trayIconMenu->addAction(aboutAction);
 //    trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
 
@@ -81,8 +98,19 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     switch (reason) {
     case QSystemTrayIcon::Trigger:
         break;
-    case QSystemTrayIcon::DoubleClick:
-        showNormal();
+    case QSystemTrayIcon::DoubleClick:{
+        if(printers.isEmpty()){
+
+            QMessageBox message_box;
+            message_box.setButtonText(QMessageBox::Ok ,"确定");
+            message_box.setIcon(QMessageBox::Critical);
+            message_box.setText("没有安装TOEC打印机");
+            message_box.setWindowTitle(" ");
+            message_box.exec();
+        }else{
+            showNormal();
+        }
+    }
         break;
     case QSystemTrayIcon::MiddleClick:
 //        showMessage();
@@ -180,7 +208,7 @@ void MainWindow::on_checkBox_clicked()
     }
 }
 
-QString getEnterPassword();
+int getEnterPassword(QString& password);
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
     switch (index) {
@@ -191,14 +219,27 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     case 2:
 #if !TEST
     {
+        ui->btn_nextpage->setEnabled(false);
+        ui->btn_prepage->setEnabled(false);
+
 //        ui->tableWidget_jobs->clearContents();
         ui->tableWidget_jobs->setRowCount(0);
-        QString password = getEnterPassword();
-        QVariant sys_password;
-        appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
-        if(!password.compare(sys_password.toString())){
-            jobs_page = 0;
-            gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer ,jobs_page);
+        QString password;
+        int ret = getEnterPassword(password);
+        if(!ret){
+            QVariant sys_password;
+            appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
+            if(!password.compare(sys_password.toString())){
+                jobs_page = 0;
+                gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer ,jobs_page);
+            }else{
+                QMessageBox message_box;
+                message_box.setButtonText(QMessageBox::Ok ,"确定");
+                message_box.setIcon(QMessageBox::Critical);
+                message_box.setText("密码错误");
+                message_box.setWindowTitle(" ");
+                message_box.exec();
+            }
         }
     }
 #else
@@ -947,16 +988,19 @@ void MainWindow::on_pushButton_changePassword_clicked()
 
 void MainWindow::on_checkBox_record_clicked()
 {
-    QString password = getEnterPassword();
-    QVariant sys_password;
-    appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
-    if(!password.compare(sys_password.toString())){
-        QVariant value;
-        record_printlist = ui->checkBox_record->isChecked();
-        value.setValue(record_printlist);
-        appSettings("record" ,value ,QVariant(false) ,true);
-    }else{
-        ui->checkBox_record->setChecked(record_printlist);
+    QString password;
+    int ret = getEnterPassword(password);
+    if(!ret){
+        QVariant sys_password;
+        appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
+        if(!password.compare(sys_password.toString())){
+            QVariant value;
+            record_printlist = ui->checkBox_record->isChecked();
+            value.setValue(record_printlist);
+            appSettings("record" ,value ,QVariant(false) ,true);
+        }else{
+            ui->checkBox_record->setChecked(record_printlist);
+        }
     }
 }
 

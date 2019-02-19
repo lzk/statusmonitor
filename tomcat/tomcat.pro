@@ -24,7 +24,8 @@ SOURCES += \
     checkfingerdialog.cpp \
     fingerhandler.cpp \
     clientthread.cpp \
-    watcher.cpp
+    watcher.cpp \
+    about.cpp
 
 HEADERS  += mainwindow.h \
     enterpassword.h \
@@ -32,12 +33,14 @@ HEADERS  += mainwindow.h \
     checkfingerdialog.h \
     fingerhandler.h \
     clientthread.h \
-    watcher.h
+    watcher.h \
+    about.h
 
 FORMS    += mainwindow.ui \
     enterpassword.ui \
     changepassword.ui \
-    checkfingerdialog.ui
+    checkfingerdialog.ui \
+    about.ui
 
 RESOURCES += \
     image.qrc

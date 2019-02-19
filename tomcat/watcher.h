@@ -30,6 +30,7 @@ public slots:
 
 private:
     void getPrinters();
+    int printerlist_compare(QList<PrinterInfo_struct> & ,QList<PrinterInfo_struct> &);
 
 private:
     DeviceManager* device_manager;
