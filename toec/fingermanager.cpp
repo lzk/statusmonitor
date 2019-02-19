@@ -10,6 +10,22 @@ FingerManager::FingerManager()
 }
 
 static const char* job_history_file_name = "/tmp/job_history.txt";
+void* checkFingerThread(void *para)
+{
+     FingerManager* sm = (FingerManager*)para;
+     LOGLOG("libtoec: start check finger job");
+     //Finger mFinger;
+     if(!sm->mFinger.finger_check(sm->device_uri)){
+         LOGLOG("libtoec: start check finger  OK");
+         sm->check_result = Checked_Result_OK;
+
+     }else{
+         LOGLOG("libtoec: start check finger  Fail");
+         sm->check_result = Checked_Result_Fail;
+     }
+     sm->chenk_end = true;
+}
+
 void callback_getJob(void* para,Job_struct* js)
 {
     FingerManager* sm = (FingerManager*)para;
@@ -29,6 +45,42 @@ void callback_getJob(void* para,Job_struct* js)
 //    int isFingerChecked = 1;
 //    int isFingerEnable  = finger_isEnabled() ?1 :0;
 //    int printerResult = 1;
+
+    //Finger mFinger;
+    char device_uri[256];
+    cups_get_device_uri(js->printer, device_uri);
+    strcpy(m_device_uri, device_uri);
+    int isFingerChecked = 1;
+    int isFingerEnable  = sm->mFinger.finger_isEnabled(device_uri)? 1:0;//finger_isEnabled() ?1 :0;
+    int printerResult = 1;
+    sm->chenk_end = false;
+    if(isFingerEnable)
+    {
+        LOGLOG("libtoec: start check finger job");
+//        if(!mFinger.finger_check(device_uri)){
+//            LOGLOG("libtoec: start check finger  OK");
+//            sm->check_result = Checked_Result_OK;
+
+//        }else{
+//            LOGLOG("libtoec: start check finger  Fail");
+//            sm->check_result = Checked_Result_Fail;
+//        }
+        int ret;
+        ret = pthread_create(&check_thread, NULL, checkFingerThread, (void *)sm);
+        pthread_detach(check_thread);
+        if (ret != 0)
+        {
+            DBG(DBG_warn,"......Create thread Fail !\n");
+            sm->check_result = Checked_Result_Fail;
+            sm->chenk_end = true;
+        }
+
+    }
+    else{
+        LOGLOG("libtoec: finger  not open");
+        sm->check_result = Checked_Result_Disable;
+    }
+#if 0
     if(1){
 //    if(isFingerEnable){
         //check finger
@@ -59,6 +111,7 @@ void callback_getJob(void* para,Job_struct* js)
     }else{
         sm->check_result = Checked_Result_Disable;
     }
+#endif
 }
 
 int FingerManager::checkFinger(const char* server_path ,int jobid)

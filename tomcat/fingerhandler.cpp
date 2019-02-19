@@ -22,8 +22,8 @@ void FingerHandler::cancel()
 
 int FingerHandler::is_finger_enable()
 {
-    int result;
-    result = finger_isEnabled() ?Checked_Result_OK :Checked_Result_Disable;
+    int result = Checked_Result_OK;
+    //result = finger_isEnabled() ?Checked_Result_OK :Checked_Result_Disable;
     return result;
 }
 
@@ -32,6 +32,7 @@ int FingerHandler::check_finger(const char* uri ,int id)
     int result;
     if(!cth)
         return -1;
+#if 0
     while(true){
         if(cth->m_cancel){
             result = Checked_Result_Cancel;
@@ -43,13 +44,22 @@ int FingerHandler::check_finger(const char* uri ,int id)
             break;
         }
 
-        if(!finger_check(uri)){
-            result = Checked_Result_Fail;
-        }else{
-            result = Checked_Result_OK;
-            break;
-        }
+//        if(!finger_check(uri)){
+//            result = Checked_Result_Fail;
+//        }else{
+//            result = Checked_Result_OK;
+//            break;
+//        }
         QThread::usleep(10000);
+    }
+#endif
+    result = Checked_Result_checking;
+    if(cth->m_cancel){
+        result = Checked_Result_Cancel;
+    }
+
+    if(cth->m_timeout){
+        result = Checked_Result_timeout;
     }
     return result;
 }

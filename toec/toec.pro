@@ -23,6 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include("../jkinterface/jkinterface.pri")
+include("../common/common.pri")
 unix {
     target.path = /usr/lib
     INSTALLS += target
@@ -30,11 +31,19 @@ unix {
 
 SOURCES += \
     $${PWD}/fingermanager.cpp \
+    FingerCommon.cpp \
+    finger.cpp \
+    FingCmd.cpp
 
 
 HEADERS += \
     $${PWD}/fingermanager.h \
     $${PWD}/filter_check_finger.h \
+    FingerCommon.h \
+    finger.h \
+    FingCmd.h \
+    datadefine.h \
+    common.h
 
 
 CONFIG(debug ,debug|release){
