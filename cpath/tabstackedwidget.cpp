@@ -52,13 +52,7 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
 
     on_scrollArea_ScanImage_itemSelectionChanged();
 
-    paramScan.scan_doctype = T_Photo;
-    paramScan.scan_dpi = Scan_300DPI;
-    paramScan.colorModel = Color;
-    paramScan.contrast = 50;
-    paramScan.brightness = 50;
-    paramScan.scan_size = Scan_A4;
-    paramScan.scan_type = Hight_Speed;
+    this->setDefault_Scan();
 
     QString labelTitle = tr("ResStr_Scanned_image_size");
     QString labelText = QString("%1%2").arg(labelTitle).arg("24.89MB");
@@ -159,7 +153,7 @@ bool TabStackedWidget::getScrollAreaImageStatus()
 }
 
 
-void TabStackedWidget::setDefault_Copy()
+void TabStackedWidget::setDefault_Copy(bool isExceptTips)
 {
     copycmdset para;
     copycmdset *p = &para;
@@ -173,9 +167,22 @@ void TabStackedWidget::setDefault_Copy()
     paramCopy.paperType = (MediaType_Copy)p->mediaType;
     paramCopy.isMultiPage = false;
     paramCopy.multiMode = (MultiMode_Copy)p->nUp;
-    paramCopy.promptInfo.isIDCard = true;
-    paramCopy.promptInfo.isMultible = true;
+    if(isExceptTips == false)
+    {
+        paramCopy.promptInfo.isIDCard = true;
+        paramCopy.promptInfo.isMultible = true;
+    }
+}
 
+void TabStackedWidget::setDefault_Scan()
+{
+    paramScan.scan_doctype = T_Photo;
+    paramScan.scan_dpi = Scan_300DPI;
+    paramScan.colorModel = Color;
+    paramScan.contrast = 50;
+    paramScan.brightness = 50;
+    paramScan.scan_size = Scan_A4;
+    paramScan.scan_type = Hight_Speed;
 }
 
 void TabStackedWidget::on_scrollArea_ScanImage_itemSelectionChanged()
@@ -402,9 +409,11 @@ void TabStackedWidget::on_btn_Scan_clicked()
 //    QSize size = QSize(2496,3507);
 //    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
     if(is_disk_no_space("/tmp" ,500000)){
-        QMessageBox messagebox;
-        messagebox.setText(tr("IDS_NOT_ENOUGH_SPACE"));
-        messagebox.exec();
+        SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
+        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint);
+        msgWarm->exec();
         return;
     }
     QVariant data;
@@ -713,22 +722,22 @@ void TabStackedWidget::on_btn_Copy_clicked()
         copyPara.IDCardMode = paramCopy.idCardCopyMode;
     }
 
-    if(ui->cBox_IsIDCard->isChecked() == false && ui->cBox_DuplexCopy->isChecked() == false)
-    {
-        QSettings settings;
-        settings.beginGroup("CopyParam");
-        settings.setValue("Scaling",paramCopy.scaling);
-        settings.setValue("DocType",paramCopy.docType);
-        settings.setValue("DocSize",paramCopy.docSize);
-        settings.setValue("DPI",paramCopy.docDpi);
-        settings.setValue("OutputSize",paramCopy.outputSize);
-        settings.setValue("PaperType",paramCopy.paperType);
-        settings.setValue("IsNin1",paramCopy.isMultiPage);
-        settings.setValue("MultiMode",paramCopy.multiMode);
-        settings.setValue("PromotIDCard",paramCopy.promptInfo.isIDCard);
-        settings.setValue("PromotMultible",paramCopy.promptInfo.isMultible);
-        settings.endGroup();
-    }
+//    if(ui->cBox_IsIDCard->isChecked() == false && ui->cBox_DuplexCopy->isChecked() == false)
+//    {
+//        QSettings settings;
+//        settings.beginGroup("CopyParam");
+//        settings.setValue("Scaling",paramCopy.scaling);
+//        settings.setValue("DocType",paramCopy.docType);
+//        settings.setValue("DocSize",paramCopy.docSize);
+//        settings.setValue("DPI",paramCopy.docDpi);
+//        settings.setValue("OutputSize",paramCopy.outputSize);
+//        settings.setValue("PaperType",paramCopy.paperType);
+//        settings.setValue("IsNin1",paramCopy.isMultiPage);
+//        settings.setValue("MultiMode",paramCopy.multiMode);
+//        settings.setValue("PromotIDCard",paramCopy.promptInfo.isIDCard);
+//        settings.setValue("PromotMultible",paramCopy.promptInfo.isMultible);
+//        settings.endGroup();
+//    }
 
     QVariant data;
     data.setValue<copycmdset>(copyPara);
@@ -745,26 +754,26 @@ void TabStackedWidget::recoverCopyMode()
     ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconDisable.tif);");
     ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));
 
-    QSettings settings;
-    settings.beginGroup("CopyParam");
-    if(settings.contains("Scaling"))
-    {
-        paramCopy.scaling = settings.value("Scaling").toInt();
-        paramCopy.docType = (DocType_Copy)settings.value("DocType").toInt();
-        paramCopy.docSize = (DocSize_Copy)settings.value("DocSize").toInt();
-        paramCopy.docDpi = (DocDpi_Copy)settings.value("DPI").toInt();
-        paramCopy.outputSize = (OutPutSize_Copy)settings.value("OutputSize").toInt();
-        paramCopy.paperType = (MediaType_Copy)settings.value("PaperType").toInt();
-        paramCopy.isMultiPage = settings.value("IsNin1").toBool();
-        paramCopy.multiMode = (MultiMode_Copy)settings.value("MultiMode").toInt();
-        paramCopy.promptInfo.isIDCard = settings.value("PromotIDCard").toBool();
-        paramCopy.promptInfo.isMultible = settings.value("PromotMultible").toBool();
-    }
-    else
-    {
-        setDefault_Copy();
-    }
-    settings.endGroup();
+//    QSettings settings;
+//    settings.beginGroup("CopyParam");
+//    if(settings.contains("Scaling"))
+//    {
+//        paramCopy.scaling = settings.value("Scaling").toInt();
+//        paramCopy.docType = (DocType_Copy)settings.value("DocType").toInt();
+//        paramCopy.docSize = (DocSize_Copy)settings.value("DocSize").toInt();
+//        paramCopy.docDpi = (DocDpi_Copy)settings.value("DPI").toInt();
+//        paramCopy.outputSize = (OutPutSize_Copy)settings.value("OutputSize").toInt();
+//        paramCopy.paperType = (MediaType_Copy)settings.value("PaperType").toInt();
+//        paramCopy.isMultiPage = settings.value("IsNin1").toBool();
+//        paramCopy.multiMode = (MultiMode_Copy)settings.value("MultiMode").toInt();
+//        paramCopy.promptInfo.isIDCard = settings.value("PromotIDCard").toBool();
+//        paramCopy.promptInfo.isMultible = settings.value("PromotMultible").toBool();
+//    }
+//    else
+//    {
+//        setDefault_Copy();
+//    }
+//    settings.endGroup();
 }
 
 #define _QT_PDF 1
@@ -817,6 +826,14 @@ void saveMultiPagePdfImageRelease()
 #endif
 void TabStackedWidget::on_btn_ScanSave_clicked()
 {
+    if(is_disk_no_space("/tmp" ,500000)){
+        SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
+        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint);
+        msgWarm->exec();
+        return;
+    }
     QList<QListWidgetItem*> item_list = ui->scrollArea_ScanImage->selectedItems();
     QString filter = tr("TIF(*.tif);;PDF(*pdf);;JPG(*jpg)");
     QString selectedFilter;

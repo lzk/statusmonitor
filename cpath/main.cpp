@@ -118,6 +118,7 @@ int main(int argc, char *argv[])
     int delayTime=2;//splash display 2s
     QElapsedTimer timer;
     timer.start();
+
     while(timer.elapsed()<(delayTime*1000))
     {
         a.processEvents();

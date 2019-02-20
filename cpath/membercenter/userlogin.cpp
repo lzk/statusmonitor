@@ -3,6 +3,7 @@
 #include "qdatetime.h"
 #include "qurl.h"
 #include "jsonparser/parser.h"
+#include "qeventloop.h"
 
 UserLogin::UserLogin(QWidget *parent) :
     QDialog(parent),
@@ -28,12 +29,19 @@ void UserLogin::on_bt_login_clicked()
         return;
     }
 
-    QString baseUrl = "http://function.iprintworks.cn:8001/smsauth/authCode.php";
-    QUrl url(baseUrl);
-
     QString strPhoneNumber = ui->le_userName->text();
     QString strVerifyCode = ui->le_autoCode->text();
 
+    ui->bt_login->setEnabled(false);
+    ui->labMsg->setText("");
+    loginAction(strPhoneNumber,strVerifyCode);
+}
+
+void UserLogin::loginAction(QString strPhoneNumber,QString strVerifyCode)
+{
+
+    QString baseUrl = "http://function.iprintworks.cn:8001/smsauth/authCode.php";
+    QUrl url(baseUrl);
     QString post_str = QString("phoneNum=%0&authCode=%1").arg(strPhoneNumber).arg(strVerifyCode);
 #if QT_VERSION > 0x050000
     QByteArray post_data = post_str.toLocal8Bit();
@@ -42,7 +50,7 @@ void UserLogin::on_bt_login_clicked()
 #endif
 
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-    connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_check(QNetworkReply*)));
+//    connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_check(QNetworkReply*)));
 
     QNetworkRequest req;
 
@@ -51,14 +59,14 @@ void UserLogin::on_bt_login_clicked()
     req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
     req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
 
-    manager->post(req,post_data);
-}
+    QNetworkReply *reply = manager->post(req,post_data);
 
-void UserLogin::replyFinish_check(QNetworkReply* reply)
-{
+    QEventLoop eventloop;
+    connect(reply,SIGNAL(finished()),&eventloop,SLOT(quit()));
+    QTimer::singleShot(3*1000,&eventloop,SLOT(quit()));
+    eventloop.exec();
+
     QString strJsonText = reply->readAll();
-    qDebug()<<"replyFinish_check"<<strJsonText;
-
     QJson::Parser parser;
     bool ok;
     QVariantMap result = parser.parse(strJsonText.toUtf8(),&ok).toMap();
@@ -70,17 +78,121 @@ void UserLogin::replyFinish_check(QNetworkReply* reply)
             m_loginSuccess = true;
 
             QSettings settings;
-            settings.setValue("loginPhone",ui->le_userName->text());
-            settings.setValue("password",ui->le_autoCode->text());
+            settings.setValue("loginPhone",strPhoneNumber);
+            settings.setValue("password",strVerifyCode);
+
+            QString userInfo = getUserInfo(strPhoneNumber);
+            qDebug()<<userInfo;
+            ok = false;
+            QVariantMap result = parser.parse(userInfo.toUtf8(),&ok).toMap();
+            if (result["success"].toBool())
+            {
+                QVariantMap user = result["user"].toMap();
+
+                if(user["realName"].toString() != NULL)
+                {
+                    settings.beginGroup(strPhoneNumber);
+                    settings.setValue("loginName",user["realName"].toString());
+                    settings.endGroup();
+                }
+            }
             close();
         }
         else
         {
             ui->labMsg->setText(tr("ResStr_Msg_8"));
+            ui->bt_login->setEnabled(true);
         }
+    }
+    else
+    {
+        ui->labMsg->setText(tr("ResStr_Msg_8"));
+        ui->bt_login->setEnabled(true);
     }
     reply->deleteLater();
 }
+
+QString UserLogin::getUserInfo(QString strPhoneNumber)
+{
+    QString baseUrl = "http://crm.iprintworks.cn/api/app_getuserinfo";
+    QUrl url(baseUrl);
+
+    QDateTime dateTime;
+    QString time = dateTime.currentDateTime().toString("yyyyMMddHHmmss");
+
+    QString text = strPhoneNumber;
+
+    QString str = QString("%0%1%2").arg(text).arg(time).arg(m_strKey);
+//    qDebug()<<str;
+
+    QString md5;
+    QByteArray bb;
+#if QT_VERSION > 0x050000
+    bb = QCryptographicHash::hash(str.toLocal8Bit(),QCryptographicHash::Md5);
+#else
+    bb = QCryptographicHash::hash(str.toAscii(),QCryptographicHash::Md5);
+#endif
+    md5.append(bb.toHex());
+
+    QByteArray post_data;
+    QString post_str = QString("mobile=%0&time=%1&Sign=%2").arg(text).arg(time).arg(md5);
+//    qDebug()<<post_str;
+#if QT_VERSION > 0x050000
+    post_data = post_str.toLocal8Bit();
+#else
+    post_data = post_str.toAscii();
+#endif
+
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+//    connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_get(QNetworkReply*)));
+
+    QNetworkRequest req;
+
+    req.setUrl(url);
+
+    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+    req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+
+    QNetworkReply *reply = manager->post(req,post_data);
+
+    QEventLoop eventloop;
+    connect(reply,SIGNAL(finished()),&eventloop,SLOT(quit()));
+    QTimer::singleShot(3*1000,&eventloop,SLOT(quit()));
+    eventloop.exec();
+
+    QString strJsonText = reply->readAll();
+    reply->deleteLater();
+
+    return strJsonText;
+}
+
+//void UserLogin::replyFinish_check(QNetworkReply* reply)
+//{
+//    QString strJsonText = reply->readAll();
+//    qDebug()<<"replyFinish_check"<<strJsonText;
+
+//    QJson::Parser parser;
+//    bool ok;
+//    QVariantMap result = parser.parse(strJsonText.toUtf8(),&ok).toMap();
+
+//    if(ok)
+//    {
+//        if(result["success"].toBool())
+//        {
+//            m_loginSuccess = true;
+
+//            QSettings settings;
+//            settings.setValue("loginPhone",ui->le_userName->text());
+//            settings.setValue("password",ui->le_autoCode->text());
+//            close();
+//        }
+//        else
+//        {
+//            ui->labMsg->setText(tr("ResStr_Msg_8"));
+//        }
+//    }
+//    reply->deleteLater();
+//}
 
 void UserLogin::on_bt_getAuthCode_clicked()
 {
@@ -156,11 +268,11 @@ void UserLogin::replyFinish_send(QNetworkReply* reply)
     reply->deleteLater();
 }
 
-QString UserLogin::getPhone()
-{
-    QString phone = ui->le_userName->text();
-    return phone;
-}
+//QString UserLogin::getPhone()
+//{
+//    QString phone = ui->le_userName->text();
+//    return phone;
+//}
 
 bool UserLogin::isLogin()
 {

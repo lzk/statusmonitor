@@ -18,8 +18,10 @@ public:
     ~UserLogin();
 
 public slots:
-    QString getPhone();
+//    QString getPhone();
     bool isLogin();
+    void loginAction(QString strPhoneNumber,QString strVerifyCode);
+    QString getUserInfo(QString strPhoneNumber);
 
 private slots:
     void on_bt_login_clicked();
@@ -28,7 +30,7 @@ private slots:
 
     void replyFinish_send(QNetworkReply* reply);
 
-    void replyFinish_check(QNetworkReply* reply);
+//    void replyFinish_check(QNetworkReply* reply);
 
     void showTimelimit();
 
