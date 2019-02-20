@@ -33,6 +33,10 @@ public slots:
     void setEnabledWifi(bool enabled);
 
     void recoverCopyMode();
+    void setDefault_Copy(bool isExceptTips = false);
+
+    void setDefault_Scan();
+
 
 private slots:
     void on_cBox_IsIDCard_clicked(bool checked);
@@ -54,8 +58,6 @@ private slots:
     void on_scrollArea_ScanImage_itemSelectionChanged();
 
     void on_btn_MoreSetting_Scan_clicked();
-
-    void setDefault_Copy();
 
     void on_btn_MoreSetting_Copy_clicked();
 

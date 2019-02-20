@@ -28,44 +28,51 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     connect(crmTimer,SIGNAL(timeout()),this,SLOT(uploadCRM()));
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
-
+    isLogin = false;
     QSettings settings;
     loginPhone = settings.value("loginPhone").toString();
     if(loginPhone != NULL)
     {
-        QString loginName;
-        settings.beginGroup(loginPhone);
-        loginName = settings.value("loginName").toString();
-        settings.endGroup();
-        if(loginName != NULL)
-        {
-            ui->login_name->setText(loginName);
-        }
-        else
-        {
-            ui->login_name->setText(loginPhone);
-        }
-        ui->btLogin->setDisabled(true);
-        ui->login_arrow->hide();
-        isLogin = true;
-        ui->btloginImg->setStyleSheet("QPushButton{"
-                                       "border-image: url(:/Images/Logon_Active.png);}"
-                                       "QPushButton:pressed{"
-                                       "border-image: url(:/Images/Logon_Normal.png);}");
-        ui->btloginImg2->setStyleSheet("QPushButton{"
-                                       "border-image: url(:/Images/Logon_Active.png);}"
-                                       "QPushButton:pressed{"
-                                       "border-image: url(:/Images/Logon_Normal.png)}");
 
-        ui->btChInfo->setEnabled(true);
-        ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);}");
-
-        m_bCRM = settings.value("enableCRM").toBool();
-        qDebug()<<"m_bCRM"<<m_bCRM;
-
-        if(m_bCRM)
+        QString password = settings.value("password").toString();
+        UserLogin userLogin;
+        userLogin.loginAction(loginPhone,password);
+        if(userLogin.isLogin())
         {
-            crmTimer->start(30*60*1000);//30min
+            QString loginName;
+            settings.beginGroup(loginPhone);
+            loginName = settings.value("loginName").toString();
+            settings.endGroup();
+            if(loginName != NULL)
+            {
+                ui->login_name->setText(QString("%0(%1)").arg(loginName).arg(loginPhone));
+            }
+            else
+            {
+                ui->login_name->setText(loginPhone);
+            }
+            ui->btLogin->setDisabled(true);
+            ui->login_arrow->hide();
+            isLogin = true;
+            ui->btloginImg->setStyleSheet("QPushButton{"
+                                           "border-image: url(:/Images/Logon_Active.png);}"
+                                           "QPushButton:pressed{"
+                                           "border-image: url(:/Images/Logon_Normal.png);}");
+            ui->btloginImg2->setStyleSheet("QPushButton{"
+                                           "border-image: url(:/Images/Logon_Active.png);}"
+                                           "QPushButton:pressed{"
+                                           "border-image: url(:/Images/Logon_Normal.png)}");
+
+            ui->btChInfo->setEnabled(true);
+            ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);}");
+
+            m_bCRM = settings.value("enableCRM").toBool();
+            qDebug()<<"m_bCRM"<<m_bCRM;
+
+            if(m_bCRM)
+            {
+                crmTimer->start(30*60*1000);//30min
+            }
         }
     }
 }
@@ -93,8 +100,20 @@ void MemberCenterWidget::on_btLogin_clicked()
 
     if(login->isLogin())
     {
-        loginPhone = login->getPhone();
-        ui->login_name->setText(loginPhone );
+//        loginPhone = login->getPhone();
+        QSettings settings;
+        loginPhone = settings.value("loginPhone").toString();
+        settings.beginGroup(loginPhone);
+        QString userName = settings.value("loginName").toString();
+        settings.endGroup();
+        if(userName != NULL)
+        {
+            ui->login_name->setText(QString("%0(%1)").arg(userName).arg(loginPhone));
+        }
+        else
+        {
+            ui->login_name->setText(loginPhone );
+        }
         ui->btLogin->setDisabled(true);
         ui->login_arrow->hide();
         isLogin = true;
@@ -126,59 +145,58 @@ void MemberCenterWidget::on_btCancel_clicked()
     ui->stackedWidget->setCurrentIndex(1);
 }
 
-void MemberCenterWidget::getUserInfo()
+//void MemberCenterWidget::getUserInfo()
+//{
+//    QString baseUrl = "http://crm.iprintworks.cn/api/app_getuserinfo";
+//    QUrl url(baseUrl);
+
+//    QDateTime dateTime;
+//    QString time = dateTime.currentDateTime().toString("yyyyMMddHHmmss");
+
+//    QString text = loginPhone;
+
+//    QString str = QString("%0%1%2").arg(text).arg(time).arg(m_strKey);
+////    qDebug()<<str;
+
+//    QString md5;
+//    QByteArray bb;
+//#if QT_VERSION > 0x050000
+//    bb = QCryptographicHash::hash(str.toLocal8Bit(),QCryptographicHash::Md5);
+//#else
+//    bb = QCryptographicHash::hash(str.toAscii(),QCryptographicHash::Md5);
+//#endif
+//    md5.append(bb.toHex());
+
+//    QByteArray post_data;
+//    QString post_str = QString("mobile=%0&time=%1&Sign=%2").arg(text).arg(time).arg(md5);
+////    qDebug()<<post_str;
+//#if QT_VERSION > 0x050000
+//    post_data = post_str.toLocal8Bit();
+//#else
+//    post_data = post_str.toAscii();
+//#endif
+
+//    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+//    connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_get(QNetworkReply*)));
+
+//    QNetworkRequest req;
+
+//    req.setUrl(url);
+
+//    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+//    req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+
+//    manager->post(req,post_data);
+
+//}
+
+void MemberCenterWidget::initUserInfo(QString userInfo)
 {
-    QString baseUrl = "http://crm.iprintworks.cn/api/app_getuserinfo";
-    QUrl url(baseUrl);
-
-    QDateTime dateTime;
-    QString time = dateTime.currentDateTime().toString("yyyyMMddHHmmss");
-
-    QString text = loginPhone;
-
-    QString str = QString("%0%1%2").arg(text).arg(time).arg(m_strKey);
-//    qDebug()<<str;
-
-    QString md5;
-    QByteArray bb;
-#if QT_VERSION > 0x050000
-    bb = QCryptographicHash::hash(str.toLocal8Bit(),QCryptographicHash::Md5);
-#else
-    bb = QCryptographicHash::hash(str.toAscii(),QCryptographicHash::Md5);
-#endif
-    md5.append(bb.toHex());
-
-    QByteArray post_data;
-    QString post_str = QString("mobile=%0&time=%1&Sign=%2").arg(text).arg(time).arg(md5);
-//    qDebug()<<post_str;
-#if QT_VERSION > 0x050000
-    post_data = post_str.toLocal8Bit();
-#else
-    post_data = post_str.toAscii();
-#endif
-
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-    connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_get(QNetworkReply*)));
-
-    QNetworkRequest req;
-
-    req.setUrl(url);
-
-    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
-    req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
-
-    manager->post(req,post_data);
-
-}
-
-void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
-{
-    QString strJsonText = reply->readAll();
-    qDebug()<<"replyFinish_get"<<strJsonText;
+    qDebug()<<"replyFinish_get"<<userInfo;
 
     QJson::Parser parser;
     bool ok;
-    QVariantMap result = parser.parse(strJsonText.toUtf8(),&ok).toMap();
+    QVariantMap result = parser.parse(userInfo.toUtf8(),&ok).toMap();
 
     if (result["success"].toBool())
     {
@@ -247,7 +265,7 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
         ui->btFemale->setChecked(false);
         ui->btMan->setChecked(true);
         ui->le_mail->setText("");
-        ui->le_mail->setText("");
+        ui->le_addr->setText("");
     }
 
     if(ui->le_name->text() == "" || ui->le_mail->text() == "" || ui->le_addr->text() == "")
@@ -259,9 +277,7 @@ void MemberCenterWidget::replyFinish_get(QNetworkReply* reply)
         ui->btApply->setEnabled(true);
     }
     ui->btChInfo->setEnabled(true);
-    gUInterface->emitEnableCycleAnimation(false);
     ui->stackedWidget->setCurrentIndex(0);
-    reply->deleteLater();
 }
 
 QString MemberCenterWidget::getHostMacAddress()
@@ -376,9 +392,10 @@ void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
 
 void MemberCenterWidget::on_btChInfo_clicked()
 {
-    getUserInfo();
     ui->btChInfo->setEnabled(false);
-    gUInterface->emitEnableCycleAnimation(true);
+    UserLogin userLogin;
+    QString userInfo = userLogin.getUserInfo(loginPhone);
+    initUserInfo(userInfo);
 }
 
 void MemberCenterWidget::startCRM()
@@ -491,7 +508,7 @@ void MemberCenterWidget::setSW(QStackedWidget* _sw, QPushButton * _bt)
 {
     sw = _sw;
     bt = _bt;
-    if(loginPhone != NULL)
+    if(isLogin)
     {
         bt->setStyleSheet("QPushButton{"
                           "border-image: url(:/Images/Logon_Active.png);}"

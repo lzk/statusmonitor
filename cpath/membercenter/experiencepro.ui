@@ -44,6 +44,9 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="cursor">
+    <cursorShape>ArrowCursor</cursorShape>
+   </property>
    <property name="text">
     <string>ResStr_Help_us_improve</string>
    </property>
@@ -153,6 +156,9 @@
      <family>Arial</family>
      <pointsize>16</pointsize>
     </font>
+   </property>
+   <property name="cursor">
+    <cursorShape>ArrowCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{

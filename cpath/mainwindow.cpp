@@ -170,13 +170,40 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 void MainWindow::closeEvent(QCloseEvent *e)
 {
     PromptDialog *pDialog = new PromptDialog(this);
-    if(ui->tabStackedWidget->getScrollAreaImageStatus())//added by gavin 2016-04-07
+    if(ui->tabStackedWidget->getScrollAreaImageStatus())
     {
         pDialog->setDialogMsg(tr("ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_"));
         pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     }
     if (pDialog->exec() == QDialog::Accepted)
     {
+        if(ui->tabStackedWidget->getScrollAreaImageStatus())
+        {
+            QDir dir("/tmp/vop_scan");
+            QFileInfoList fileList;
+            QFileInfo curFile;
+            if(dir.exists())
+            {
+                fileList = dir.entryInfoList(QDir::Dirs|QDir::Files
+                                             |QDir::Readable|QDir::Writable
+                                             |QDir::Hidden|QDir::NoDotAndDotDot
+                                             ,QDir::Name);
+                while(fileList.size()>0)
+                {
+                    int infoNum = fileList.size();
+                    for(int i = infoNum-1;i>=0;i--)
+                    {
+                        curFile = fileList[i];
+                        if(curFile.isFile())
+                        {
+                            QFile fileTemp(curFile.filePath());
+                            fileTemp.remove();
+                            fileList.removeAt(i);
+                        }
+                    }
+                }
+            }
+        }
         e->accept();
     }
     else
@@ -290,6 +317,9 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         if(!result){
             updatePrinter(data);
         }
+        //bms:6939
+        ui->tabStackedWidget->setDefault_Copy(true);
+        ui->tabStackedWidget->setDefault_Scan();
 //        statusCycle->stopAnimation();
         ui->statusCycle->stopAnimation();
         ui->statusCycle->hide();
@@ -473,6 +503,10 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
 #ifndef DEBUG
     if(printers.at(index) != current_printer)
     {
+        //bms:6939
+        ui->tabStackedWidget->setDefault_Copy(true);
+        ui->tabStackedWidget->setDefault_Scan();
+
         updateStatusPanel(UIConfig::Status_Offline);
         current_printer = printers.at(index);
         setcurrentPrinter(printers.at(index));

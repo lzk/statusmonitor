@@ -264,22 +264,13 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         {
              ui->isNinOne->setChecked(true);
              selectMode(param->multiMode);
-
-             //设置outPutSizeList的a6，b6两种格式不可用
-             QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
-             if(model)
-             {
-                 model->item(3)->setEnabled(false);
-                 model->item(5)->setEnabled(false);
-             }
         }
         else
         {
             ui->isNinOne->setChecked(false);
-            ui->label_20->setStyleSheet("#label_20 {background-color: rgb(198, 198, 198);border-radius:8px;}");
-            ui->label_21->setStyleSheet("#label_21 {background-color: rgb(198, 198, 198);border-radius:8px;}");
-            ui->label_22->setStyleSheet("#label_22 {background-color: rgb(198, 198, 198);border-radius:8px;}");
         }
+
+        ui->isNinOne->setDisabled(true);
 
         //设置documentSizeList的出了letter,a4,a5,b5其他都不可用
         QStandardItemModel *model0 = qobject_cast<QStandardItemModel *>(ui->docSizeList->model());
@@ -678,7 +669,7 @@ void MoreSettingsForCopy::selectIDCardCopyMode(int mode)
         model2->item(5)->setEnabled(false);
         model2->item(6)->setEnabled(false);
         model2->item(7)->setEnabled(false);
-        ui->docSizeList->setCurrentIndex(1);
+//        ui->docSizeList->setCurrentIndex(0);
         ui->outPutSizeList->setCurrentIndex(2);
     }else
     {
@@ -694,7 +685,7 @@ void MoreSettingsForCopy::selectIDCardCopyMode(int mode)
         model2->item(5)->setEnabled(false);
         model2->item(6)->setEnabled(false);
         model2->item(7)->setEnabled(false);
-        ui->docSizeList->setCurrentIndex(0);
+//        ui->docSizeList->setCurrentIndex(0);
         ui->outPutSizeList->setCurrentIndex(1);
     }
 }

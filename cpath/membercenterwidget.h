@@ -36,9 +36,9 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void getUserInfo();
+//    void getUserInfo();
 
-    void replyFinish_get(QNetworkReply* reply);
+    void initUserInfo(QString userInfo);
 
     QString getHostMacAddress();
 
