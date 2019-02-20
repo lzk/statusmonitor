@@ -22,3 +22,15 @@ SOURCES += \
     $$PWD/netio.cpp \
     $$PWD/devicemanager.cpp
 
+
+mac{
+
+    SOURCES += \
+    $$PWD/macapi.cpp
+
+}else{
+
+    SOURCES += \
+    $$PWD/linuxapi.cpp
+
+}

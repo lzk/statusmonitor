@@ -11,4 +11,6 @@ bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultVal
 
 bool isRunning(const char* server_path);
 QString get_string_from_shell_cmd(const QString& cmd ,int mode = 0);
+
+bool is_disk_no_space(const char* path ,unsigned int prefer_size);
 #endif // COMMON_H

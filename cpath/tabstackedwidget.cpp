@@ -17,6 +17,7 @@
 #include "scannerapp.h"
 #include "qsettings.h"
 #include "lshell.h"
+#include "commonapi.h"
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
@@ -400,6 +401,12 @@ void TabStackedWidget::on_btn_Scan_clicked()
 
 //    QSize size = QSize(2496,3507);
 //    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
+    if(is_disk_no_space("/tmp" ,500000)){
+        QMessageBox messagebox;
+        messagebox.setText(tr("IDS_NOT_ENOUGH_SPACE"));
+        messagebox.exec();
+        return;
+    }
     QVariant data;
     ScanSettings paraScanSettings;
     paraScanSettings.settings = paramScan;
