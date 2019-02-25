@@ -22,6 +22,7 @@ private:
     DeviceIO* m_pDeviceIO;
     DeviceManager devicemanager;
     Printer_struct mPrinter;
+    bool	waitCMDreturn;
     int WriteDataViaUSB(BYTE* pInput, DWORD cbInput, BYTE *pOutput, WORD* pcbLen, BYTE* pbResult, WORD cbOutput);
     int WriteDataViaNet(BYTE* pInput, DWORD cbInput, BYTE *pOutput, WORD* pcbLen, BYTE* pbResult, WORD cbOutput);
     int WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput, WORD* pcbLen, BYTE* pbResult, WORD cbOutput);

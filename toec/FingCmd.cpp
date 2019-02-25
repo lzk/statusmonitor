@@ -49,13 +49,11 @@ void FingCmd::SetFingCmdPrinter(char* pPrinterName)
     //m_pDeviceIO = devicemanager.getDevice(pPrinterName);
     strcpy(mPrinter.deviceUri, pPrinterName);
     DeviceIO* m_pDeviceIO = devicemanager.getDevice(&mPrinter);
-    if(m_pfgData != NULL)
-    {
-        free(m_pfgData);
-    }
+
     m_pfgData = NULL;
     m_bFingerPrint = false;
     m_bIsFingerPrintCancel = false;
+    waitCMDreturn = false;
 
 }
 
@@ -66,14 +64,18 @@ void FingCmd::SetFingCmdPrinter(char* pPrinterName, bool bPrint)
     LOGLOG("####FM:SetFingCmdPrinter: %s",pPrinterName);
     //m_pDeviceIO = devicemanager.getDevice(pPrinterName);
     strcpy(mPrinter.deviceUri, pPrinterName);
+    LOGLOG("####FM:SetFingCmdPrinter: 1");
+
     DeviceIO* m_pDeviceIO = devicemanager.getDevice(&mPrinter);
-    if(m_pfgData != NULL)
-    {
-        free(m_pfgData);
-    }
+    LOGLOG("####FM:SetFingCmdPrinter: 2");
+
+
     m_pfgData = NULL;
     m_bFingerPrint = bPrint;
     m_bIsFingerPrintCancel = false;
+    waitCMDreturn =false;
+    LOGLOG("####FM:SetFingCmdPrinter: exit");
+
 
 }
 
@@ -867,6 +869,7 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
     int nResult = _ACK;
     int nCount = 0;
     bool bWriteSuccess = false;
+    LOGLOG("####FM:WriteDataViaUSBwithCUPS start");
     while(nCount++ < 10 && !bWriteSuccess)
     {
         LOGLOG("####FM:WriteDataViaUSBwithCUPS");
@@ -1294,20 +1297,25 @@ int FingCmd::GetFingerStatusForPrint()
     int nResult;
     BYTE cmd[4] = {'F','I','N','G'};
 
-    LOGLOG("####FM: GetFingerStatus");
+    LOGLOG("####FM: GetFingerStatusForPrint");
     memset((unsigned char*)&fgCmd, 0, sizeof(FG_FUNC_T));
 
     fgCmd.code = *(unsigned int*)&cmd[0];
     fgCmd.mode = 'R';
 
-    if(m_pDeviceIO->type() == DeviceIO::Type_usb)
+    //if(m_pDeviceIO->type() == DeviceIO::Type_usb)
+    if(devicemanager.getDeviceType(mPrinter.deviceUri) == DeviceIO::Type_usb)
     {
+        LOGLOG("####FM: GetFingerStatusForPrint U");
+
         //nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
         nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
 
     }
     else
     {
+        LOGLOG("####FM: GetFingerStatusForPrint N");
+
         nResult = WriteDataViaNet((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
 
     }
@@ -1537,7 +1545,8 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
         {
             break;
         }
-        if(m_pDeviceIO->type() == DeviceIO::Type_usb)
+        //if(m_pDeviceIO->type() == DeviceIO::Type_usb)
+         if(devicemanager.getDeviceType(mPrinter.deviceUri) == DeviceIO::Type_usb)
         {
             //nResult = m_pDeviceIO->open();
             nResult = m_pDeviceIO->open(&mPrinter);
@@ -1582,7 +1591,8 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
     nResult = DataTransferForPrint((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
 #else
     bool usbType = false;
-    if(m_pDeviceIO->type() == DeviceIO::Type_usb)
+    //if(m_pDeviceIO->type() == DeviceIO::Type_usb)
+    if(devicemanager.getDeviceType(mPrinter.deviceUri) == DeviceIO::Type_usb)
     {
 //        nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
         nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
@@ -1660,6 +1670,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
                         {
                             strcpy(userName, (const char*)fgData.UserName);
                             *pIndex = fgData.ID;
+                            LOGLOG("####FM:IsPrint():  success:UserName=%s, id=%d", userName, fgData.ID);
                             //free(pData);
                         }
                         else

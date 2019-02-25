@@ -3,6 +3,7 @@
 #include "filter_check_finger.h"
 #include "toecconfig.h"
 #include <string.h>
+#include <pthread.h>
 const char* ui_server_path = SERVER_PATH;
 FingerManager::FingerManager()
 {
@@ -14,8 +15,10 @@ void* checkFingerThread(void *para)
 {
      FingerManager* sm = (FingerManager*)para;
      LOGLOG("libtoec: start check finger job");
+     LOGLOG("libtoec: %s" , sm->m_device_uri);
+
      //Finger mFinger;
-     if(!sm->mFinger.finger_check(sm->device_uri)){
+     if(sm->mFinger.finger_check(sm->m_device_uri)){
          LOGLOG("libtoec: start check finger  OK");
          sm->check_result = Checked_Result_OK;
 
@@ -28,11 +31,19 @@ void* checkFingerThread(void *para)
 
 void callback_getJob(void* para,Job_struct* js)
 {
+    LOGLOG("callback_getJob: start check finger");
+
     FingerManager* sm = (FingerManager*)para;
     if(js->id != sm->job_id)
-        return;
+    {
+        LOGLOG("callback_getJob: id fail return");
 
-    Trans_Client tc(sm->server_path);
+        return;
+    }
+
+    LOGLOG("callback_getJob:server_path=%s",ui_server_path);
+
+    Trans_Client tc(ui_server_path);//(sm->server_path);
     char buffer[256];
 
 //    bool record_list = false;
@@ -46,14 +57,21 @@ void callback_getJob(void* para,Job_struct* js)
 //    int isFingerEnable  = finger_isEnabled() ?1 :0;
 //    int printerResult = 1;
 
+    pthread_t check_thread;
     //Finger mFinger;
     char device_uri[256];
     cups_get_device_uri(js->printer, device_uri);
-    strcpy(m_device_uri, device_uri);
+    memset(sm->m_device_uri, 0, sizeof(sm->m_device_uri));
+    strcpy(sm->m_device_uri, device_uri);
     int isFingerChecked = 1;
+    LOGLOG("callback_getJob: check finge gate open ...");
+
     int isFingerEnable  = sm->mFinger.finger_isEnabled(device_uri)? 1:0;//finger_isEnabled() ?1 :0;
+    LOGLOG("callback_getJob: check finge gate open %d", isFingerEnable);
+
     int printerResult = 1;
     sm->chenk_end = false;
+    bool showDlg = false;
     if(isFingerEnable)
     {
         LOGLOG("libtoec: start check finger job");
@@ -70,48 +88,105 @@ void callback_getJob(void* para,Job_struct* js)
         pthread_detach(check_thread);
         if (ret != 0)
         {
-            DBG(DBG_warn,"......Create thread Fail !\n");
+            LOGLOG("......Create thread Fail !\n");
             sm->check_result = Checked_Result_Fail;
             sm->chenk_end = true;
-        }
+            return;
 
+        }
+        showDlg = true;
     }
     else{
         LOGLOG("libtoec: finger  not open");
         sm->check_result = Checked_Result_Disable;
+        return;
     }
-#if 0
-    if(1){
-//    if(isFingerEnable){
-        //check finger
-        sprintf(buffer ,"check://%s?jobid=%d" ,js->printer ,js->id);
+
+    LOGLOG("gavin: show Dlg = %d", showDlg);
+
+    if(showDlg){
+        LOGLOG("gavin: show Dlg...");
+
+        int invalid_times = 0;
+        sprintf(buffer ,"start://%s?jobid=%d" ,js->printer ,js->id);
         tc.writeThenRead(buffer ,sizeof(buffer));
-        if(!strcmp(buffer ,"ok")){
-//            isFingerChecked = 1;
-//            printerResult = 1;
-            sm->check_result = Checked_Result_OK;
-        }else if(!strcmp(buffer ,"cancel")){
-//            isFingerChecked = 0;
-//            printerResult = 0;
-            sm->check_result = Checked_Result_Cancel;
-        }else if(!strcmp(buffer ,"disable")){
-//            isFingerChecked = 0;
-//            printerResult = 0;
-            sm->check_result = Checked_Result_Disable;
-        }else if(!strcmp(buffer ,"timeout")){
-//            isFingerChecked = 0;
-//            printerResult = 0;
-            sm->check_result = Checked_Result_timeout;
-        }else{
-//            isFingerChecked = 0;
-//            printerResult = 0;
-            sm->check_result = Checked_Result_Fail;
+        if(!strcmp(buffer ,"startok")){
+            LOGLOG("gavin: show Dlg...OK");
+
+             usleep(100000);
+            while(1){
+
+                sprintf(buffer ,"check://%s?jobid=%d" ,js->printer ,js->id);
+                tc.writeThenRead(buffer ,sizeof(buffer));
+                if(!strcmp(buffer ,"cancel")){
+                        sm->check_result = Checked_Result_Cancel;
+                        sm->mFinger.finger_cancel(sm->m_device_uri);
+                         LOGLOG("gavin: show Dlg...cancel");
+                         while(1)
+                         {
+                             //wait thread finish
+                             if(sm->chenk_end)
+                                 break;
+                             usleep(10000);
+                         }
+                        break;
+                }else if(!strcmp(buffer ,"timeout")){
+                        sm->check_result = Checked_Result_timeout;
+                        sm->mFinger.finger_cancel(sm->m_device_uri);
+                         LOGLOG("gavin: show Dlg...timeout");
+                        while(1)
+                        {
+                            //wait thread finish
+                            if(sm->chenk_end)
+                                break;
+                            usleep(10000);
+                        }
+
+                        break;
+                }else if(!strcmp(buffer ,"checking")){
+                    invalid_times = 0;
+                     //LOGLOG("gavin: show Dlg...checking");
+                        usleep(100000);
+                }else if(!strcmp(buffer ,"invalid")){
+                    invalid_times++;
+                     LOGLOG("gavin: show Dlg...invalid");
+                    if(invalid_times >5)
+                            break;
+                    usleep(100000);
+
+                }
+                if(sm->chenk_end)
+                {
+                     LOGLOG("gavin: show Dlg...close");
+
+                    while(1)
+                    {
+                        sprintf(buffer ,"delete://%s?jobid=%d,status=%d",js->printer ,js->id, sm->check_resul);
+                        tc.writeThenRead(buffer ,sizeof(buffer));
+                        if(!strcmp(buffer ,"deleteok")){
+                            break;
+                        }
+                    }
+                    break;
+                }
+
+            }
+        }
+        else{
+             LOGLOG("gavin: show Dlg...fail");
+            //sm->check_result = Checked_Result_Fail;
+             while(1)
+             {
+                 //wait thread finish
+                 if(sm->chenk_end)
+                     break;
+                 usleep(10000);
+             }
         }
         LOGLOG("check result:%s" ,buffer);
     }else{
         sm->check_result = Checked_Result_Disable;
     }
-#endif
 }
 
 int FingerManager::checkFinger(const char* server_path ,int jobid)
@@ -121,7 +196,15 @@ int FingerManager::checkFinger(const char* server_path ,int jobid)
     this->server_path = server_path;
     check_result = Checked_Result_invalidJobid;
     cups_get_job(callback_getJob ,this);
-    return check_result;
+    //return check_result;
+    if(check_result == Checked_Result_OK ||check_result == Checked_Result_Disable)
+    {
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 #ifdef __cplusplus

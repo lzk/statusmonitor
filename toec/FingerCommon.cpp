@@ -235,12 +235,12 @@ bool FingerCommon::CancelFingerPrint(char* pPrinterName)
 
         //return cmd.CancelPrint();
         cmd.m_bIsFingerPrintCancel = true;
-        if(!cmd.m_bFingerPrint)
+        //if(!cmd.m_bFingerPrint)
         {
             cmd.SetFingCmdPrinter(pPrinterName);
             return cmd.CancelPrint();
         }
-        return true;
+        //return true;
     }
 }
 
@@ -280,6 +280,8 @@ int FingerCommon::DeleteFingers(char* pPrinterName)
 bool FingerCommon::IsFingerPrint(char* pPrinterName, char* userName, short* pIndex)
 {
    LOGLOG("\r\n####FM: IsFingerPrint===Enter");
+   LOGLOG("\r\n####FM: IsFingerPrint: %s", pPrinterName);
+
    //FingCmd cmd(pPrinterName);
    cmd.SetFingCmdPrinter(pPrinterName, true);
    int nResult = cmd.IsPrint(userName, pIndex);
@@ -288,7 +290,7 @@ bool FingerCommon::IsFingerPrint(char* pPrinterName, char* userName, short* pInd
    {
        cmd.m_bIsFingerPrintCancel = false;
    }
-   return nResult;
+   return nResult == _ACK? true: false;
 }
 
 

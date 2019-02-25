@@ -5,6 +5,7 @@
 #include "jkinterface.h"
 
 class ClientThread;
+class AppServer;
 class ServerThread : public QThread
 {
     Q_OBJECT
@@ -22,6 +23,7 @@ private:
     bool abort;
 
     friend class ClientThread;
+    friend class AppServer;
 };
 
 #endif // SERVERTHREAD_H

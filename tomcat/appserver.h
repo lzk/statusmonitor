@@ -5,6 +5,12 @@
 #include <QThread>
 //class FingerHandler;
 class ServerThread;
+typedef
+struct{
+    QObject* dialog;
+    int result;
+}
+    FingerResult_struct;
 class AppServer : public QObject
 {
     Q_OBJECT
@@ -12,10 +18,15 @@ public:
     explicit AppServer(const char* server_path ,QObject *parent = 0);
     ~AppServer();
 
+    void new_finger_dialog(int id ,const QString&);
+    void delete_finger_dialog(int id);
+    int get_finger_result(int id);
 public slots:
     void client_cmd(const QString &s ,void* para);
     void client_connect(int fd);
 
+    void cancel(int jobid);
+    void timeout(int jobid);
 private:
 //    FingerHandler* finger_handler;
     ServerThread* thread_server;
@@ -23,6 +34,7 @@ private:
 
 //    Trans_Server trans_server;
 
+    QList<FingerResult_struct > finger_result_list;
 };
 
 #endif // APPSERVER_H

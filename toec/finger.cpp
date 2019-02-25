@@ -22,7 +22,7 @@ bool Finger::finger_check(char* uri)
 {
     char userName[33] = {0};
     short index = 0;
-    if(fingercomm.IsFingerPrint(uri,userName, &index) == 0)
+    if(fingercomm.IsFingerPrint(uri,userName, &index)/* == 0*/)
     {
 //        qDebug()<<QString::fromUtf8("指纹识别成功,可以打印!");
 //        qDebug()<<"userName="<<userName<<" index="<<index;
