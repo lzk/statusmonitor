@@ -31,6 +31,9 @@ int main(int argc, char *argv[])
 
     AppServer* app_server = new AppServer(SERVER_PATH);
 
+    QCoreApplication::setOrganizationName("TOEC");
+//    QCoreApplication::setOrganizationDomain("mysoft.com");
+    QCoreApplication::setApplicationName("Status Monitor");
 #if QT_VERSION < 0x050000
         QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
         QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));

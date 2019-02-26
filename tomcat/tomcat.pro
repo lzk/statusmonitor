@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = tjgd1zsm
+TARGET = tjgd1zsmui
 TEMPLATE = app
 
 include("../jkinterface/jkinterface.pri")

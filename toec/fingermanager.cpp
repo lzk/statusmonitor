@@ -120,27 +120,32 @@ void callback_getJob(void* para,Job_struct* js)
                 tc.writeThenRead(buffer ,sizeof(buffer));
                 if(!strcmp(buffer ,"cancel")){
                         sm->check_result = Checked_Result_Cancel;
+                        pthread_cancel(check_thread);
+                        usleep(10000);
                         sm->mFinger.finger_cancel(sm->m_device_uri);
                          LOGLOG("gavin: show Dlg...cancel");
-                         while(1)
-                         {
-                             //wait thread finish
-                             if(sm->chenk_end)
-                                 break;
-                             usleep(10000);
-                         }
+//                         while(1)
+//                         {
+//                             //wait thread finish
+//                             if(sm->chenk_end)
+//                                 break;
+//                             usleep(10000);
+//                         }
                         break;
                 }else if(!strcmp(buffer ,"timeout")){
                         sm->check_result = Checked_Result_timeout;
+                        pthread_cancel(check_thread);
+
+                        usleep(10000);
                         sm->mFinger.finger_cancel(sm->m_device_uri);
                          LOGLOG("gavin: show Dlg...timeout");
-                        while(1)
-                        {
-                            //wait thread finish
-                            if(sm->chenk_end)
-                                break;
-                            usleep(10000);
-                        }
+//                        while(1)
+//                        {
+//                            //wait thread finish
+//                            if(sm->chenk_end)
+//                                break;
+//                            usleep(10000);
+//                        }
 
                         break;
                 }else if(!strcmp(buffer ,"checking")){
@@ -161,7 +166,7 @@ void callback_getJob(void* para,Job_struct* js)
 
                     while(1)
                     {
-                        sprintf(buffer ,"delete://%s?jobid=%d,status=%d",js->printer ,js->id, sm->check_resul);
+                        sprintf(buffer ,"delete://%s?jobid=%d,status=%d",js->printer ,js->id, sm->check_result);
                         tc.writeThenRead(buffer ,sizeof(buffer));
                         if(!strcmp(buffer ,"deleteok")){
                             break;
