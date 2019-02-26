@@ -1,7 +1,13 @@
 QT -= gui
 
-CONFIG += c++11 console
+CONFIG += c++11
+#CONFIG += c++11 console
 CONFIG -= app_bundle
+
+TARGET = tjgd1zsm
+
+include("../jkinterface/jkinterface.pri")
+include(../common/common.pri)
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -15,4 +21,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    appserver.cpp
+
+HEADERS += \
+    appserver.h \
+    appconfig.h

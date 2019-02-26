@@ -10,6 +10,8 @@
 #endif
 #include "filter_check_finger.h"
 #include "jkinterface.h"
+#include <QSettings>
+#include <QDir>
 CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CheckFingerDialog),
@@ -23,6 +25,13 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
     ui->label_gif->setPixmap(QPixmap(":/image/finger.gif"));
 //    movie = new QMovie(":/image/finger.gif");
 //    ui->label_gif->setMovie(movie);
+
+    QString homepath = QDir::homePath();
+    QSettings setting(homepath + "/.tjgd1z/setting.ini");
+    bool ok;
+    time_val = setting.value("TimeOut").toInt(&ok);
+    if(!ok)
+        time_val = 30;
 
     timer.setInterval(1000);
     connect(&timer ,SIGNAL(timeout()) ,this ,SLOT(timeout()));

@@ -13,6 +13,8 @@ public:
     ~ServerThread();
 
     void run();
+
+    Trans_Server* get_trans_server(){return &trans_server;}
 signals:
     void client_connect(int fd);
     void client_cmd(const QString &s ,void* para);
