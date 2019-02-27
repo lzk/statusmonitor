@@ -99,17 +99,17 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::Trigger:
         break;
     case QSystemTrayIcon::DoubleClick:{
-        if(printers.isEmpty()){
+//        if(printers.isEmpty()){
 
-            QMessageBox message_box;
-            message_box.setButtonText(QMessageBox::Ok ,"确定");
-            message_box.setIcon(QMessageBox::Critical);
-            message_box.setText("没有安装TOEC打印机");
-            message_box.setWindowTitle(" ");
-            message_box.exec();
-        }else{
+//            QMessageBox message_box;
+//            message_box.setButtonText(QMessageBox::Ok ,"确定");
+//            message_box.setIcon(QMessageBox::Critical);
+//            message_box.setText("没有安装TOEC打印机");
+//            message_box.setWindowTitle(" ");
+//            message_box.exec();
+//        }else{
             showNormal();
-        }
+//        }
     }
         break;
     case QSystemTrayIcon::MiddleClick:
