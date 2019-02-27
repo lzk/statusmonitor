@@ -100,6 +100,12 @@ void callback_getJob(void* para,Job_struct* js)
     else{
         LOGLOG("libtoec: finger  not open");
         sm->check_result = Checked_Result_Disable;
+        sprintf(buffer ,"result://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
+        tc.writeThenRead(buffer ,sizeof(buffer));
+        if(!strcmp(buffer ,"resultok")){
+            LOGLOG("gavin: result ok");
+           // break;
+        }
         return;
     }
 
@@ -167,9 +173,9 @@ void callback_getJob(void* para,Job_struct* js)
 
                    // while(1)
                     {
-                        sprintf(buffer ,"delete://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
+                        sprintf(buffer ,"result://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
                         tc.writeThenRead(buffer ,sizeof(buffer));
-                        if(!strcmp(buffer ,"deleteok")){
+                        if(!strcmp(buffer ,"resultok")){
                             LOGLOG("gavin: show Dlg...close ok");
                            // break;
                         }

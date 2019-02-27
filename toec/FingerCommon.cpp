@@ -149,10 +149,10 @@ bool FingerCommon::IsDeviceFingerOpen(char* pPrinterName)
     int nRet = -1;
     if((nRet = cmd.GetFingerStatus()) == 1)
     {
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 bool FingerCommon::IsDeviceFingerOpenForPrint(char* pPrinterName)
@@ -167,10 +167,10 @@ bool FingerCommon::IsDeviceFingerOpenForPrint(char* pPrinterName)
     if(nRet == 1)
     {
         LOGLOG("\r\n####FM: the finger function is open");
-        return TRUE;
+        return true;
     }
     LOGLOG("\r\n####FM: the finger function is close");
-    return FALSE;
+    return false;
 }
 
 //////////////////////////////////////////////////////////////
@@ -608,7 +608,7 @@ int FingerCommon::ExportFinger(char* pPrinterName, char* fileName, int *pdwLen)
     int nResult = _Printer_Time_Out;
 
 
-    if(nResult = cmd.Export(pdwLen) == _ACK && pdwLen > 0)
+    if(((nResult = cmd.Export(pdwLen)) == _ACK) && (*pdwLen > 0))
     {
         int len = *pdwLen;
         FG_DATAF_T* pfgData;

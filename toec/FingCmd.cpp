@@ -11,7 +11,7 @@ FingCmd::FingCmd()
     m_pDeviceIO = NULL;
 
     m_pfgData = NULL;
-    m_bFingerPrint = FALSE;
+    m_bFingerPrint = false;
     m_bIsFingerPrintCancel = false;
 }
 
@@ -24,7 +24,7 @@ FingCmd::FingCmd(char* pPrinterName)
     strcpy(mPrinter.deviceUri, pPrinterName);
     DeviceIO* m_pDeviceIO = devicemanager.getDevice(&mPrinter);
     m_pfgData = NULL;
-    m_bFingerPrint = FALSE;
+    m_bFingerPrint = false;
     m_bIsFingerPrintCancel = false;
 
 }
@@ -1172,7 +1172,8 @@ int FingCmd::WriteDataViaNet(BYTE* pInput, DWORD cbInput, BYTE *pOutput, WORD* p
 {
 
     //static const char INIT_VALUE = 0xfe;
-    char buffMax[MAX_SIZE_BUFF] = {0xfe};
+    char buffMax[MAX_SIZE_BUFF];
+    memset(buffMax ,0xfe ,sizeof(buffMax));
     //TCHAR		symbolicname[MAX_PATH];
     int nResult = _ACK;
     int nCount = 0;

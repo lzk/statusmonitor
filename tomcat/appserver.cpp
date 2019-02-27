@@ -74,16 +74,18 @@ static int callback_Server(void* para,char* buffer,int bufsize)
             wt->delete_finger_dialog(jobid);
             break;
         }
-    }else if(!cmd.compare("delete")){
-        wt->delete_finger_dialog(jobid);
-        strcpy(buffer ,"deleteok");
+    }else if(!cmd.compare("result")){
         int finger_checked_result;
-
 #if QT_VERSION > 0x050000
     finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("result").toInt();
 #else
     finger_checked_result = QUrl(url).queryItemValue("result").toInt();
 #endif
+    if(finger_checked_result != Checked_Result_Disable){
+        wt->delete_finger_dialog(jobid);
+    }
+        strcpy(buffer ,"resultok");
+
         QVariant value;
         appSettings("record" ,value ,QVariant(false));
         bool record_list = value.toBool();
@@ -165,6 +167,7 @@ void AppServer::new_finger_dialog(int id ,const QString& s)
     connect(dialog ,SIGNAL(cancel_job(int)) ,this ,SLOT(cancel(int)));
     connect(dialog ,SIGNAL(job_timeout(int)) ,this ,SLOT(timeout(int)));
     dialog->show();
+    dialog->raise();
 
     FingerResult_struct finger_result;
     finger_result.result = Checked_Result_checking;
