@@ -95,12 +95,14 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
         ParamForCopy->outputSize = OutPutSize_Copy_A4;
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
-        showParam(ParamForCopy);
     }
-    else
+    else if(_duplexCopyFlag)
     {
-        showParam(ParamForCopy);
+        ParamForCopy->isMultiPage = false;
+        ParamForCopy->multiMode = TwoInOne;
+
     }
+    showParam(ParamForCopy);
 
     QListView *listView = new QListView(ui->outPutSizeList);
     listView->setStyleSheet("QListView::item:selected{background-color:gray;color:white}");
@@ -270,7 +272,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
             ui->isNinOne->setChecked(false);
         }
 
-        ui->isNinOne->setDisabled(true);
+        ui->isNinOne->setEnabled(false);
 
         //设置documentSizeList的出了letter,a4,a5,b5其他都不可用
         QStandardItemModel *model0 = qobject_cast<QStandardItemModel *>(ui->docSizeList->model());
