@@ -48,7 +48,7 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
     jobid = QUrl(url).queryItemValue("jobid").toInt();
 #endif
 //    setWindowFlags(Qt::FramelessWindowHint);
-    this->setWindowTitle(printer_name + QString("-%1").arg(jobid));
+    this->setWindowTitle(QString("指纹认证-") + printer_name + QString("-%1").arg(jobid));
     start_check_finger(jobid);
 }
 

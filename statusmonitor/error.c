@@ -39,6 +39,20 @@ extern "C" {
 		MSG_05016,
 		MSG_05017,
 		MSG_05018,
+        MSG_05019,
+        MSG_05020,
+        MSG_05021,
+        MSG_05022,
+        MSG_05023,
+        MSG_05024,
+        MSG_05025,
+        MSG_05026,
+        MSG_05027,
+        MSG_05028,
+        MSG_05029,
+        MSG_05030,
+        MSG_05031,
+        MSG_05032,
 		MSG_05033,
 		MSG_05034,
 		MSG_05035,
@@ -284,6 +298,104 @@ static const Error_struct error_table[] =
 	,.showMeHowFileName = "smh_app_contact.pdf"
 	,.string_index = MSG_05018
 	}
+    ,{
+        .group = 05
+        ,.id = 19
+    ,.code = "545-019"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05019
+    }
+    ,{
+        .group = 05
+        ,.id = 20
+    ,.code = "545-020"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05020
+    }
+    ,{
+        .group = 05
+        ,.id = 21
+    ,.code = "545-021"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05021
+    }
+    ,{
+        .group = 05
+        ,.id = 22
+    ,.code = "545-022"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05022
+    }
+    ,{
+        .group = 05
+        ,.id = 23
+    ,.code = "545-023"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05023
+    }
+    ,{
+        .group = 05
+        ,.id = 24
+    ,.code = "545-024"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05024
+    }
+    ,{
+        .group = 05
+        ,.id = 25
+    ,.code = "545-025"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05025
+    }
+    ,{
+        .group = 05
+        ,.id = 26
+    ,.code = "545-026"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05026
+    }
+    ,{
+        .group = 05
+        ,.id = 27
+    ,.code = "545-027"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05027
+    }
+    ,{
+        .group = 05
+        ,.id = 28
+    ,.code = "545-028"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05028
+    }
+    ,{
+        .group = 05
+        ,.id = 29
+    ,.code = "545-029"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05029
+    }
+    ,{
+        .group = 05
+        ,.id = 30
+    ,.code = "545-030"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05030
+    }
+    ,{
+        .group = 05
+        ,.id = 31
+    ,.code = "545-031"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05031
+    }
+    ,{
+        .group = 05
+        ,.id = 32
+    ,.code = "545-032"
+    ,.showMeHowFileName = "smh_app_contact.pdf"
+    ,.string_index = MSG_05032
+    }
 	,{
 		.group = 05
 		,.id = 33
@@ -634,9 +746,107 @@ static const Error_String_struct error_string_table[] =
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
 	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
+    ,{
+        .string_index = MSG_05019
+        ,.title = "黑色硒鼓套件丢失或未完全插入打印机。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请插入黑色硒鼓套件。"
+    }
+    ,{
+        .string_index = MSG_05020
+        ,.title = "彩色硒鼓套件丢失或未完全插入打印机。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请插入彩色硒鼓套件。"
+    }
+    ,{
+        .string_index = MSG_05021
+        ,.title = "黑色显影单元丢失或未完全插入打印机。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请插入黑色显影单元。"
+    }
+    ,{
+        .string_index = MSG_05022
+        ,.title = "青色显影单元丢失或未完全插入打印机。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请插入青色显影单元。"
+    }
+    ,{
+        .string_index = MSG_05023
+        ,.title = "品红色显影单元丢失或未完全插入打印机。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请插入品红色显影单元。"
+    }
+    ,{
+        .string_index = MSG_05024
+        ,.title = "黄色显影单元丢失或未完全插入打印机。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请插入黄色显影单元。"
+    }
+    ,{
+        .string_index = MSG_05025
+        ,.title = "废粉仓丢失或未完全插入打印机。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请插入废粉仓。"
+    }
+    ,{
+        .string_index = MSG_05026
+        ,.title = "黑色硒鼓套件寿命尽。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请更换黑色硒鼓套件。"
+    }
+    ,{
+        .string_index = MSG_05027
+        ,.title = "彩色硒鼓套件寿命尽。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请更换彩色硒鼓套件。"
+    }
+    ,{
+        .string_index = MSG_05028
+        ,.title = "黑色显影单元寿命尽。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请更换黑色显影单元。"
+    }
+    ,{
+        .string_index = MSG_05029
+        ,.title = "青色显影单元寿命尽。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请更换青色显影单元。"
+    }
+    ,{
+        .string_index = MSG_05030
+        ,.title = "品红色显影单元寿命尽。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请更换品红色显影单元。"
+    }
+    ,{
+        .string_index = MSG_05031
+        ,.title = "黄色显影单元寿命尽。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请更换黄色显影单元。"
+    }
+    ,{
+        .string_index = MSG_05032
+        ,.title = "废粉仓满。"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请更换废粉仓。"
+    }
 	,{
 		.string_index = MSG_05033
 		,.title = "更换黑色墨盒。"
@@ -704,9 +914,10 @@ static const Error_String_struct error_string_table[] =
 		.string_index = MSG_05072
 		,.title = "未插入纸盘"
 	,.mediaInfo = 0
-	,.lines = 2
+    ,.lines = 3
 	,.line0 = "拉出纸盘。"
-	,.line1 = "检查设备中发生送纸错误的纸张。 取出纸张然后插入纸盘。"
+    ,.line1 = "检查设备中发生送纸错误的纸张。"
+    ,.line2 = "取出纸张然后插入纸盘。"
 	}
 };
 
