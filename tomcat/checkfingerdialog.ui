@@ -29,7 +29,10 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>您的打印需要进行指纹认证，请在30秒内完成认证，否则将自动取消打印</string>
+        <string>您的打印工作需要进行指纹认证，请按下您的手指。如果在30秒内未检测到正确指纹，则打印工作取消。您也可以直接点击“取消”按键取消当前打印。</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
