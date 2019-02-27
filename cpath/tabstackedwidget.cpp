@@ -17,6 +17,9 @@
 #include "scannerapp.h"
 #include "qsettings.h"
 #include "lshell.h"
+#include <sys/statfs.h>
+#include <stdio.h>
+#include <tiffio.h>
 #include "commonapi.h"
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
@@ -171,6 +174,18 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
     {
         paramCopy.promptInfo.isIDCard = true;
         paramCopy.promptInfo.isMultible = true;
+    }
+    else
+    {
+        ui->copyNum->setText(tr("1"));
+
+        //init Density,default is level2;
+        value_Density = 2;
+        ui->mark0_Density->setStyleSheet("background-color: rgb(53, 177, 20);");
+        ui->mark1_Density->setStyleSheet("background-color: rgb(53, 177, 20);");
+        ui->mark2_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
+        ui->mark3_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
+        ui->mark4_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
     }
 }
 
@@ -404,7 +419,7 @@ void TabStackedWidget::on_cBox_DuplexCopy_clicked(bool checked)
 void TabStackedWidget::on_btn_Scan_clicked()
 {
 //    qDebug()<<"on_btn_Scan_clicked";
-//    const char *image_path = "/tmp/vop_scan/2019-01-06_13-59-14-964.bmp";
+//    const char *image_path = "/tmp/vop_scan/2019-02-25_09-16-19-418.bmp";
 
 //    QSize size = QSize(2496,3507);
 //    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
@@ -670,7 +685,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
         }
 
         paramCopy.scaling = 100;
-        paramCopy.docDpi = DocDpi_Copy_DPI600;
+        paramCopy.docDpi = DocDpi_Copy_DPI300;
         paramCopy.outputSize = OutPutSize_Copy_A4;
         paramCopy.isMultiPage = false;
         paramCopy.multiMode = TwoInOne;
@@ -835,10 +850,10 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
         return;
     }
     QList<QListWidgetItem*> item_list = ui->scrollArea_ScanImage->selectedItems();
-    QString filter = tr("TIF(*.tif);;PDF(*pdf);;JPG(*jpg)");
+    QString filter = tr("TIF(*.tiff);;PDF(*pdf);;JPG(*jpg)");
     QString selectedFilter;
     if(item_list.count() > 1){
-        filter = tr("TIF(*.tif);;PDF(*pdf)");
+        filter = tr("TIF(*.tiff);;PDF(*pdf)");
     }
 #if QT_VERSION > 0x050000
     QStringList pathlist = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
@@ -866,28 +881,95 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
                 j++;
             }
             saveMultiPagePdfImageRelease();
-        }else if(selectedFilter == tr("TIF(*.tif)")){
-            if(filename.endsWith(".tiff"))
+        }else if(selectedFilter == tr("TIF(*.tiff)")){
+            if(filename.endsWith(".tiff") == false)
             {
                 filename = filename.append(".tiff");
             }
             qDebug()<<filename;
-            QString temp_file("tmp.tiff");
-            bool first_time = true;
-            QString cmd;
-            foreach (QListWidgetItem* item, item_list) {
-                temp_filename = item->data(Qt::UserRole).toString();
-                QImage image(temp_filename);
-                image.save(temp_file);
-                if (first_time) {
-                    cmd = QString("tiffutil -cat") + " \"" + temp_file + "\" " +"-out" + " \"" + filename + "\" ";
-                    first_time = false;
-                }else{
-                    cmd = QString("tiffutil -cat") + " \"" + filename + "\" " + " \"" + temp_file + "\" " +"-out" + " \"" + filename + "\" ";
-                }
-                system(cmd.toLatin1());
-                QFile(temp_file).remove();
+            int image_width,image_height;
+            TIFF *tif = TIFFOpen(filename.toLocal8Bit().data(),"w");
+
+            if(tif == NULL)
+            {
+                LOGLOG("save tif error");
+                return;
             }
+            TIFFSetField(tif,TIFFTAG_SUBFILETYPE,FILETYPE_PAGE);
+            TIFFSetField(tif,TIFFTAG_PAGENUMBER,item_list.count());
+            for (int idx = 0; idx < item_list.count(); idx ++) {
+                QListWidgetItem* item = item_list.at(idx);
+                temp_filename = item->data(Qt::UserRole).toString();
+
+                QImage image(temp_filename);
+                image_width = image.width();
+                image_height = image.height();
+
+                TIFFSetDirectory(tif,idx + 1);
+                TIFFSetField(tif,TIFFTAG_IMAGEWIDTH,image_width);
+                TIFFSetField(tif,TIFFTAG_IMAGELENGTH,image_height);
+                TIFFSetField(tif,TIFFTAG_PLANARCONFIG,PLANARCONFIG_CONTIG);
+
+                qDebug()<<image.bitPlaneCount()<<"/ "<<image.isGrayscale()<<"/ "<<image.bytesPerLine()<<"/ ";
+                if(image.bitPlaneCount() == 1)
+                {
+                    qDebug()<<"whiteblack";
+                    TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISWHITE); // 0=black
+                    TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 1);
+                    TIFFSetField(tif, TIFFTAG_SAMPLESPERPIXEL, 1);
+                    TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, image_height);
+
+                    uchar *data = image.bits();
+                    for (int idx =0;idx<image_height;idx++)
+                    {
+                        TIFFWriteScanline(tif,&data[idx*image_width/8],idx,0);
+                    }
+                }
+                else if(image.bitPlaneCount() == 8)
+                {
+                    qDebug()<<"Grayscale";
+                    TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK); // 0=black
+                    TIFFSetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_NONE);//
+                    TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
+                    TIFFSetField(tif, TIFFTAG_SAMPLESPERPIXEL, 1);
+                    TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, image_height);
+
+                    uchar *data = image.bits();
+                    for (int idx =0;idx<image_height;idx++)
+                    {
+                        TIFFWriteScanline(tif,&data[idx*image_width],idx,0);
+                    }
+                }
+                else if(image.bitPlaneCount() == 24)
+                {
+                    qDebug()<<"Color";
+                    TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB); // 0=black
+                    TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
+                    TIFFSetField(tif, TIFFTAG_SAMPLESPERPIXEL, 4);
+                    TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, image_height);
+                    uchar *data = image.bits();
+                    uchar *pdst = new uchar[image_width*4];
+
+                    for (int idx =0;idx<image_height;idx++)
+                    {
+                        int curi_bit = idx*image_width*4;
+                        for(int i = 0; i < image_width; i++)
+                        {
+                            int curi_dst = i*4;
+                            int curi_bit2 = curi_dst + curi_bit;
+
+                            pdst[curi_dst] = data[curi_bit2+2];
+                            pdst[curi_dst+1] = data[curi_bit2+1];
+                            pdst[curi_dst+2] = data[curi_bit2];
+                            pdst[curi_dst+3] = data[curi_bit2+3];
+                        }
+                        TIFFWriteScanline(tif,pdst,idx,0);
+                    }
+                }
+
+                TIFFWriteDirectory(tif);
+            }
+            TIFFClose(tif);
         }else{
             if(filename.endsWith(".jpg") == false)
             {

@@ -147,3 +147,4 @@ contains(CONFIG ,static){
 }
 }
 
+LIBS += -ltiff

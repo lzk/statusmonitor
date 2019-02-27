@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
-    errorStatus(false);
+//    errorStatus(false);
     disconnect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
     ui->deviceNameBox->clear();
     connect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
@@ -314,6 +314,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         break;
 
     case UIConfig::CMD_GetPrinters:{
+#ifndef DEBUG
         if(!result){
             updatePrinter(data);
         }
@@ -324,9 +325,11 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         ui->statusCycle->stopAnimation();
         ui->statusCycle->hide();
         ui->refreshBtn->show();
+#endif
     }
         break;
     case UIConfig::CMD_GetStatus:{
+#ifndef DEBUG
         if(!result){
             LOGLOG("MainWindow")
             updateStatus(data);
@@ -334,6 +337,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
             LOGLOG("get printer status fail!");
             updateStatusPanel(UIConfig::Status_Offline);
         }
+#endif
     }
         break;
     default:
