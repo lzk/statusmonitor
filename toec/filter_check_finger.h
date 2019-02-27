@@ -12,6 +12,7 @@ enum{
     Checked_Result_Cancel,
     Checked_Result_invalidJobid,
     Checked_Result_timeout,
+    Checked_Result_checking,
 };
 
 int checkFinger(int jobid);

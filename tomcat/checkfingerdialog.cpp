@@ -60,7 +60,7 @@ CheckFingerDialog::~CheckFingerDialog()
 void CheckFingerDialog::cancel_and_delete()
 {
     cancel_job(jobid);
-    delete this;
+//    delete this;
 }
 
 void CheckFingerDialog::timeout()
@@ -70,7 +70,7 @@ void CheckFingerDialog::timeout()
     ui->label_timeval->setText(QString("%1").arg(time_val));
     if(!time_val){
         job_timeout(jobid);
-        delete this;
+//        delete this;
     }
 }
 
@@ -92,6 +92,7 @@ void CheckFingerDialog::active_window(int jobid)
 //        LOGLOG("lower jobid:%d" ,this->jobid);
     }else{
         LOGLOG("raise jobid:%d" ,jobid);
+        show();
         raise();
     }
 }

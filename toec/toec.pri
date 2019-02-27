@@ -12,4 +12,3 @@ HEADERS += \
 
 SOURCES += \
     $${PWD}/tomcat.cpp \
-    $$PWD/finger.cpp

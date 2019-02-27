@@ -14,6 +14,7 @@ class CheckFingerDialog : public QDialog
 public:
     explicit CheckFingerDialog(const QString& job_info ,QWidget *parent = 0);
     ~CheckFingerDialog();
+    int get_id(){return jobid;}
 
 signals:
     void cancel_job(int jobid);

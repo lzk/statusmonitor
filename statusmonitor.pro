@@ -4,8 +4,8 @@ SUBDIRS += \
     toec \
     tomcat \
     testfinger \
+    filtertrans \
 #    statusserver \
-    teststatusserver \
-    filtertrans
+#    teststatusserver \
 
 #first unzip libs/cups*.zip
