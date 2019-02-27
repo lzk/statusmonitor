@@ -20,6 +20,7 @@
 #include <sys/statfs.h>
 #include <stdio.h>
 #include <tiffio.h>
+#include "commonapi.h"
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
@@ -422,16 +423,7 @@ void TabStackedWidget::on_btn_Scan_clicked()
 
 //    QSize size = QSize(2496,3507);
 //    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
-
-    //disk size
-    struct statfs diskInfo;
-    statfs("/tmp/",&diskInfo);
-    unsigned long long blocksize = diskInfo.f_bsize;
-    unsigned long long availableDisk = diskInfo.f_bavail * blocksize;
-
-//    qDebug()<<(availableDisk>>20);
-    if(availableDisk>>20 < 200)
-    {
+    if(is_disk_no_space("/tmp" ,500000)){
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
         msgWarm->setWindowTitle("ResStr_Warning");
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -439,7 +431,6 @@ void TabStackedWidget::on_btn_Scan_clicked()
         msgWarm->exec();
         return;
     }
-
     QVariant data;
     ScanSettings paraScanSettings;
     paraScanSettings.settings = paramScan;
@@ -850,6 +841,14 @@ void saveMultiPagePdfImageRelease()
 #endif
 void TabStackedWidget::on_btn_ScanSave_clicked()
 {
+    if(is_disk_no_space("/tmp" ,500000)){
+        SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
+        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint);
+        msgWarm->exec();
+        return;
+    }
     QList<QListWidgetItem*> item_list = ui->scrollArea_ScanImage->selectedItems();
     QString filter = tr("TIF(*.tiff);;PDF(*pdf);;JPG(*jpg)");
     QString selectedFilter;
