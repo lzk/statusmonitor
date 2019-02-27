@@ -5,9 +5,10 @@
 #include <QThread>
 //class FingerHandler;
 class ServerThread;
+class CheckFingerDialog;
 typedef
 struct{
-    QObject* dialog;
+    CheckFingerDialog* dialog;
     int result;
 }
     FingerResult_struct;

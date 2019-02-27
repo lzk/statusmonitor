@@ -46,11 +46,13 @@ HEADERS += \
     common.h
 
 
-CONFIG(debug ,debug|release){
-    DEFINES += DEBUG_TO_STDERR
-}else{
-    DEFINES += DEBUG_TO_STDERR
-#contains(QT_ARCH, loongson3a) {
         DEFINES += LOONGSON
+DEFINES += DEBUG_TO_STDERR
+#CONFIG(debug ,debug|release){
+#    DEFINES += DEBUG_TO_STDERR
+#}else{
+#    DEFINES += DEBUG_TO_STDERR
+##contains(QT_ARCH, loongson3a) {
+#        DEFINES += LOONGSON
+##}
 #}
-}

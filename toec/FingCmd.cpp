@@ -892,7 +892,7 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
         fflush(stdout);
         cups_sc_status_t sc_status = CUPS_SC_STATUS_OK;
         int buff_len =MAX_SIZE_BUFF;
-        //sc_status = cupsSideChannelDoRequest(CUPS_SC_CMD_DRAIN_OUTPUT, buffMax, &buff_len, 30.0);
+        sc_status = cupsSideChannelDoRequest(CUPS_SC_CMD_DRAIN_OUTPUT, buffMax, &buff_len, 15.0);
         LOGLOG("####FM:WriteDataViaUSBwithCUPS(): status=%d, gdatalen=%d\n",sc_status, buff_len);
         if(sc_status == CUPS_SC_STATUS_OK)
         {
@@ -964,7 +964,7 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
                     {
                         nResult = _SW_USB_DATA_FORMAT_ERROR;
                     }
-                    LOGLOG("####FM:WriteDataViaUSBwithCUPS:  get data success.");
+                    LOGLOG("####FM:WriteDataViaUSBwithCUPS:  get data success. dwActualSize=%d", dwActualSize);
                     break;
                 }
                 else
@@ -1087,6 +1087,59 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
                         nResult = _ACK;
                         memcpy(pOutput, buffMax+8, cbOutput);
                         LOGLOG("####FM:WriteDataViaUSBwithCUPS(): wirte data 2.");
+                    }
+                    else if(dwActualSize == 8)
+                    {
+                        if((dwActualSize = cupsBackChannelRead(buffMax, sizeof(buffMax), 30.0)) >0)
+                        {
+
+                            LOGLOG("####FM:WriteDataViaUSBwithCUPS(): wirte data 3, dwActualSize=%d.",dwActualSize);
+                            FG_STA_T sta;
+                            memcpy((unsigned char *)&sta, buffMax, 8);
+                            if (sta.code == I3('STA'))
+                            {
+                                LOGLOG("####FM:WriteDataViaUSBwithCUPS: Recevie return command, and ack is %c", sta.ack);
+                                if(sta.ack == 'A')
+                                {
+                                    LOGLOG("####FM:WriteDataViaUSBwithCUPS: printer is ready, and result is %d", sta.status);
+                                    nResult = _ACK;
+                                    bWriteSuccess = true;
+                                    *pbResult = sta.status;
+                                    *pcbLen  = sta.length;
+                                    memcpy(pOutput, buffMax+8, cbOutput);
+                                }
+                                else
+                                {
+                                    if(sta.ack == 'N')
+                                    {
+                                        LOGLOG("####FM:WriteDataViaUSBwithCUPS: Printer is not ready, wait for 20*100 ms");
+                                        if (20 < nErrCnt++)
+                                        {
+                                            nResult = _SW_USB_READ_TIMEOUT;
+                                            break;
+                                        }
+                                        nResult = _Printer_Not_Ready;
+                                        //QThread.msleep(100);
+                                        usleep(100000);
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        if(sta.ack == 'B')
+                                            nResult = _Printer_busy;
+                                        else
+                                            nResult = _Printer_error;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                nResult = _SW_USB_DATA_FORMAT_ERROR;
+                            }
+
+
+
+                        }
                     }
                 }
                 if(nResult == _ACK)
@@ -1539,7 +1592,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
 #if OPEN_ONE
     bool bOpenSuccess = false;
     int nCount = 0;
-    while(nCount++ < 5 && !bOpenSuccess )
+    while(nCount++ < 1 && !bOpenSuccess )
     {
         if(m_bIsFingerPrintCancel)
         {
@@ -1590,8 +1643,11 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
     //nResult = DataTransfer((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
     nResult = DataTransferForPrint((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
 #else
+    LOGLOG("####FM:IsPrint():  DISC cmd ....");
+
     bool usbType = false;
     //if(m_pDeviceIO->type() == DeviceIO::Type_usb)
+
     if(devicemanager.getDeviceType(mPrinter.deviceUri) == DeviceIO::Type_usb)
     {
 //        nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
@@ -1618,6 +1674,8 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
             //nResult = DataTransfer((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result,  cbRead);
             nResult = DataTransferForPrint((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result,  cbRead);
 #else
+            LOGLOG("####FM:IsPrint():  STUS cmd ....");
+
             if(usbType)
             {
 //                nResult = WriteDataViaUSB((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
@@ -1627,12 +1685,14 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
             {
                 nResult = WriteDataViaNet((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
             }
+            LOGLOG("####FM:IsPrint():  STUS cmd end");
 #endif
             if(nResult == _ACK ) //&& result > 0)
             {
                 if(result == 1)
                 {
                     FG_GETRESULT_T fgCmd2;
+                    usleep(500000);
                     BYTE cmd2[4] = {'G','E','T','R'};
                     unsigned char* pData;
                     FG_DATA_T fgData;
@@ -1641,10 +1701,13 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
                     pData = (unsigned char*)&fgData;
 
                     cbRead = sizeof(FG_DATA_T);
+
                     memset(pData, 0, cbRead);
 #if OPEN_ONE
                     nResult = DataTransferForPrint((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
 #else
+                    LOGLOG("####FM:IsPrint():  GETR cmd ....");
+
                     if(usbType)
                     {
 //                        nResult = WriteDataViaUSB((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
@@ -1655,6 +1718,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
                     {
                         nResult = WriteDataViaNet((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
                     }
+                     LOGLOG("####FM:IsPrint():  GETR cmd end nResult=%d, length=%d", nResult, length);
 #endif
                     if(nResult == _ACK  && length > 0)
                     {
@@ -1681,6 +1745,13 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
 
                         return _ACK;
                     }
+                    else if(nResult == _ACK  && length ==0)
+                    {
+                         LOGLOG("####FM:IsPrint(): length ==0 fail try again!");
+
+                    }
+
+
                 }
                 else if(result > 1)
                 {

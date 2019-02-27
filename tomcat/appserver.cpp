@@ -2,6 +2,7 @@
 #include "checkfingerdialog.h"
 #include "fingerhandler.h"
 #include "commonapi.h"
+#include "tomcat.h"
 #include "jkinterface.h"
 #include <QUrl>
 
@@ -76,6 +77,26 @@ static int callback_Server(void* para,char* buffer,int bufsize)
     }else if(!cmd.compare("delete")){
         wt->delete_finger_dialog(jobid);
         strcpy(buffer ,"deleteok");
+        int finger_checked_result;
+
+#if QT_VERSION > 0x050000
+    finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("result").toInt();
+#else
+    finger_checked_result = QUrl(url).queryItemValue("result").toInt();
+#endif
+        QVariant value;
+        appSettings("record" ,value ,QVariant(false));
+        bool record_list = value.toBool();
+        if(record_list){
+            LOGLOG("record to file list");
+            Job_history job;
+            job.id = jobid;
+            job.is_finger_enable = (finger_checked_result != Checked_Result_Disable);
+            job.is_finger_checked = (finger_checked_result == Checked_Result_OK);
+            Tomcat::save_job_history(&job);
+        }else{
+            LOGLOG("do not record to file list");
+        }
     }
     return 0;
 }
@@ -187,6 +208,7 @@ void AppServer::timeout(int id)
         dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
         if(id == dialog->get_id()){
             finger_result_list[i].result = Checked_Result_timeout;
+            dialog->close();
             break;
         }
     }

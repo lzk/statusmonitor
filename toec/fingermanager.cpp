@@ -4,6 +4,7 @@
 #include "toecconfig.h"
 #include <string.h>
 #include <pthread.h>
+#include <unistd.h>
 const char* ui_server_path = SERVER_PATH;
 FingerManager::FingerManager()
 {
@@ -113,7 +114,7 @@ void callback_getJob(void* para,Job_struct* js)
         if(!strcmp(buffer ,"startok")){
             LOGLOG("gavin: show Dlg...OK");
 
-             usleep(100000);
+             usleep(200000);
             while(1){
 
                 sprintf(buffer ,"check://%s?jobid=%d" ,js->printer ,js->id);
@@ -121,7 +122,7 @@ void callback_getJob(void* para,Job_struct* js)
                 if(!strcmp(buffer ,"cancel")){
                         sm->check_result = Checked_Result_Cancel;
                         pthread_cancel(check_thread);
-                        usleep(10000);
+                        usleep(200000);
                         sm->mFinger.finger_cancel(sm->m_device_uri);
                          LOGLOG("gavin: show Dlg...cancel");
 //                         while(1)
@@ -136,7 +137,7 @@ void callback_getJob(void* para,Job_struct* js)
                         sm->check_result = Checked_Result_timeout;
                         pthread_cancel(check_thread);
 
-                        usleep(10000);
+                        usleep(200000);
                         sm->mFinger.finger_cancel(sm->m_device_uri);
                          LOGLOG("gavin: show Dlg...timeout");
 //                        while(1)
@@ -150,8 +151,8 @@ void callback_getJob(void* para,Job_struct* js)
                         break;
                 }else if(!strcmp(buffer ,"checking")){
                     invalid_times = 0;
-                     //LOGLOG("gavin: show Dlg...checking");
-                        usleep(100000);
+                     LOGLOG("gavin: show Dlg...checking");
+                        usleep(200000);
                 }else if(!strcmp(buffer ,"invalid")){
                     invalid_times++;
                      LOGLOG("gavin: show Dlg...invalid");
@@ -164,12 +165,13 @@ void callback_getJob(void* para,Job_struct* js)
                 {
                      LOGLOG("gavin: show Dlg...close");
 
-                    while(1)
+                   // while(1)
                     {
-                        sprintf(buffer ,"delete://%s?jobid=%d,status=%d",js->printer ,js->id, sm->check_result);
+                        sprintf(buffer ,"delete://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
                         tc.writeThenRead(buffer ,sizeof(buffer));
                         if(!strcmp(buffer ,"deleteok")){
-                            break;
+                            LOGLOG("gavin: show Dlg...close ok");
+                           // break;
                         }
                     }
                     break;
@@ -185,7 +187,7 @@ void callback_getJob(void* para,Job_struct* js)
                  //wait thread finish
                  if(sm->chenk_end)
                      break;
-                 usleep(10000);
+                 usleep(200000);
              }
         }
         LOGLOG("check result:%s" ,buffer);

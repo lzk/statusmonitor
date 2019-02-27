@@ -27,3 +27,5 @@ SOURCES += \
 HEADERS += \
     appserver.h \
     appconfig.h
+
+        DEFINES += LOONGSON
