@@ -17,7 +17,9 @@
 #include "scannerapp.h"
 #include "qsettings.h"
 #include "lshell.h"
+#ifndef Q_OS_MAC
 #include <sys/statfs.h>
+#endif
 #include <stdio.h>
 #include <tiffio.h>
 #include "commonapi.h"
