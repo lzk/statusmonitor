@@ -15,9 +15,11 @@ void quit(int)
         qApp->quit();
 }
 
+AppServer* app_server;
 int main(int argc, char *argv[])
 {
-    if(isRunning(SERVER_PATH)){
+    if(is_app_running(SERVER_PATH)){
+        LOGLOG("There has been a same app running!");
         return 0;
     }
     UIConfig::initConfig();
@@ -29,7 +31,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/image/app_icon.png"));
 
-    AppServer* app_server = new AppServer(SERVER_PATH);
+    app_server = new AppServer(SERVER_PATH);
 
     QCoreApplication::setOrganizationName("TOEC");
 //    QCoreApplication::setOrganizationDomain("mysoft.com");

@@ -9,11 +9,7 @@ EnterPassword::EnterPassword(QWidget *parent) :
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText("确定");
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("取消");
 
-//    QRegExp regexp;
-//    regexp.setPattern("^?[0-9a-fA-F]{8,16}$");
-    QRegExp regexp("^[\\x0020-\\x007e]{8,16}$");
-    QValidator *validator = new QRegExpValidator(regexp, this);
-    ui->lineEdit->setValidator(validator);
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 }
 
@@ -40,4 +36,10 @@ int getEnterPassword(QString& password)
         result = -1;
     }
     return result;
+}
+
+void EnterPassword::on_lineEdit_textChanged(const QString &arg1)
+{
+    QRegExp regexp("^[\\x0020-\\x007e]{8,16}$");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(-1 != regexp.indexIn(arg1));
 }

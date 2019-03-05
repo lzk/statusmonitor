@@ -165,6 +165,13 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
 //                status.PrinterStatus = -1;
         }
         if(!current_printer.compare(printerInfo.printer.name)){
+#if TEST
+    status.PrinterStatus = 0;
+    status.TonelStatusLevelC = 80;
+    status.TonelStatusLevelM = 100;
+    status.TonelStatusLevelY = 10;
+    status.TonelStatusLevelK = 30;
+#endif
             updateToner(status.TonelStatusLevelC ,status.TonelStatusLevelM ,status.TonelStatusLevelY ,status.TonelStatusLevelK);
             updateStatus(status);
         }
@@ -209,6 +216,32 @@ void MainWindow::on_checkBox_clicked()
 }
 
 int getEnterPassword(QString& password);
+int MainWindow::validate_password()
+{
+    int ret;
+    QString password;
+    while (true) {
+        ret = getEnterPassword(password);
+        if(!ret && !password.isEmpty()){
+            QVariant sys_password;
+            appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
+            if(!password.compare(sys_password.toString())){
+                break;
+            }else{
+                QMessageBox message_box;
+                message_box.setButtonText(QMessageBox::Ok ,"确定");
+                message_box.setIcon(QMessageBox::Critical);
+                message_box.setText("密码错误");
+                message_box.setWindowTitle(" ");
+                message_box.exec();
+            }
+        }else{
+            ret = -1;
+            break;
+        }
+    }
+    return ret;
+}
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
     switch (index) {
@@ -224,22 +257,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 
 //        ui->tableWidget_jobs->clearContents();
         ui->tableWidget_jobs->setRowCount(0);
-        QString password;
-        int ret = getEnterPassword(password);
-        if(!ret){
-            QVariant sys_password;
-            appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
-            if(!password.compare(sys_password.toString())){
-                jobs_page = 0;
-                gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer ,jobs_page);
-            }else{
-                QMessageBox message_box;
-                message_box.setButtonText(QMessageBox::Ok ,"确定");
-                message_box.setIcon(QMessageBox::Critical);
-                message_box.setText("密码错误");
-                message_box.setWindowTitle(" ");
-                message_box.exec();
-            }
+        if(!validate_password()){
+            jobs_page = 0;
+            gUInterface->setCmd(UIConfig::CMD_GetJobs ,current_printer ,jobs_page);
         }
     }
 #else
@@ -279,9 +299,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         QTableWidgetItem* item;
         item = new QTableWidgetItem(tr("%1").arg(QString("TOEC_Printer")));
         ui->tableWidget_printers->setItem(0 ,0 ,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("节电中")));
-        ui->tableWidget_printers->setItem(0 ,1,item);
-        item = new QTableWidgetItem(tr("%1").arg(QString("TOEC Printer")));
+//        item = new QTableWidgetItem(tr("%1").arg(QString("节电中")));
+//        ui->tableWidget_printers->setItem(0 ,1,item);
+        item = new QTableWidgetItem(tr("%1").arg(QString("OEP3300CDN")));
         ui->tableWidget_printers->setItem(0 ,2,item);
         item = new QTableWidgetItem(tr("%1").arg(QString("192.168.2.20")));
         ui->tableWidget_printers->setItem(0 ,3,item);
@@ -988,19 +1008,13 @@ void MainWindow::on_pushButton_changePassword_clicked()
 
 void MainWindow::on_checkBox_record_clicked()
 {
-    QString password;
-    int ret = getEnterPassword(password);
-    if(!ret){
-        QVariant sys_password;
-        appSettings("password" ,sys_password ,QVariant(QString("1234ABCD")));
-        if(!password.compare(sys_password.toString())){
-            QVariant value;
-            record_printlist = ui->checkBox_record->isChecked();
-            value.setValue(record_printlist);
-            appSettings("record" ,value ,QVariant(false) ,true);
-        }else{
-            ui->checkBox_record->setChecked(record_printlist);
-        }
+    if(!validate_password()){
+        QVariant value;
+        record_printlist = ui->checkBox_record->isChecked();
+        value.setValue(record_printlist);
+        appSettings("record" ,value ,QVariant(false) ,true);
+    }else{
+        ui->checkBox_record->setChecked(record_printlist);
     }
 }
 

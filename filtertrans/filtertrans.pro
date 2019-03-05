@@ -22,17 +22,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    appserver.cpp
+    appserver.cpp \
+    watcher.cpp
 
 HEADERS += \
     appserver.h \
-    appconfig.h
+    appconfig.h \
+    watcher.h
 
-        DEFINES += LOONGSON
 
 CONFIG(debug ,debug|release){
     DEFINES += DEBUG_TO_STDERR
 }else{
+        DEFINES += LOONGSON
 ##contains(QT_ARCH, loongson3a) {
 #        DEFINES += LOONGSON
 ##}

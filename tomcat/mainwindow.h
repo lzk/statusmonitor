@@ -71,6 +71,7 @@ private:
 
     QString get_Status_string(const PrinterStatus_struct& status);
 
+    int validate_password();
 //    QAction *minimizeAction;
 //    QAction *maximizeAction;
 //    QAction *restoreAction;

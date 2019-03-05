@@ -1,5 +1,5 @@
 #include "serverthread.h"
-
+#include <QFile>
 ServerThread::ServerThread(const char* server_path ,QObject *parent)
     : QThread(parent)
 {
@@ -11,20 +11,28 @@ ServerThread::ServerThread(const char* server_path ,QObject *parent)
 ServerThread::~ServerThread()
 {
     abort = true;
-    Trans_Client tc(trans_server.get_server_path());
+    const char* server_path = trans_server.get_server_path();
+    LOGLOG("delete server:%s" ,server_path);
+    Trans_Client tc(server_path);
     tc.tryConnectToServer();
-    wait();
+//    while(abort)
+//        ;
+    if(QFile::exists(server_path))
+        QFile::remove(server_path);
+    wait(100);
 }
 
 void ServerThread::run()
 {
     forever {
         if (abort)
-            return;
+            break;
         int fd = trans_server.any_client_connected();
         if(fd >= 0){
             client_connect(fd);
         }
     }
+    abort = false;
+//    exec();
 }
 

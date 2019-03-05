@@ -20,6 +20,15 @@ QHostAddress get_ip_address(const QString& host)
                 break;
             }
         }
+        if(!found){
+            foreach (QHostAddress address, info.addresses()) {
+                if(QAbstractSocket::IPv6Protocol == address.protocol()){
+                    hostAddress = address;
+                    found = true;
+                    break;
+                }
+            }
+        }
         if(!found)
             hostAddress = info.addresses().first();
 //        qDebug()<<"host name:" << host << "addresses:" <<info.addresses();
@@ -63,7 +72,11 @@ int NetIO::resolveUrl(const char* url)
     if(host.isEmpty())
         return -1;
     hostAddress = get_ip_address(host);
-    resolved_url = QString("socket://") + hostAddress.toString();
+    if(hostAddress.protocol() == QAbstractSocket::IPv6Protocol){
+        resolved_url = QString("socket://[") + hostAddress.toString() +"]";
+    }else{
+        resolved_url = QString("socket://") + hostAddress.toString();
+    }
     return 0;
 }
 

@@ -31,6 +31,7 @@ extern "C" {
 		MSG_05007,
 		MSG_05008,
 		MSG_05009,
+        MSG_05010,
 		MSG_05011,
 		MSG_05012,
 		MSG_05013,
@@ -242,6 +243,13 @@ static const Error_struct error_table[] =
 	,.showMeHowFileName = "smh_detach_toner.pdf"
 	,.string_index = MSG_05009
 	}
+    ,{
+        .group = 05
+        ,.id = 10
+    ,.code = "545-010"
+    ,.showMeHowFileName = "smh_detach_toner.pdf"
+    ,.string_index = MSG_05010
+    }
 	,{
 		.group = 05
 		,.id = 11
@@ -478,36 +486,36 @@ static const Error_String_struct error_string_table[] =
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
 	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
 	,{
 		.string_index = MSG_01003
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
-	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.lines = 2
+        ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
 	,{
 		.string_index = MSG_01009
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
-	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.lines = 2
+        ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
 	,{
 		.string_index = MSG_01030
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
-	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.lines = 2
+        ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
 	,{
 		.string_index = MSG_01032
-		,.title = "VLH-SFP、VLL-3in1、VLH-4in1 ** 出现固件下载格式错误。"
+        ,.title = "出现固件下载格式错误。"
 	,.mediaInfo = 0
 	,.lines = 2
 	,.line0 = "按 [确定] 按钮。"
@@ -517,32 +525,32 @@ static const Error_String_struct error_string_table[] =
 		.string_index = MSG_02008
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
-	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.lines = 2
+        ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
 	,{
 		.string_index = MSG_02009
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
-	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.lines = 2
+        ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
 	,{
 		.string_index = MSG_02011
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
-	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.lines = 2
+        ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
 	,{
 		.string_index = MSG_02020
 		,.title = "打印机错误。"
 	,.mediaInfo = 0
-	,.lines = 2
-	,.line0 = "请关闭打印机，然后再次开机。"
+    ,.lines = 2
+        ,.line0 = "关闭打印机，然后再次打开它。"
 	,.line1 = "如果重复此故障, 请与客户支持联系。"
 	}
 	,{
@@ -550,14 +558,14 @@ static const Error_String_struct error_string_table[] =
 		,.title = "发生PDL仿真错误。"
 	,.mediaInfo = 0
 	,.lines = 1
-	,.line0 = "按 [确定] 按钮清除邮件并取消当前打印作业。"
+    ,.line0 = "按 [确定] 按钮清除错误并取消当前打印作业。"
 	}
 	,{
 		.string_index = MSG_03016
 		,.title = "发生PDL仿真错误。"
 	,.mediaInfo = 0
 	,.lines = 1
-	,.line0 = "按 [确定] 按钮清除邮件并取消当前打印作业。"
+    ,.line0 = "按 [确定] 按钮清除错误并取消当前打印作业。"
 	}
 	,{
 		.string_index = MSG_04004
@@ -567,7 +575,7 @@ static const Error_String_struct error_string_table[] =
 	,.line0 = "拉出纸盒。"
 	,.line1 = "设置纸张和加载纸盒。"
 	,.line2 = "纸张大小:"
-	,.line3 = "纸张类型："
+    ,.line3 = "纸张类型:"
 	}
 	,{
 		.string_index = MSG_04009
@@ -581,16 +589,16 @@ static const Error_String_struct error_string_table[] =
 		,.title = "指定的纸张不可用。"
 	,.mediaInfo = 1
 	,.lines = 3
-	,.line0 = "指定的纸张不可用。"
+    ,.line0 = "将指定的纸张装入纸盒。"
 	,.line1 = "纸张大小:"
-	,.line2 = "纸张类型："
+    ,.line2 = "纸张类型:"
 	}
 	,{
 		.string_index = MSG_04011
 		,.title = "指定的纸张不可用。"
 	,.mediaInfo = 1
-	,.lines = 3
-	,.line0 = "请将指定的纸张装入纸盒。"
+    ,.lines = 3
+        ,.line0 = "将指定的纸张装入纸盒。"
 	,.line1 = "纸张大小:"
 	,.line2 = "纸张类型："
 	}
@@ -598,10 +606,10 @@ static const Error_String_struct error_string_table[] =
 		.string_index = MSG_04016
 		,.title = "纸盒中纸张的实际纸张大小与指定的纸张大小不同。"
 	,.mediaInfo = 1
-	,.lines = 3
-	,.line0 = "请将指定的纸张装入纸盒。"
+    ,.lines = 3
+        ,.line0 = "将指定的纸张装入纸盒。"
 	,.line1 = "纸张大小:"
-	,.line2 = "纸张类型："
+    ,.line2 = "纸张类型:"
 	}
 	,{
 		.string_index = MSG_04020
@@ -612,133 +620,154 @@ static const Error_String_struct error_string_table[] =
 	}
 	,{
 		.string_index = MSG_05002
-		,.title = "黑色墨盒丢失或未完全插入打印机。"
+        ,.title = "黑色粉仓丢失或未完全插入打印机。"
 	,.mediaInfo = 0
     ,.lines = 1
-	,.line0 = "打开碳粉盒访问盖并确保已完全安装黑墨盒。"
+    ,.line0 = "打开碳粉盒访问盖并确保已完全安装黑色粉仓。"
 //	,.line1 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05003
-		,.title = "青色墨盒丢失或未完全插入打印机。"
+        ,.title = "青色粉仓丢失或未完全插入打印机。"
 	,.mediaInfo = 0
     ,.lines = 1
-	,.line0 = "打开碳粉盒盖, 确保青色墨盒已完全安装。"
+    ,.line0 = "打开碳粉盒访问盖并确保已完全安装青色粉仓。"
 //	,.line1 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05004
-		,.title = "品红色墨盒丢失或未完全插入打印机。"
+        ,.title = "品红色粉仓丢失或未完全插入打印机。"
 	,.mediaInfo = 0
     ,.lines = 1
-	,.line0 = "打开碳粉盒访问盖并确保已完全安装了品红色墨盒。"
+    ,.line0 = "打开碳粉盒访问盖并确保已完全安装了品红色粉仓。"
 //	,.line1 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05005
-		,.title = "黄色墨盒丢失或未完全插入打印机。"
+        ,.title = "黄色粉仓丢失或未完全插入打印机。"
 	,.mediaInfo = 0
     ,.lines = 1
-	,.line0 = "打开碳粉盒访问盖并确保已完全安装黄色墨盒。"
+    ,.line0 = "打开碳粉盒访问盖并确保已完全安装黄色粉仓。"
 //	,.line1 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05006
 		,.title = "出现卡纸。"
 	,.mediaInfo = 0
-    ,.lines = 2
+    ,.lines = 3
 	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+    ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+    ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05007
 		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05008
 		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05009
 		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
+    ,{
+        .string_index = MSG_05010
+        ,.title = "出现卡纸。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
+//	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
+    }
 	,{
 		.string_index = MSG_05011
-		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.title = "出现卡纸。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05012
-		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.title = "出现卡纸。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05013
-		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.title = "出现卡纸。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05014
-		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.title = "出现卡纸。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05015
-		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.title = "出现卡纸。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05016
-		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.title = "出现卡纸。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05017
-		,.title = "出现卡纸。"
-	,.mediaInfo = 0
-    ,.lines = 2
-	,.line0 = "拉出纸盒, 取出卡纸。"
-	,.line1 = "打开后盖, 提起熔断单元松开拉杆, 取出卡纸。关闭后盖。"
+        ,.title = "出现卡纸。"
+        ,.mediaInfo = 0
+        ,.lines = 3
+        ,.line0 = "拉出纸盒, 取出卡纸。"
+        ,.line1 = "打开盖门, 提起熔断单元松开拉杆, "
+        ,.line2 = "取出卡纸。关闭盖门。"
 //	,.line2 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
@@ -849,34 +878,34 @@ static const Error_String_struct error_string_table[] =
     }
 	,{
 		.string_index = MSG_05033
-		,.title = "更换黑色墨盒。"
+        ,.title = "更换黑色粉仓。"
 	,.mediaInfo = 0
     ,.lines = 1
-	,.line0 = "打开碳粉盒入口盖。然后卸下所用的黑色墨盒并安装一个新的黑盒。"
+    ,.line0 = "打开碳粉盒入口盖。然后卸下所用的黑色粉仓并安装一个新的黑色粉仓。"
 //	,.line1 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05034
-		,.title = "更换青色墨盒。"
+        ,.title = "更换青色粉仓。"
 	,.mediaInfo = 0
     ,.lines = 1
-	,.line0 = "打开碳粉盒入口盖。然后卸下所用的青色墨盒, 然后安装一个新的。"
+    ,.line0 = "打开碳粉盒入口盖。然后卸下所用的青色粉仓并安装一个新的青色粉仓。"
 //	,.line1 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05035
-		,.title = "更换品红色墨盒。"
+        ,.title = "更换品红色粉仓。"
 	,.mediaInfo = 0
     ,.lines = 1
-	,.line0 = "打开碳粉盒入口盖。然后卸下所用的品红色墨盒并安装一个新的。"
+    ,.line0 = "打开碳粉盒入口盖。然后卸下所用的品红色粉仓并安装一个新的品红色粉仓。"
 //	,.line1 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
 		.string_index = MSG_05036
-		,.title = "更换黄色墨盒。"
+        ,.title = "更换黄色粉仓。"
 	,.mediaInfo = 0
     ,.lines = 1
-	,.line0 = "打开碳粉盒入口盖。然后卸下所用的黄色墨盒, 然后安装一个新的。"
+    ,.line0 = "打开碳粉盒入口盖。然后卸下所用的黄色粉仓并安装一个新的黄色粉仓。"
 //	,.line1 = "有关详细信息, 请单击 [显示我如何] 按钮。"
 	}
 	,{
@@ -887,28 +916,32 @@ static const Error_String_struct error_string_table[] =
 	,.line0 = "请关闭所有盖门。"
 	}
 	,{
-		.string_index = MSG_05043
-		,.title = "黑色墨盒需要马上更换。"
-	,.mediaInfo = 0
-	,.lines = 0
+        .string_index = MSG_05043
+        ,.title = "需要立即更换黑色粉仓。"
+        ,.mediaInfo = 0
+        ,.lines = 1
+        ,.line0 = "打开碳粉盒入口盖。然后卸下所用的黑色粉仓并安装一个新的黑色粉仓。"
 	}
 	,{
 		.string_index = MSG_05044
-		,.title = "需要立即更换青色墨盒。"
-	,.mediaInfo = 0
-	,.lines = 0
+        ,.title = "需要立即更换青色粉仓。"
+        ,.mediaInfo = 0
+        ,.lines = 1
+        ,.line0 = "打开碳粉盒入口盖。然后卸下所用的青色粉仓并安装一个新的青色粉仓。"
 	}
 	,{
 		.string_index = MSG_05045
-		,.title = "需要立即更换品红色墨盒。"
-	,.mediaInfo = 0
-	,.lines = 0
+        ,.title = "需要立即更换品红色粉仓。"
+        ,.mediaInfo = 0
+        ,.lines = 1
+        ,.line0 = "打开碳粉盒入口盖。然后卸下所用的品红色粉仓并安装一个新的品红色粉仓。"
 	}
 	,{
-		.string_index = MSG_05046
-		,.title = "黄色墨盒需要立即更换。"
-	,.mediaInfo = 0
-	,.lines = 0
+        .string_index = MSG_05046
+        ,.title = "需要立即更换黄色粉仓。"
+        ,.mediaInfo = 0
+        ,.lines = 1
+        ,.line0 = "打开碳粉盒入口盖。然后卸下所用的黄色粉仓并安装一个新的黄色粉仓。"
 	}
 	,{
 		.string_index = MSG_05072

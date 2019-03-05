@@ -21,7 +21,7 @@ bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultVal
  #include <QLocalServer>
 #include <QFile>
 QLocalServer* m_localServer;
-bool isRunning(const char* serverName)
+bool is_app_running(const char* serverName)
 {
     bool running = true;
     QLocalSocket socket;
@@ -47,20 +47,20 @@ bool isRunning(const char* serverName)
     return running;
 }
 #else
-bool isRunning(const char* server_path)
+bool is_app_running(const char* server_path)
 {
     bool running = true;
     Trans_Client tc(server_path);
     int ret = tc.tryConnectToServer();
     switch (ret) {
     case 0:
-        LOGLOG("There has been a same app running!");
+//        LOGLOG("There has been a same app running!");
         break;
     case -2:
         running = false;
         break;
     default:
-        LOGLOG("There is something error!");
+//        LOGLOG("There is something error!");
         break;
     }
     return running;

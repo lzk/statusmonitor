@@ -14,10 +14,12 @@ public:
 public slots:
     void client_cmd(const QString &s ,void* para);
     void client_connect(int fd);
+    void restart_server();
 
 private:
     ServerThread* thread_server;
-    QThread thread;
+    QString server_path;
+//    QThread thread;
 
 //    Trans_Server trans_server;
 
