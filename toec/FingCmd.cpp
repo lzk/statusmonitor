@@ -22,7 +22,7 @@ FingCmd::FingCmd(char* pPrinterName)
 
     //m_pDeviceIO = devicemanager.getDevice(pPrinterName);
     strcpy(mPrinter.deviceUri, pPrinterName);
-    DeviceIO* m_pDeviceIO = devicemanager.getDevice(&mPrinter);
+    m_pDeviceIO = devicemanager.getDevice(&mPrinter);
     m_pfgData = NULL;
     m_bFingerPrint = false;
     m_bIsFingerPrintCancel = false;
@@ -35,7 +35,7 @@ FingCmd::FingCmd(char* pPrinterName, bool bPrint)
 
     //m_pDeviceIO = devicemanager.getDevice(pPrinterName);
     strcpy(mPrinter.deviceUri, pPrinterName);
-    DeviceIO* m_pDeviceIO = devicemanager.getDevice(&mPrinter);
+    m_pDeviceIO = devicemanager.getDevice(&mPrinter);
     m_pfgData = NULL;
     m_bFingerPrint = bPrint;
     m_bIsFingerPrintCancel = false;
@@ -48,7 +48,10 @@ void FingCmd::SetFingCmdPrinter(char* pPrinterName)
     LOGLOG("####FM:SetFingCmdPrinter: %s",pPrinterName);
     //m_pDeviceIO = devicemanager.getDevice(pPrinterName);
     strcpy(mPrinter.deviceUri, pPrinterName);
-    DeviceIO* m_pDeviceIO = devicemanager.getDevice(&mPrinter);
+    m_pDeviceIO = devicemanager.getDevice(&mPrinter);
+    if(m_pDeviceIO == NULL)
+        LOGLOG("####FM:SetFingCmdPrinter: m_pDeviceIO = NULL");
+
 
     m_pfgData = NULL;
     m_bFingerPrint = false;
@@ -66,7 +69,7 @@ void FingCmd::SetFingCmdPrinter(char* pPrinterName, bool bPrint)
     strcpy(mPrinter.deviceUri, pPrinterName);
     LOGLOG("####FM:SetFingCmdPrinter: 1");
 
-    DeviceIO* m_pDeviceIO = devicemanager.getDevice(&mPrinter);
+    m_pDeviceIO = devicemanager.getDevice(&mPrinter);
     LOGLOG("####FM:SetFingCmdPrinter: 2");
 
 
@@ -892,7 +895,7 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
         fflush(stdout);
         cups_sc_status_t sc_status = CUPS_SC_STATUS_OK;
         int buff_len =MAX_SIZE_BUFF;
-        sc_status = cupsSideChannelDoRequest(CUPS_SC_CMD_DRAIN_OUTPUT, buffMax, &buff_len, 15.0);
+        //sc_status = cupsSideChannelDoRequest(CUPS_SC_CMD_DRAIN_OUTPUT, buffMax, &buff_len, 15.0);
         LOGLOG("####FM:WriteDataViaUSBwithCUPS(): status=%d, gdatalen=%d\n",sc_status, buff_len);
         if(sc_status == CUPS_SC_STATUS_OK)
         {
@@ -1087,6 +1090,11 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
                         nResult = _ACK;
                         memcpy(pOutput, buffMax+8, cbOutput);
                         LOGLOG("####FM:WriteDataViaUSBwithCUPS(): wirte data 2.");
+//                        for(int i=0; i< dwActualSize; i++)
+//                        {
+//                            LOGLOG("####FM:WriteDataViaUSBwithCUPS(): data[%d]=%d.", i, buffMax[i]);
+
+//                        }
                     }
                     else if(dwActualSize == 8)
                     {
@@ -1189,10 +1197,20 @@ int FingCmd::WriteDataViaNet(BYTE* pInput, DWORD cbInput, BYTE *pOutput, WORD* p
         }
 
         int dwActualSize = 0;
+        LOGLOG("####FM:WriteDataViaNet :open");
+        LOGLOG("####FM:WriteDataViaNet:open:%s", mPrinter.deviceUri);
+
+
         nResult = m_pDeviceIO->open(&mPrinter, 10001);
+        LOGLOG("####FM:WriteDataViaNet:opened:%d", nResult);
+
         if(!nResult)
         {
+            LOGLOG("####FM:WriteDataViaNet :write");
+
             dwActualSize = m_pDeviceIO->write((char*)pInput, cbInput);
+            LOGLOG("####FM:WriteDataViaNet :wrote:%d", dwActualSize);
+
             if(dwActualSize > 0)
             {
                 int nErrCnt = 0;
@@ -1299,6 +1317,10 @@ int FingCmd::WriteDataViaNet(BYTE* pInput, DWORD cbInput, BYTE *pOutput, WORD* p
             nResult = _SW_USB_OPEN_FAIL;
             LOGLOG("####FM:WriteDataViaNet(): connect fail.");
             usleep(200000);
+            if(nCount > 2)
+            {
+                break;
+            }
         }
 
 
@@ -1663,7 +1685,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
 #endif
     if(nResult == _ACK)
     {
-        int count = 10;
+        int count = 40;
         FG_STATUS_T fgCmd1;
         BYTE cmd1[4] = {'S','T','U','S'};
 
@@ -1686,7 +1708,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
             {
                 nResult = WriteDataViaNet((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
             }
-            LOGLOG("####FM:IsPrint():  STUS cmd end");
+            LOGLOG("####FM:IsPrint(%d):  STUS cmd end", count);
 #endif
             if(nResult == _ACK ) //&& result > 0)
             {
@@ -1740,7 +1762,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
                         }
                         else
                         {
-                             LOGLOG("####FM:IsPrint():  GETR userName is 0");
+                             LOGLOG("####FM:IsPrint():  GETR userName is 0, id=%d", fgData.ID);
                             return _Printer_Finger_Wrong;
                         }
 
@@ -1774,7 +1796,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
 //                    return _Printer_Finger_Wrong;
 //                }
             }
-            usleep(5000000);
+            usleep(500000);
         }
         //CancelPrintWithTrans();
     }

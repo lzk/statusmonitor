@@ -157,14 +157,14 @@ void callback_getJob(void* para,Job_struct* js)
                         break;
                 }else if(!strcmp(buffer ,"checking")){
                     invalid_times = 0;
-                     LOGLOG("gavin: show Dlg...checking");
+                     //LOGLOG("gavin: show Dlg...checking");
                         usleep(200000);
                 }else if(!strcmp(buffer ,"invalid")){
                     invalid_times++;
                      LOGLOG("gavin: show Dlg...invalid");
                     if(invalid_times >5)
                             break;
-                    usleep(100000);
+                    usleep(200000);
 
                 }
                 if(sm->chenk_end)
