@@ -17,6 +17,7 @@ extern "C" {
 		MSG_02020,
 		MSG_03009,
 		MSG_03016,
+        MSG_04003,
 		MSG_04004,
 		MSG_04009,
 		MSG_04010,
@@ -145,6 +146,13 @@ static const Error_struct error_table[] =
 	,.showMeHowFileName = "smh_print_cancell.pdf"
 	,.string_index = MSG_03016
 	}
+    ,{
+        .group = 04
+        ,.id = 3
+    ,.code = "545-072"
+    ,.showMeHowFileName = "smh_loadppr.pdf"
+    ,.string_index = MSG_05072
+    }
 	,{
 		.group = 04
 		,.id = 4

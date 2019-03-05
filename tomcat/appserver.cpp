@@ -59,7 +59,7 @@ static int callback_Server(void* para,char* buffer,int bufsize)
 #else
     jobid = QUrl(url).queryItemValue("jobid").toInt();
 #endif
-    LOGLOG("filter cmd:%s" ,buffer);
+//    LOGLOG("filter cmd:%s" ,buffer);
 
     memset(buffer ,0 ,bufsize);
     if(!cmd.compare("start")){

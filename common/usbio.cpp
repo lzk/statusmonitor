@@ -102,15 +102,16 @@ int UsbIO::open(int port)
         LOGLOG("device is opened");
         return -1;
     }
+    if(printer_is_printing(printer_name.toLatin1().constData())){
+        LOGLOG("printer is priting!!!");
+        return usb_error_printing;
+    }else if(is_device_scanning()){
+        return usb_error_scanning;
+    }
     int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
     if(ret){
         LOGLOG("can not find device");
         return -1;
-    }
-    if(printer_is_printing(printer_name.toLatin1().constData())){
-        return usb_error_printing;
-    }else if(is_device_scanning()){
-        return usb_error_scanning;
     }
     mutex.lock();
     if(locked_printers.contains(device_uri)){
@@ -212,7 +213,7 @@ int UsbIO::resolveUrl(const char* url)
         ret = 0;
     }
     if(!ret){
-        LOGLOG("device's vid:0x%02x ,pid:0x%02x ,serial:%s" ,vid ,pid ,serial);
+//        LOGLOG("device's vid:0x%02x ,pid:0x%02x ,serial:%s" ,vid ,pid ,serial);
     }else{
         LOGLOG("can not resolve url");
     }

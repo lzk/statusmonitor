@@ -33,6 +33,7 @@ HEADERS += \
 
 CONFIG(debug ,debug|release){
     DEFINES += DEBUG_TO_STDERR
+        DEFINES += LOONGSON
 }else{
         DEFINES += LOONGSON
 ##contains(QT_ARCH, loongson3a) {

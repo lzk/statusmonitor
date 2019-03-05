@@ -33,6 +33,7 @@ UIConfig::UIConfig(QObject *parent) :
 
 extern const char* log_app_name;
 extern const char* app_version;
+extern int usb_error_printing;
 void UIConfig::initConfig()
 {
     //config status server thread
@@ -42,13 +43,14 @@ void UIConfig::initConfig()
     status_lock_file = "/tmp/.locktoecstatus";
 
 //    ui_server_path = SERVER_PATH;
+    usb_error_printing = 0x01;
 
     //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
     log_app_name = "tomcat";
-    app_version = "1.0.3";
+    app_version = "1.0.4";
     log_init();
 }
 

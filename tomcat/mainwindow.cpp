@@ -808,14 +808,14 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
 
     ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize);
     if(!ei.error || !ei.errorString){
-//        text += QString() + "<p>" + get_Status_string(status) + "</p>";
-        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
+        text += QString() + "<p>" + get_Status_string(status) + "</p>";
+//        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
         text += "</body></html>";
         ui->label_status->setText(text);
         ui->label_detail->setText("");
     }else{
-//        text += QString() + "<p>" + ei.errorString->title + "</p>";
-        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
+        text += QString() + "<p>" + ei.errorString->title + "</p>";
+//        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
 //        text += "<br/>";
         text += QString() + "<p>" + ei.error->code + "</p>";
         text += "</body></html>";
