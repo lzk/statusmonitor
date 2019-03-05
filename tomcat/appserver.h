@@ -28,10 +28,12 @@ public slots:
 
     void cancel(int jobid);
     void timeout(int jobid);
+    void restart_server();
 private:
 //    FingerHandler* finger_handler;
     ServerThread* thread_server;
-    QThread thread;
+    QString server_path;
+//    QThread thread;
 
 //    Trans_Server trans_server;
 

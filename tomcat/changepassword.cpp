@@ -40,12 +40,21 @@ QString changePassword(const QString& password)
 
 void ChangePassword::on_lineEdit_old_textEdited(const QString &)
 {
-    if(!ui->lineEdit_old->text().compare(password)
-            && !ui->lineEdit_new->text().isEmpty()
-            && ui->lineEdit_new->text().compare(password)
-            && !ui->lineEdit_new->text().compare(ui->lineEdit_confirm->text())){
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-    }else{
+    if(ui->lineEdit_old->text().compare(password)){
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    }else if(ui->lineEdit_new->text().compare(ui->lineEdit_confirm->text())){
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    }else{
+        QRegExp regexp("^[\\x0020-\\x007e]{8,16}$");
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(-1 != regexp.indexIn(ui->lineEdit_confirm->text()));
     }
+
+//    if(!ui->lineEdit_old->text().compare(password)
+//            && !ui->lineEdit_new->text().isEmpty()
+//            && ui->lineEdit_new->text().compare(password)
+//            && !ui->lineEdit_new->text().compare(ui->lineEdit_confirm->text())){
+//        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+//    }else{
+//        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+//    }
 }

@@ -6,6 +6,7 @@
 #include <unistd.h>
 AppServer::AppServer(const char* server_path ,QObject *parent)
     : QObject(parent)
+    ,server_path(server_path)
 {
 //    trans_server.createServer(server_path);
     thread_server = new ServerThread(server_path);
@@ -17,8 +18,18 @@ AppServer::AppServer(const char* server_path ,QObject *parent)
 AppServer::~AppServer()
 {
     delete thread_server;
-    thread.quit();
-    thread.wait();
+//    thread.quit();
+//    thread.wait();
+}
+
+void AppServer::restart_server()
+{
+    delete thread_server;
+
+    thread_server = new ServerThread(server_path.toLatin1().constData());
+    connect(thread_server ,SIGNAL(client_connect(int)) ,this ,SLOT(client_connect(int)));
+    connect(thread_server ,SIGNAL(client_cmd(QString ,void*)) ,this ,SLOT(client_cmd(QString ,void*)));
+    thread_server->start();
 }
 
 static int callback_Server(void*,char* buffer,int bufsize)

@@ -14,6 +14,7 @@
 #include "clientthread.h"
 AppServer::AppServer(const char* server_path ,QObject *parent)
     : QObject(parent)
+    ,server_path(server_path)
 {
 //    trans_server.createServer(server_path);
 
@@ -31,8 +32,18 @@ AppServer::AppServer(const char* server_path ,QObject *parent)
 AppServer::~AppServer()
 {
     delete thread_server;
-    thread.quit();
-    thread.wait();
+//    thread.quit();
+//    thread.wait();
+}
+
+void AppServer::restart_server()
+{
+    delete thread_server;
+
+    thread_server = new ServerThread(server_path.toLatin1().constData());
+    connect(thread_server ,SIGNAL(client_connect(int)) ,this ,SLOT(client_connect(int)));
+    connect(thread_server ,SIGNAL(client_cmd(QString ,void*)) ,this ,SLOT(client_cmd(QString ,void*)));
+    thread_server->start();
 }
 
 static int callback_Server(void* para,char* buffer,int bufsize)
@@ -157,7 +168,7 @@ void AppServer::new_finger_dialog(int id ,const QString& s)
     CheckFingerDialog* dialog;
     foreach(FingerResult_struct fr ,finger_result_list){
         dialog = static_cast<CheckFingerDialog* >(fr.dialog);
-        if(id == dialog->get_id()){
+        if(dialog && (id == dialog->get_id())){
             LOGLOG("id:%d dialog exist!" ,id);
             return;
         }
@@ -181,7 +192,7 @@ void AppServer::delete_finger_dialog(int id)
     int index = -1;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
         dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(id == dialog->get_id()){
+        if(dialog && (id == dialog->get_id())){
             index = i;
             delete dialog;
             break;
@@ -196,8 +207,10 @@ void AppServer::cancel(int id)
     CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
         dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(id == dialog->get_id()){
+        if(dialog && (id == dialog->get_id())){
             finger_result_list[i].result = Checked_Result_Cancel;
+            delete dialog;
+            finger_result_list[i].dialog = NULL;
             break;
         }
     }
@@ -209,9 +222,11 @@ void AppServer::timeout(int id)
     CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
         dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(id == dialog->get_id()){
+        if(dialog && (id == dialog->get_id())){
             finger_result_list[i].result = Checked_Result_timeout;
-            dialog->close();
+//            dialog->close();
+            delete dialog;
+            finger_result_list[i].dialog = NULL;
             break;
         }
     }
@@ -223,7 +238,7 @@ int AppServer::get_finger_result(int id)
     CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
         dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(id == dialog->get_id()){
+        if(dialog && (id == dialog->get_id())){
             result = finger_result_list[i].result;
             break;
         }

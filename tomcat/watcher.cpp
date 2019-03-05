@@ -2,8 +2,10 @@
 #include "statusthread.h"
 #include <QMutexLocker>
 #include "tomcat.h"
-
+#include "appserver.h"
+#include "uiconfig.h"
 bool use_status_thread = true;
+extern AppServer* app_server;
 Watcher::Watcher(DeviceManager* _device_manager ,QObject *parent)
     : QThread(parent)
     ,abort(false)
@@ -15,6 +17,7 @@ Watcher::Watcher(DeviceManager* _device_manager ,QObject *parent)
     }else{
         statusThread = NULL;
     }
+    connect(this ,SIGNAL(server_restart()) ,app_server ,SLOT(restart_server()));
 }
 
 Watcher::~Watcher()
@@ -38,7 +41,8 @@ void Watcher::run()
 void Watcher::set_current_printer(const QString& printer)
 {
     current_printer = printer;
-    statusThread->set_current_printer(printer);
+    if(statusThread)
+        statusThread->set_current_printer(printer);
 }
 
 int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterInfo_struct> & ps2)
@@ -69,6 +73,13 @@ int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterIn
 
 void Watcher::timerOut()
 {
+    static int count = 0;
+    count ++;
+    if(count == 100)
+        count = 0;
+    if((count % 10 == 0) && !is_app_running(SERVER_PATH)){
+        server_restart();
+    }
     //update printer list
     getPrinters();
     Printer_struct* printer;
