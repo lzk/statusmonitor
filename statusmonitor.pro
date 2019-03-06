@@ -7,5 +7,6 @@ SUBDIRS += \
     filtertrans \
 #    statusserver \
 #    teststatusserver \
+    filterstatus
 
 #first unzip libs/cups*.zip

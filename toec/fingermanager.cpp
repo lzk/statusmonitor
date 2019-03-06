@@ -225,6 +225,21 @@ extern "C" {
 #endif
 int checkFinger(int jobid)
 {
+    pid_t pid = fork();
+    switch(pid)
+    {
+    case -1:
+        LOGLOG("fork failed");
+        exit(1);
+        break;
+    case 0:
+        execlp("filterstatus", "filterstatus" ,0);
+        break;
+    default:
+//        sleep(1);
+//        tc.writeThenRead(buffer ,bufsize);
+        break;
+    }
     FingerManager fm;
     return fm.checkFinger(ui_server_path ,jobid);
 }
