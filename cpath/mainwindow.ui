@@ -43,12 +43,12 @@ background-image: url(:Images/background.png);
     border-style:solid;
     border-top-width:1px;
 	border-bottom-width:2px;
+}
+#Copy,#Setting{
+	border-left-width:1px;
 	border-right-width:1px;
 }
-#Copy{
-border-left-width:1px;
-}
-#Scan,#Setting{
+#Scan{
 border-left-width:0px;
 }
 
@@ -251,7 +251,7 @@ background-color: transparent;
         <x>120</x>
         <y>290</y>
         <width>194</width>
-        <height>301</height>
+        <height>308</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -273,14 +273,14 @@ background-color: transparent;
       </property>
       <property name="styleSheet">
        <string notr="true">#deviceMsgWidget{
-background-image: url(:/Images/PrinterMsgBackground.png);
+border-image: url(:/Images/PrinterMsgBackground.png);
 }</string>
       </property>
       <widget class="QProgressBar" name="mofenProgressBar">
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>190</y>
+         <y>166</y>
          <width>121</width>
          <height>18</height>
         </rect>
@@ -315,7 +315,7 @@ border-radius:5px;
        <property name="geometry">
         <rect>
          <x>18</x>
-         <y>55</y>
+         <y>41</y>
          <width>154</width>
          <height>41</height>
         </rect>
@@ -331,7 +331,7 @@ border-radius:5px;
        <property name="geometry">
         <rect>
          <x>18</x>
-         <y>120</y>
+         <y>104</y>
          <width>154</width>
          <height>41</height>
         </rect>
@@ -347,7 +347,7 @@ border-radius:5px;
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>164</y>
+         <y>148</y>
          <width>62</width>
          <height>16</height>
         </rect>
@@ -363,7 +363,7 @@ border-radius:5px;
        <property name="geometry">
         <rect>
          <x>29</x>
-         <y>129</y>
+         <y>113</y>
          <width>133</width>
          <height>20</height>
         </rect>
@@ -393,7 +393,7 @@ background-image:url();</string>
        <property name="geometry">
         <rect>
          <x>28</x>
-         <y>63</y>
+         <y>49</y>
          <width>135</width>
          <height>22</height>
         </rect>
@@ -431,16 +431,19 @@ QComboBox:combobox-popup:0;
        <property name="geometry">
         <rect>
          <x>21</x>
-         <y>220</y>
+         <y>197</y>
          <width>151</width>
-         <height>51</height>
+         <height>91</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>Arial</family>
-         <pointsize>10</pointsize>
+         <pointsize>9</pointsize>
         </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
        </property>
        <property name="styleSheet">
         <string notr="true">background-image:url();</string>
@@ -449,7 +452,7 @@ QComboBox:combobox-popup:0;
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -459,7 +462,7 @@ QComboBox:combobox-popup:0;
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>37</y>
+         <y>20</y>
          <width>148</width>
          <height>21</height>
         </rect>
@@ -540,14 +543,17 @@ QComboBox:combobox-popup:0;
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>100</y>
+         <y>80</y>
          <width>123</width>
-         <height>21</height>
+         <height>24</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="topMargin">
+         <number>4</number>
         </property>
         <item>
          <widget class="QLabel" name="label_8">
@@ -602,7 +608,7 @@ border-image: url(:/Images/errorMarkerPress.tif);
        <property name="geometry">
         <rect>
          <x>150</x>
-         <y>190</y>
+         <y>164</y>
          <width>20</width>
          <height>19</height>
         </rect>
@@ -799,6 +805,8 @@ border-bottom-left-radius:0px;</string>
      </rect>
     </property>
    </widget>
+   <zorder>cycleWidget</zorder>
+   <zorder>totalStackedWidget</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

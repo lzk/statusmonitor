@@ -1537,4 +1537,9 @@
 <source>ResStr_Credentials_Duplex_Copy_Mode</source>
 <target>身份证复印模式</target>
 </phrase>
+    <phrase>
+<source>ResStr_Copyright</source>
+<target>版权所有(C)(2019)&#x000D;&#x000A;联想图像(天津)科技有限公司。&#x000D;&#x000A;保留所有权利。</target>
+</phrase>
+
 </QPH>

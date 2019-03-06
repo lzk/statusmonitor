@@ -19,7 +19,7 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     this->setWindowFlags(Qt::Dialog);
     label = new QLabel(this);
     label->setContentsMargins(0,0,0,0);
-    label->setGeometry(30, 30, 531, 521);
+    label->setGeometry(12, 10, 371, 391);
     label->setAlignment(Qt::AlignCenter);
     QFont font;
     font.setPointSize(30);
@@ -103,6 +103,7 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     if(fquantity > 0)
     {
         movie = new QMovie(files.at(0).filePath());
+        movie->setScaledSize(label->size());
         label->setMovie(movie);
         movie->setPaused(false);
         movie->start();
@@ -176,6 +177,7 @@ void AnimationDlg::on_bt_next_clicked()
         index++;
         movie->stop();
         movie->setFileName(files.at(index).filePath());
+        movie->setScaledSize(label->size());
         label->setMovie(movie);
         label->update();
         movie->start();
@@ -186,6 +188,7 @@ void AnimationDlg::on_bt_next_clicked()
         index = 0;
         movie->stop();
         movie->setFileName(files.at(index).filePath());
+        movie->setScaledSize(label->size());
         label->setMovie(movie);
         label->update();
         movie->start();
@@ -215,6 +218,7 @@ void AnimationDlg::on_bt_back_clicked()
         index--;
         movie->stop();
         movie->setFileName(files.at(index).filePath());
+        movie->setScaledSize(label->size());
         label->setMovie(movie);
         label->update();
         movie->start();

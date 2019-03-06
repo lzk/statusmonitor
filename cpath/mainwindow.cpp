@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #ifndef DEBUG
     gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
     isOfflineStart = true;
+    isShowMaintain = true;
     enabledScanCopy = true;
     enableTroubleshootingPage(true);
     isStartCopy = false;
@@ -335,7 +336,8 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
             updateStatus(data);
         }else{//get status fail
             LOGLOG("get printer status fail!");
-            updateStatusPanel(UIConfig::Status_Offline);
+            updateStatusPanel(UIConfig::Status_Offline,UIConfig::Offline);
+            ui->label_10->setText("");
         }
 #endif
     }
@@ -511,7 +513,8 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
         ui->tabStackedWidget->setDefault_Copy(true);
         ui->tabStackedWidget->setDefault_Scan();
 
-        updateStatusPanel(UIConfig::Status_Offline);
+        updateStatusPanel(UIConfig::Status_Offline,UIConfig::Offline);
+        ui->label_10->setText("");
         current_printer = printers.at(index);
         setcurrentPrinter(printers.at(index));
 #endif
@@ -755,12 +758,20 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
 
     ui->label_10->setText(errMsg);
     set_Message_Background_Color((UIConfig::EnumStatus)status.PrinterStatus);
-    updateStatusPanel(displayStatus);
+    updateStatusPanel(displayStatus,status.PrinterStatus);
 }
 
-void MainWindow::updateStatusPanel(int status)
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    switch (status) {
+    if(obj == ui->label_10 && event->type() == QEvent::MouseButtonRelease){
+        QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
+    }
+    return QWidget::eventFilter(obj,event);
+}
+
+void MainWindow::updateStatusPanel(int displayStatus,int status)
+{
+    switch (displayStatus) {
     case UIConfig::Status_Ready:
         qDebug()<<"Status_Ready";
         ui->label_6->setText(tr("ResStr_Ready"));
@@ -770,6 +781,7 @@ void MainWindow::updateStatusPanel(int status)
                                     "background-color: rgb(53, 177, 20);}");
         enableAllFunction(true);
         ui->errorBtn->hide();
+        ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
 
         if(isOfflineStart)
@@ -792,6 +804,7 @@ void MainWindow::updateStatusPanel(int status)
                                     "background-color: rgb(53, 177, 20);}");
         enableAllFunction(true);
         ui->errorBtn->hide();
+        ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
         if(isOfflineStart)
         {
@@ -808,6 +821,7 @@ void MainWindow::updateStatusPanel(int status)
                                     "background-color: rgb(110, 110, 110);}");
         enableAllFunction(false);
         ui->errorBtn->hide();
+        ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
         ui->mofenProgressBar->setValue(0);
         updateTonerCarStatus(-1);
@@ -820,6 +834,7 @@ void MainWindow::updateStatusPanel(int status)
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
         ui->errorBtn->hide();
+        ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
         if(isOfflineStart)
         {
@@ -835,12 +850,40 @@ void MainWindow::updateStatusPanel(int status)
                                     "border-radius:5px;"
                                     "background-color: red;}");
         enableAllFunction(true);
-        ui->errorBtn->show();
+
+        if(status >= UIConfig::PolygomotorOnTimeoutError && status <= UIConfig::CTL_PRREQ_NSignalNoCome
+                || status == UIConfig::ScanMotorError
+                || status == UIConfig::SCAN_DRV_CALIB_FAIL
+                || status == UIConfig::ScanDriverCalibrationFail
+                || status == UIConfig::NetWirelessDongleCfgFail)
+        {
+            ui->label_10->installEventFilter(this);
+            ui->errorBtn->hide();
+        }
+        else
+        {
+            ui->label_10->removeEventFilter(this);
+            ui->errorBtn->show();
+        }
+
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Red.png);");
         if(isOfflineStart)
         {
             isOfflineStart = false;
             enableTroubleshootingPage(false);
+        }
+
+        if(isShowMaintain)
+        {
+            isShowMaintain = false;
+            if(status >= UIConfig::PolygomotorOnTimeoutError && status <= UIConfig::CTL_PRREQ_NSignalNoCome
+                    || status == UIConfig::ScanMotorError
+                    || status == UIConfig::SCAN_DRV_CALIB_FAIL
+                    || status == UIConfig::ScanDriverCalibrationFail
+                    || status == UIConfig::NetWirelessDongleCfgFail)
+            {
+                QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
+            }
         }
         break;
     default:

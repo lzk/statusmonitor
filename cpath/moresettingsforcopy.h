@@ -71,7 +71,6 @@ public:
 private:
     Ui::MoreSettingsForCopy *ui;
 
-    int scaling;
     bool _idCardFlag;
     bool _duplexCopyFlag;
     bool _isDuplexCopyDevice;
@@ -114,7 +113,7 @@ private slots:
     void on_btNInOne_clicked(bool checked);
 //    void on_btText_toggled(bool checked);
 //    void on_btPicture_toggled(bool checked);
-//    void on_docSizeList_currentIndexChanged(int index);
+    void on_docSizeList_currentIndexChanged(int index);
     void on_dpiList_currentIndexChanged(int index);
     void on_outPutSizeList_currentIndexChanged(int index);
 //    void on_paperTypeList_currentIndexChanged(int index);
@@ -123,6 +122,7 @@ private slots:
     void on_btAdd_pressed();
     void on_btAdd_released();
     void on_scaling_textEdited(const QString &arg1);
+    int getScalingValue(int outputSize, int inputSize);
 
     void enableIDCardCopyMode(bool checked);
     void selectIDCardCopyMode(int mode);

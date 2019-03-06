@@ -676,6 +676,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
             aDialog->setAttribute(Qt::WA_DeleteOnClose);
             if (aDialog->exec() == QDialog::Rejected)
             {
+                qDebug()<<"Rejected";
                 return;
             }
             if(enNextShow == false)

@@ -9,24 +9,16 @@
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../membercenter/about.ui" line="69"/>
-        <source>Copyright (C) (2019)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../membercenter/about.ui" line="82"/>
-        <source>Lenovo Image(Tianjin) Technology Co. LTD.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../membercenter/about.ui" line="95"/>
-        <source>All Rights Reserved.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../membercenter/about.cpp" line="9"/>
         <source>ResStr_Lenovo_Printer</source>
         <translation>Neo Printing</translation>
+    </message>
+    <message>
+        <location filename="../membercenter/about.ui" line="69"/>
+        <source>ResStr_Copyright</source>
+        <translation>Copyright(C)(2019)
+Lenovo Image(Tianjin)Technology Co., LTD.
+All rights reserved.</translation>
     </message>
 </context>
 <context>
@@ -57,7 +49,7 @@
         <translation>Paper Jam</translation>
     </message>
     <message>
-        <location filename="../animationdlg.cpp" line="119"/>
+        <location filename="../animationdlg.cpp" line="120"/>
         <source>Did not find the video!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -82,7 +74,7 @@
         <translation>If the operation is not performed within 1 minute, the task will be automatically canceled.</translation>
     </message>
     <message>
-        <location filename="../animationdlg.ui" line="223"/>
+        <location filename="../animationdlg.ui" line="226"/>
         <source>ResStr_OK</source>
         <translation>OK</translation>
     </message>
@@ -217,64 +209,64 @@
         <translation>Toner</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="483"/>
+        <location filename="../mainwindow.ui" line="486"/>
         <source>ResStr_Model</source>
         <translation>Model</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="564"/>
+        <location filename="../mainwindow.ui" line="570"/>
         <source>ResStr_Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="691"/>
+        <location filename="../mainwindow.ui" line="697"/>
         <source>ResStr_ExtraAdd_Copy</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="736"/>
+        <location filename="../mainwindow.ui" line="742"/>
         <source>ResStr_ExtraAdd_Scan</source>
         <translation>Scan</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="765"/>
+        <location filename="../mainwindow.ui" line="771"/>
         <source>ResStr_Setting</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="175"/>
+        <location filename="../mainwindow.cpp" line="176"/>
         <source>ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_</source>
         <translation>The scanned images will be deleted after the application is closed. Close application?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="61"/>
-        <location filename="../mainwindow.cpp" line="755"/>
+        <location filename="../mainwindow.cpp" line="62"/>
+        <location filename="../mainwindow.cpp" line="777"/>
         <source>ResStr_Ready</source>
         <translation>Ready</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="122"/>
+        <location filename="../mainwindow.cpp" line="123"/>
         <source>ResStr_Exit</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="777"/>
+        <location filename="../mainwindow.cpp" line="800"/>
         <source>ResStr_Sleep</source>
         <translation>Sleep</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="386"/>
-        <location filename="../mainwindow.cpp" line="793"/>
+        <location filename="../mainwindow.cpp" line="817"/>
         <source>ResStr_Offline</source>
         <translation>Offline</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="806"/>
+        <location filename="../mainwindow.cpp" line="831"/>
         <source>ResStr_Busy</source>
         <translation>Busy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="821"/>
+        <location filename="../mainwindow.cpp" line="847"/>
         <source>ResStr_Error</source>
         <translation>Error</translation>
     </message>
@@ -1244,7 +1236,8 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="185"/>
-        <location filename="../tabstackedwidget.cpp" line="33"/>
+        <location filename="../tabstackedwidget.cpp" line="35"/>
+        <location filename="../tabstackedwidget.cpp" line="180"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1268,7 +1261,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="503"/>
-        <location filename="../tabstackedwidget.cpp" line="364"/>
+        <location filename="../tabstackedwidget.cpp" line="385"/>
         <source>ResStr_ID_Card_Copy</source>
         <translation>ID Card Copy</translation>
     </message>
@@ -1279,9 +1272,9 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="118"/>
-        <location filename="../tabstackedwidget.cpp" line="374"/>
-        <location filename="../tabstackedwidget.cpp" line="394"/>
-        <location filename="../tabstackedwidget.cpp" line="759"/>
+        <location filename="../tabstackedwidget.cpp" line="395"/>
+        <location filename="../tabstackedwidget.cpp" line="415"/>
+        <location filename="../tabstackedwidget.cpp" line="771"/>
         <source>ResStr_ExtraAdd_Copy</source>
         <translation>Copy</translation>
     </message>
@@ -1292,7 +1285,7 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="567"/>
-        <location filename="../tabstackedwidget.cpp" line="388"/>
+        <location filename="../tabstackedwidget.cpp" line="409"/>
         <source>ResStr_Duplex_Copy</source>
         <translation>Duplex Copy</translation>
     </message>
@@ -1323,8 +1316,8 @@
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="896"/>
-        <location filename="../tabstackedwidget.cpp" line="64"/>
-        <location filename="../tabstackedwidget.cpp" line="447"/>
+        <location filename="../tabstackedwidget.cpp" line="60"/>
+        <location filename="../tabstackedwidget.cpp" line="458"/>
         <source>ResStr_Scanned_image_size</source>
         <translation>Scanned image size: </translation>
     </message>
@@ -1369,62 +1362,63 @@
         <translation>TCP/IPv6</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="834"/>
-        <source>TIF(*.tif);;PDF(*pdf);;JPG(*jpg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tabstackedwidget.cpp" line="837"/>
-        <source>TIF(*.tif);;PDF(*pdf)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tabstackedwidget.cpp" line="850"/>
+        <location filename="../tabstackedwidget.cpp" line="870"/>
         <source>PDF(*pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="865"/>
-        <source>TIF(*.tif)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tabstackedwidget.cpp" line="909"/>
-        <location filename="../tabstackedwidget.cpp" line="918"/>
+        <location filename="../tabstackedwidget.cpp" line="996"/>
+        <location filename="../tabstackedwidget.cpp" line="1005"/>
         <source>ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_</source>
         <translation>The valid range is 1 to 99, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="89"/>
-        <location filename="../tabstackedwidget.cpp" line="98"/>
-        <location filename="../tabstackedwidget.cpp" line="910"/>
-        <location filename="../tabstackedwidget.cpp" line="919"/>
+        <location filename="../tabstackedwidget.cpp" line="85"/>
+        <location filename="../tabstackedwidget.cpp" line="94"/>
+        <location filename="../tabstackedwidget.cpp" line="997"/>
+        <location filename="../tabstackedwidget.cpp" line="1006"/>
         <source>ResStr_Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="88"/>
+        <location filename="../tabstackedwidget.cpp" line="84"/>
         <source>ResStr_The_machine_is_busy__please_try_later_</source>
         <translation>The machine is busy, please try again later.</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="97"/>
+        <location filename="../tabstackedwidget.cpp" line="93"/>
         <source>ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_</source>
         <translation>A malfunction occurred. The operation cannot be completed.</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="85"/>
+        <location filename="../tabstackedwidget.cpp" line="81"/>
         <source>ResStr_Copy_Fail</source>
         <translation>Copy failed</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="415"/>
+        <location filename="../tabstackedwidget.cpp" line="427"/>
+        <location filename="../tabstackedwidget.cpp" line="846"/>
         <source>ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_</source>
         <translation>There is insufficient memory or disk space to complete the operation. Please free up some memory or disk space, then try again.</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="845"/>
+        <location filename="../tabstackedwidget.cpp" line="854"/>
+        <source>TIF(*.tiff);;PDF(*pdf);;JPG(*jpg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="857"/>
+        <source>TIF(*.tiff);;PDF(*pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="865"/>
         <source>Save File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="885"/>
+        <source>TIF(*.tiff)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

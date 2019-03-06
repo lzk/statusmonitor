@@ -27,8 +27,10 @@ Watcher::~Watcher()
 void Watcher::run()
 {
     forever{
-        if (abort)
+        if (abort){
+            usleep(100*1000);
             return;
+        }
         timerOut();
         usleep(100*1000);
     }

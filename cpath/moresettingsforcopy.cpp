@@ -12,7 +12,6 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     ui(new Ui::MoreSettingsForCopy)
 {
     timer = new QTimer(this);
-    scaling = 0;
     _idCardFlag = idCardFlag;
     _duplexCopyFlag = duplexCopyFlag;
     _isDuplexCopyDevice = isDuplexCopyDevice;
@@ -100,7 +99,17 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     {
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
+        ParamForCopy->outputSize = OutPutSize_Copy_A4;
+        if(ParamForCopy->docSize == DocSize_Copy_Executive)
+        {
+            ParamForCopy->docSize = DocSize_Copy_A4;
+        }
+        ParamForCopy->scaling = getScalingValue(ParamForCopy->outputSize,ParamForCopy->docSize);
 
+        if(ParamForCopy->paperType > MediaType_Copy_Recycled)
+        {
+            ParamForCopy->paperType = MediaType_Copy_Plain;
+        }
     }
     showParam(ParamForCopy);
 
@@ -246,7 +255,6 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 
     }else if (_duplexCopyFlag)
     {
-        ui->scaling->setText(text.setNum(param->scaling));
 
         if(param->docType == DocType_Copy_Photo)
         {
@@ -316,11 +324,11 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 //        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
+
+        ui->scaling->setText(text.setNum(param->scaling));
     }
     else
     {
-        ui->scaling->setText(text.setNum(param->scaling));
-
         if(param->docType == DocType_Copy_Photo)
         {
             ui->btPicture->setChecked(true);
@@ -362,6 +370,8 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 //        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
+
+        ui->scaling->setText(text.setNum(param->scaling));
     }
 }
 
@@ -918,22 +928,19 @@ void MoreSettingsForCopy::on_btNInOne_clicked(bool checked)
 //    }
 //}
 
-//void MoreSettingsForCopy::on_docSizeList_currentIndexChanged(int index)
-//{
-//    ParamForCopy->docSize = DocSize_Copy(index);
-//}
+void MoreSettingsForCopy::on_docSizeList_currentIndexChanged(int index)
+{
+    int scaling = getScalingValue(ui->outPutSizeList->currentIndex(),index);
+    QString text;
+    ui->scaling->setText(text.setNum(scaling));
+}
 
 void MoreSettingsForCopy::on_dpiList_currentIndexChanged(int index)
 {
     if(_idCardFlag)
     {
-//         ParamForCopy->docDpi = DocDpi_Copy_DPI300;
          ui->dpiList->setCurrentIndex(1);
-    }else
-    {
-        ParamForCopy->docDpi = DocDpi_Copy(index);
     }
-
 }
 
 void MoreSettingsForCopy::on_outPutSizeList_currentIndexChanged(int index)
@@ -970,7 +977,27 @@ void MoreSettingsForCopy::on_outPutSizeList_currentIndexChanged(int index)
             }
         }
     }
-//    ParamForCopy->outputSize = OutPutSize_Copy(index);
+    int scaling = getScalingValue(index,ui->docSizeList->currentIndex());
+    QString text;
+    ui->scaling->setText(text.setNum(scaling));
+}
+
+int MoreSettingsForCopy::getScalingValue(int outputSize, int inputSize)
+{
+    qDebug()<<outputSize<<" "<<inputSize;
+    int calculateScaling[8][5] =
+    {
+    {94, 134, 109, 100, 105},
+    {100, 143, 116, 97, 112},
+    {69, 100, 80, 67,78},
+    {48, 69, 56, 47, 54},
+    {86, 123, 100, 84, 96},
+    {59, 86, 69, 58, 67},
+    {87, 126, 101, 85, 100},
+    {87, 125, 101, 85, 97},
+    };
+
+    return calculateScaling[outputSize][inputSize];
 }
 
 //void MoreSettingsForCopy::on_paperTypeList_currentIndexChanged(int index)

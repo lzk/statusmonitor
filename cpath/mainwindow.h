@@ -31,6 +31,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *e);
     bool isPress;
     void closeEvent(QCloseEvent *e);
+    bool eventFilter(QObject *, QEvent *);
 
 private slots:
     void on_Copy_clicked();
@@ -68,7 +69,7 @@ private slots:
 
     void enableTroubleshootingPage(bool enabled);
     void onStatusCh(PrinterStatus_struct& status);
-    void updateStatusPanel(int);
+    void updateStatusPanel(int,int);
 
     void updateTonerCarStatus(int toner);
     void enableAllFunction(bool enabled);
@@ -106,6 +107,7 @@ private:
     bool enabledWiFi;
 
     bool isOfflineStart;
+    bool isShowMaintain;
 
     bool isStartCopy;
 
