@@ -651,7 +651,7 @@ void WlanTitleCell::on_btConnect_clicked()
     if(len < defLen && defLen == 5)
     {
         SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_2"));
-        warming->setWindowTitle("ResStr_Warning");
+        warming->setWindowTitle(tr("ResStr_Warning"));
         warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         warming->exec();
@@ -659,7 +659,7 @@ void WlanTitleCell::on_btConnect_clicked()
     else if(len < defLen && defLen == 8)
     {
         SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_3"));
-        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();

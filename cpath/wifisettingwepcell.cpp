@@ -179,7 +179,7 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
     if(len < 5)
     {
         SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_2"));
-        warming->setWindowTitle("ResStr_Warning");
+        warming->setWindowTitle(tr("ResStr_Warning"));
         warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint );
         warming->exec();
     }

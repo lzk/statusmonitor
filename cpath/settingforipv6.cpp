@@ -110,7 +110,7 @@ void SettingForIPv6::on_btApply_clicked()
         {
             ui->lineEdit_address->setFocus();
             SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_entered_IP_address__is_wrong__please_confirm_and_enter_again_"));
-            msgWarm->setWindowTitle("ResStr_Warning");
+            msgWarm->setWindowTitle(tr("ResStr_Warning"));
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
             msgWarm->exec();
@@ -122,7 +122,7 @@ void SettingForIPv6::on_btApply_clicked()
         {
             ui->lineEdit_GateAddress->setFocus();
             SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_entered_Gateway_is_wrong__please_confirm_and_enter_again_"));
-            msgWarm->setWindowTitle("ResStr_Warning");
+            msgWarm->setWindowTitle(tr("ResStr_Warning"));
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
             msgWarm->exec();
@@ -133,7 +133,7 @@ void SettingForIPv6::on_btApply_clicked()
         {
             ui->lineEdit_SubMask->setFocus();
             SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_subnet_mask_input_error__please_input_again_after_confirmation"));
-            msgWarm->setWindowTitle("ResStr_Warning");
+            msgWarm->setWindowTitle(tr("ResStr_Warning"));
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
             msgWarm->exec();

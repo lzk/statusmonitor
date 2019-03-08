@@ -78,6 +78,8 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
     {
     case UIConfig::LS_CMD_COPY:
     {
+        qDebug()<<result;
+        gUInterface->emitEnableCycleAnimation(false);
         if(result != 0)
         {
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Copy_Fail"),result);
@@ -93,6 +95,15 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             else if (result == LShell::ERR_Printer_error)
             {
                 SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
+                errorWarning->setWindowTitle(tr("ResStr_Error"));
+
+                errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                errorWarning->exec();
+            }
+            else
+            {
+                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_can_not_be_carried_out_due_to_software_has_error__please_try__again_after_reinstall_the_Driver_and_Virtual_Operation_Panel_"));
                 errorWarning->setWindowTitle(tr("ResStr_Error"));
 
                 errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -116,10 +127,38 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             QSize size = QSize(scanSettings.calc_data.target.pixels_per_line,scanSettings.calc_data.target.total_lines);
             ui->scrollArea_ScanImage->add_image_item(image_path ,size);
         }
-//        else if(result == STATUS_Cancel)
-//        {
-            //scan cancel
-//        }
+        else if(result != 0)
+        {
+            gUInterface->setDeviceMsgFrmUI(tr("ResStr_Scan_Fail"),result);
+            if(result == LShell::ERR_Printer_busy)
+            {
+                SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_The_machine_is_busy__please_try_later_"),2);
+                busyWarning->setWindowTitle(tr("ResStr_Error"));
+
+                busyWarning->setWindowFlags(busyWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                busyWarning->exec();
+            }
+            else if (result == LShell::ERR_Printer_error)
+            {
+                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
+                errorWarning->setWindowTitle(tr("ResStr_Error"));
+
+                errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                errorWarning->exec();
+            }
+            else
+            {
+                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_can_not_be_carried_out_due_to_software_has_error__please_try__again_after_reinstall_the_Driver_and_Virtual_Operation_Panel_"));
+                errorWarning->setWindowTitle(tr("ResStr_Error"));
+
+                errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                errorWarning->exec();
+            }
+        }
+
         gUInterface->emitStopScanSignal();
         ui->scrollArea_ScanImage->setEnabled(true);
         if(ui->scrollArea_ScanImage->selectedItems().isEmpty()){
@@ -427,7 +466,7 @@ void TabStackedWidget::on_btn_Scan_clicked()
 //    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
     if(is_disk_no_space("/tmp" ,500000)){
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
-        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();
@@ -760,6 +799,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
     QVariant data;
     data.setValue<copycmdset>(copyPara);
     gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_COPY,data);
+    gUInterface->emitEnableCycleAnimation(true);
 }
 
 void TabStackedWidget::recoverCopyMode()
@@ -846,7 +886,7 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
 {
     if(is_disk_no_space("/tmp" ,500000)){
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
-        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                 & ~Qt::WindowMinimizeButtonHint);
         msgWarm->exec();

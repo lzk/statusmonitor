@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string/>
+   <string>ResStr_Print_Preview</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QPushButton{

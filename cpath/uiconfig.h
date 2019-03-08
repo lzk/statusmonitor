@@ -198,7 +198,7 @@ public:
         LS_CMD_PRN_FusingScReset,
         LS_CMD_PRN_TonerReset,
         LS_CMD_PRN_DrumReset,
-        LS_CMD_PRN_Get_UserCenterInfo,
+        LS_CMD_PRN_Get_UserCenterInfo
     };
     Q_ENUMS(CmdType)
 };

@@ -153,8 +153,10 @@ mac{
     unix{
         contains(QT_ARCH, i386) {
             LIBS += $${PWD}/../libs/linux32/libtiff.a
+            LIBS += $${PWD}/../libs/linux32/libjpeg.a
         }else{
             LIBS += $${PWD}/../libs/linux64/libtiff.a
+            LIBS += $${PWD}/../libs/linux64/libjpeg.a
         }
     }
 }

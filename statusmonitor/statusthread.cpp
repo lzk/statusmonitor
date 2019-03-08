@@ -104,6 +104,6 @@ void StatusThread::set_current_printer(const QString& printer)
 
 bool StatusThread::is_locked_get_status()
 {
-    QMutexLocker locker(&mutex);
+//    QMutexLocker locker(&mutex);
     return locker_get_status;
 }

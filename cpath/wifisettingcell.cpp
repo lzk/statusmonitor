@@ -135,7 +135,7 @@ void WiFiSettingCell::on_btConnect_clicked()
     if(len<8 && apInfo.encryType != NO_Securty)
     {
         SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_3"));
-        msgWarm->setWindowTitle("ResStr_Warning");
+        msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();
     }

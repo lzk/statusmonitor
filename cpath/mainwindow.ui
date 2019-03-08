@@ -805,8 +805,6 @@ border-bottom-left-radius:0px;</string>
      </rect>
     </property>
    </widget>
-   <zorder>cycleWidget</zorder>
-   <zorder>totalStackedWidget</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

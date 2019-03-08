@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>220</width>
-    <height>71</height>
+    <height>72</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -126,14 +126,9 @@ QLabel{
      <rect>
       <x>7</x>
       <y>47</y>
-      <width>111</width>
+      <width>181</width>
       <height>16</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
     </property>
     <property name="text">
      <string>ResStr_WLAN_Network</string>

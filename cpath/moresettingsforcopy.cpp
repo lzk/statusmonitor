@@ -282,17 +282,17 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 
         ui->isNinOne->setEnabled(false);
 
-        //设置documentSizeList的出了letter,a4,a5,b5其他都不可用
-        QStandardItemModel *model0 = qobject_cast<QStandardItemModel *>(ui->docSizeList->model());
-        for(int i=0; i<8; i++)
-        {
-            if((i == 4) && (model0 != NULL))
-            {
-                model0->item(i)->setEnabled(false);
-               //此处设置combobox的下拉选项字体显示灰色
-               // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
-            }
-        }
+//        //设置documentSizeList的出了letter,a4,a5,b5其他都不可用
+//        QStandardItemModel *model0 = qobject_cast<QStandardItemModel *>(ui->docSizeList->model());
+//        for(int i=0; i<8; i++)
+//        {
+//            if((i == 4) && (model0 != NULL))
+//            {
+//                model0->item(i)->setEnabled(false);
+//               //此处设置combobox的下拉选项字体显示灰色
+//               // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
+//            }
+//        }
 
         //设置outPutSizeList的出了a4其他都不可用
         QStandardItemModel *model1 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
