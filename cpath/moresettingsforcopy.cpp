@@ -15,6 +15,7 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     _idCardFlag = idCardFlag;
     _duplexCopyFlag = duplexCopyFlag;
     _isDuplexCopyDevice = isDuplexCopyDevice;
+    _multiMode = TwoInOne;
 
     ParamForCopy = pParam;
 
@@ -100,10 +101,10 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
         ParamForCopy->outputSize = OutPutSize_Copy_A4;
-        if(ParamForCopy->docSize == DocSize_Copy_Executive)
-        {
-            ParamForCopy->docSize = DocSize_Copy_A4;
-        }
+//        if(ParamForCopy->docSize == DocSize_Copy_Executive)
+//        {
+//            ParamForCopy->docSize = DocSize_Copy_A4;
+//        }
         ParamForCopy->scaling = getScalingValue(ParamForCopy->outputSize,ParamForCopy->docSize);
 
         if(ParamForCopy->paperType > MediaType_Copy_Recycled)
@@ -743,9 +744,11 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
             ui->label_1->setDisabled(true);
             ui->label->setDisabled(true);
 
+            qDebug()<<"_multiMode"<<_multiMode;
             if(!_multiMode)
             {
                 _multiMode = TwoInOne;
+                qDebug()<<_multiMode;
             }
            switch (_multiMode)
            {

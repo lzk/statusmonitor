@@ -714,6 +714,8 @@ void TabStackedWidget::on_btn_Copy_clicked()
 //            QString videoTypeStr = "01_JAM";
 //            QString languageStr = "SimplifiedChinese";
             AnimationDlg *aDialog = new AnimationDlg(this, 1, &enNextShow);
+            aDialog->setMaximumSize(400,650);
+            aDialog->setMinimumSize(400,650);
             aDialog->setAttribute(Qt::WA_DeleteOnClose);
             if (aDialog->exec() == QDialog::Rejected)
             {
@@ -741,6 +743,8 @@ void TabStackedWidget::on_btn_Copy_clicked()
 //            QString videoTypeStr = "06_Nin1Copy";
 //            QString languageStr = "SimplifiedChinese";
             AnimationDlg *aDialog = new AnimationDlg(this, 2, &enNextShow);
+            aDialog->setMaximumSize(400,650);
+            aDialog->setMinimumSize(400,650);
             aDialog->setAttribute(Qt::WA_DeleteOnClose);
             if (aDialog->exec() == QDialog::Rejected)
             {

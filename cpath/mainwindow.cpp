@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     enabledScanCopy = true;
     enableTroubleshootingPage(true);
     isStartCopy = false;
+    deviceStatus = 0;
 
 #else
     qDebug()<<"Status_Ready";
@@ -858,12 +859,19 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
                 || status == UIConfig::NetWirelessDongleCfgFail)
         {
             ui->label_10->installEventFilter(this);
-            ui->errorBtn->hide();
         }
         else
         {
             ui->label_10->removeEventFilter(this);
+        }
+
+        if(status >= UIConfig::InitializeJam && status <= UIConfig::JamAtExitStayOn)
+        {
             ui->errorBtn->show();
+            deviceStatus = status;
+        }else
+        {
+            ui->errorBtn->hide();
         }
 
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Red.png);");
@@ -962,7 +970,9 @@ void MainWindow::stopScan()
 void MainWindow::on_errorBtn_clicked()
 {
     bool enNextShow = false;
-    AnimationDlg *aDialog = new AnimationDlg(this, 0xBD, &enNextShow);
+    AnimationDlg *aDialog = new AnimationDlg(this, deviceStatus, &enNextShow);
+    aDialog->setMaximumSize(450,550);
+    aDialog->setMinimumSize(450,550);
     connect(this,SIGNAL(signalCloseAnimationDlg()),aDialog,SLOT(close()));
     aDialog->setAttribute(Qt::WA_DeleteOnClose);
     if (aDialog->exec() == QDialog::Rejected)

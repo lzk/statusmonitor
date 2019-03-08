@@ -15,11 +15,9 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     ui->setupUi(this);
     connect(ui->btOK,SIGNAL(clicked()),this,SLOT(accept()));
     connect(ui->btCancel,SIGNAL(clicked()),this,SLOT(reject()));
-    this->resize(QSize(531,521));
     this->setWindowFlags(Qt::Dialog);
     label = new QLabel(this);
     label->setContentsMargins(0,0,0,0);
-    label->setGeometry(12, 10, 371, 391);
     label->setAlignment(Qt::AlignCenter);
     QFont font;
     font.setPointSize(30);
@@ -68,26 +66,36 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     case 1:
         flag = _IDCardScan;
         this->setWindowTitle(tr("ResStr_ID_Card_Copy"));
+        label->setGeometry(12, 10, 371, 391);
+        ui->bt_pause_play->setGeometry(QRect(170, 514, 44, 44));
         break;
     case 2:
         flag = _Nin1Copy;
         this->setWindowTitle(tr("ResStr_N_in_1_Copy"));
+        label->setGeometry(12, 10, 371, 391);
+        ui->bt_pause_play->setGeometry(QRect(170, 514, 44, 44));
         break;
     case 0xBD:
         flag = _NofeedJam;
         this->setWindowTitle(tr("ResStr_Out_of_Paper"));
+        label->setGeometry(12, 10, 421, 480);
+        ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
         hideLabel();
         break;
     case 0xBC:          //PSTATUS_InitializeJam
     case 0xBE:          //PSTATUS_JamAtRegistStayOn
         flag = _JamInSide;
         this->setWindowTitle(tr("ResStr_Jam_front"));
+        label->setGeometry(12, 10, 421, 480);
+        ui->bt_pause_play->setGeometry(QRect(20, 490, 44, 44));
         hideLabel();
         break;
     case 0xBF:          //PSTATUS_JamAtExitNotReach
     case 0xC0:          //PSTATUS_JamAtExitStayOn
         flag = _JamAtExit;
         this->setWindowTitle(tr("ResStr_Jam_back"));
+        label->setGeometry(12, 10, 421, 480);
+        ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
         hideLabel();
         break;
     default:
@@ -141,13 +149,11 @@ void AnimationDlg::getFinished()
 
 void AnimationDlg::hideLabel()
 {
-    this->resize(QSize(640, 740));
     ui->label_msg1->hide();
     ui->label_msg2->hide();
     ui->btOK->hide();
     ui->btCancel->hide();
     ui->radioButton->hide();
-    ui->bt_pause_play->setGeometry(QRect(300, 680, 40, 40));
 }
 
 void AnimationDlg::on_bt_pause_play_clicked()

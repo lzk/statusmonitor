@@ -111,6 +111,8 @@ private:
 
     bool isStartCopy;
 
+    int deviceStatus;
+
 signals:
     void signalCloseAnimationDlg();
 };
