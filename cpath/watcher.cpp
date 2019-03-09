@@ -3,10 +3,10 @@
 #include <QMutexLocker>
 
 bool use_status_thread = true;
-Watcher::Watcher(DeviceManager* _device_manager ,QObject *parent)
+Watcher::Watcher(QObject *parent)
     : QThread(parent)
     ,abort(false)
-    ,device_manager(_device_manager)
+    ,device_manager(new DeviceManager)
 {
     if(use_status_thread){
         statusThread = new StatusThread();
@@ -20,6 +20,7 @@ Watcher::~Watcher()
 {
     if(statusThread)
         delete statusThread;
+    delete device_manager;
     abort = true;
     wait();
 }

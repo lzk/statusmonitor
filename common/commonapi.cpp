@@ -83,7 +83,7 @@ QString get_string_from_shell_cmd(const QString& cmd ,int mode)
 //    _cmd += tmp_file;
 //    _cmd += " 2>>";
 //    _cmd += log_file;
-    if(!system(_cmd.toLatin1())){
+    if(!system(_cmd.toLatin1().constData())){
         QFile fl(tmp_file);
         if(fl.open(QFile::ReadOnly)){
             QTextStream in(&fl);

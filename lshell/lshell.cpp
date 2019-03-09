@@ -184,7 +184,7 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
             }
         }else{//set
             if(cmd == _LS_WIFICMD  && sub_cmd == 0xff)
-                err = ERR_WIFI_SET_SSID;
+                err = 0;//ERR_WIFI_SET_SSID;
             else
                 err = ppkg->subcmd;
         }
@@ -227,6 +227,7 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
 
 int LShell::copy(copycmdset* para)
 {
+//    LOGLOG("lshell cmd: copy set");
     int err;
     err = lshell_copy(para ,sizeof(*para));
     return err;
@@ -234,6 +235,7 @@ int LShell::copy(copycmdset* para)
 
 int LShell::copy_get_para(copycmdset* para)
 {
+//    LOGLOG("lshell cmd: copy get");
     int err;
     err = lshell_getCopy(para ,sizeof(*para));
     return err;
@@ -241,13 +243,15 @@ int LShell::copy_get_para(copycmdset* para)
 
 int LShell::wifi_apply(cmdst_wifi_get* para)
 {
+//    LOGLOG("lshell cmd: wifi apply");
     int err;
-    err = lshell_setWifiInfo_noread(para ,sizeof(*para));
+    err = lshell_setWifiInfo(para ,sizeof(*para));
     return err;
 }
 
 int LShell::wifi_get_para(cmdst_wifi_get* para)
 {
+//    LOGLOG("lshell cmd: wifi get");
     int err;
     err = lshell_getWifiInfo(para ,sizeof(*para));
     return err;
@@ -255,6 +259,7 @@ int LShell::wifi_get_para(cmdst_wifi_get* para)
 
 int LShell::wifi_get_aplist(cmdst_aplist_get* para)
 {
+//    LOGLOG("lshell cmd: wifi get aplist");
     int err;
     err = lshell_getApList(para ,sizeof(*para));
     return err;
@@ -262,6 +267,7 @@ int LShell::wifi_get_aplist(cmdst_aplist_get* para)
 
 int LShell::wifi_get_status(cmdst_wifi_status* para)
 {
+//    LOGLOG("lshell cmd: wifi get status");
     int err;
     err = lshell_getWifiStatus(para ,sizeof(*para));
     return err;
@@ -269,6 +275,7 @@ int LShell::wifi_get_status(cmdst_wifi_status* para)
 
 int LShell::wifi_softap_set(cmdst_softap* para)
 {
+//    LOGLOG("lshell cmd: wifi set soft ap");
     int err;
     err = lshell_set_softAp(para ,sizeof(*para));
     return err;
@@ -276,6 +283,7 @@ int LShell::wifi_softap_set(cmdst_softap* para)
 
 int LShell::wifi_softap_get(cmdst_softap* para)
 {
+//    LOGLOG("lshell cmd: wifi get softap");
     int err;
     err = lshell_get_softAp(para ,sizeof(*para));
     return err;
@@ -283,6 +291,7 @@ int LShell::wifi_softap_get(cmdst_softap* para)
 
 int LShell::password_set(cmdst_passwd* para)
 {
+//    LOGLOG("lshell cmd: password set");
     int err;
     err = lshell_setPasswd(para ,sizeof(*para));
     return err;
@@ -290,6 +299,7 @@ int LShell::password_set(cmdst_passwd* para)
 
 int LShell::password_get(cmdst_passwd* para)
 {
+//    LOGLOG("lshell cmd: password get");
     int err;
     err = lshell_getPasswd(para ,sizeof(*para));
     return err;
@@ -297,6 +307,7 @@ int LShell::password_get(cmdst_passwd* para)
 
 int LShell::password_confirm(cmdst_passwd* para)
 {
+//    LOGLOG("lshell cmd: password confirm");
     int err;
     err = lshell_confirmPasswd(para ,sizeof(*para));
     return err;
@@ -304,6 +315,7 @@ int LShell::password_confirm(cmdst_passwd* para)
 
 int LShell::tonerend_set(cmdst_tonerEnd* para)
 {
+//    LOGLOG("lshell cmd: toner end set");
     int err;
     err = lshell_setTonerEnd(para ,sizeof(*para));
     return err;
@@ -311,6 +323,7 @@ int LShell::tonerend_set(cmdst_tonerEnd* para)
 
 int LShell::tonerend_get(cmdst_tonerEnd* para)
 {
+//    LOGLOG("lshell cmd: toner end get");
     int err;
     err = lshell_getTonerEnd(para ,sizeof(*para));
     return err;
@@ -318,6 +331,7 @@ int LShell::tonerend_get(cmdst_tonerEnd* para)
 
 int LShell::savetime_set(cmdst_PSave_time* para)
 {
+//    LOGLOG("lshell cmd: save time set");
     int err;
     err = lshell_setPsaveTime(para ,sizeof(*para));
     return err;
@@ -325,6 +339,7 @@ int LShell::savetime_set(cmdst_PSave_time* para)
 
 int LShell::savetime_get(cmdst_PSave_time* para)
 {
+//    LOGLOG("lshell cmd: save time get");
     int err;
     err = lshell_getPsaveTime(para ,sizeof(*para));
     return err;
@@ -332,6 +347,7 @@ int LShell::savetime_get(cmdst_PSave_time* para)
 
 int LShell::poweroff_set(cmdst_powerOff_time* para)
 {
+//    LOGLOG("lshell cmd: power off set");
     int err;
     err = lshell_setPowerOff(para ,sizeof(*para));
     return err;
@@ -339,6 +355,7 @@ int LShell::poweroff_set(cmdst_powerOff_time* para)
 
 int LShell::poweroff_get(cmdst_powerOff_time* para)
 {
+//    LOGLOG("lshell cmd: power off get");
     int err;
     err = lshell_getPowerOff(para ,sizeof(*para));
     return err;
@@ -346,6 +363,7 @@ int LShell::poweroff_get(cmdst_powerOff_time* para)
 
 int LShell::ipv4_set(net_info_st* para)
 {
+//    LOGLOG("lshell cmd: ipv4 set");
     int err;
     err = lshell_setv4(para ,sizeof(*para));
     return err;
@@ -353,6 +371,7 @@ int LShell::ipv4_set(net_info_st* para)
 
 int LShell::ipv4_get(net_info_st* para)
 {
+//    LOGLOG("lshell cmd: ipv4 get");
     int err;
     err = lshell_getv4(para ,sizeof(*para));
     return err;
@@ -360,6 +379,7 @@ int LShell::ipv4_get(net_info_st* para)
 
 int LShell::ipv6_set(net_ipv6_st* para)
 {
+//    LOGLOG("lshell cmd: ipv6 set");
     int err;
     err = lshell_setv6(para ,sizeof(*para));
     return err;
@@ -367,6 +387,7 @@ int LShell::ipv6_set(net_ipv6_st* para)
 
 int LShell::ipv6_get(net_ipv6_st* para)
 {
+//    LOGLOG("lshell cmd: ipv6 get");
     int err;
     err = lshell_getv6(para ,sizeof(*para));
     return err;
@@ -374,6 +395,7 @@ int LShell::ipv6_get(net_ipv6_st* para)
 
 int LShell::userconfig_set(cmdst_userconfig* para)
 {
+//    LOGLOG("lshell cmd: user config set");
     int err;
     err = lshell_set_userConfig(para ,sizeof(*para));
     return err;
@@ -381,6 +403,7 @@ int LShell::userconfig_set(cmdst_userconfig* para)
 
 int LShell::userconfig_get(cmdst_userconfig* para)
 {
+//    LOGLOG("lshell cmd: userconfig get");
     int err;
     err = lshell_get_userConfig(para ,sizeof(*para));
     return err;
@@ -388,6 +411,7 @@ int LShell::userconfig_get(cmdst_userconfig* para)
 
 int LShell::fusingsc_reset()
 {
+//    LOGLOG("lshell cmd: fusingsc reset");
     int err;
     cmdst_fusingScReset val = 0;
     cmdst_fusingScReset* para = &val;
@@ -397,6 +421,7 @@ int LShell::fusingsc_reset()
 
 int LShell::toner_reset()
 {
+//    LOGLOG("lshell cmd: toner reset");
 	int err;
     cmdst_tonerReset val = 0;
     cmdst_tonerReset* para = &val;
@@ -405,6 +430,7 @@ int LShell::toner_reset()
 }
 int LShell::drum_reset()
 {
+//    LOGLOG("lshell cmd: drum reset");
     int err;
     cmdst_drumReset val = 0;
     cmdst_drumReset* para = &val;
@@ -413,12 +439,14 @@ int LShell::drum_reset()
 }
 int LShell::usercenterinfo_get(cmdst_user_center* para)
 {
+//    LOGLOG("lshell cmd: usercenter info get");
 	int err;
 	err = lshell_getUserInfo(para, sizeof(*para));
 	return err;
 }
 int LShell::printerinfo_get(fw_info_st* para)
 {
+//    LOGLOG("lshell cmd: printer info get");
 	int err;
 	err = lshell_getFWInfo(para, sizeof(*para));
 	return err;
@@ -469,13 +497,16 @@ int LShell::writeNoRead(char* wrBuffer ,int wrSize)
     if(!device)
         return -1;
     int ret;
-    for(int i = 0 ;i < 3 ;i++){
+//    for(int i = 0 ;i < 3 ;i++)
+    {
         ret = device_init(device);
         if(!ret){
             ret = device->write(wrBuffer ,wrSize);
+            if(ret == wrSize)
+                ret = 0;
         }
-        if(!ret)
-            break;
+//        if(!ret)
+//            break;
         usleep(2  * 100 * 1000);
     }
     return ret;
@@ -485,15 +516,29 @@ int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize
 {
     if(!device)
         return -1;
-    int ret;
-    for(int i = 0 ;i < 3 ;i++){
+    int ret = 0;
+    char write_buffer[wrSize];
+    memcpy(write_buffer ,wrBuffer ,wrSize);
+//    for(int i = 0 ;i < 3 ;i++)
+    {
         ret = device_init(device);
         if(!ret){
+//            LOGLOG("lshell write cmd:"
+//                   "0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
+//                   " ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
+//                   ,write_buffer[0] ,write_buffer[1] ,write_buffer[2] ,write_buffer[3] ,write_buffer[4] ,write_buffer[5]
+//                    ,write_buffer[6] ,write_buffer[7] ,write_buffer[8] ,write_buffer[9] ,write_buffer[10]);
+            usleep(1  * 1000 * 1000);
             ret = device->writeThenRead(wrBuffer ,wrSize ,rdBuffer ,rdSize);
+//            LOGLOG("lshell read cmd:"
+//                   "0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
+//                   " ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
+//                   ,rdBuffer[0] ,rdBuffer[1] ,rdBuffer[2] ,rdBuffer[3] ,rdBuffer[4] ,rdBuffer[5]
+//                    ,rdBuffer[6] ,rdBuffer[7] ,rdBuffer[8] ,rdBuffer[9] ,rdBuffer[10]);
         }
-        if(!ret)
-            break;
-        usleep(2  * 100 * 1000);
+//        if(!ret)
+//            break;
+//        usleep(1  * 1000 * 1000);
     }
     return ret;
 }

@@ -39,8 +39,10 @@ void StatusThread::run()
     PRINTER_STATUS printer_status;
     int result;
     forever {
-        if (abort)
+        if (abort){
+            usleep(100*1000);
             return;
+        }
         printers.clear();
         printerlist.clear();
 //        statusmanager.clearPrintersOfFile();
@@ -48,18 +50,29 @@ void StatusThread::run()
         statusmanager.savePrintersToFile(printers);
 
         foreach (Printer_struct printer, printers) {
-            if (abort)
+            if (abort){
+                usleep(100*1000);
                 return;
+            }
             mutex.lock();
             if(current_printer.compare(printer.name)){
                 mutex.unlock();
                 continue;
             }
             mutex.unlock();
-            result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
+            for(int i = 0 ;i < 3 ;i ++)
+            {
+                result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
+                if(!result)
+                    break;
+                if (abort){
+                    usleep(100*1000);
+                    return;
+                }
+            }
+            mutex.lock();
             if(result){
                 LOGLOG("get status from device %s:fail!result:0x%02x" ,printer.name ,result);
-                QMutexLocker locker(&mutex);
                 status.PrinterStatus = result;
 //                status.PrinterStatus = PS_ERROR_POWER_OFF;
 //                if(result == usb_error_printing)
@@ -75,7 +88,6 @@ void StatusThread::run()
 //                status.TonelStatusLevelY = -1;
 //                status.TonelStatusLevelK = -1;
             }else{
-                QMutexLocker locker(&mutex);
                 status = printer_status;
 //                memcpy(&status ,&printer_status ,sizeof(status));
 //                LOGLOG("get status from device %s:success!" ,printer.name);
@@ -86,7 +98,6 @@ void StatusThread::run()
 //                }
             }
             statusmanager.saveStatusToFile(printer.name ,&status);
-            mutex.lock();
             locker_get_status = false;
             mutex.unlock();
         }
@@ -104,6 +115,6 @@ void StatusThread::set_current_printer(const QString& printer)
 
 bool StatusThread::is_locked_get_status()
 {
-//    QMutexLocker locker(&mutex);
+    QMutexLocker locker(&mutex);
     return locker_get_status;
 }

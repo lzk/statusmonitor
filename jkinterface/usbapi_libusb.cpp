@@ -390,13 +390,13 @@ int UsbApi::write(char* buffer ,int bufsize)
 //                                       0x4D, 0x3C2B, (g_interface ==1? 0x0100 : 0),
 //                                       (unsigned char *) buffer, bufsize, 5000);
     doneByte = libusb_control_transfer(g_dev_h, 0x41, 0x4D, 0x3C2B, (g_interface ==1? 0x0100 : 0),
-            (unsigned char *) buffer, bufsize, 5000);
+            (unsigned char *) buffer, bufsize, 15000);
 
     if (doneByte < 0) {
         LOGLOG("libusb: control write error:%d" ,doneByte);
         *buffer = '\0';
     }else{
-//        LOGLOG("libusb: control write success:%d" ,doneByte);
+        LOGLOG("libusb: control write success:%d" ,doneByte);
     }
     return doneByte;
 
