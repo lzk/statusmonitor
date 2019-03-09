@@ -60,16 +60,17 @@ void StatusThread::run()
                 continue;
             }
             mutex.unlock();
-            for(int i = 0 ;i < 3 ;i ++)
-            {
-                result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
-                if(!result)
-                    break;
-                if (abort){
-                    usleep(100*1000);
-                    return;
-                }
-            }
+            result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
+//            for(int i = 0 ;i < 3 ;i ++)
+//            {
+//                result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
+//                if(!result)
+//                    break;
+//                if (abort){
+//                    usleep(100*1000);
+//                    return;
+//                }
+//            }
             mutex.lock();
             if(result){
                 LOGLOG("get status from device %s:fail!result:0x%02x" ,printer.name ,result);
