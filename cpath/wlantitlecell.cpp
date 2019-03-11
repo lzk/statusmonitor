@@ -12,6 +12,8 @@
 #include "settingwarming.h"
 #include "authenticationdlg.h"
 #include <QMessageBox>
+#include <QListView>
+
 
 #define DEFWIDTH 220
 #define DEFTITELHIGHT 180
@@ -22,6 +24,14 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     m_isLogin(false)
 {
     ui->setupUi(this);
+
+    QListView *listView = new QListView(ui->combox_encryption);
+    listView->setStyleSheet("QListView{border-color:black;border-width:2px;border-radius:0px;}");
+    listView->setStyleSheet("QListView::item:!selected{background-color:white;color:black;}");
+    listView->setStyleSheet("QListView::item:selected:!active{background-color:gray;color:black;}");
+    listView->setStyleSheet("QListView::item:selected:active{background-color:gray;color:white;}");
+    ui->combox_encryption->setView(listView);
+
 
     timer1 = new QTimer();
     cycleCount = 0;
@@ -104,7 +114,10 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             orin_wifi_para = wifi_refresh_info.wifi_para;
             wifi_para = wifi_refresh_info.wifi_para;
             cmdst_aplist_get aplist = wifi_refresh_info.wifi_aplist;
+
+#ifndef DEBUG
             initCell(wifi_para,aplist);
+#endif
             is_wifi_now_on = true;
             isDoingCMD = false;
             times = 0;
@@ -446,10 +459,14 @@ void WlanTitleCell::updateAP()
    aList.clear();
    apList.clear();
 }
-
+#ifdef DEBUG
+void WlanTitleCell::initCell(cmdst_wifi_getaa wifi_para, cmdst_aplist_getaa aplist)
+#else
 void WlanTitleCell::initCell(cmdst_wifi_get wifi_para, cmdst_aplist_get aplist)
+#endif
 {
     qDebug()<<"initCell";
+
     while(!(apList.isEmpty()))
     {
        currentSize.setHeight( currentSize.height() - qobject_cast<QWidget *>(apList.last())->size().height() - 1);
@@ -570,10 +587,27 @@ void WlanTitleCell::on_btFlesh_clicked()
    aList.clear();
 
    LOGLOG("cycleStartFromWT");
-   gUInterface->emitEnableCycleAnimation(true);
-
+#ifndef DEBUG
+    gUInterface->emitEnableCycleAnimation(true);
     gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
+#else
+    cmdst_wifi_getaa wifiaa;
+    wifiaa.channel = 11;
+    wifiaa.encryption = 3;
+    wifiaa.netType = 0;
+    wifiaa.pwd = "12345678";
+    wifiaa.sigLevel = 100;
+    wifiaa.ssid = "AAA";
+    wifiaa.wepKeyId = 0;
+    wifiaa.wifiEnable = 7;
 
+    cmdst_aplist_getaa aplist;
+    aplist.aplist[0].ssid = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF";
+    aplist.aplist[0].encryption  = 3;
+
+   initCell(wifiaa,aplist);
+   is_wifi_now_on = true;
+#endif
 }
 
 void WlanTitleCell::on_combox_encryption_currentIndexChanged(int index)
@@ -590,6 +624,8 @@ void WlanTitleCell::on_combox_encryption_currentIndexChanged(int index)
         QRegExp regexp("^[\\x0020-\\x007e]{5,13}$");
         QValidator *validator = new QRegExpValidator(regexp, this);
         ui->lineEdit_Password->setValidator(validator);
+        ui->lineEdit_Password->setStyleSheet("border:2px groove gray;border-radius:5px;");
+        ui->label_Password->setEnabled(true);
         ui->lineEdit_Password->setEnabled(true);
         ui->checkBox_visiable->setEnabled(true);
     }
@@ -603,6 +639,8 @@ void WlanTitleCell::on_combox_encryption_currentIndexChanged(int index)
         QRegExp regexp("^[\\x0020-\\x007e]{8,63}$");
         QValidator *validator = new QRegExpValidator(regexp, this);
         ui->lineEdit_Password->setValidator(validator);
+        ui->lineEdit_Password->setStyleSheet("border:2px groove gray;border-radius:5px;");
+        ui->label_Password->setEnabled(true);
         ui->lineEdit_Password->setEnabled(true);
         ui->checkBox_visiable->setEnabled(true);
     }
@@ -613,9 +651,11 @@ void WlanTitleCell::on_combox_encryption_currentIndexChanged(int index)
         ui->btKey2->hide();
         ui->btKey3->hide();
         ui->btKey4->hide();
-        ui->lineEdit_Password->setDisabled(true);
+        ui->label_Password->setEnabled(false);
+        ui->lineEdit_Password->setEnabled(false);
         ui->lineEdit_Password->clear();
-        ui->checkBox_visiable->setDisabled(true);
+        ui->lineEdit_Password->setStyleSheet("border:2px solid rgb(198, 198, 198);border-radius:5px;");
+        ui->checkBox_visiable->setEnabled(false);
     }
 }
 
@@ -633,6 +673,19 @@ int WlanTitleCell::checkSSID(QString SSID)
 
 void WlanTitleCell::on_btConnect_clicked()
 {
+//ssid
+    int sLen = ui->lineEdit_SSID->text().length();
+
+    if(sLen < 1 || sLen > 32)
+    {
+        SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_9"));
+        warming->setWindowTitle(tr("ResStr_Warning"));
+        warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint);
+        warming->exec();
+        return;
+    }
+
 //判断输入密码格式是否正确
     int len = ui->lineEdit_Password->text().length();
     int defLen = 0;

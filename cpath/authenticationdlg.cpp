@@ -21,7 +21,8 @@ AuthenticationDlg::AuthenticationDlg(QWidget *parent, bool*confirm) :
    //                            For security of your equipment, please change this password."));
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
-    cycle = new BusyRefreshLabel(this,true);
+    ui->cycleWidget->hide();
+    cycle = new BusyRefreshLabel(ui->cycleWidget,true);
     cycle->setGeometry(QRect(180,70,50,50));
     isDoingCMD = false;
     times = 0;
@@ -35,13 +36,13 @@ AuthenticationDlg::~AuthenticationDlg()
 void AuthenticationDlg::on_lineEdit_Password_textEdited(const QString &arg1)
 {
     LOGLOG("on_btApply_Login_clicked");
-    if(!(arg1.isEmpty()))
+    if(arg1.isEmpty())
     {
-        ui->btApply_Login->setEnabled(true);
+        ui->btApply_Login->setEnabled(false);
     }
     else
     {
-        ui->btApply_Login->setDisabled(true);
+        ui->btApply_Login->setEnabled(true);
     }
 //    ui->label_msg->setText(tr("The default password for this unit is \"888888\".\
 //                               For security of your equipment, please change this password."));
@@ -62,6 +63,8 @@ void AuthenticationDlg::on_btApply_Login_clicked()
         data.setValue<cmdst_passwd>(passwd);
         LOGLOG("ui password is :%s" ,passwd.passwd);
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PASSWD_confirm,data);
+
+        ui->cycleWidget->show();
         cycle->startAnimation(20);
     }
 
@@ -97,6 +100,7 @@ void AuthenticationDlg::cmdResult(int cmd,int result ,QVariant data)
                 times = 0;
             }
         }
+        ui->cycleWidget->hide();
         cycle->stopAnimation();
     }
 }

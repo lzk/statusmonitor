@@ -82,6 +82,8 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     connect(ui->btDHCP,SIGNAL(clicked(bool)),this,SLOT(onRadioClickIP(bool)));
     connect(ui->btStatic,SIGNAL(clicked(bool)),this,SLOT(onRadioClickIP(bool)));
     ui->btDHCP->setChecked(true);
+    onbtDHCPtoggled(true);
+    onbtStatictoggled(false);
 
     buttonGroupDNS = new QButtonGroup(this);
     buttonGroupDNS->addButton(ui->btAuto,0);
@@ -504,11 +506,15 @@ void SettingsStackedWidget::changeStackIndex(int index)
     {
     case 0:                                     //wifi setting
         {
+            //bms 7428
+            ui->lineEdit_newPassWord->setText("");
+            ui->lineEdit_confirm->setText("");
+
             titelCell->setCurrentIndex(0);
             if(this->isEnabled() == true)
             {
                 titelCell->on_btFlesh_clicked();
-                gUInterface->emitEnableCycleAnimation(true);
+//                gUInterface->emitEnableCycleAnimation(true);
             }
             else
             {
@@ -518,6 +524,9 @@ void SettingsStackedWidget::changeStackIndex(int index)
         break;
     case 1:                                     //softAP setting
         {
+            //bms 7428
+            ui->lineEdit_newPassWord->setText("");
+            ui->lineEdit_confirm->setText("");
             if(this->isEnabled() == true)
             {
                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_Get_SoftAp);
@@ -532,6 +541,10 @@ void SettingsStackedWidget::changeStackIndex(int index)
         break;
     case 2:                                    // ip settting
         {
+            //bms 7428
+            ui->lineEdit_newPassWord->setText("");
+            ui->lineEdit_confirm->setText("");
+
             if(this->isEnabled() == true)
             {
                 QVariant data;
@@ -549,10 +562,17 @@ void SettingsStackedWidget::changeStackIndex(int index)
         break;
     case 3:                                    // ip settting
         {
+            //bms 7428
+            ui->lineEdit_newPassWord->setText("");
+            ui->lineEdit_confirm->setText("");
         }
         break;
     case 4:                                    // power save time setting
         {
+            //bms 7428
+            ui->lineEdit_newPassWord->setText("");
+            ui->lineEdit_confirm->setText("");
+
             if(this->isEnabled() == true)
             {
                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_PSaveTime_Get);
@@ -584,6 +604,10 @@ void SettingsStackedWidget::changeStackIndex(int index)
         break;
     case 5:                                   // advance setting
         {
+            //bms 7428
+            ui->lineEdit_newPassWord->setText("");
+            ui->lineEdit_confirm->setText("");
+
             if(this->isEnabled() == true)
             {
                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Get_UserConfig);
@@ -633,7 +657,7 @@ void SettingsStackedWidget::initAP()
     ui->lineEdit_SSID_AP->setCursorPosition(1);
     ui->lineEdit_Password_AP->clear();
 
-    QRegExp rx1("^[0-9a-zA-Z]{1,32}$");
+    QRegExp rx1("^[\\x0020-\\x007e]{1,32}$");
     QRegExp rx2("^[\\x0020-\\x007e]{8,64}$");
     QRegExpValidator *validator1 = new QRegExpValidator(rx1, this);
     QRegExpValidator *validator2 = new QRegExpValidator(rx2, this);
@@ -663,6 +687,7 @@ void SettingsStackedWidget::initIP()
         {
              ui->btDHCP->setChecked(true);
              onbtDHCPtoggled(true);
+             onbtStatictoggled(false);
              QString text = "%1.%2.%3.%4";
              text = text.arg(info_ipv4.IPAddress[0]).arg(info_ipv4.IPAddress[1]).\
                                         arg(info_ipv4.IPAddress[2]).arg(info_ipv4.IPAddress[3]);
@@ -680,6 +705,7 @@ void SettingsStackedWidget::initIP()
         {
             ui->btStatic->setChecked(true);
             onbtStatictoggled(true);
+            onbtDHCPtoggled(false);
             QString text = "%1.%2.%3.%4";
             text = text.arg(info_ipv4.IPAddress[0]).arg(info_ipv4.IPAddress[1]).\
                                        arg(info_ipv4.IPAddress[2]).arg(info_ipv4.IPAddress[3]);
@@ -732,7 +758,9 @@ void SettingsStackedWidget::initPowerSave()
 
 void SettingsStackedWidget::initPassword()
 {
-    QRegExp rx4("^[\\x0020-\\x0076]{0,32}$");
+//    QRegExp rx4("^[\\x0020-\\x0076]{0,32}$");
+
+    QRegExp rx4("^[0-9a-zA-Z]{0,32}$");
     QRegExpValidator *validator4 = new QRegExpValidator(rx4, this);
     ui->lineEdit_newPassWord->setValidator(validator4);
     ui->lineEdit_confirm->setValidator(validator4);
@@ -1388,6 +1416,69 @@ void SettingsStackedWidget::on_btApply_clicked()
         {
             gUInterface->emitEnableCycleAnimation(false);
         }
+    }
+}
+
+void SettingsStackedWidget::on_lineEdit_IPAddressv4_textEdited(const QString &arg1)
+{
+    QRegExp rx2("^([1]?\\d\\d?|2[0-1]\\d|22[0-3])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])$");
+    if( !rx2.exactMatch(arg1) )
+    {
+         ui->label_ipaddr_error->show();
+         ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
+                                                 border:2px solid red;\
+                                                 border-radius:12px;}");
+        ui->btApply_IPConfig->setDisabled(true);
+    }
+    else
+    {
+        ui->label_ipaddr_error->hide();
+        ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
+                                                border:2px solid rgb(170, 170, 170);\
+                                                border-radius:12px;}");
+        ui->btApply_IPConfig->setEnabled(true);
+    }
+}
+
+void SettingsStackedWidget::on_lineEdit_Gatewayv4_textEdited(const QString &arg1)
+{
+    QRegExp rx2("^([1]?\\d\\d?|2[0-1]\\d|22[0-3])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])$");
+    if( !rx2.exactMatch(arg1) )
+    {
+         ui->label_gateway_error->show();
+         ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
+                                               border:2px solid red;\
+                                               border-radius:12px;}");
+        ui->btApply_IPConfig->setDisabled(true);
+    }
+    else
+    {
+        ui->label_gateway_error->hide();
+        ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
+                                              border:2px solid rgb(170, 170, 170);\
+                                              border-radius:12px;}");
+        ui->btApply_IPConfig->setEnabled(true);
+    }
+}
+
+void SettingsStackedWidget::on_lineEdit_Submaskv4_textEdited(const QString &arg1)
+{
+    QRegExp rx2("^([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-4])$");
+    if( !rx2.exactMatch(arg1) )
+    {
+         ui->label_sumask_error->show();
+         ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
+                                               border:2px solid red;\
+                                               border-radius:12px;}");
+        ui->btApply_IPConfig->setDisabled(true);
+    }
+    else
+    {
+        ui->label_sumask_error->hide();
+        ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
+                                              border:2px solid rgb(170, 170, 170);\
+                                              border-radius:12px;}");
+        ui->btApply_IPConfig->setEnabled(true);
     }
 }
 

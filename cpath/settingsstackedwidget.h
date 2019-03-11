@@ -89,6 +89,10 @@ private slots:
     void on_btIPv6Setting_clicked();
     void on_btIPv6Status_clicked();
 
+    void on_lineEdit_IPAddressv4_textEdited(const QString &arg1);
+    void on_lineEdit_Gatewayv4_textEdited(const QString &arg1);
+    void on_lineEdit_Submaskv4_textEdited(const QString &arg1);
+
     void on_btApply_Timeout_clicked();
 
     void on_lineEdit_timeout_textEdited(const QString &arg1);

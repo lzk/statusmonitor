@@ -753,6 +753,8 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
         ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
         updateTonerCarStatus(status.TonelStatusLevelK);
     }
+    //test
+//    status.PrinterStatus = UIConfig::NofeedJam;
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
     QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);

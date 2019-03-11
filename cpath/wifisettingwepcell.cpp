@@ -97,9 +97,12 @@ void WiFiSettingWEPCell::on_checkBox_visiable_clicked()
 
 void WiFiSettingWEPCell::initStatus()
 {
-
-    ui->label_SSID1->setText(apInfo.SSID);
-    ui->label_SSID2->setText(apInfo.SSID);
+    QFont ft = ui->label_SSID1->font();
+    QFontMetrics fm(ft);
+    QString ssid1 = fm.elidedText(apInfo.SSID, Qt::ElideRight, ui->label_SSID1->width());
+    QString ssid2 = fm.elidedText(apInfo.SSID, Qt::ElideRight, ui->label_SSID2->width());
+    ui->label_SSID1->setText(ssid1);
+    ui->label_SSID2->setText(ssid2);
     ui->label_APStatus->setText(apInfo.APStatus);
     ui->label_APStatus_2->setText(apInfo.APStatus);
 

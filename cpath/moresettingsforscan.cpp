@@ -329,7 +329,7 @@ void MoreSettingsForScan::on_btContrastAdd_released()
 ******************************************************************************/
 void MoreSettingsForScan::on_lineEdit_constrast_textChanged(const QString &arg1)
 {
-    if(arg1.toInt()>=MIN_CONTRAST && arg1.toInt()<=MAX_CONTRAST)
+    if(arg1.toInt()>=MIN_CONTRAST && arg1.toInt()<=MAX_CONTRAST && arg1  != "")
     {
 //        param_scan->contrast = arg1.toInt();
         ui->slider_contrast->setValue(arg1.toInt());
@@ -445,7 +445,7 @@ void MoreSettingsForScan::on_btBrightnessAdd_released()
 
 void MoreSettingsForScan::on_lineEdit_brightness_textChanged(const QString &arg1)
 {
-    if(arg1.toInt()>=MIN_BRIGHT && arg1.toInt()<=MAX_BRIGHT)
+    if(arg1.toInt()>=MIN_BRIGHT && arg1.toInt()<=MAX_BRIGHT && arg1  != "")
     {
 //        param_scan->brightness = arg1.toInt();
         ui->slider_brightness->setValue(arg1.toInt());
@@ -496,6 +496,10 @@ bool MoreSettingsForScan::eventFilter(QObject *watched, QEvent *event)
             if(ui->lineEdit_constrast->text().toInt()>MAX_CONTRAST )
             {
 //                param_scan->contrast = 50;
+                ui->lineEdit_constrast->setText(QString("100"));
+            }
+            else if(ui->lineEdit_constrast->text() == "")
+            {
                 ui->lineEdit_constrast->setText(QString("50"));
             }
         }
@@ -507,6 +511,10 @@ bool MoreSettingsForScan::eventFilter(QObject *watched, QEvent *event)
             if(ui->lineEdit_brightness->text().toInt()>MAX_BRIGHT )
             {
 //                param_scan->brightness = 50;
+                ui->lineEdit_brightness->setText(QString("100"));
+            }
+            else if (ui->lineEdit_brightness->text() == "")
+            {
                 ui->lineEdit_brightness->setText(QString("50"));
             }
         }

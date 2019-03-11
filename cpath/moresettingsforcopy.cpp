@@ -521,15 +521,21 @@ void MoreSettingsForCopy::on_scaling_editingFinished()
 
     if(tmp > MAX_SCALING || tmp < MIN_SCALING)
     {
-        ui->scaling->setText(text.setNum(100));
-//        ParamForCopy->scaling = 100;
+        if(tmp>MAX_SCALING)
+        {
+            ui->scaling->setText(text.setNum(400));
+        }
+        else
+        {
+            ui->scaling->setText(text.setNum(25));
+        }
+
         ui->scaling->setStyleSheet("#scaling {border:transparent;}");
         ui->btReduce->setEnabled(true);
         ui->btAdd->setEnabled(true);
         ui->btOK->setEnabled(true);
     }
     else{
-//        ParamForCopy->scaling = tmp;
         ui->scaling->setStyleSheet("#scaling {border:transparent;}");
      }
 }

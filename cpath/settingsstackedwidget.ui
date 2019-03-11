@@ -599,7 +599,7 @@ QRadioButton::indicator::checked {
 }</string>
     </property>
     <property name="text">
-     <string>192.168.156.162</string>
+     <string>0.0.0.0</string>
     </property>
     <property name="maxLength">
      <number>32</number>
@@ -663,7 +663,7 @@ QRadioButton::indicator::checked {
 }</string>
     </property>
     <property name="text">
-     <string>255.255.255.0</string>
+     <string>0.0.0.0</string>
     </property>
     <property name="maxLength">
      <number>32</number>
@@ -673,6 +673,9 @@ QRadioButton::indicator::checked {
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_Gatewayv4">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>97</x>
@@ -699,7 +702,7 @@ QRadioButton::indicator::checked {
 }</string>
     </property>
     <property name="text">
-     <string>192.168.156.1</string>
+     <string>0.0.0.0</string>
     </property>
     <property name="maxLength">
      <number>32</number>
@@ -836,7 +839,7 @@ QRadioButton::indicator::checked {
 }</string>
     </property>
     <property name="text">
-     <string>192.168.156.1</string>
+     <string>0.0.0.0</string>
     </property>
     <property name="maxLength">
      <number>32</number>

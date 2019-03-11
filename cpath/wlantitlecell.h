@@ -14,6 +14,40 @@
 #include "uinterface.h"
 #include "qvariant.h"
 
+//#define DEBUG
+
+#ifdef DEBUG
+struct cmdst_aplistaa
+{
+    QString ssid;
+    int encryption;
+};
+
+#define NUM_OF_APLIST 10
+typedef struct cmdst_aplist_getaa
+{
+    struct cmdst_aplistaa  aplist[NUM_OF_APLIST];
+}
+    cmdst_aplist_getaa;
+
+typedef struct cmdst_wifi_getaa
+{
+    UINT8 wifiEnable ; // bit0: Wi-Fi Enable, bit1: GO Enable, bit2: P2P Enable
+    UINT8 sigLevel   ; //
+    UINT8 reserved0  ; //
+    UINT8 netType    ; // lenovo always 0
+    UINT8 encryption ; // 0:No Security 1:WEP 64/128 bit 2.WPA-PSK-TKIP  3. WPA2-PSK-AES 4.Mixed Mode PSK
+    UINT8 wepKeyId   ; //
+    UINT8 reserved1  ; //
+    UINT8 channel    ; //
+    QString  ssid   ; // used by both Legacy WiFi SSID and Wi-Fi Direct GO SSID
+    QString  pwd    ; // used by both Legacy WiFi Passphrase & WEPKey and Wi-Fi Direct GO Passphrase
+    char  pinCode[8] ; //
+    UINT8 reserved2[64]; //
+    UINT8 ipAddr[4]  ; //
+}cmdst_wifi_getaa;
+#endif
+
 namespace Ui {
 class WlanTitleCell;
 }
@@ -42,7 +76,11 @@ private slots:
 
     void getSizeChanged(QSize, QSize);
     void addCell(QString ssid, EncrypType type, APInfo info, bool isConnected);
+#ifndef DEBUG
     void initCell(cmdst_wifi_get wifi_para, cmdst_aplist_get aplist);
+#else
+    void initCell(cmdst_wifi_getaa wifi_para, cmdst_aplist_getaa aplist);
+#endif
     void onTimeout();
 
     void getConnectAction(QWidget*);

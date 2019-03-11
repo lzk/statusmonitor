@@ -720,6 +720,12 @@ QSlider::handle:horizontal {
 
 #btOK:hover {
 	color: rgb(255, 255, 255);
+}
+
+#btOK:disabled{
+border-image: url(:/Images/Btn_Scan_Disabled.png) ;
+
+color:white;
 }</string>
     </property>
     <property name="text">

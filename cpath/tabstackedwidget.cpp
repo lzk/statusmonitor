@@ -103,7 +103,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             }
             else
             {
-                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_can_not_be_carried_out_due_to_software_has_error__please_try__again_after_reinstall_the_Driver_and_Virtual_Operation_Panel_"));
+                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
                 errorWarning->setWindowTitle(tr("ResStr_Error"));
 
                 errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -615,7 +615,6 @@ void TabStackedWidget::setCopyStackedWidgetCurrentIndex(int index)
 
 void TabStackedWidget::set_copy_enabled(bool enabled)
 {
-    qDebug()<<"btn_Copy";
     ui->btn_Copy->setEnabled(enabled);
 }
 

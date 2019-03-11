@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>220</width>
-    <height>72</height>
+    <height>262</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -218,9 +218,9 @@ QRadioButton::indicator::checked {
    <widget class="QLabel" name="label_Encryption">
     <property name="geometry">
      <rect>
-      <x>23</x>
+      <x>10</x>
       <y>171</y>
-      <width>61</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
@@ -233,7 +233,7 @@ QRadioButton::indicator::checked {
      <string>ResStr_Encryption</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="btWLANON2">
@@ -301,15 +301,27 @@ QPushButton{
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>28</x>
+      <x>20</x>
       <y>96</y>
-      <width>171</width>
+      <width>196</width>
       <height>29</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label_SSID">
+       <property name="minimumSize">
+        <size>
+         <width>70</width>
+         <height>27</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>70</width>
+         <height>27</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
@@ -325,6 +337,18 @@ QPushButton{
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit_SSID">
+       <property name="minimumSize">
+        <size>
+         <width>118</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>118</width>
+         <height>23</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::ClickFocus</enum>
        </property>
@@ -435,9 +459,9 @@ QLabel{
    <widget class="QComboBox" name="combox_encryption">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>95</x>
       <y>170</y>
-      <width>131</width>
+      <width>121</width>
       <height>22</height>
      </rect>
     </property>
@@ -597,11 +621,14 @@ QPushButton:pressed{
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_visiable">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>7</x>
       <y>152</y>
-      <width>131</width>
+      <width>191</width>
       <height>20</height>
      </rect>
     </property>
@@ -655,15 +682,30 @@ QCheckBox::indicator::checked {
    <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>28</x>
+      <x>7</x>
       <y>124</y>
-      <width>171</width>
+      <width>209</width>
       <height>29</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="label_Password">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>83</width>
+         <height>27</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>83</width>
+         <height>27</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
@@ -679,12 +721,28 @@ QCheckBox::indicator::checked {
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit_Password">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>118</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>118</width>
+         <height>23</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="styleSheet">
         <string notr="true">border:2px groove gray;
-border-radius:5px;</string>
+border-radius:5px;
+</string>
        </property>
        <property name="text">
         <string/>
