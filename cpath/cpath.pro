@@ -148,7 +148,8 @@ contains(CONFIG ,static){
 }
 
 mac{
-   -ltiff
+            LIBS += $${PWD}/../libs/mac/libtiff.a -lz
+            LIBS += $${PWD}/../libs/mac/libjpeg.a
 }else{
     unix{
         contains(QT_ARCH, i386) {

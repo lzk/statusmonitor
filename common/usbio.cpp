@@ -4,6 +4,7 @@
 #include "log.h"
 #include <QString>
 #include "commonapi.h"
+#include <unistd.h>
 
 const char* lock_scan_file = "/tmp/.scanner_lock";
 const char* lock_scan_info_file = "/tmp/.scanner_info_lock";
@@ -95,16 +96,12 @@ bool UsbIO::is_device_scanning()
     return false;
 }
 
-int UsbIO::open(int port)
+
+int UsbIO::open_with_mode(int port ,int mode)
 {
     (void) port;
     if(device_is_open){
         LOGLOG("device is opened");
-        return -1;
-    }
-    int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
-    if(ret){
-        LOGLOG("can not find device");
         return -1;
     }
     if(printer_is_printing(printer_name.toLatin1().constData())){
@@ -112,12 +109,30 @@ int UsbIO::open(int port)
     }else if(is_device_scanning()){
         return usb_error_scanning;
     }
-    mutex.lock();
-    if(locked_printers.contains(device_uri)){
-//    if(address == locked_address && bus == locked_bus){
+    if(mode == 0){
+        while (true) {
+            mutex.lock();
+            if(!locked_printers.contains(device_uri)){
+        //    if(address == locked_address && bus == locked_bus){
+                break;
+            }
+            mutex.unlock();
+            usleep(10*1000);
+        }
+    }else{
+        mutex.lock();
+        if(locked_printers.contains(device_uri)){
+    //    if(address == locked_address && bus == locked_bus){
+            mutex.unlock();
+            LOGLOG("usb device:%s locked" ,printer_name.toLatin1().constData());
+            return usb_error_usb_locked;
+        }
+    }
+    int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
+    if(ret){
+        LOGLOG("can not find device");
         mutex.unlock();
-        LOGLOG("usb device:%s locked" ,printer_name.toLatin1().constData());
-        return usb_error_usb_locked;
+        return -1;
     }
     ret = usb->open(vid ,pid ,serial ,interface);
     if(ret){
@@ -129,6 +144,11 @@ int UsbIO::open(int port)
     }
     mutex.unlock();
     return ret;
+}
+
+int UsbIO::open(int port)
+{
+    return open_with_mode(port ,0);
 }
 
 int UsbIO::close(void)
@@ -171,7 +191,7 @@ int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
 
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
-    int ret = open(1);
+    int ret = open_with_mode(1 ,0);
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
@@ -212,11 +232,11 @@ int UsbIO::resolveUrl(const char* url)
         strcpy(this->serial ,tmp_serial.toLatin1().constData());
         ret = 0;
     }
-    if(!ret){
-        LOGLOG("device's vid:0x%02x ,pid:0x%02x ,serial:%s" ,vid ,pid ,serial);
-    }else{
-        LOGLOG("can not resolve url");
-    }
+//    if(!ret){
+//        LOGLOG("device's vid:0x%02x ,pid:0x%02x ,serial:%s" ,vid ,pid ,serial);
+//    }else{
+//        LOGLOG("can not resolve url");
+//    }
     return ret;
 }
 

@@ -12,7 +12,7 @@ class Watcher : public QThread
 {
     Q_OBJECT
 public:
-    explicit Watcher(DeviceManager* device_manager ,QObject *parent = 0);
+    explicit Watcher(QObject *parent = 0);
     ~Watcher();
     void run();
     void timerOut();

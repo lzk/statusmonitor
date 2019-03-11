@@ -19,8 +19,8 @@ int DeviceIO::resolveUrl(const char* url)
 int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
 {
     int err = write(wrBuffer ,wrSize);
-    if(err == wrSize){
-//    if(!err){
+    if(err == wrSize)
+    {
         int j;
         int _read_size = 0;
         int nocheck=0;
@@ -30,7 +30,7 @@ int DeviceIO::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSi
         time_t second_time;
         for(j = 0 ;j < 50 ;j++){
             second_time = time(NULL);
-            if(second_time - first_time > 5){
+            if(second_time - first_time > 10){
                 LOGLOG("usb try %d times timeout" ,j + 1);
                 break;
             }
