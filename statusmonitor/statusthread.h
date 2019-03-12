@@ -18,6 +18,7 @@ public:
 
 public slots:
     void set_current_printer(const QString& printer);
+    void set_device_id(const QString& printer ,const QString& device_id);
 
 public:
     QList<Printer_struct> printers;

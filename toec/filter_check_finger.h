@@ -17,6 +17,8 @@ enum{
 
 int checkFinger(int jobid);
 
+int filter_task_start(const  char* printer_name ,const char* printer_uri);
+int filter_task_end();
 #ifdef __cplusplus
 }
 #endif

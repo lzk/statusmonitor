@@ -8,8 +8,8 @@ bool use_status_thread = true;
 extern AppServer* app_server;
 Watcher::Watcher(DeviceManager* _device_manager ,QObject *parent)
     : QThread(parent)
-    ,abort(false)
     ,device_manager(_device_manager)
+    ,abort(false)
 {
     if(use_status_thread){
         statusThread = new StatusThread();
@@ -43,6 +43,11 @@ void Watcher::set_current_printer(const QString& printer)
     current_printer = printer;
     if(statusThread)
         statusThread->set_current_printer(printer);
+
+    Trans_Client tc(SERVER_PATH);
+    char buffer[1024];
+    sprintf(buffer ,"stcp://%s" ,printer.toLatin1().constData());
+    tc.writeThenRead(buffer ,1024);
 }
 
 int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterInfo_struct> & ps2)
@@ -77,7 +82,7 @@ void Watcher::timerOut()
     count ++;
     if(count == 100)
         count = 0;
-    if((count % 10 == 0) && !is_app_running(SERVER_PATH)){
+    if((count % 10 == 0) && !is_app_running(SERVER_PATH_STM)){
         server_restart();
     }
     //update printer list

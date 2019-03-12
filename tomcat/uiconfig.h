@@ -9,15 +9,15 @@
 
 extern const QString app_name;
 extern bool use_status_thread;
-//#ifndef SERVER_PATH
-//#ifdef LOONGSON
-//#define SERVER_PATH "/var/spool/cups/tmp/tjgd1zsm.domain"
-//#else
-//#define SERVER_PATH "/tmp/tjgd1zsm.domain"
-//#endif
-//#endif
+#ifndef SERVER_PATH
+#ifdef LOONGSON
+#define SERVER_PATH "/var/spool/cups/tmp/tjgd1zsm.domain"
+#else
+#define SERVER_PATH "/tmp/tjgd1zsm.domain"
+#endif
+#endif
 
-#define SERVER_PATH "/tmp/tjgd1zsmui.domain"
+#define SERVER_PATH_STM "/tmp/tjgd1zsmui.domain"
 
 Q_DECLARE_METATYPE(PrinterInfo_struct)
 Q_DECLARE_METATYPE(QList<PrinterInfo_struct>)

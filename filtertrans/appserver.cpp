@@ -4,6 +4,11 @@
 #include "appconfig.h"
 //#include <QProcess>
 #include <unistd.h>
+#include "statusthread.h"
+#include <QUrl>
+#if QT_VERSION > 0x050000
+#include <QUrlQuery>
+#endif
 AppServer::AppServer(const char* server_path ,QObject *parent)
     : QObject(parent)
     ,server_path(server_path)
@@ -13,10 +18,16 @@ AppServer::AppServer(const char* server_path ,QObject *parent)
     connect(thread_server ,SIGNAL(client_connect(int)) ,this ,SLOT(client_connect(int)));
     connect(thread_server ,SIGNAL(client_cmd(QString ,void*)) ,this ,SLOT(client_cmd(QString ,void*)));
     thread_server->start();
+
+    statusThread = new StatusThread();
+    statusThread->start();
 }
 
 AppServer::~AppServer()
 {
+    if(statusThread)
+        delete statusThread;
+
     delete thread_server;
 //    thread.quit();
 //    thread.wait();
@@ -32,8 +43,32 @@ void AppServer::restart_server()
     thread_server->start();
 }
 
-static int callback_Server(void*,char* buffer,int bufsize)
+static int callback_Server(void* para ,char* buffer,int bufsize)
 {
+    AppServer* app_server = (AppServer*)para;
+    QUrl url(buffer);
+    QString cmd = url.scheme();
+//    QString printer = url.host(QUrl::PrettyDecoded);
+    QString printer = QString(buffer).mid(7);
+    int index = printer.indexOf('?');
+    if(index > 0)
+        printer = printer.left(index);
+    if(!cmd.compare("stcp")){
+        app_server->statusThread->set_current_printer(printer);
+        strcpy(buffer ,"stcpok");
+        return 0;
+    }else if(!cmd.compare("dvid")){
+        QString device_id;
+#if QT_VERSION > 0x050000
+    device_id = QUrlQuery(QUrl(url)).queryItemValue("deviceid");
+#else
+    device_id = QUrl(url).queryItemValue("deviceid");
+#endif
+        app_server->statusThread->set_device_id(printer ,device_id);
+        strcpy(buffer ,"didok");
+        return 0;
+    }
+
     Trans_Client tc(SERVER_PATH_STM);
     if(tc.writeThenRead(buffer ,bufsize)){
         pid_t pid = fork();

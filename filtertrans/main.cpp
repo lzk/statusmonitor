@@ -11,12 +11,22 @@ void quit(int)
         qApp->quit();
 }
 AppServer* app_server;
+
+//#include <unistd.h>
 int main(int argc, char *argv[])
 {
     if(is_app_running(SERVER_PATH)){
         LOGLOG("There has been a same app running!");
         return 0;
     }
+
+//    int result = daemon(0 ,2);
+//    if(!result){
+//        LOGLOG("daemon success!");
+//    }
+
+    AppConfig::initConfig();
+
     QCoreApplication a(argc, argv);
 
     signal(SIGINT ,quit);
@@ -27,5 +37,6 @@ int main(int argc, char *argv[])
     int ret = a.exec();
     delete watcher;
     delete app_server;
+    AppConfig::exit_app();
     return ret;
 }

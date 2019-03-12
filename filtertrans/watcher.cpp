@@ -8,6 +8,7 @@ Watcher::Watcher(QObject *parent)
     ,abort(false)
 {
     connect(this ,SIGNAL(server_restart()) ,app_server ,SLOT(restart_server()));
+
 }
 
 Watcher::~Watcher()

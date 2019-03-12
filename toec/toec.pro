@@ -9,6 +9,8 @@ QT       -= core gui
 TARGET = tjgd1z
 TEMPLATE = lib
 
+CONFIG += shared staticlib
+
 DEFINES += TOEC_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
@@ -24,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include("../jkinterface/jkinterface.pri")
 include("../common/common.pri")
+include("../statusmonitor/statusmonitor.pri")
 unix {
     target.path = /usr/lib
     INSTALLS += target
@@ -46,13 +49,12 @@ HEADERS += \
     common.h
 
 
+CONFIG(debug ,debug|release){
+    DEFINES += DEBUG_TO_STDERR
+#        DEFINES += LOONGSON
+}else{
         DEFINES += LOONGSON
-DEFINES += DEBUG_TO_STDERR
-#CONFIG(debug ,debug|release){
-#    DEFINES += DEBUG_TO_STDERR
-#}else{
-#    DEFINES += DEBUG_TO_STDERR
 ##contains(QT_ARCH, loongson3a) {
 #        DEFINES += LOONGSON
 ##}
-#}
+}

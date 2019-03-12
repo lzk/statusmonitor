@@ -57,6 +57,19 @@ void StatusThread::run()
             }
             mutex.unlock();
             result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
+            if(result == usb_error_printing){
+
+            }else{
+                mutex.lock();
+                if(result){
+                    status.PrinterStatus = result;
+                }else{
+                    status = printer_status;
+                }
+                statusmanager.saveStatusToFile(printer.name ,&status);
+                mutex.unlock();
+            }
+#if 0
             if(result){
                 LOGLOG("get status from device %s:fail!result %d" ,printer.name ,result);
                 QMutexLocker locker(&mutex);
@@ -86,6 +99,7 @@ void StatusThread::run()
 //                }
             }
             statusmanager.saveStatusToFile(printer.name ,&status);
+#endif
         }
         sleep(6);
     }
@@ -96,4 +110,13 @@ void StatusThread::set_current_printer(const QString& printer)
     QMutexLocker locker(&mutex);
     current_printer = printer;
     memset(&status ,0 ,sizeof(status));
+}
+
+void StatusThread::set_device_id(const QString& printer ,const QString& device_id)
+{
+//    QMutexLocker locker(&mutex);
+    PRINTER_STATUS printer_status;
+    if(!DecodeStatusFromDeviceID(device_id.toLatin1().data() ,&printer_status)){
+        statusmanager.saveStatusToFile(printer.toLatin1().constData() ,&printer_status);
+    }
 }

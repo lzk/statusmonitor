@@ -2,23 +2,21 @@
 #define FILTERSTATUSTHREAD_H
 
 #include <QThread>
-//#include "cupsmanager.h"
-//#include "statusmanager.h"
+#include <QMutex>
 class FilterStatusThread : public QThread
 {
     Q_OBJECT
 public:
     explicit FilterStatusThread(QObject *parent = NULL);
     ~FilterStatusThread();
+    void set_current_printer(const QString& printer);
 
     void run();
 
 private:
     bool abort;
-//    CupsManager cupsmanager;
-//    StatusManager statusmanager;
-
-//    PRINTER_STATUS status;
+    QString current_printer;
+    QMutex mutex;
 };
 
 #endif // FILTERSTATUSTHREAD_H

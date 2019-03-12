@@ -24,7 +24,6 @@ SOURCES += \
     checkfingerdialog.cpp \
     fingerhandler.cpp \
     clientthread.cpp \
-    watcher.cpp \
     about.cpp
 
 HEADERS  += mainwindow.h \
@@ -33,7 +32,6 @@ HEADERS  += mainwindow.h \
     checkfingerdialog.h \
     fingerhandler.h \
     clientthread.h \
-    watcher.h \
     about.h
 
 FORMS    += mainwindow.ui \
@@ -49,18 +47,26 @@ SOURCES += \
     worker.cpp \
     uinterface.cpp \
     uiconfig.cpp \
-    appserver.cpp
+    appserver.cpp \
+    watcher.cpp \
+    $${PWD}/error.c \
+    $${PWD}/loadresource.c \
 
 HEADERS  += worker.h \
     uinterface.h \
     uiconfig.h \
-    appserver.h
+    appserver.h \
+    watcher.h \
+    $${PWD}/error.h \
+    $${PWD}/ids_string.h \
 
-        DEFINES += LOONGSON
 CONFIG(debug ,debug|release){
     DEFINES += DEBUG_TO_STDERR
+#        DEFINES += LOONGSON
 }else{
+        DEFINES += LOONGSON
 ##contains(QT_ARCH, loongson3a) {
 #        DEFINES += LOONGSON
 ##}
 }
+

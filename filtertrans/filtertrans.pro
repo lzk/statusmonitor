@@ -8,6 +8,7 @@ TARGET = tjgd1zsm
 
 include("../jkinterface/jkinterface.pri")
 include(../common/common.pri)
+include(../statusmonitor/statusmonitor.pri)
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -23,7 +24,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     appserver.cpp \
-    watcher.cpp
+    watcher.cpp \
+    appconfig.cpp
 
 HEADERS += \
     appserver.h \
@@ -33,7 +35,7 @@ HEADERS += \
 
 CONFIG(debug ,debug|release){
     DEFINES += DEBUG_TO_STDERR
-        DEFINES += LOONGSON
+#        DEFINES += LOONGSON
 }else{
         DEFINES += LOONGSON
 ##contains(QT_ARCH, loongson3a) {

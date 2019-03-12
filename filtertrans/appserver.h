@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QThread>
 class ServerThread;
+class StatusThread;
 class AppServer : public QObject
 {
     Q_OBJECT
@@ -16,6 +17,8 @@ public slots:
     void client_connect(int fd);
     void restart_server();
 
+public:
+    StatusThread* statusThread;
 private:
     ServerThread* thread_server;
     QString server_path;
