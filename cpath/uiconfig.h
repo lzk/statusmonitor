@@ -32,6 +32,7 @@ Q_DECLARE_METATYPE(ScanSettings)
 typedef struct struct_wifi_refresh_info
 {
     struct cmdst_wifi_get wifi_para;
+    bool wifi_status;
     struct cmdst_aplist_get wifi_aplist;
 }
     struct_wifi_refresh_info;

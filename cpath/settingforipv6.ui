@@ -336,6 +336,9 @@ QPushButton:hover{
    <property name="text">
     <string>ResStr_Obtain_address_from_DHCP</string>
    </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_isManualAddress">
    <property name="geometry">
@@ -348,6 +351,9 @@ QPushButton:hover{
    </property>
    <property name="text">
     <string>ResStr_Use_Manual_Address</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_ManualAddress">

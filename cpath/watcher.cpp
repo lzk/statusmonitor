@@ -63,7 +63,7 @@ void Watcher::timerOut()
     if(current_printers != printers){
         current_printers = printers;
         current_printers_detail = printers_detail;
-        emit update_printerlist();
+//        emit update_printerlist();
     }
     mutex.unlock();
 

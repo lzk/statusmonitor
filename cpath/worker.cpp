@@ -45,6 +45,7 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 
     switch (cmd) {
     case UIConfig::CMD_GetPrinters:
+        LOGLOG("CMD_GetPrinters from ui")
         getPrinters();
         value.setValue(printers_detail);
         cmdResult(cmd ,0 ,value);
@@ -156,11 +157,16 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
                 result = lshell->open(printer);
                 if(!result){
                     result = lshell->wifi_get_para(&wifi_refresh_data.wifi_para);
+                    qDebug()<<"wifi_refresh_data"<<result<<" "<<wifi_refresh_data.wifi_para.wifiEnable;
+
+                    cmdst_wifi_status status_data = 0;
+                    wifi_refresh_data.wifi_status = false;
                     if(!result){
-                        cmdst_wifi_status status_data;
                         result = lshell->wifi_get_status(&status_data);
+                        qDebug()<<"status_data"<<status_data;
                     }
-                    if(!result){
+                    if(status_data != 0 && !result){
+                        wifi_refresh_data.wifi_status = true;
                         result = lshell->wifi_get_aplist(&wifi_refresh_data.wifi_aplist);
                     }
                     value.setValue(wifi_refresh_data);

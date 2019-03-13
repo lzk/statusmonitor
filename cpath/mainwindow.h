@@ -7,6 +7,9 @@
 #include "uiconfig.h"
 #include "busyrefreshlabel.h"
 #include <qsystemtrayicon.h>
+#include <QTimer>
+
+//#define DEBUG
 
 namespace Ui {
 class MainWindow;
@@ -78,6 +81,8 @@ private slots:
 
     void startScan();
     void stopScan();
+    void onTimeout();
+    void blink();
 
     void enableCycleAnimation(bool enabled);
 //    void startCycleAnimation();
@@ -112,6 +117,9 @@ private:
     bool isStartCopy;
 
     int deviceStatus;
+
+    QTimer *timerDeviceMsg;
+    QTimer *timerBlink;
 
 signals:
     void signalCloseAnimationDlg();

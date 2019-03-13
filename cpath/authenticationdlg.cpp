@@ -52,7 +52,7 @@ void AuthenticationDlg::on_lineEdit_Password_textEdited(const QString &arg1)
 
 void AuthenticationDlg::on_btApply_Login_clicked()
 {
-    LOGLOG("on_btApply_Login_clicked");
+//    LOGLOG("on_btApply_Login_clicked");
     if(ui->lineEdit_Password->text() != NULL)
     {
         qDebug()<<"lineEdit_Password:"<<ui->lineEdit_Password->text()<<"toLatin1:"<<ui->lineEdit_Password->text().toLatin1();

@@ -12,8 +12,6 @@
 #include <qsettings.h>
 #include "membercenter/experiencepro.h"
 
-//#define DEBUG
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -25,6 +23,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     selectState = "background-color: rgb(99, 99, 99);color:white;";
     unSelectState = "background-color: white;color:black;";
+    timerDeviceMsg = new QTimer(this);
+    connect(timerDeviceMsg, SIGNAL(timeout()), this, SLOT(onTimeout()));
+
+    timerBlink = new QTimer(this);
+    connect(timerBlink,SIGNAL(timeout()),this,SLOT(blink()));
 
     QListView *listView = new QListView(ui->deviceNameBox);
     listView->setStyleSheet("QListView{border-color:black;border-width:2px;border-radius:0px;}");
@@ -316,6 +319,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         break;
 
     case UIConfig::CMD_GetPrinters:{
+        qDebug()<<"CMD_GetPrinters";
 #ifndef DEBUG
         if(!result){
             updatePrinter(data);
@@ -632,27 +636,57 @@ void MainWindow::enableTroubleshootingPage(bool enabled)
     }
 }
 
+void MainWindow::blink()
+{
+    if(ui->btCar->isHidden())
+        ui->btCar->show();
+    else
+        ui->btCar->hide();
+}
+
 void MainWindow::updateTonerCarStatus(int toner)
 {
     if(toner<0)
     {
         ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Disable.tif);");
         ui->btCar->setEnabled(false);
+        if(timerBlink->isActive())
+        {
+            timerBlink->stop();
+            ui->btCar->show();
+        }
     }
     else if(toner < 11)
     {
         ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Warn.png);");
         ui->btCar->setEnabled(true);
+        ui->mofenProgressBar->setStyleSheet("QProgressBar{color:black;border:3px groove white;border-radius:9px;background-image:url();background-color:lightgray;} QProgressBar::chunk{background-color:red;border-radius:5px;}");
+
+        if(timerBlink->isActive() == false)
+        {
+            timerBlink->start(1000);
+        }
     }
-    else if(toner < 30)
+    else if(toner <= 30)
     {
         ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png);");
         ui->btCar->setEnabled(true);
+        ui->mofenProgressBar->setStyleSheet("QProgressBar{color:black;border:3px groove white;border-radius:9px;background-image:url();background-color:lightgray;} QProgressBar::chunk{background-color:yellow;border-radius:5px;}");
+        if(timerBlink->isActive() == false)
+        {
+            timerBlink->start(1000);
+        }
     }
     else
     {
         ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png);");
         ui->btCar->setEnabled(true);
+        ui->mofenProgressBar->setStyleSheet("QProgressBar{color:black;border:3px groove white;border-radius:9px;background-image:url();background-color:lightgray;} QProgressBar::chunk{background-color:gray;border-radius:5px;}");
+        if(timerBlink->isActive())
+        {
+            timerBlink->stop();
+            ui->btCar->show();
+        }
     }
 }
 
@@ -901,6 +935,12 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
     }
 }
 
+void MainWindow::onTimeout()
+{
+    ui->label_10->setText("");
+    timerDeviceMsg->stop();
+}
+
 void MainWindow::setDeviceMsg(const QString& msg, int result)
 {
     if(!result)
@@ -909,6 +949,11 @@ void MainWindow::setDeviceMsg(const QString& msg, int result)
         ui->label_10->setStyleSheet("QLabel{color:red}");
 
     ui->label_10->setText(msg);
+    if(timerDeviceMsg->isActive())
+    {
+        timerDeviceMsg->stop();
+    }
+    timerDeviceMsg->start(10000);
 }
 
 void MainWindow::enableCycleAnimation(bool enabled)

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>220</width>
-    <height>262</height>
+    <height>71</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -218,9 +218,9 @@ QRadioButton::indicator::checked {
    <widget class="QLabel" name="label_Encryption">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>171</y>
-      <width>81</width>
+      <x>6</x>
+      <y>174</y>
+      <width>75</width>
       <height>20</height>
      </rect>
     </property>
@@ -459,9 +459,9 @@ QLabel{
    <widget class="QComboBox" name="combox_encryption">
     <property name="geometry">
      <rect>
-      <x>95</x>
-      <y>170</y>
-      <width>121</width>
+      <x>85</x>
+      <y>173</y>
+      <width>131</width>
       <height>22</height>
      </rect>
     </property>

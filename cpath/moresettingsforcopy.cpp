@@ -87,12 +87,19 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     }
 
 
+    QString lan = QLocale::system().name();
     if(_idCardFlag)
     {
         ParamForCopy->scaling = 100;
 //        ParamForCopy->docType = DocType_Copy_Photo;
         ParamForCopy->docDpi = DocDpi_Copy_DPI300;
-        ParamForCopy->outputSize = OutPutSize_Copy_A4;
+        if(lan == "en_US")
+        {
+            ParamForCopy->outputSize = OutPutSize_Copy_letter;
+        }else
+        {
+            ParamForCopy->outputSize = OutPutSize_Copy_A4;
+        }
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
     }
@@ -100,7 +107,13 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     {
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
-        ParamForCopy->outputSize = OutPutSize_Copy_A4;
+        if(lan == "en_US")
+        {
+            ParamForCopy->outputSize = OutPutSize_Copy_letter;
+        }else
+        {
+            ParamForCopy->outputSize = OutPutSize_Copy_A4;
+        }
 //        if(ParamForCopy->docSize == DocSize_Copy_Executive)
 //        {
 //            ParamForCopy->docSize = DocSize_Copy_A4;
@@ -162,9 +175,17 @@ void MoreSettingsForCopy::setDefault()
 //    }
     defaultParamForCopy->scaling = (int)p->scale;
     defaultParamForCopy->docType = (DocType_Copy)p->scanMode;
-    defaultParamForCopy->docSize = (DocSize_Copy)p->orgSize;
+    QString lan = QLocale::system().name();
+    if(lan == "en_US")
+    {
+        defaultParamForCopy->docSize = DocSize_Copy_Letter;
+        defaultParamForCopy->outputSize = OutPutSize_Copy_letter;
+    }else
+    {
+        defaultParamForCopy->docSize = DocSize_Copy_A4;
+        defaultParamForCopy->outputSize = OutPutSize_Copy_A4;
+    }
     defaultParamForCopy->docDpi = (DocDpi_Copy)p->dpi;
-    defaultParamForCopy->outputSize = (OutPutSize_Copy)p->paperSize;
     defaultParamForCopy->paperType = (MediaType_Copy)p->mediaType;
     defaultParamForCopy->isMultiPage = false;
     defaultParamForCopy->multiMode = (MultiMode_Copy)p->nUp;
@@ -295,15 +316,27 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 //            }
 //        }
 
-        //设置outPutSizeList的出了a4其他都不可用
+        //设置outPutSizeList的出了a4(Americas:Letter)其他都不可用
         QStandardItemModel *model1 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
         for(int i=0; i<8; i++)
         {
-            if((i!=1) && (model1 != NULL))
+            QString lan = QLocale::system().name();
+            if(lan == "en_US")
             {
-                model1->item(i)->setEnabled(false);
-               //此处设置combobox的下拉选项字体显示灰色
-               // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
+                if((i!=0) && (model1 != NULL))
+                {
+                    model1->item(i)->setEnabled(false);
+                   //此处设置combobox的下拉选项字体显示灰色
+                   // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
+                }
+            }else
+            {
+                if((i!=1) && (model1 != NULL))
+                {
+                    model1->item(i)->setEnabled(false);
+                   //此处设置combobox的下拉选项字体显示灰色
+                   // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
+                }
             }
         }
 
@@ -534,9 +567,11 @@ void MoreSettingsForCopy::on_scaling_editingFinished()
         ui->btReduce->setEnabled(true);
         ui->btAdd->setEnabled(true);
         ui->btOK->setEnabled(true);
+        ui->label_tip->hide();
     }
     else{
         ui->scaling->setStyleSheet("#scaling {border:transparent;}");
+        ui->label_tip->hide();
      }
 }
 

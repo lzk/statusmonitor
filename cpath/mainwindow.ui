@@ -810,6 +810,11 @@ border-bottom-left-radius:0px;</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>BusyRefreshLabel</class>
+   <extends>QLabel</extends>
+   <header>busyrefreshlabel.h</header>
+  </customwidget>
+  <customwidget>
    <class>TabStackedWidget</class>
    <extends>QStackedWidget</extends>
    <header>tabstackedwidget.h</header>
@@ -820,11 +825,6 @@ border-bottom-left-radius:0px;</string>
    <extends>QWidget</extends>
    <header>membercenterwidget.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>BusyRefreshLabel</class>
-   <extends>QLabel</extends>
-   <header>busyrefreshlabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

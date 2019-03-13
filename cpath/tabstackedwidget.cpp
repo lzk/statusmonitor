@@ -205,9 +205,17 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
 
     paramCopy.scaling = (int)p->scale;
     paramCopy.docType = (DocType_Copy)p->scanMode;
-    paramCopy.docSize = (DocSize_Copy)p->orgSize;
+    QString lan = QLocale::system().name();
+    if(lan == "en_US")
+    {
+        paramCopy.docSize = DocSize_Copy_Letter;
+        paramCopy.outputSize = OutPutSize_Copy_letter;
+    }else
+    {
+        paramCopy.docSize = DocSize_Copy_A4;
+        paramCopy.outputSize = OutPutSize_Copy_A4;
+    }
     paramCopy.docDpi = (DocDpi_Copy)p->dpi;
-    paramCopy.outputSize = (OutPutSize_Copy)p->paperSize;
     paramCopy.paperType = (MediaType_Copy)p->mediaType;
     paramCopy.isMultiPage = false;
     paramCopy.multiMode = (MultiMode_Copy)p->nUp;
@@ -460,10 +468,11 @@ void TabStackedWidget::on_cBox_DuplexCopy_clicked(bool checked)
 void TabStackedWidget::on_btn_Scan_clicked()
 {
 //    qDebug()<<"on_btn_Scan_clicked";
-//    const char *image_path = "/tmp/vop_scan/2019-02-25_09-16-19-418.bmp";
+//    const char *image_path = "/tmp/vop_scan/2019-03-12_15-45-11-475.bmp";
 
 //    QSize size = QSize(2496,3507);
 //    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
+
     if(is_disk_no_space("/tmp" ,500000)){
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
         msgWarm->setWindowTitle(tr("ResStr_Warning"));

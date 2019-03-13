@@ -362,7 +362,19 @@ void SettingForIPv6::cmdResult(int cmd,int result,QVariant data)
             }
         }
         if(!isDoingCMD)
+        {
+            QString deviceMsg;
+            if(!result)
+            {
+                deviceMsg = tr("ResStr_Msg_1");
+            }
+            else
+            {
+                deviceMsg = tr("ResStr_Setting_Fail");
+            }
             cycle->stopAnimation();
+            gUInterface->setDeviceMsgFrmUI(deviceMsg,0);
+        }
         break;
     default: break;
     }

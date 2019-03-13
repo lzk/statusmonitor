@@ -32,8 +32,9 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     listView->setStyleSheet("QListView::item:selected:active{background-color:gray;color:white;}");
     ui->combox_encryption->setView(listView);
 
+    parentScroll = qobject_cast<QScrollArea*>(parent);
 
-    timer1 = new QTimer();
+    timer1 = new QTimer(this);
     cycleCount = 0;
     currentAPID = 0;
     currentAp = new APInfo;
@@ -80,6 +81,10 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 //    qRegisterMetaType<APInfo>("APInfo");
+#ifdef DEBUG
+    m_isLogin = true;
+    islogin = &m_isLogin;
+#else
     if(NULL != _islogin)
     {
         islogin = _islogin;
@@ -88,6 +93,7 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     {
         islogin = &m_isLogin;
     }
+#endif
     isWitch = false;
     is_wifi_now_on = false;
     isDoingCMD = false;
@@ -106,7 +112,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
     switch(cmd)
     {
     case UIConfig::CMD_WIFI_refresh_plus:
-        qDebug()<<"CMD_WIFI_refresh_plus";
+        qDebug()<<"CMD_WIFI_refresh_plus"<<result;
         if(!result){
             struct_wifi_refresh_info wifi_refresh_info;
             wifi_refresh_info = data.value<struct_wifi_refresh_info>();
@@ -118,7 +124,10 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
 #ifndef DEBUG
             initCell(wifi_para,aplist);
 #endif
-            is_wifi_now_on = true;
+            if(wifi_refresh_info.wifi_status)
+            {
+                is_wifi_now_on = true;
+            }
             isDoingCMD = false;
             times = 0;
         }
@@ -137,19 +146,17 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 isDoingCMD = false;
             }
         }
-        if(result == -4)
-        {
-            is_wifi_now_on = false;
-        }
+
         if(!isDoingCMD)
         {
             gUInterface->emitEnableCycleAnimation(false);
         }
         break;
     case UIConfig::LS_CMD_WIFI_apply:
-        qDebug()<<"LS_CMD_WIFI_apply"<<result;
+    {
+        qDebug()<<"LS_CMD_WIFI_apply"<<result<<isWitch;
+        QString deviceMsg;
         if(!result && isWitch)
-//        if(result < 0 && isWitch)
         {
             isWlanOn = isWlanOn ? false : true;
             qDebug()<<isWlanOn;
@@ -159,25 +166,26 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 ui->btFlesh->show();
                 ui->label_line->show();
                 ui->label_network->show();
-                on_btFlesh_clicked();
-//                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_get);
+//                on_btFlesh_clicked();
+////                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_get);
             }
-            else
-            {
-                gUInterface->emitEnableCycleAnimation(false);
-            }
+            gUInterface->emitEnableCycleAnimation(false);
             if((is_wifi_now_on == true && isWlanOn == false) || (is_wifi_now_on == false && isWlanOn == true) )
             {
-                QString deviceMsg;
                 deviceMsg = tr("ResStr_Msg_1");
                 gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
 
                 SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_1"), 1);
-                warming->setWindowTitle("ResStr_Prompt1");
+                warming->setWindowTitle(tr("ResStr_Prompt1"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
+            }
+            else
+            {
+                deviceMsg = tr("ResStr_Setting_Successfully");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             }
             isDoingCMD = false;
             times = 0;
@@ -213,18 +221,25 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
         if(!isDoingCMD)
         {
             isWitch = false;
-            QString deviceMsg;
             qDebug()<<result;
             if(result != 0)
-//            if(!result)
             {
-//                ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-//                ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+                if(isWlanOn)
+                {
+                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+                }
+                else
+                {
+                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+                }
                 deviceMsg = tr("ResStr_Setting_Fail");
             }
 
             gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
         }
+    }
         break;
     default: break;
     }
@@ -287,6 +302,8 @@ void WlanTitleCell::on_btWLANON1_clicked()
 
 void WlanTitleCell::on_btManualWiFi_clicked()
 {
+//    qDebug()<<"scroll"<<parentScroll->contentsRect();
+//    qDebug()<<"currentSize.height():"<<currentSize.height()<<"this.height"<<this->size().height();
     this->resize(DEFWIDTH, 310);
     this->setMinimumHeight(310);
     this->setCurrentIndex(1);
@@ -296,8 +313,9 @@ void WlanTitleCell::on_btCancel_clicked()
 {
 //    emit SizeChanged( QSize(211, 310), QSize(211, 71));
     this->resize(DEFWIDTH, currentSize.height() + DEFTITELHIGHT);
-    widget->resize(DEFWIDTH, currentSize.height());
-    this->setMinimumHeight(this->size().height());
+    this->setMinimumHeight(currentSize.height() + DEFTITELHIGHT);
+//    qDebug()<<"this.height"<<this->size().height();
+//    parentScroll->scroll(0,0);
     this->setCurrentIndex(0);
 }
 

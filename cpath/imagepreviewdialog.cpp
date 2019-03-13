@@ -112,10 +112,10 @@ void ImagePreviewDialog::keyPressEvent(QKeyEvent *e)
 
 bool ImagePreviewDialog::eventFilter(QObject *obj, QEvent *event)
 {
-    qDebug()<<"eventFilter"<<angle<<" "<<weight;
+//    qDebug()<<"eventFilter"<<angle<<" "<<weight;
     if(obj == ui->scrollArea){
         if(event->type() == QEvent::Resize){
-            qDebug()<<"1";
+//            qDebug()<<"1";
             image_ask(weight ,angle);
         }
     }

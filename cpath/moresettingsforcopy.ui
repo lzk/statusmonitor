@@ -565,10 +565,10 @@ background: transparent;
   <widget class="QLabel" name="label_tip">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>107</y>
-     <width>321</width>
-     <height>20</height>
+     <x>70</x>
+     <y>29</y>
+     <width>341</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -584,7 +584,10 @@ background: transparent;
     <string>ResStr_The_valid_range_is_25_400__please_confirm_and_enter_again_</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="btDefault">
@@ -1564,7 +1567,6 @@ QRadioButton::indicator::checked {
   <zorder>label_20</zorder>
   <zorder>label_32</zorder>
   <zorder>label_1</zorder>
-  <zorder>label_tip</zorder>
   <zorder>btDefault</zorder>
   <zorder>scaling</zorder>
   <zorder>btNInOne</zorder>
@@ -1600,6 +1602,7 @@ QRadioButton::indicator::checked {
   <zorder>label_A4_7</zorder>
   <zorder>label_A4_8</zorder>
   <zorder>Label_isIDCardCopyMode</zorder>
+  <zorder>label_tip</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -1489,6 +1489,26 @@ background-color: rgb(235, 235, 235);</string>
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>spinBox</tabstop>
+  <tabstop>spinBox_M</tabstop>
+  <tabstop>spinBox_D</tabstop>
+  <tabstop>btMan</tabstop>
+  <tabstop>btFemale</tabstop>
+  <tabstop>le_mail</tabstop>
+  <tabstop>le_addr</tabstop>
+  <tabstop>btLogin</tabstop>
+  <tabstop>btCancel</tabstop>
+  <tabstop>btloginImg</tabstop>
+  <tabstop>btChInfo</tabstop>
+  <tabstop>btApply</tabstop>
+  <tabstop>btExpe</tabstop>
+  <tabstop>btAbout</tabstop>
+  <tabstop>btProduct</tabstop>
+  <tabstop>btloginImg2</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>le_name</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

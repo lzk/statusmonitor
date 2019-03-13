@@ -24,10 +24,12 @@ public:
     WlanTitleCell *titelCell;
     void changeStackIndex(int index);
     void setWifiEnabled(bool enabled);
+    void setEnabled(bool);
 
 protected slots:
     bool eventFilter(QObject *, QEvent *);
     void hideEvent(QHideEvent *);
+
 
 private:
     Ui::SettingsStackedWidget *ui;
@@ -92,6 +94,7 @@ private slots:
     void on_lineEdit_IPAddressv4_textEdited(const QString &arg1);
     void on_lineEdit_Gatewayv4_textEdited(const QString &arg1);
     void on_lineEdit_Submaskv4_textEdited(const QString &arg1);
+    void on_lineEdit_server_textEdited(const QString &arg1);
 
     void on_btApply_Timeout_clicked();
 
@@ -129,7 +132,7 @@ private slots:
     void on_btApply_clicked();
 
 //signals:
-//    void cycleStart();
+//    void cycleStart();4312432
 //    void cycleStop();
 };
 

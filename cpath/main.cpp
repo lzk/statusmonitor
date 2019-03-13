@@ -13,6 +13,7 @@ UInterface* gUInterface;
 #include <qdesktopwidget.h>
 #include <qelapsedtimer.h>
 #include <qsettings.h>
+#include <qproxystyle.h>
 
 #ifndef Q_OS_DARWIN
 extern "C"{
@@ -41,6 +42,22 @@ Q_IMPORT_PLUGIN(qgif)
 Q_IMPORT_PLUGIN(qico)
 #endif
 #endif
+//BMS:7489
+class MyProxyStyle : public QProxyStyle
+{
+public:
+    virtual void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+    {
+        if(PE_FrameFocusRect == element && widget && widget->inherits("QListWidget") && painter)
+        {
+
+        }
+        else
+        {
+//            QProxyStyle::drawPrimitive(element,option,painter,widget);
+        }
+    }
+};
 
 
 void quit(int)
@@ -67,6 +84,7 @@ int main(int argc, char *argv[])
 #endif
     QApplication a(argc, argv);
 //    a.setWindowIcon(QIcon(":/image/app_icon.png"));
+    a.setStyle(new MyProxyStyle);
 
 #if QT_VERSION < 0x050000
         QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));

@@ -102,7 +102,25 @@ void ThumbnailImage::paintEvent(QPaintEvent *e)
     if(!image.isNull()){
         QPainter painter(this);
 //        painter.drawImage(QPoint((width() - image.width())/2 ,(height() - image.height()) / 2) ,image);
-        painter.drawPixmap(0,0,width(),height(),QPixmap::fromImage(image));
+        int imgWidth;
+        int imgHeight;
+        if(image.width()>image.height())
+        {
+            imgWidth = width();
+            imgHeight = image.height()*imgWidth/image.width();
+        }
+        else if(image.width() < image.height())
+        {
+            imgHeight = height();
+            imgWidth = image.width()*imgHeight/image.height();
+        }
+        else
+        {
+            imgWidth = width();
+            imgHeight = height();
+        }
+
+        painter.drawPixmap((width()-imgWidth)/2,(height()-imgHeight)/2,imgWidth,imgHeight,QPixmap::fromImage(image));
     }
     QWidget::paintEvent(e);
 }
@@ -143,6 +161,12 @@ void ThumbnailImage::mouseDoubleClickEvent(QMouseEvent *)
 
         if(angle){
             emit image_save(path ,angle);
+            if(angle % 4){
+                if(angle % 2){
+                    QSize size = QSize(item->data(Qt::UserRole + 1).toSize().height(),item->data(Qt::UserRole + 1).toSize().width());
+                    item->setData(Qt::UserRole + 1,size);
+                }
+            }
             image_ask();
         }
 //        //print

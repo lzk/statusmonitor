@@ -53,8 +53,11 @@ void ImageHandler::image_save(const QString& path ,int angle)
         QTransform transform;
         transform.rotate(90 * angle);
         QImage(path).transformed(transform).save(path);
+        qDebug()<<"path:"<<path;
 #if !DEBUG_VIEW
         QImage(get_preview_file_name(path)).transformed(transform).save(get_preview_file_name(path));
+
+        qDebug()<<"get_preview_file_name:"<<get_preview_file_name(path);
 #endif
     }
 }
@@ -80,8 +83,9 @@ void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,Q
         QTransform trans;
         prev_image = prev_image.transformed(trans.rotate(90 * (angle % 4)));
         if(angle % 2){
-            prev_size = prev_image.size();
+            prev_size = QSize(prev_size.height(),prev_size.width());
             image_size = QSize(image_size.height() ,image_size.width());
+            qDebug()<<prev_size<<"prev_size "<<image_size;
         }
     }
     //get scale new size

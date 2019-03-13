@@ -67,7 +67,7 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     titelCell = new WlanTitleCell(scrollArea, true, &isLogn);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(titelCell);
-    timer1 = new QTimer;
+    timer1 = new QTimer(this);
     initAP();
     initIP();
     initPowerSave();
@@ -99,6 +99,18 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     ui->label_close_AP->hide();
     ui->label_open_AP->hide();
     ui->btAPOpen->hide();
+
+    ui->lineEdit_IPAddressv4->setMaxLength(15);
+    ui->lineEdit_Gatewayv4->setMaxLength(15);
+    ui->lineEdit_Submaskv4->setMaxLength(15);
+    ui->lineEdit_server->setMaxLength(15);
+
+    QRegExp regexp1("^[.0-9]+$");
+    QValidator *validator1 = new QRegExpValidator(regexp1, this);
+    ui->lineEdit_IPAddressv4->setValidator(validator1);
+    ui->lineEdit_Gatewayv4->setValidator(validator1);
+    ui->lineEdit_Submaskv4->setValidator(validator1);
+    ui->lineEdit_server->setValidator(validator1);
 }
 
 SettingsStackedWidget::~SettingsStackedWidget()
@@ -720,7 +732,7 @@ void SettingsStackedWidget::initIP()
             ui->lineEdit_Submaskv4->setText(tr(text.toLatin1()));
         }
 
-        if(info_ipv4.UseManualDNS)
+        if(info_ipv4.UseManualDNS == 1)
         {
             ui->btManual->setChecked(true);
             onbtManualtoggled(true);
@@ -730,7 +742,7 @@ void SettingsStackedWidget::initIP()
                                        arg(info_ipv4.DNSAddress[2]).arg(info_ipv4.DNSAddress[3]);
             ui->lineEdit_server->setText(tr(text.toLatin1()));
         }
-        else
+        else if(info_ipv4.UseManualDNS == 0)
         {
             ui->btAuto->setChecked(true);
             onbtAutotoggled(true);
@@ -1103,7 +1115,7 @@ void SettingsStackedWidget::onbtStatictoggled(bool checked)
 
 void SettingsStackedWidget::on_btIPv6Setting_clicked()
 {
-    settingIPv6Widget = new SettingForIPv6(this, &isLogn);
+    settingIPv6Widget = new SettingForIPv6(this->parentWidget(), &isLogn);
     settingIPv6Widget->setWindowTitle(tr("ResStr_Setting"));
     settingIPv6Widget->exec();
 }
@@ -1482,6 +1494,27 @@ void SettingsStackedWidget::on_lineEdit_Submaskv4_textEdited(const QString &arg1
     }
 }
 
+void SettingsStackedWidget::on_lineEdit_server_textEdited(const QString &arg1)
+{
+    QRegExp rx2("^([1]?\\d\\d?|2[0-1]\\d|22[0-3])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])$");
+    if( !rx2.exactMatch(arg1) )
+    {
+         ui->label_server_error->show();
+         ui->lineEdit_server->setStyleSheet("QLineEdit{\
+                                               border:2px solid red;\
+                                               border-radius:12px;}");
+        ui->btApply_IPConfig->setDisabled(true);
+    }
+    else
+    {
+        ui->label_server_error->hide();
+        ui->lineEdit_server->setStyleSheet("QLineEdit{\
+                                              border:2px solid rgb(170, 170, 170);\
+                                              border-radius:12px;}");
+        ui->btApply_IPConfig->setEnabled(true);
+    }
+}
+
 /****************
  * this event filter is work for the lineEdit where need to enter value
  * it get the focus lost event of those lineEdit.
@@ -1529,6 +1562,21 @@ bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
                 ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
                                                       border:2px solid rgb(170, 170, 170);\
                                                       border-radius:12px;}");
+                ui->btApply_IPConfig->setEnabled(true);
+            }
+        }
+    }
+    if(watched == ui->lineEdit_server)
+    {
+        if(event->type() == QEvent::FocusOut)
+        {
+            if(!(ui->label_server_error->isHidden()))
+            {
+                ui->lineEdit_server->setText("0.0.0.0");
+                ui->label_server_error->hide();
+                ui->lineEdit_server->setStyleSheet("QLineEdit{\
+                                                  border:2px solid rgb(170, 170, 170);\
+                                                  border-radius:12px;}");
                 ui->btApply_IPConfig->setEnabled(true);
             }
         }
@@ -1606,3 +1654,13 @@ void SettingsStackedWidget::hideEvent(QHideEvent *e)
     isLogn = false;
     QWidget::hideEvent(e);
 }
+
+void SettingsStackedWidget::setEnabled(bool enabled)
+{
+    if(enabled == false)
+    {
+        isLogn = false;
+    }
+    QWidget::setEnabled(enabled);
+}
+

@@ -119,6 +119,7 @@ private:
 
 
     QTimer *timer1;
+    QScrollArea *parentScroll;
 
 
     QList<APInfo> aList;
