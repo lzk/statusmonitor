@@ -545,7 +545,7 @@ int cups_usb_getDeviceID(char* data ,int datalen)
     cups_sc_status_t status;
     /* Tell cupsSideChannelDoRequest() how big our buffer is, less 1 byte for
        nul-termination... */
-    datalen = sizeof(data) - 1;
+//    datalen = sizeof(data) - 1;
 
     /* Get the IEEE-1284 device ID, waiting for up to 1 second */
     status = cupsSideChannelDoRequest(CUPS_SC_CMD_GET_DEVICE_ID, data, &datalen, 1.0);

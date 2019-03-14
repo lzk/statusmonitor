@@ -46,24 +46,34 @@ void AppServer::restart_server()
 static int callback_Server(void* para ,char* buffer,int bufsize)
 {
     AppServer* app_server = (AppServer*)para;
-    QUrl url(buffer);
-    QString cmd = url.scheme();
+//    QUrl url(buffer);
+    QString cmd;
+//    cmd = url.scheme();
 //    QString printer = url.host(QUrl::PrettyDecoded);
-    QString printer = QString(buffer).mid(7);
-    int index = printer.indexOf('?');
+    QString str(buffer);
+    int index;
+    index = str.indexOf("://");
+    cmd = str.left(index);
+    LOGLOG("cmd is:%s" ,cmd.toLatin1().constData());
+    QString printer = QString(buffer).mid(index + strlen("://"));
+    index = printer.indexOf('?');
     if(index > 0)
         printer = printer.left(index);
+    LOGLOG("printer is:%s" ,printer.toLatin1().constData());
     if(!cmd.compare("stcp")){
         app_server->statusThread->set_current_printer(printer);
         strcpy(buffer ,"stcpok");
         return 0;
     }else if(!cmd.compare("dvid")){
         QString device_id;
-#if QT_VERSION > 0x050000
-    device_id = QUrlQuery(QUrl(url)).queryItemValue("deviceid");
-#else
-    device_id = QUrl(url).queryItemValue("deviceid");
-#endif
+//#if QT_VERSION > 0x050000
+//    device_id = QUrlQuery(QUrl(url)).queryItemValue("deviceid");
+//#else
+//    device_id = QUrl(url).queryItemValue("deviceid");
+//#endif
+        index = str.indexOf("deviceid=");
+        device_id = str.right(index + strlen("deviceid="));
+        LOGLOG("device_id is:%s" ,device_id.toLatin1().constData());
         app_server->statusThread->set_device_id(printer ,device_id);
         strcpy(buffer ,"didok");
         return 0;

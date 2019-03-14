@@ -36,7 +36,6 @@ void FilterStatusThread::run()
 
         result = cups_usb_getDeviceID(data ,datalen);
 
-
         sprintf(buffer ,"dvid://%s?deviceid=%s" ,current_printer.toLatin1().constData() ,data);
         tc.writeThenRead(buffer ,1124);
 

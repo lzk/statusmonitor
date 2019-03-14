@@ -40,6 +40,7 @@ void AppConfig::initConfig()
     statusKey = "statusmonitor/status/";
     printersKey = "statusmonitor/printerlist/";
     status_lock_file = "/tmp/.locktoecstatus";
+    g_status_server_path = SERVER_PATH;
 
 //    ui_server_path = SERVER_PATH;
     usb_error_printing = 0x01;
