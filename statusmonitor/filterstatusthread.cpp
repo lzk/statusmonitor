@@ -20,6 +20,7 @@ void FilterStatusThread::run()
 {
 //    PRINTER_STATUS printer_status;
     int result;
+    static int count = 0;
 
     char data[1025];
     int datalen = 1024;
@@ -35,6 +36,7 @@ void FilterStatusThread::run()
         }
 
         result = cups_usb_getDeviceID(data ,datalen);
+        LOGLOG("filter_status_task get device id %d: %s" ,count++ ,data);
 
         sprintf(buffer ,"dvid://%s?deviceid=%s" ,current_printer.toLatin1().constData() ,data);
         tc.writeThenRead(buffer ,1124);
@@ -59,6 +61,10 @@ static FilterStatusThread* filter_status_thread = NULL;
 int filter_task_start(const  char* printer_name ,const char* printer_uri)
 //int filter_task_start(filter_task_struct* filter_data)
 {
+    LOGLOG("filter_status_task: filter_task_start in");
+    Trans_Client tc(g_status_server_path);
+    int result = tc.tryConnectToServer();
+    LOGLOG("connect to server result %s:%d" ,g_status_server_path ,result);
     if(!QString(printer_uri).startsWith("usb://")){
         LOGLOG("filter_status_task: only usb uri can run the thread!");
         return -1;
@@ -75,6 +81,7 @@ int filter_task_start(const  char* printer_name ,const char* printer_uri)
 
 int filter_task_end()
 {
+    LOGLOG("filter_status_task: filter_task_end in");
     if(filter_status_thread){
         delete filter_status_thread;
         filter_status_thread = NULL;

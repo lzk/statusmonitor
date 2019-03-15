@@ -9,7 +9,7 @@ QT       -= core gui
 TARGET = tjgd1z
 TEMPLATE = lib
 
-CONFIG += shared staticlib
+CONFIG += shared
 
 DEFINES += TOEC_LIBRARY
 
@@ -26,7 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include("../jkinterface/jkinterface.pri")
 include("../common/common.pri")
-include("../statusmonitor/statusmonitor.pri")
+#include("../statusmonitor/statusmonitor.pri")
 unix {
     target.path = /usr/lib
     INSTALLS += target
@@ -36,10 +36,12 @@ SOURCES += \
     $${PWD}/fingermanager.cpp \
     FingerCommon.cpp \
     finger.cpp \
-    FingCmd.cpp
+    FingCmd.cpp \
+    filterlib.cpp
 
 
 HEADERS += \
+    $${PWD}/toecconfig.h \
     $${PWD}/fingermanager.h \
     $${PWD}/filter_check_finger.h \
     FingerCommon.h \
@@ -51,10 +53,7 @@ HEADERS += \
 
 CONFIG(debug ,debug|release){
     DEFINES += DEBUG_TO_STDERR
-#        DEFINES += LOONGSON
+    DEFINES += LOONGSON
 }else{
-        DEFINES += LOONGSON
-##contains(QT_ARCH, loongson3a) {
-#        DEFINES += LOONGSON
-##}
+    DEFINES += LOONGSON
 }

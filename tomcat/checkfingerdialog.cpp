@@ -8,7 +8,7 @@
 #if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
-#include "filter_check_finger.h"
+#include "filterlib.h"
 #include "jkinterface.h"
 #include <QSettings>
 #include <QDir>

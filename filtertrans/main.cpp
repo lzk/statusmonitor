@@ -4,6 +4,8 @@
 #include "appconfig.h"
 #include <signal.h>
 #include "watcher.h"
+#include <unistd.h>
+
 void quit(int)
 {
     LOGLOG("SIGINT quit");
@@ -12,20 +14,21 @@ void quit(int)
 }
 AppServer* app_server;
 
-//#include <unistd.h>
 int main(int argc, char *argv[])
 {
+    AppConfig::initConfig();
     if(is_app_running(SERVER_PATH)){
         LOGLOG("There has been a same app running!");
         return 0;
     }
 
-//    int result = daemon(0 ,2);
-//    if(!result){
-//        LOGLOG("daemon success!");
-//    }
-
-    AppConfig::initConfig();
+#ifndef DEBUG_TO_STDERR
+    //release as deaemon
+    int result = daemon(0 ,0);
+    if(!result){
+        LOGLOG("daemon success!");
+    }
+#endif
 
     QCoreApplication a(argc, argv);
 

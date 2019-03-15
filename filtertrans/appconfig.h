@@ -9,6 +9,7 @@
 #endif
 #endif
 
+
 #define SERVER_PATH_STM "/tmp/tjgd1zsmui.domain"
 
 #include "smconfig.h"

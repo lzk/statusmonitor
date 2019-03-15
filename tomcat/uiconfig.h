@@ -9,6 +9,7 @@
 
 extern const QString app_name;
 extern bool use_status_thread;
+
 #ifndef SERVER_PATH
 #ifdef LOONGSON
 #define SERVER_PATH "/var/run/cups/tjgd1zsm.domain"
@@ -16,6 +17,7 @@ extern bool use_status_thread;
 #define SERVER_PATH "/tmp/tjgd1zsm.domain"
 #endif
 #endif
+
 
 #define SERVER_PATH_STM "/tmp/tjgd1zsmui.domain"
 

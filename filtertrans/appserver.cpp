@@ -9,6 +9,7 @@
 #if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
+
 AppServer::AppServer(const char* server_path ,QObject *parent)
     : QObject(parent)
     ,server_path(server_path)
@@ -20,17 +21,22 @@ AppServer::AppServer(const char* server_path ,QObject *parent)
     thread_server->start();
 
     statusThread = new StatusThread();
+    statusThread->moveToThread(&thread);
+    connect(&thread ,SIGNAL(finished()) ,statusThread ,SLOT(deleteLater()));
+    connect(this ,SIGNAL(signal_set_device_id(const QString& ,const QString&)) ,statusThread ,SLOT(set_device_id(const QString& ,const QString&)));
+
+    thread.start();
     statusThread->start();
 }
 
 AppServer::~AppServer()
 {
-    if(statusThread)
-        delete statusThread;
+//    if(statusThread)
+//        delete statusThread;
 
     delete thread_server;
-//    thread.quit();
-//    thread.wait();
+    thread.quit();
+    thread.wait();
 }
 
 void AppServer::restart_server()
@@ -41,6 +47,16 @@ void AppServer::restart_server()
     connect(thread_server ,SIGNAL(client_connect(int)) ,this ,SLOT(client_connect(int)));
     connect(thread_server ,SIGNAL(client_cmd(QString ,void*)) ,this ,SLOT(client_cmd(QString ,void*)));
     thread_server->start();
+}
+
+void AppServer::set_device_id(const QString& printer ,const QString& device_id)
+{
+    signal_set_device_id(printer ,device_id);
+}
+
+void AppServer::set_current_printer(const QString& printer)
+{
+    statusThread->set_current_printer(printer);
 }
 
 static int callback_Server(void* para ,char* buffer,int bufsize)
@@ -61,7 +77,7 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
         printer = printer.left(index);
     LOGLOG("printer is:%s" ,printer.toLatin1().constData());
     if(!cmd.compare("stcp")){
-        app_server->statusThread->set_current_printer(printer);
+        app_server->set_current_printer(printer);
         strcpy(buffer ,"stcpok");
         return 0;
     }else if(!cmd.compare("dvid")){
@@ -72,9 +88,9 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
 //    device_id = QUrl(url).queryItemValue("deviceid");
 //#endif
         index = str.indexOf("deviceid=");
-        device_id = str.right(index + strlen("deviceid="));
+        device_id = str.mid(index + strlen("deviceid="));
         LOGLOG("device_id is:%s" ,device_id.toLatin1().constData());
-        app_server->statusThread->set_device_id(printer ,device_id);
+        app_server->set_device_id(printer ,device_id);
         strcpy(buffer ,"didok");
         return 0;
     }

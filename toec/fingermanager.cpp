@@ -1,6 +1,6 @@
 #include "fingermanager.h"
 #include "jkinterface.h"
-#include "filter_check_finger.h"
+#include "filterlib.h"
 #include "toecconfig.h"
 #include <string.h>
 #include <pthread.h>
@@ -219,31 +219,3 @@ int FingerManager::checkFinger(const char* server_path ,int jobid)
         return -1;
     }
 }
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-int checkFinger(int jobid)
-{
-    pid_t pid = fork();
-    switch(pid)
-    {
-    case -1:
-        LOGLOG("fork failed");
-        exit(1);
-        break;
-    case 0:
-        execlp("filterstatus", "filterstatus" ,0);
-        break;
-    default:
-//        sleep(1);
-//        tc.writeThenRead(buffer ,bufsize);
-        break;
-    }
-    FingerManager fm;
-    return fm.checkFinger(ui_server_path ,jobid);
-}
-
-#ifdef __cplusplus
-}
-#endif

@@ -6,7 +6,7 @@
 #include "jkinterface.h"
 #include <QUrl>
 
-#include "filter_check_finger.h"
+#include "filterlib.h"
 
 #if QT_VERSION > 0x050000
 #include <QUrlQuery>
