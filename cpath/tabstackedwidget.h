@@ -101,7 +101,6 @@ private:
     QString unSelectPressed;
 
     int value_Density;
-    bool isDuplexCopyDevice;
 
     QStringList filenamelist;
 

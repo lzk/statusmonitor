@@ -205,8 +205,8 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
 
     paramCopy.scaling = (int)p->scale;
     paramCopy.docType = (DocType_Copy)p->scanMode;
-    QString lan = QLocale::system().name();
-    if(lan == "en_US")
+    int country = QLocale::system().country();
+    if(country == QLocale::UnitedStates)
     {
         paramCopy.docSize = DocSize_Copy_Letter;
         paramCopy.outputSize = OutPutSize_Copy_letter;
@@ -219,6 +219,8 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
     paramCopy.paperType = (MediaType_Copy)p->mediaType;
     paramCopy.isMultiPage = false;
     paramCopy.multiMode = (MultiMode_Copy)p->nUp;
+    paramCopy.idCardCopyMode = A4Mode1;
+    paramCopy.duplexMode = Flip_Long_Edge;
     if(isExceptTips == false)
     {
         paramCopy.promptInfo.isIDCard = true;
@@ -235,6 +237,13 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
         ui->mark2_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
         ui->mark3_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
         ui->mark4_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
+
+        ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+        ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconDisable.tif);");
+
+        ui->cBox_IsIDCard->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+        ui->icon_IDCardCopy->setStyleSheet("border-image: url(:/Images/IDCardCopyIconDisable.png);");
+        ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));
     }
 }
 
@@ -484,6 +493,7 @@ void TabStackedWidget::on_btn_Scan_clicked()
     QVariant data;
     ScanSettings paraScanSettings;
     paraScanSettings.settings = paramScan;
+    qDebug()<<"scan_doctype"<<paramScan.scan_doctype;
     data.setValue<ScanSettings>(paraScanSettings);
     gUInterface->setCurrentPrinterCmd(UIConfig::CMD_Scan,data);
 
@@ -527,20 +537,7 @@ void TabStackedWidget::slots_scan_image_size(float size, int unit)//Added by gav
 
 void TabStackedWidget::on_btn_MoreSetting_Copy_clicked()
 {
-    MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),isDuplexCopyDevice,&paramCopy);
-
-    if(isDuplexCopyDevice)
-    {
-        moreSettingsForCopy->setMinimumHeight(649);
-        moreSettingsForCopy->setMaximumHeight(649);
-    }
-    else
-    {
-        moreSettingsForCopy->setMinimumHeight(498);
-        moreSettingsForCopy->setMaximumHeight(498);
-    }
-
-
+    MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),&paramCopy);
     moreSettingsForCopy->exec();
 }
 
@@ -653,7 +650,17 @@ void TabStackedWidget::setEnabledDuplexCopy(bool enabled)
     ui->text_DuplexCopy->setHidden(!enabled);
     ui->icon_DuplexCopy->setHidden(!enabled);
     ui->cBox_DuplexCopy->setHidden(!enabled);
-    isDuplexCopyDevice = enabled;
+    QRect geometry = ui->horizontalWidget->geometry();
+    if(enabled == false)
+    {
+        geometry.setX(120);
+        ui->horizontalWidget->setGeometry(geometry);
+    }
+    else
+    {
+        geometry.setX(30);
+        ui->horizontalWidget->setGeometry(geometry);
+    }
 }
 
 void TabStackedWidget::setEnabledCopyScan(bool enabled)
@@ -786,7 +793,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
     copyPara.mediaType = paramCopy.docType;
     copyPara.scale = paramCopy.scaling;
 
-    if(isDuplexCopyDevice&&ui->cBox_IsIDCard->isChecked() == true)
+    if(ui->cBox_IsIDCard->isChecked() == true)
     {
         copyPara.IDCardMode = paramCopy.idCardCopyMode;
     }

@@ -20,6 +20,7 @@ enum OutPutSize_Copy {OutPutSize_Copy_letter=0, OutPutSize_Copy_A4, OutPutSize_C
 enum MediaType_Copy {MediaType_Copy_Plain=0, MediaType_Copy_Recycled, MediaType_Copy_Thick, MediaType_Copy_Thin, MediaType_Copy_Label};
 enum MultiMode_Copy {OneInOne=0,TwoInOne,FourInOne, NineInOne};
 enum MultiMode_Copy_ID {A4Mode1=0,A4Mode2,A4Mode3,A5Mode};
+enum Duplex_Copy_Mode {Flip_Long_Edge=0,Flip_Short_Edge};
 
 struct Prompt {
     bool isIDCard;
@@ -37,6 +38,7 @@ struct Param_Copy {
     bool isMultiPage;         //multi paper In One
     MultiMode_Copy multiMode;
     int idCardCopyMode;//Credentials Duplex Copy Mode
+    int duplexMode;
 
     // infor support : bool idCard; bool nInOne;
 
@@ -65,7 +67,7 @@ class MoreSettingsForCopy : public QDialog
     Q_OBJECT
 
 public:
-    explicit MoreSettingsForCopy(QWidget *parent = 0,bool duplexCopyFlag = false, bool idCardFlay = false,bool isDuplexCopyDevice = false, Param_Copy *pParam = NULL);
+    explicit MoreSettingsForCopy(QWidget *parent = 0,bool duplexCopyFlag = false, bool idCardFlay = false,Param_Copy *pParam = NULL);
     ~MoreSettingsForCopy();
 
 private:
@@ -73,7 +75,6 @@ private:
 
     bool _idCardFlag;
     bool _duplexCopyFlag;
-    bool _isDuplexCopyDevice;
     Param_Copy defParam;
     Param_Copy *ParamForCopy;
 

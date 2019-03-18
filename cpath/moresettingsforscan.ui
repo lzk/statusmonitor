@@ -102,11 +102,7 @@
 QComboBox{
 	background: transparent;
 }
-
-QComboBox::down-arrow:on { /* shift the arrow when popup is open */
-    top: 1px;
-    left: 1px;
-}</string>
+</string>
    </property>
    <item>
     <property name="text">
@@ -857,84 +853,6 @@ color:white;
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QRadioButton" name="btSpeed">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>303</y>
-      <width>101</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">
-QRadioButton::indicator {
-    width: 25px;
-    height: 25px;
-}
-
-QRadioButton::indicator::unchecked {
-	image: url(:/Images/Uncheck.png);
-}
-
-
-QRadioButton::indicator::checked {
-	image: url(:/Images/Checked.png);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>ResStr_Scan_Speed</string>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="btQuality">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>303</y>
-      <width>101</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">
-QRadioButton::indicator {
-    width: 25px;
-    height: 25px;
-}
-
-QRadioButton::indicator::unchecked {
-	image: url(:/Images/Uncheck.png);
-}
-
-
-QRadioButton::indicator::checked {
-	image: url(:/Images/Checked.png);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>ResStr_Scan_Quality</string>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
@@ -1077,6 +995,84 @@ QRadioButton::indicator::checked {
     <property name="title">
      <string/>
     </property>
+    <widget class="QRadioButton" name="btQuality">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>106</x>
+       <y>12</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QRadioButton::indicator {
+    width: 25px;
+    height: 25px;
+}
+
+QRadioButton::indicator::unchecked {
+	image: url(:/Images/Uncheck.png);
+}
+
+
+QRadioButton::indicator::checked {
+	image: url(:/Images/Checked.png);
+}
+</string>
+     </property>
+     <property name="text">
+      <string>ResStr_Scan_Quality</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="btSpeed">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>12</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QRadioButton::indicator {
+    width: 25px;
+    height: 25px;
+}
+
+QRadioButton::indicator::unchecked {
+	image: url(:/Images/Uncheck.png);
+}
+
+
+QRadioButton::indicator::checked {
+	image: url(:/Images/Checked.png);
+}
+</string>
+     </property>
+     <property name="text">
+      <string>ResStr_Scan_Speed</string>
+     </property>
+    </widget>
    </widget>
    <zorder>groupBox_3</zorder>
    <zorder>slider_contrast</zorder>
@@ -1104,8 +1100,6 @@ QRadioButton::indicator::checked {
    <zorder>btContrastBar</zorder>
    <zorder>btBrightnessBar</zorder>
    <zorder>label_ScanType</zorder>
-   <zorder>btSpeed</zorder>
-   <zorder>btQuality</zorder>
    <zorder>groupBox_2</zorder>
   </widget>
   <widget class="QPushButton" name="btClose">

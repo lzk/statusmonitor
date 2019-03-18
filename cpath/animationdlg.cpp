@@ -75,23 +75,29 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
         label->setGeometry(12, 10, 371, 391);
         ui->bt_pause_play->setGeometry(QRect(170, 514, 44, 44));
         break;
-    case 0xBD:
+    case UIConfig::NofeedJam:
         flag = _NofeedJam;
         this->setWindowTitle(tr("ResStr_Out_of_Paper"));
         label->setGeometry(12, 10, 421, 480);
         ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
         hideLabel();
         break;
-    case 0xBC:          //PSTATUS_InitializeJam
-    case 0xBE:          //PSTATUS_JamAtRegistStayOn
+    case UIConfig::JamAtRegistStayOn:          //PSTATUS_JamAtExitNotReach
         flag = _JamInSide;
         this->setWindowTitle(tr("ResStr_Jam_front"));
         label->setGeometry(12, 10, 421, 480);
-        ui->bt_pause_play->setGeometry(QRect(20, 490, 44, 44));
+        ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
         hideLabel();
         break;
-    case 0xBF:          //PSTATUS_JamAtExitNotReach
-    case 0xC0:          //PSTATUS_JamAtExitStayOn
+    case UIConfig::InitializeJam:          //PSTATUS_InitializeJam
+    case UIConfig::JamAtExitNotReach:          //PSTATUS_JamAtRegistStayOn
+        flag = _JamInSide;
+        this->setWindowTitle(tr("ResStr_Jam_whole"));
+        label->setGeometry(12, 10, 421, 480);
+        ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
+        hideLabel();
+        break;
+    case UIConfig::JamAtExitStayOn:          //PSTATUS_JamAtExitStayOn
         flag = _JamAtExit;
         this->setWindowTitle(tr("ResStr_Jam_back"));
         label->setGeometry(12, 10, 421, 480);

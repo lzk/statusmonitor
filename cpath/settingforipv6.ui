@@ -169,7 +169,7 @@ QPushButton:pressed{
     <string>::</string>
    </property>
    <property name="maxLength">
-    <number>33</number>
+    <number>39</number>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
@@ -263,7 +263,7 @@ QPushButton:pressed{
     <string>::</string>
    </property>
    <property name="maxLength">
-    <number>33</number>
+    <number>39</number>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>

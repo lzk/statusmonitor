@@ -315,6 +315,8 @@ void WiFiSettingCell::cmdResult(int cmd,int result ,QVariant data)
                 apInfo.APStatus.clear();
                 apInfo.APStatus = tr("ResStr_Connected");
      //           on_btCancel_clicked();
+                QString deviceMsg = tr("ResStr_Setting_Successfully_");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
                 emit connectSuc(this, true);
             }
             isDoingCMD = false;
@@ -332,6 +334,8 @@ void WiFiSettingCell::cmdResult(int cmd,int result ,QVariant data)
                 on_btConnect_clicked();
             }
             else{
+                QString deviceMsg = tr("ResStr_Setting_Fail");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
                 emit connectSuc(this, false);
                 isDoingCMD = false;
             }

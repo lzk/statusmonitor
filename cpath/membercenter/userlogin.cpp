@@ -14,6 +14,10 @@ UserLogin::UserLogin(QWidget *parent) :
     m_loginSuccess = false;
     acTimer = new QTimer(this);
     connect(acTimer,SIGNAL(timeout()),this,SLOT(showTimelimit()));
+
+    QRegExp regexp("^[0-9]+$");
+    QRegExpValidator *pReg = new QRegExpValidator(regexp,this);
+    ui->le_userName->setValidator(pReg);
 }
 
 UserLogin::~UserLogin()
