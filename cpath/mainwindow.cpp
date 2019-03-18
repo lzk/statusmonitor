@@ -115,7 +115,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 //    ui->deviceNameBox->installEventFilter(this);
 //    ui->deviceNameLabel->installEventFilter(this);
-    ui->deviceNameLabel->hide();
+//    ui->deviceNameLabel->hide();
 }
 
 MainWindow::~MainWindow()
@@ -813,23 +813,23 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     if(obj == ui->label_10 && event->type() == QEvent::MouseButtonRelease){
         QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
     }
-    else if(obj == ui->deviceNameBox && event->type() == QEvent::HoverEnter)
-    {
-        qDebug("HoverEnter");
-        if(fontMetrics().width(ui->deviceNameBox->currentText())>119)
-        {
-            ui->deviceNameLabel->setText(ui->deviceNameBox->currentText());
-            ui->deviceNameLabel->show();
-            ui->deviceNameLabel->startTextTicker();
-        }
-    }
-    else if(obj == ui->deviceNameLabel && event->type() == QEvent::HoverLeave)
-    {
-        qDebug("HoverLeave");
-        ui->deviceNameLabel->setText("");
-        ui->deviceNameLabel->hide();
-        ui->deviceNameLabel->stopTextTicker();
-    }
+//    else if(obj == ui->deviceNameBox && event->type() == QEvent::HoverEnter)
+//    {
+//        qDebug("HoverEnter");
+//        if(fontMetrics().width(ui->deviceNameBox->currentText())>119)
+//        {
+//            ui->deviceNameLabel->setText(ui->deviceNameBox->currentText());
+//            ui->deviceNameLabel->show();
+//            ui->deviceNameLabel->startTextTicker();
+//        }
+//    }
+//    else if(obj == ui->deviceNameLabel && event->type() == QEvent::HoverLeave)
+//    {
+//        qDebug("HoverLeave");
+//        ui->deviceNameLabel->setText("");
+//        ui->deviceNameLabel->hide();
+//        ui->deviceNameLabel->stopTextTicker();
+//    }
     return QWidget::eventFilter(obj,event);
 }
 

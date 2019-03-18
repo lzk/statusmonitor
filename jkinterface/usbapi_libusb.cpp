@@ -63,7 +63,7 @@ static const char* my_libusb_strerror(int errcode)
 }
 
 
-int iterateDevices(usbDeviceHandler handler ,void* handlerData)
+int UsbApi::iterateDevices(usbDeviceHandler handler ,void* handlerData)
 {
     int ret = -1;
     libusb_device **devlist;

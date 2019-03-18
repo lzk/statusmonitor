@@ -51,18 +51,18 @@ void StatusThread::run()
         printerlist.clear();
 //        statusmanager.clearPrintersOfFile();
         cupsmanager.getPrinters(callback_getPrinters ,this);
-        if(b_refresh_connect_to){
-            Printer_struct* printer;
-            DeviceIO* dio;
-            for(int i = 0 ;i < printers.count() ;i++){
-                printer = &printers[i];
-                dio = devicemanager->getDevice(printer);
-                if(dio)
-                    strcpy(printer->connectTo
-                       ,dio->getDeviceAddress(printer));
-            }
-        }
-        statusmanager.savePrintersToFile(printers);
+//        if(b_refresh_connect_to){
+//            Printer_struct* printer;
+//            DeviceIO* dio;
+//            for(int i = 0 ;i < printers.count() ;i++){
+//                printer = &printers[i];
+//                dio = devicemanager->getDevice(printer);
+//                if(dio)
+//                    strcpy(printer->connectTo
+//                       ,dio->getDeviceAddress(printer));
+//            }
+//        }
+//        statusmanager.savePrintersToFile(printers);
 
         foreach (Printer_struct printer, printers) {
             if (abort){

@@ -6,7 +6,7 @@
 #include <QVariant>
 #include "uiconfig.h"
 #include "busyrefreshlabel.h"
-#include "textticker.h"
+//#include "textticker.h"
 #include <qsystemtrayicon.h>
 #include <QTimer>
 

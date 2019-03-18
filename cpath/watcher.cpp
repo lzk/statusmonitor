@@ -11,9 +11,13 @@ Watcher::Watcher(QObject *parent)
 {
     if(use_status_thread){
         statusmanager.clearFile();
-        statusThread = new StatusThread();
+        statusThread = new StatusThread(this);
         statusThread->start();
     }
+    //init printer list
+    getPrinters();
+    current_printers = printers;
+    current_printers_detail = printers_detail;
 }
 
 Watcher::~Watcher()
@@ -48,13 +52,17 @@ void Watcher::set_current_printer(const QString& printer)
         if(current_printer.isEmpty()){
             statusThread->set_current_printer(printer);
         }else{
+//            QObject* obj = NULL;
             if(statusThread){
                 qobject_cast<StatusThread*>(statusThread)->set_abort();
+//                obj = statusThread;
                 statusThread->deleteLater();
             }
-            statusThread = new StatusThread();
+            statusThread = new StatusThread(this);
             statusThread->set_current_printer(printer);
             statusThread->start();
+//            if(obj)
+//                delete obj;
         }
     }
     current_printer = printer;
@@ -135,19 +143,20 @@ void Watcher::watcher_job()
     }
 }
 
-static int callback_getPrinters(void* para ,Printer_struct* ps)
-{
-    Watcher* worker = (Watcher*)para;
-    worker->setPrinters(ps);
-    return worker->isabort() ?0 :1;
-}
-//    static int callback_getPrinters(void* para,PrinterInfo_struct* ps)
-//    {
-//        Watcher* worker = (Watcher*)para;
-//        worker->setPrinters(ps);
+//static int callback_getPrinters(void* para ,Printer_struct* ps)
+//{
+//    Watcher* worker = (Watcher*)para;
+//    worker->setPrinters(ps);
+//    return worker->isabort() ?0 :1;
+//}
 
-//        return worker->isabort() ?0 :1;
-//    }
+    static int callback_getPrinters(void* para,PrinterInfo_struct* ps)
+    {
+        Watcher* worker = (Watcher*)para;
+        worker->setPrinters(ps);
+
+        return worker->isabort() ?0 :1;
+    }
 
     void Watcher::setPrinters(Printer_struct* ps)
     {
@@ -168,8 +177,8 @@ static int callback_getPrinters(void* para ,Printer_struct* ps)
     {
         printers.clear();
         printers_detail.clear();
-//        StatusMonitor::getPrinters(callback_getPrinters ,(void*)this);
-        StatusManager().getPrintersFromFile(callback_getPrinters ,(void*)this);
+        StatusMonitor::getPrinters(callback_getPrinters ,(void*)this);
+//        StatusManager().getPrintersFromFile(callback_getPrinters ,(void*)this);
     }
 
     int Watcher::get_printer_info(const QString& printer_name ,PrinterInfo_struct& printer_info)

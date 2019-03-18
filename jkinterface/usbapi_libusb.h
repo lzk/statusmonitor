@@ -52,6 +52,8 @@ public:
 
     int write_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
     int read_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
+
+    static int iterateDevices(usbDeviceHandler handler ,void* handlerData);
 private:
     int getDeviceWithSerial(struct_device*);
     int config(libusb_device *dev ,libusb_device_handle *udev);

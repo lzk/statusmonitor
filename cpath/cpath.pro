@@ -56,7 +56,7 @@ SOURCES += \
     settingwarming.cpp \
     wifisettingcell.cpp \
     wifisettingwepcell.cpp \
-    textticker.cpp
+#    textticker.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -96,7 +96,7 @@ HEADERS += \
     settingwarming.h \
     wifisettingcell.h \
     wifisettingwepcell.h \
-    textticker.h
+#    textticker.h
 
 FORMS += \
         mainwindow.ui \
