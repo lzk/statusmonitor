@@ -109,6 +109,7 @@ void SettingForIPv6::on_btApply_clicked()
         if(!reg_address.exactMatch(ui->lineEdit_address->text()))
         {
             ui->lineEdit_address->setFocus();
+            ui->lineEdit_address->setText("");
             SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_entered_IP_address__is_wrong__please_confirm_and_enter_again_"));
             msgWarm->setWindowTitle(tr("ResStr_Warning"));
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -121,6 +122,7 @@ void SettingForIPv6::on_btApply_clicked()
         if(!reg_gateAddress.exactMatch(ui->lineEdit_GateAddress->text()))
         {
             ui->lineEdit_GateAddress->setFocus();
+            ui->lineEdit_GateAddress->setText("");
             SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_entered_Gateway_is_wrong__please_confirm_and_enter_again_"));
             msgWarm->setWindowTitle(tr("ResStr_Warning"));
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -129,9 +131,10 @@ void SettingForIPv6::on_btApply_clicked()
 
             return;
         }
-        if(ui->lineEdit_SubMask->text().toInt(0,10) >= 128)
+        if(ui->lineEdit_SubMask->text().toInt(0,10) >= 128 || ui->lineEdit_SubMask->text() == "")
         {
             ui->lineEdit_SubMask->setFocus();
+            ui->lineEdit_SubMask->setText("");
             SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_subnet_mask_input_error__please_input_again_after_confirmation"));
             msgWarm->setWindowTitle(tr("ResStr_Warning"));
             msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -300,12 +303,17 @@ void SettingForIPv6::showInfo(net_ipv6_st info)
     else
         ui->checkBox_isDHCP->setChecked(true);
     if(info.UseManualAddress == 0)
+    {
         ui->checkBox_isManualAddress->setChecked(false);
+    }
     else
+    {
         ui->checkBox_isManualAddress->setChecked(true);
-    ui->lineEdit_address->setText(QString(info.ManualAddress));
-    ui->lineEdit_SubMask->setText(QString::number(info.ManualMask));
-    ui->lineEdit_GateAddress->setText(QString(info.IPv6ManualGatewayAddress));
+        ui->lineEdit_address->setText(QString(info.ManualAddress));
+        ui->lineEdit_SubMask->setText(QString::number(info.ManualMask));
+        ui->lineEdit_GateAddress->setText(QString(info.IPv6ManualGatewayAddress));
+    }
+
 }
 
 void SettingForIPv6::cmdResult(int cmd,int result,QVariant data)
@@ -342,7 +350,6 @@ void SettingForIPv6::cmdResult(int cmd,int result,QVariant data)
         {
             isDoingCMD = false;
             times = 0;
-            close();
             LOGLOG("set ipv6 information");
         }
         else{
@@ -367,13 +374,16 @@ void SettingForIPv6::cmdResult(int cmd,int result,QVariant data)
             if(!result)
             {
                 deviceMsg = tr("ResStr_Msg_1");
+                cycle->stopAnimation();
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+                close();
             }
             else
             {
                 deviceMsg = tr("ResStr_Setting_Fail");
+                cycle->stopAnimation();
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             }
-            cycle->stopAnimation();
-            gUInterface->setDeviceMsgFrmUI(deviceMsg,0);
         }
         break;
     default: break;

@@ -638,6 +638,22 @@ border-image: url(:/Images/shopCart_Disable.tif);
 </string>
        </property>
       </widget>
+      <widget class="TextTicker" name="deviceNameLabel">
+       <property name="geometry">
+        <rect>
+         <x>34</x>
+         <y>51</y>
+         <width>119</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tabButton" native="true">
       <property name="enabled">
@@ -825,6 +841,11 @@ border-bottom-left-radius:0px;</string>
    <extends>QWidget</extends>
    <header>membercenterwidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TextTicker</class>
+   <extends>QLabel</extends>
+   <header location="global">textticker.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

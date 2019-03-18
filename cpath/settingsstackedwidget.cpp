@@ -1195,7 +1195,7 @@ void SettingsStackedWidget::on_btApply_Timeout_clicked()
 void SettingsStackedWidget::on_lineEdit_TopMargin_textEdited(const QString &arg1)
 {
     int val = arg1.toInt();
-    if(val>2 || val<-2)
+    if(val>2 || val<-2 || arg1 == "")
     {
 //        ui->label_setting_error->setGeometry(47,ui->lineEdit_TopMargin->y()+20,201,35);
 //        ui->label_setting_error->setText(tr("The valid range is from -2 to 2, please confirm and enter again"));
@@ -1220,7 +1220,7 @@ void SettingsStackedWidget::on_lineEdit_TopMargin_textEdited(const QString &arg1
 void SettingsStackedWidget::on_lineEdit_LeftMargin_textEdited(const QString &arg1)
 {
     int val = arg1.toInt();
-    if(val>6 || val<-6)
+    if(val>6 || val<-6 || arg1 == "")
     {
 //        ui->label_setting_error->setGeometry(47,ui->lineEdit_LeftMargin->y()+20,201,35);
 //        ui->label_setting_error->setText(tr("The valid range is from -6 to 6, please confirm and enter again"));
@@ -1245,7 +1245,7 @@ void SettingsStackedWidget::on_lineEdit_LeftMargin_textEdited(const QString &arg
 void SettingsStackedWidget::on_lineEdit_ImageDensity_textEdited(const QString &arg1)
 {
     int val = arg1.toInt();
-    if(val>3 || val<-3)
+    if(val>3 || val<-3 || arg1 == "")
     {
 //        ui->label_setting_error->setGeometry(47,ui->lineEdit_ImageDensity->y()+20,201,35);
 //        ui->label_setting_error->setText(tr("The valid range is from -3 to 3, please confirm and enter again"));
@@ -1587,7 +1587,7 @@ bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
         {
             if(!(ui->label_timeout_error->isHidden()))
             {
-                ui->lineEdit_timeout->setText("1");
+                ui->lineEdit_timeout->setText("0");
                 ui->label_timeout_error->hide();
                 ui->lineEdit_timeout->setStyleSheet("QLineEdit{border:transparent;}");
                 ui->btTimeAdd->setEnabled(true);
@@ -1602,7 +1602,7 @@ bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
         {
             if(!(ui->label_TopMargin_error->isHidden()) || ui->lineEdit_TopMargin->text().isEmpty())
             {
-                ui->lineEdit_TopMargin->setText("1");
+                ui->lineEdit_TopMargin->setText("0");
                 ui->lineEdit_TopMargin->setStyleSheet("QLineEdit{border:transparent;}");
                 ui->label_TopMargin_error->hide();
                 ui->btTopAdd->setEnabled(true);
@@ -1617,7 +1617,7 @@ bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
         {
             if(!(ui->label_LeftMargin_error->isHidden()) || ui->lineEdit_LeftMargin->text().isEmpty())
             {
-                ui->lineEdit_LeftMargin->setText("1");
+                ui->lineEdit_LeftMargin->setText("0");
                 ui->lineEdit_LeftMargin->setStyleSheet("QLineEdit{border:transparent;}");
                 ui->label_LeftMargin_error->hide();
                 ui->btLeftAdd->setEnabled(true);

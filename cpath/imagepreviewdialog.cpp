@@ -148,7 +148,7 @@ void ImagePreviewDialog::on_back_clicked()
     int ret = 0;
     if(angle){
         PromptDialog *pDialog = new PromptDialog(this);
-        pDialog->setDialogMsg(tr("Please confirm whether save it or not?"));
+        pDialog->setDialogMsg(tr("ResStr_Scanning_image_has_been_changed__please_confirm_whether_save_it_or_not_"));
         pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         if (pDialog->exec() == QDialog::Accepted)
         {

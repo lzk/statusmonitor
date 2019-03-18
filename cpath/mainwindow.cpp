@@ -19,8 +19,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(" ");
 //    LOGLOG("test!!!");
-    ui->memberCenterWidget->setSW(ui->totalStackedWidget, ui->loginButton);
-
+    int country = QLocale::system().country();
+//    int country = QLocale::China;
+    if(country == QLocale::China)
+    {
+        ui->memberCenterWidget->setSW(ui->totalStackedWidget, ui->loginButton);
+    }
+    else
+    {
+        ui->loginButton->hide();
+    }
     selectState = "background-color: rgb(99, 99, 99);color:white;";
     unSelectState = "background-color: white;color:black;";
     timerDeviceMsg = new QTimer(this);
@@ -104,6 +112,10 @@ MainWindow::MainWindow(QWidget *parent) :
         }
         settings.setValue("enableCRM",bCRM);
     }
+
+//    ui->deviceNameBox->installEventFilter(this);
+//    ui->deviceNameLabel->installEventFilter(this);
+    ui->deviceNameLabel->hide();
 }
 
 MainWindow::~MainWindow()
@@ -113,17 +125,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::createSysTray()
 {
-
-//    minimizeAction = new QAction(tr("Mi&nimize"), this);
-//    connect(minimizeAction, SIGNAL(triggered(bool)), this, SLOT(hide()));
-////    connect(minimizeAction, SIGNAL(triggered(bool)), this, SLOT(showMinimized()));
-
-//    maximizeAction = new QAction(tr("Ma&ximize"), this);
-//    connect(maximizeAction, SIGNAL(triggered(bool)), this, SLOT(showMaximized()));
-
-//    restoreAction = new QAction(tr("&Restore"), this);
-//    restoreAction = new QAction(tr("显示(&R)"), this);
-//    connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(showNormal()));
     quitAction = new QAction(QString("%1(&Q)").arg(tr("ResStr_Exit")),this);
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     trayIconMenu = new QMenu(this);
@@ -135,7 +136,7 @@ void MainWindow::createSysTray()
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":/Images/printer.ico"));
+    trayIcon->setIcon(QIcon(":/Images/printerGray.ico"));
 
 //    connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 //    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
@@ -688,6 +689,15 @@ void MainWindow::updateTonerCarStatus(int toner)
             ui->btCar->show();
         }
     }
+
+    if(toner<11)
+    {
+        trayIcon->setIcon(QIcon(":/Images/printerGray.ico"));
+    }
+    else
+    {
+        trayIcon->setIcon(QIcon(":/Images/printer.ico"));
+    }
 }
 
 void MainWindow::enableAllFunction(bool enabled)
@@ -788,7 +798,7 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
         updateTonerCarStatus(status.TonelStatusLevelK);
     }
     //test
-//    status.PrinterStatus = UIConfig::NofeedJam;
+//    status.PrinterStatus = UIConfig::InitializeJam;
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
     QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);
@@ -802,6 +812,23 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if(obj == ui->label_10 && event->type() == QEvent::MouseButtonRelease){
         QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
+    }
+    else if(obj == ui->deviceNameBox && event->type() == QEvent::HoverEnter)
+    {
+        qDebug("HoverEnter");
+        if(fontMetrics().width(ui->deviceNameBox->currentText())>119)
+        {
+            ui->deviceNameLabel->setText(ui->deviceNameBox->currentText());
+            ui->deviceNameLabel->show();
+            ui->deviceNameLabel->startTextTicker();
+        }
+    }
+    else if(obj == ui->deviceNameLabel && event->type() == QEvent::HoverLeave)
+    {
+        qDebug("HoverLeave");
+        ui->deviceNameLabel->setText("");
+        ui->deviceNameLabel->hide();
+        ui->deviceNameLabel->stopTextTicker();
     }
     return QWidget::eventFilter(obj,event);
 }

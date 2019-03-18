@@ -290,8 +290,8 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QSpinBox" name="spinBox_M">
      <property name="geometry">
       <rect>
-       <x>510</x>
-       <y>320</y>
+       <x>503</x>
+       <y>319</y>
        <width>51</width>
        <height>25</height>
       </rect>
@@ -319,8 +319,8 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QSpinBox" name="spinBox_D">
      <property name="geometry">
       <rect>
-       <x>620</x>
-       <y>320</y>
+       <x>610</x>
+       <y>319</y>
        <width>51</width>
        <height>25</height>
       </rect>
@@ -348,7 +348,7 @@ background-color: rgb(235, 235, 235);</string>
     <widget class="QLabel" name="labelYear">
      <property name="geometry">
       <rect>
-       <x>460</x>
+       <x>454</x>
        <y>315</y>
        <width>41</width>
        <height>31</height>
@@ -356,17 +356,20 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
       <string>ResStr_Year</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
     </widget>
     <widget class="QLabel" name="labelMon">
      <property name="geometry">
       <rect>
-       <x>560</x>
+       <x>554</x>
        <y>315</y>
        <width>51</width>
        <height>31</height>
@@ -374,30 +377,36 @@ background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
       <string>ResStr_Month</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
     </widget>
     <widget class="QLabel" name="labelDay">
      <property name="geometry">
       <rect>
-       <x>670</x>
+       <x>660</x>
        <y>315</y>
-       <width>31</width>
+       <width>41</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
       <string>ResStr_Day</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
     <widget class="QLineEdit" name="le_mail">
@@ -475,6 +484,9 @@ background-color: rgb(235, 235, 235);</string>
        <bold>false</bold>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton{border-image: url(:/Images/background_scan_btn2.png);color:white;
 }
@@ -513,6 +525,9 @@ color:white;
        <bold>false</bold>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	border-image:url(:/Images/Btn_Gray.png);
@@ -544,6 +559,9 @@ QPushButton:pressed{
        <family>微软雅黑</family>
        <pointsize>12</pointsize>
       </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -577,6 +595,9 @@ QRadioButton::indicator::checked {
        <pointsize>12</pointsize>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
      </property>
@@ -606,6 +627,9 @@ QRadioButton::indicator::checked {
        <height>39</height>
       </rect>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">#btloginImg{
 	border-image: url(:/Images/Logon_Normal.png);
@@ -618,10 +642,10 @@ QRadioButton::indicator::checked {
     <widget class="QSpinBox" name="spinBox">
      <property name="geometry">
       <rect>
-       <x>390</x>
-       <y>316</y>
-       <width>71</width>
-       <height>31</height>
+       <x>388</x>
+       <y>319</y>
+       <width>65</width>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -1091,7 +1115,7 @@ background-color: rgb(235, 235, 235);</string>
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>261</y>
+       <y>262</y>
        <width>611</width>
        <height>41</height>
       </rect>
@@ -1214,7 +1238,7 @@ background-color: rgb(235, 235, 235);</string>
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>410</y>
+       <y>404</y>
        <width>611</width>
        <height>41</height>
       </rect>
@@ -1304,7 +1328,7 @@ background-color: rgb(235, 235, 235);</string>
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>320</y>
+       <y>321</y>
        <width>611</width>
        <height>41</height>
       </rect>
@@ -1490,24 +1514,21 @@ background-color: rgb(235, 235, 235);</string>
   </widget>
  </widget>
  <tabstops>
+  <tabstop>le_name</tabstop>
   <tabstop>spinBox</tabstop>
   <tabstop>spinBox_M</tabstop>
   <tabstop>spinBox_D</tabstop>
-  <tabstop>btMan</tabstop>
-  <tabstop>btFemale</tabstop>
   <tabstop>le_mail</tabstop>
   <tabstop>le_addr</tabstop>
-  <tabstop>btLogin</tabstop>
-  <tabstop>btCancel</tabstop>
-  <tabstop>btloginImg</tabstop>
-  <tabstop>btChInfo</tabstop>
-  <tabstop>btApply</tabstop>
-  <tabstop>btExpe</tabstop>
+  <tabstop>btMan</tabstop>
+  <tabstop>btFemale</tabstop>
   <tabstop>btAbout</tabstop>
   <tabstop>btProduct</tabstop>
+  <tabstop>btLogin</tabstop>
   <tabstop>btloginImg2</tabstop>
   <tabstop>pushButton</tabstop>
-  <tabstop>le_name</tabstop>
+  <tabstop>btExpe</tabstop>
+  <tabstop>btChInfo</tabstop>
  </tabstops>
  <resources/>
  <connections/>

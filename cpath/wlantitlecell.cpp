@@ -184,7 +184,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             }
             else
             {
-                deviceMsg = tr("ResStr_Setting_Successfully");
+                deviceMsg = tr("ResStr_Setting_Successfully_");
                 gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             }
             isDoingCMD = false;
@@ -304,6 +304,11 @@ void WlanTitleCell::on_btManualWiFi_clicked()
 {
 //    qDebug()<<"scroll"<<parentScroll->contentsRect();
 //    qDebug()<<"currentSize.height():"<<currentSize.height()<<"this.height"<<this->size().height();
+    ui->lineEdit_SSID->setText("");
+    ui->lineEdit_Password->setText("");
+    ui->combox_encryption->setCurrentIndex(2);
+    ui->checkBox_visiable->setChecked(false);
+
     this->resize(DEFWIDTH, 310);
     this->setMinimumHeight(310);
     this->setCurrentIndex(1);
