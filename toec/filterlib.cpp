@@ -22,15 +22,15 @@ int get_device_id_via_filter(const char* printer_name ,const char* printer_uri)
     }
 
     int result;
-    char data[1025];
-    int datalen = 1024;
+    char data[2049];
+    int datalen = 2048;
     result = cups_usb_getDeviceID(data ,datalen);
     LOGLOG("filter_status_task get device id: %s" ,data);
 
     Trans_Client tc(SERVER_PATH);
-    char buffer[1124];
+    char buffer[2148];
     sprintf(buffer ,"dvid://%s?deviceid=%s" ,printer_name ,data);//error when data is null
-    tc.writeThenRead(buffer ,1124);
+    tc.writeThenRead(buffer ,2148);
 
     return result;
 }

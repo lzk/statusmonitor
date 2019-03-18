@@ -13,7 +13,7 @@ FilterStatusThread::FilterStatusThread(QObject *parent)
 FilterStatusThread::~FilterStatusThread()
 {
     abort = true;
-    wait();
+    while(abort)usleep(1000);
 }
 
 void FilterStatusThread::run()
@@ -31,8 +31,7 @@ void FilterStatusThread::run()
 //    QString str;
     forever {
         if (abort){
-            usleep(100 * 1000);
-            return;
+            break;
         }
 
         result = cups_usb_getDeviceID(data ,datalen);
@@ -46,6 +45,7 @@ void FilterStatusThread::run()
 
         sleep(6);
     }
+    abort = false;
 }
 
 void FilterStatusThread::set_current_printer(const QString& printer)

@@ -26,7 +26,7 @@ StatusThread::StatusThread(QObject *parent)
 StatusThread::~StatusThread()
 {
     abort = true;
-    wait();
+    while(abort)usleep(1000);
     delete devicemanager;
 }
 
@@ -40,7 +40,7 @@ void StatusThread::run()
     int result;
     forever {
         if (abort)
-            return;
+            break;
         printers.clear();
         printerlist.clear();
 //        statusmanager.clearPrintersOfFile();
@@ -49,7 +49,7 @@ void StatusThread::run()
 
         foreach (Printer_struct printer, printers) {
             if (abort)
-                return;
+                break;
             mutex.lock();
             if(current_printer.compare(printer.name)){
                 mutex.unlock();
@@ -103,6 +103,7 @@ void StatusThread::run()
         }
         sleep(6);
     }
+    abort = false;
 }
 
 void StatusThread::set_current_printer(const QString& printer)
