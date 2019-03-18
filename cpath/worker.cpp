@@ -45,19 +45,20 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 
     switch (cmd) {
     case UIConfig::CMD_GetPrinters:
-        LOGLOG("CMD_GetPrinters from ui")
-        getPrinters();
-        value.setValue(printers_detail);
-        cmdResult(cmd ,0 ,value);
+//        LOGLOG("CMD_GetPrinters from ui");
+//        value.setValue(printers_detail);
+//        cmdResult(cmd ,0 ,value);
+        update_printerlist();
         break;
 
     case UIConfig::CMD_GetStatus:{
         if(printer){
-            strcpy(current_printer_info.printer.name ,printer->name);
-            PrinterStatus_struct* status = &current_printer_info.status;
+            PrinterInfo_struct printer_info;
+            printer_info.printer = *printer;
+            PrinterStatus_struct* status = &printer_info.status;
             result = StatusMonitor::getDeviceStatus(deviceManager ,printer ,status);
-            value.setValue(current_printer_info);
-            LOGLOG("get current status:0x%02x" ,current_printer_info.status.PrinterStatus);
+            value.setValue(printer_info);
+            LOGLOG("get current status:0x%02x" ,printer_info.status.PrinterStatus);
         }
         cmdResult(cmd ,result ,value);
     }
@@ -515,27 +516,6 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     cmd_status = 0;
 }
 
-int callback_getPrinters(void* para,PrinterInfo_struct* ps)
-{
-    Worker* worker = (Worker*)para;
-//    strcpy(ps->printer.connectTo ,worker->getDevice(&ps->printer)->getDeviceAddress(&ps->printer));
-    worker->setPrinters(ps);
-    return 1;
-}
-
-void Worker::setPrinters(PrinterInfo_struct* ps)
-{
-    printers << ps->printer.name;
-    printers_detail << *ps;
-}
-
-void Worker::getPrinters()
-{
-    printers.clear();
-    printers_detail.clear();
-    StatusMonitor::getPrinters(callback_getPrinters ,(void*)this);
-}
-
 Printer_struct* Worker::get_printer(const QString& printer_name)
 {
     Printer_struct* printer = NULL;
@@ -583,7 +563,8 @@ static void scan_callback(void* para)
 
 void Worker::update_printer_status(PrinterInfo_struct ps)
 {
-    LOGLOG("watcher update status:%02x" ,ps.status.PrinterStatus);
+    LOGLOG("update status:%02x" ,ps.status.PrinterStatus);
+    //update status via update_scan_progress function when usb scanning
     if(current_printer_info.status.PrinterStatus == UIConfig::Usb_Scanning)
         return;
     QVariant value;
@@ -594,7 +575,7 @@ void Worker::update_printer_status(PrinterInfo_struct ps)
 
 void Worker::update_printerlist()
 {
-    LOGLOG("watcher update printer list");
+    LOGLOG("update printer list");
     QVariant value;
     watcher->get_printer_list(printers_detail);
     value.setValue(printers_detail);

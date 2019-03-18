@@ -473,7 +473,7 @@ void TabStackedWidget::on_btn_Scan_clicked()
 //    QSize size = QSize(2496,3507);
 //    ui->scrollArea_ScanImage->add_image_item(image_path ,size);
 
-    if(is_disk_no_space("/tmp" ,500000)){
+    if(is_disk_no_space("/tmp" ,500)){
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
         msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -896,7 +896,7 @@ void saveMultiPagePdfImageRelease()
 #endif
 void TabStackedWidget::on_btn_ScanSave_clicked()
 {
-    if(is_disk_no_space("/tmp" ,500000)){
+    if(is_disk_no_space("/tmp" ,500)){
         SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
         msgWarm->setWindowTitle(tr("ResStr_Warning"));
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \

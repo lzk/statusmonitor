@@ -16,7 +16,6 @@ class Worker : public QObject
 public:
     explicit Worker(QObject *parent = 0);
     ~Worker();
-    void setPrinters(PrinterInfo_struct* ps);
     void update_scan_progress(Printer_struct* printer ,int progress);
     
 signals:
@@ -26,7 +25,6 @@ signals:
     
 public slots:
     void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
-    void getPrinters();
     void cancel();
     void update_printer_status(PrinterInfo_struct);
     void update_printerlist();

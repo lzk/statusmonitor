@@ -13,18 +13,20 @@ ServerThread::~ServerThread()
     abort = true;
     Trans_Client tc(trans_server.get_server_path());
     tc.tryConnectToServer();
-    wait();
+    while(abort)usleep(1000);
 }
 
 void ServerThread::run()
 {
     forever {
-        if (abort)
-            return;
+        if (abort){
+            break;
+        }
         int fd = trans_server.any_client_connected();
         if(fd >= 0){
             client_connect(fd);
         }
     }
+    abort = false;
 }
 

@@ -326,7 +326,6 @@ int UsbApi::exit()
 
 int UsbApi::open(int vid, int pid, const char *serial ,int interface)
 {
-//    interface = 0;
     struct_device data;
     memset((void*)&data ,0 ,sizeof(data));
     data.deviceInfo.vid = vid;
@@ -348,7 +347,6 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
         return ret;
     }
     g_interface = interface;
-//    ret = claimInterface(g_dev_h ,0);
     ret = claimInterface(g_dev_h ,g_interface);
     if(ret){
         LOGLOG("libusb can not claim interface:%d" ,g_interface);

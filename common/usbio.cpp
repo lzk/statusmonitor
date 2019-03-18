@@ -15,6 +15,8 @@ int usb_error_busy = -103;
 extern const char* log_file;
 bool printer_is_printing(const QString& printer_name)
 {
+    if(printer_name.isEmpty())
+        return false;
     QString str("LANG=en lpstat -l -o ");
     str += printer_name;
     str += " 2>>";
@@ -25,17 +27,15 @@ bool printer_is_printing(const QString& printer_name)
     return !printer_jobs.isEmpty();
 }
 
-
-static int _getpidvid(const QString& ,int* pid ,int* vid)
+static int _getpidvid(const QString& ,int& pid ,int& vid ,int& interface)
 {
-    if(!pid || !vid)
-        return -1;
-    *pid = -1;
-    *vid = -1;
+    pid = -1;
+    vid = -1;
+    interface = 0;
     return -1;
 }
 
-int (* getpidvid)(const QString& modelname ,int* pid ,int* vid) = _getpidvid;
+int (* getpidvid)(const QString& modelname ,int& pid ,int& vid ,int& interface) = _getpidvid;
 
 #include <QMutex>
 #include <QStringList>
@@ -99,7 +99,6 @@ bool UsbIO::is_device_scanning()
 
 int UsbIO::open_with_mode(int port ,int mode)
 {
-    (void) port;
     if(device_is_open){
         LOGLOG("device is opened");
         return -1;
@@ -134,7 +133,7 @@ int UsbIO::open_with_mode(int port ,int mode)
         mutex.unlock();
         return -1;
     }
-    ret = usb->open(vid ,pid ,serial ,interface);
+    ret = usb->open(vid ,pid ,serial ,port);
     if(ret){
     }else{
         device_is_open = true;
@@ -191,7 +190,7 @@ int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
 
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
-    int ret = open_with_mode(1 ,0);
+    int ret = open_with_mode(interface ,0);
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
@@ -210,9 +209,7 @@ int UsbIO::resolveUrl(const char* url)
     if((device_uri[0] != 0) && !QString(device_uri).compare(url)){
         return 0;
     }
-    int ret = DeviceIO::resolveUrl(url);
-    if(ret)
-        return ret;
+    int ret = 0;
     QString tmp_serial;
     QUrl printer_url = QUrl(url);
 #if QT_VERSION > 0x050000
@@ -223,20 +220,18 @@ int UsbIO::resolveUrl(const char* url)
     interface = printer_url.queryItemValue("interface").toInt();
 #endif
     QString modelname = printer_url.host() + printer_url.path();
-    if(getpidvid(modelname ,&pid ,&vid))
+    if(getpidvid(modelname ,pid ,vid ,interface))
         ret = -1;
     if(tmp_serial.isEmpty()){
-        interface = 1;
         memset(this->serial ,0 ,sizeof(this->serial));
     }else{
         strcpy(this->serial ,tmp_serial.toLatin1().constData());
         ret = 0;
     }
-//    if(!ret){
-//        LOGLOG("device's vid:0x%02x ,pid:0x%02x ,serial:%s" ,vid ,pid ,serial);
-//    }else{
-//        LOGLOG("can not resolve url");
-//    }
+    if(!ret){
+        ret = DeviceIO::resolveUrl(url);
+    }
+
     return ret;
 }
 

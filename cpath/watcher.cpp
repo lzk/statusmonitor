@@ -5,62 +5,94 @@
 bool use_status_thread = true;
 Watcher::Watcher(QObject *parent)
     : QThread(parent)
+    ,statusThread(NULL)
     ,abort(false)
-    ,device_manager(new DeviceManager)
+//    ,device_manager(new DeviceManager)
 {
     if(use_status_thread){
+        statusmanager.clearFile();
         statusThread = new StatusThread();
         statusThread->start();
-    }else{
-        statusThread = NULL;
     }
 }
 
 Watcher::~Watcher()
 {
-    if(statusThread)
+    if(statusThread){
+        qobject_cast<StatusThread*>(statusThread)->set_abort();
         delete statusThread;
-    delete device_manager;
+    }
+//    delete device_manager;
     abort = true;
-    wait();
+    while(abort)usleep(1000);
 }
 
 void Watcher::run()
 {
     forever{
         if (abort){
-            usleep(100*1000);
-            return;
+            break;
         }
-        timerOut();
-        usleep(100*1000);
+        watcher_job();
+        usleep(1000*1000);
     }
+    abort = false;
 }
 
 void Watcher::set_current_printer(const QString& printer)
 {
-    if(statusThread)
-        statusThread->set_current_printer(printer);
+    if(!current_printer.compare(printer))
+        return;
+
+    if(use_status_thread){
+        if(current_printer.isEmpty()){
+            statusThread->set_current_printer(printer);
+        }else{
+            if(statusThread){
+                qobject_cast<StatusThread*>(statusThread)->set_abort();
+                statusThread->deleteLater();
+            }
+            statusThread = new StatusThread();
+            statusThread->set_current_printer(printer);
+            statusThread->start();
+        }
+    }
     current_printer = printer;
 }
 
-void Watcher::timerOut()
+int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterInfo_struct> & ps2)
+{
+    if(ps1.count() != ps2.count())
+        return -1;
+    int ret = 0;
+    const PrinterInfo_struct* pps1,*pps2;
+    for(int i = 0 ;i < ps1.count() ;i++){
+        pps1 = &ps1.at(i);
+        pps2 = &ps2.at(i);
+        if(strcmp(pps1->printer.connectTo ,pps2->printer.connectTo)){
+            ret = -1;
+            break;
+        }else if(strcmp(pps1->printer.name ,pps2->printer.name)){
+            ret = -1;
+            break;
+        }else if(strcmp(pps1->printer.deviceUri ,pps2->printer.deviceUri)){
+            ret = -1;
+            break;
+        }else if(strcmp(pps1->printer.makeAndModel ,pps2->printer.makeAndModel)){
+            ret = -1;
+            break;
+        }
+    }
+    return ret;
+}
+
+void Watcher::watcher_job()
 {
     //update printer list
     getPrinters();
-    Printer_struct* printer;
-    DeviceIO* dio;
-    for(int i = 0 ;i < printers_detail.count() ;i++){
-        if (abort)
-            return;
-        printer = &printers_detail[i].printer;
-        dio = device_manager->getDevice(printer);
-        if(dio)
-            strcpy(printer->connectTo
-               ,dio->getDeviceAddress(printer));
-    }
     mutex.lock();
-    if(current_printers != printers){
+    if(printerlist_compare(current_printers_detail ,printers_detail)){
+//    if(current_printers != printers){
         current_printers = printers;
         current_printers_detail = printers_detail;
 //        emit update_printerlist();
@@ -103,11 +135,27 @@ void Watcher::timerOut()
     }
 }
 
-    static int callback_getPrinters(void* para,PrinterInfo_struct* ps)
+static int callback_getPrinters(void* para ,Printer_struct* ps)
+{
+    Watcher* worker = (Watcher*)para;
+    worker->setPrinters(ps);
+    return worker->isabort() ?0 :1;
+}
+//    static int callback_getPrinters(void* para,PrinterInfo_struct* ps)
+//    {
+//        Watcher* worker = (Watcher*)para;
+//        worker->setPrinters(ps);
+
+//        return worker->isabort() ?0 :1;
+//    }
+
+    void Watcher::setPrinters(Printer_struct* ps)
     {
-        Watcher* worker = (Watcher*)para;
-        worker->setPrinters(ps);
-        return 1;
+        printers << ps->name;
+        PrinterInfo_struct pis;
+        pis.printer = *ps;
+        memset((void*)&pis.status ,0xff ,sizeof(pis.status));
+        printers_detail << pis;
     }
 
     void Watcher::setPrinters(PrinterInfo_struct* ps)
@@ -120,7 +168,8 @@ void Watcher::timerOut()
     {
         printers.clear();
         printers_detail.clear();
-        StatusMonitor::getPrinters(callback_getPrinters ,(void*)this);
+//        StatusMonitor::getPrinters(callback_getPrinters ,(void*)this);
+        StatusManager().getPrintersFromFile(callback_getPrinters ,(void*)this);
     }
 
     int Watcher::get_printer_info(const QString& printer_name ,PrinterInfo_struct& printer_info)

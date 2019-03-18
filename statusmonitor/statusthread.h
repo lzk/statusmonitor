@@ -15,6 +15,7 @@ public:
     ~StatusThread();
 
     void run();
+    void set_abort();
 
 public slots:
     void set_current_printer(const QString& printer);
@@ -28,6 +29,7 @@ public:
 
 private:
     bool locker_get_status;
+    bool b_refresh_connect_to;
     DeviceManager* devicemanager;
     CupsManager cupsmanager;
     StatusManager statusmanager;
@@ -35,6 +37,7 @@ private:
     QString current_printer;
     QMutex mutex;
     PRINTER_STATUS status;
-};
 
+    friend class Watcher;
+};
 #endif // STATUSTHREAD_H

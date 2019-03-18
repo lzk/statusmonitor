@@ -8,43 +8,54 @@ static bool _isDeviceSupported(Printer_struct* ps)
     return true;
 }
 
-static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
+static int _getpidvid(const QString& makeAndModel ,int& pid ,int& vid ,int& interface)
 {
-    if(!pid || !vid)
-        return -1;
-    *vid = 0x17ef;
-    *pid = -1;
+    vid = 0x17ef;
+    pid = -1;
     if(makeAndModel.startsWith("lenovo/L100DW")){
-        *pid = 0x5445;
+        pid = 0x5445;
+        interface = 0;
     }else if(makeAndModel.startsWith("lenovo/L100W")){
-        *pid = 0x5443;
+        pid = 0x5443;
+        interface = 0;
     }else if(makeAndModel.startsWith("lenovo/L100D")){
-        *pid = 0x5444;
+        pid = 0x5444;
+        interface = 0;
     }else if(makeAndModel.startsWith("lenovo/L100")){
-        *pid = 0x5442;
+        pid = 0x5442;
+        interface = 0;
     }else if(makeAndModel.startsWith("lenovo/M100W")){
-        *pid = 0x5641;
+        pid = 0x5641;
+        interface = 1;
     }else if(makeAndModel.startsWith("lenovo/M100D")){
-        *pid = 0x5644;
+        pid = 0x5644;
+        interface = 1;
     }else if(makeAndModel.startsWith("lenovo/M100")){
-        *pid = 0x563e;
+        pid = 0x563e;
+        interface = 1;
     }else if(makeAndModel.startsWith("lenovo/M101DW")){
-        *pid = 0x5645;
+        pid = 0x5645;
+        interface = 1;
     }else if(makeAndModel.startsWith("lenovo/M101W")){
-        *pid = 0x5642;
+        pid = 0x5642;
+        interface = 1;
     }else if(makeAndModel.startsWith("lenovo/M101")){
-        *pid = 0x563f;
+        pid = 0x563f;
+        interface = 1;
     }else if(makeAndModel.startsWith("lenovo/M102W")){
-        *pid = 0x5643;
+        pid = 0x5643;
+        interface = 1;
     }else if(makeAndModel.startsWith("lenovo/M102")){
-        *pid = 0x5640;
+        pid = 0x5640;
+        interface = 1;
     }else if(makeAndModel.startsWith("lenovo/M7268W")){
-        *pid = 0x563a;
+        pid = 0x563a;
+        interface = 1;
     }
-    return (*pid == -1) ?-1 :0;
+    return (pid == -1) ?-1 :0;
 }
 extern
-int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
+int (* getpidvid)(const QString& modelname ,int& pid ,int& vid ,int& interface);
 
 UIConfig::UIConfig(QObject *parent) :
     QObject(parent)
@@ -83,7 +94,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo cpath";
-    app_version = "1.0.0.9";
+    app_version = "1.0.0.10beta";
     log_init();
 }
 #include <QFile>
