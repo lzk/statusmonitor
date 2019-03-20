@@ -80,6 +80,9 @@ void StatusThread::run()
             }
             mutex.unlock();
             result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
+            if (abort){
+                break;
+            }
             mutex.lock();
             if(result){
                 LOGLOG("get status from device %s:fail!result:0x%02x" ,printer.name ,result);

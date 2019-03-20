@@ -3,6 +3,7 @@ INCLUDEPATH += $${PWD}
 INCLUDEPATH += ../libs ../libs/cups-2.2.8
 
 LIBS += -L$${PWD}/../libs -lusb-1.0  -lcups
+#LIBS += -lnetsnmp
 
 macx: LIBS += -L/Volumes/work/software/libusb
 

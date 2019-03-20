@@ -123,9 +123,9 @@ int StatusMonitor::getDeviceStatus(DeviceIO* device ,Printer_struct* printer ,Pr
     }
     int ret = -1;
     PRINTER_STATUS status;
-    if(device->isConnected(printer) || (device->type() == DeviceIO::Type_usb)){
+//    if(device->isConnected(printer) || (device->type() == DeviceIO::Type_usb)){
         ret = getStatusFromDevice(device ,printer ,&status);
-    }
+//    }
     if(ret){
         memset(&status ,0 ,sizeof(status));
 //        status.PrinterStatus = PS_ERROR_POWER_OFF;
