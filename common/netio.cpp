@@ -124,8 +124,8 @@ int NetIO::close(void)
 int NetIO::write(char *buffer, int bufsize)
 {
     if(!device_is_open){
-		return -1;
-	}
+        return -1;
+    }
     if(!tcpSocket)
         return -1;
 //    int state = tcpSocket->state();
@@ -143,8 +143,8 @@ int NetIO::write(char *buffer, int bufsize)
 int NetIO::read(char *buffer, int bufsize)
 {
     if(!device_is_open){
-		return -1;
-	}
+        return -1;
+    }
     if(!tcpSocket)
         return -1;
     int bytesAvailable;
@@ -205,12 +205,12 @@ int NetIO::getDeviceId(char *buffer, int bufsize)
     return getDeviceId_without_open(buffer ,bufsize);
 }
 
-static int _platform_net_get_device_id(const QString& device_uri,char *buffer, size_t bufsize);
+static int _platform_net_get_device_id(const QString& device_uri,char *buffer, int bufsize);
 int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
 {
     //some host name can not get device id. change to ipv4 first.
-//    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
-    return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);
+    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
+//    return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);
 }
 
 bool NetIO::isConnected()
@@ -234,9 +234,11 @@ int NetIO::read_bulk(char *buffer, int bufsize ,unsigned int)
     return read(buffer ,bufsize);
 }
 
+#if 1
+//can not work well
 #include <QUdpSocket>
 #include <unistd.h>
-static int _platform_net_get_device_id(const QString& device_uri,char *buffer, size_t bufsize)
+static int _platform_net_get_device_id(const QString& device_uri,char *buffer, int bufsize)
 {
     QHostAddress host_address = get_ip_address(QUrl(device_uri).host());
 //    LOGLOG("get device id from host address:%s" ,host_address.toString().toLatin1().constData());
@@ -258,18 +260,23 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, s
     ret = udpSocket.write((const char*)data ,bytes);
 //    ret = udpSocket.writeDatagram((const char*)data ,bytes ,host_address ,161);
     if(ret != bytes){
+        LOGLOG("udp write fial!");
         return -1;
     }
-
-//    udpSocket.bind(host_address ,161);
+//    bool bind_ok = udpSocket.bind(host_address ,161);
+//    if(!bind_ok){
+//        LOGLOG("udp bind fail!");
+////        return -2;
+//    }
     int times = 0;
     while (!udpSocket.hasPendingDatagrams()){
         times ++;
         usleep( 10 * 1000);//10ms
-        if(times > 500) //5s
+        if(times > 500){//5s
+            LOGLOG("udp no data to read!");
             break;
+        }
     }
-//    qDebug()<<"wait for reading time:"<<times * 10 <<"ms";
 
     QByteArray ba;
     while (udpSocket.hasPendingDatagrams()) {
@@ -283,10 +290,68 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, s
         ba += datagram;
     }
     udpSocket.close();
+
+    ret = -1;
     if(ba.size() > 60){
-        if(bufsize >= ba.size() - 60)
+        if(bufsize >= ba.size() - 60){
+            ret = 0;
             memcpy(buffer ,ba.data() + 59 ,ba.size() - 60);
+        }
     }
-    return 0;
+    return ret;
 }
 
+#else
+//not complete!!!
+#include <net-snmp/net-snmp-config.h>
+#include <net-snmp/net-snmp-includes.h>
+//enterprises.2699.1.2.1.2.1.1.3.1
+//enterprises.26266.86.10.1.1.1.1.0
+static const oid oidName[] = {1,3,6,1,4,1,2699,1,2,1,2,1,1,3,1};
+static const size_t sizeofOidName = sizeof(oidName)/sizeof(oidName[0]);
+bool snmpGetResponse(char* ip)
+{
+    bool ret = true;
+    netsnmp_session session;
+    init_snmp ("snmp");
+    snmp_sess_init (&session);
+    session.version = SNMP_VERSION_2c;
+    session.community = (u_char*)"public";
+    session.community_len = strlen ((const char*)session.community);
+    session.peername = ip;//被监控主机的IP地址
+    session.timeout = 5 *1000 * 1000;
+    netsnmp_session *ss;
+    netsnmp_pdu *pdu;
+    ss = snmp_open (&session);
+    if (ss == NULL){
+        snmp_sess_perror ("snmp_open", &session);
+        return (1);
+    }
+
+    int new_length=sizeofOidName;
+    pdu = snmp_pdu_create (SNMP_MSG_GET);
+    snmp_add_null_var (pdu, oidName, new_length);
+
+    netsnmp_pdu *response;
+    int status = snmp_synch_response (ss, pdu, &response);
+    if (status != STAT_SUCCESS || !response){
+        snmp_sess_perror ("snmp_synch_response", ss);
+        ret = false;
+    }else{
+        if (response->errstat != SNMP_ERR_NOERROR){
+            fprintf (stderr, "snmp: Error in packet: %s\n",snmp_errstring (response->errstat));
+            ret = false;
+        }
+        snmp_free_pdu (response);
+    }
+    snmp_close (ss);
+    return ret;
+}
+
+static int _platform_net_get_device_id(const QString& device_uri,char *buffer, int bufsize)
+{
+    QHostAddress host_address = get_ip_address(QUrl(device_uri).host());
+    QString address = host_address.toString();
+//    snmpGet
+}
+#endif

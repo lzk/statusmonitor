@@ -94,7 +94,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo cpath";
-    app_version = "1.0.0.10";
+    app_version = "1.0.0.11beta";
     log_init();
 }
 #include <QFile>
