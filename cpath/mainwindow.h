@@ -6,7 +6,6 @@
 #include <QVariant>
 #include "uiconfig.h"
 #include "busyrefreshlabel.h"
-//#include "textticker.h"
 #include <qsystemtrayicon.h>
 #include <QTimer>
 
@@ -84,6 +83,7 @@ private slots:
     void stopScan();
     void onTimeout();
     void blink();
+    void scrollCaption();
 
     void enableCycleAnimation(bool enabled);
 //    void startCycleAnimation();
@@ -121,6 +121,9 @@ private:
 
     QTimer *timerDeviceMsg;
     QTimer *timerBlink;
+    QTimer *timerDeviceName;
+
+    QString strScrollCation;
 
 signals:
     void signalCloseAnimationDlg();

@@ -55,8 +55,7 @@ SOURCES += \
     promptdialog.cpp \
     settingwarming.cpp \
     wifisettingcell.cpp \
-    wifisettingwepcell.cpp \
-#    textticker.cpp
+    wifisettingwepcell.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -95,8 +94,7 @@ HEADERS += \
     promptdialog.h \
     settingwarming.h \
     wifisettingcell.h \
-    wifisettingwepcell.h \
-#    textticker.h
+    wifisettingwepcell.h
 
 FORMS += \
         mainwindow.ui \

@@ -162,16 +162,6 @@ color:white;
     <string>ResStr_Login</string>
    </property>
   </widget>
-  <widget class="QWidget" name="cycleWidget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>392</width>
-     <height>207</height>
-    </rect>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>

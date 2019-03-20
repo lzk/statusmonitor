@@ -55,6 +55,8 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     unSelectHover = "QPushButton::hover{color: rgb(52, 212, 34);}";
     unSelectPressed = "QPushButton::pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:white;}";
 
+    timerCopyNum = new QTimer(this);
+
     on_scrollArea_ScanImage_itemSelectionChanged();
 
     this->setDefault_Scan();
@@ -122,15 +124,13 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             ScanSettings scanSettings = data.value<ScanSettings>();
 
             QString image_path = scanSettings.filename;
-            qDebug()<<scanSettings.calc_data.target.pixels_per_line<<"x"<<scanSettings.calc_data.target.total_lines;
-            qDebug()<<scanSettings.filename;
             QSize size = QSize(scanSettings.calc_data.target.pixels_per_line,scanSettings.calc_data.target.total_lines);
             ui->scrollArea_ScanImage->add_image_item(image_path ,size);
         }
-        else if(result != 0)
+        else if(result != 0 && result != ScannerApp::STATUS_Cancel)
         {
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Scan_Fail"),result);
-            if(result == LShell::ERR_Printer_busy)
+            if(result == ScannerApp::STATUS_USEWITHOUTLOCK)
             {
                 SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_The_machine_is_busy__please_try_later_"),2);
                 busyWarning->setWindowTitle(tr("ResStr_Error"));
@@ -139,9 +139,18 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
                                     & ~Qt::WindowMinimizeButtonHint);
                 busyWarning->exec();
             }
-            else if (result == LShell::ERR_Printer_error)
+            else if (result == ScannerApp::STATUS_ERROR)
             {
                 SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
+                errorWarning->setWindowTitle(tr("ResStr_Error"));
+
+                errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                errorWarning->exec();
+            }
+            else if(result == ScannerApp::STATUS_OUTOFMEMERY)
+            {
+                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
                 errorWarning->setWindowTitle(tr("ResStr_Error"));
 
                 errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -798,6 +807,15 @@ void TabStackedWidget::on_btn_Copy_clicked()
         copyPara.IDCardMode = paramCopy.idCardCopyMode;
     }
 
+    if(ui->cBox_DuplexCopy->isChecked() == true)
+    {
+        copyPara.duplexCopy = paramCopy.duplexMode + 1;
+    }
+    else
+    {
+        copyPara.duplexCopy = 0;
+    }
+
 //    if(ui->cBox_IsIDCard->isChecked() == false && ui->cBox_DuplexCopy->isChecked() == false)
 //    {
 //        QSettings settings;
@@ -1050,7 +1068,7 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
 
 void TabStackedWidget::on_copyNum_textChanged(const QString &arg1)
 {
-    qDebug()<<arg1;
+//    qDebug()<<arg1;
     if(arg1.toInt() < 1)
     {
         ui->copyNum->setText("1");
@@ -1103,4 +1121,44 @@ void TabStackedWidget::on_TWiFiBtn_3_clicked()
         helpPath = "/usr/share/lnthrvop/html/HelpFile/Help/SimplifiedChinese/Wi-Fi.htm";
     }
     QDesktopServices::openUrl(QUrl(helpPath));
+}
+
+void TabStackedWidget::onTimerCopyNumOut()
+{
+    if(timerCount > 9)
+        on_btn_CopyNumReduce_clicked();
+    timerCount++;
+}
+
+void TabStackedWidget::onTimerCopyNumOut1()
+{
+    if(timerCount > 9)
+        on_btn_CopyNumAdd_clicked();
+    timerCount++;
+}
+
+void TabStackedWidget::on_btn_CopyNumReduce_pressed()
+{
+    timerCount = 0;
+    connect(timerCopyNum,SIGNAL(timeout()),this,SLOT(onTimerCopyNumOut()));
+    timerCopyNum->start(60);
+}
+
+void TabStackedWidget::on_btn_CopyNumReduce_released()
+{
+    timerCopyNum->stop();
+    disconnect(timerCopyNum,SIGNAL(timeout()),this,SLOT(onTimerCopyNumOut()));
+}
+
+void TabStackedWidget::on_btn_CopyNumAdd_pressed()
+{
+    timerCount = 0;
+    connect(timerCopyNum,SIGNAL(timeout()),this,SLOT(onTimerCopyNumOut1()));
+    timerCopyNum->start(60);
+}
+
+void TabStackedWidget::on_btn_CopyNumAdd_released()
+{
+    timerCopyNum->stop();
+    disconnect(timerCopyNum,SIGNAL(timeout()),this,SLOT(onTimerCopyNumOut1()));
 }

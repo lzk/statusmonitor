@@ -22,7 +22,6 @@ protected slots:
     bool eventFilter(QObject *, QEvent *);
 
 private slots:
-    void on_pushButton_clicked();
 
     void on_btCancel_clicked();
 

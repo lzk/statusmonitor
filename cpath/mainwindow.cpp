@@ -34,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     timerDeviceMsg = new QTimer(this);
     connect(timerDeviceMsg, SIGNAL(timeout()), this, SLOT(onTimeout()));
 
+    timerDeviceName = new QTimer(this);
+    connect(timerDeviceName,SIGNAL(timeout()),this, SLOT(scrollCaption()));
+
     timerBlink = new QTimer(this);
     connect(timerBlink,SIGNAL(timeout()),this,SLOT(blink()));
 
@@ -113,9 +116,8 @@ MainWindow::MainWindow(QWidget *parent) :
         settings.setValue("enableCRM",bCRM);
     }
 
-//    ui->deviceNameBox->installEventFilter(this);
-//    ui->deviceNameLabel->installEventFilter(this);
-//    ui->deviceNameLabel->hide();
+    ui->deviceNameLabel_2->installEventFilter(this);
+    ui->deviceNameLabel->hide();
 }
 
 MainWindow::~MainWindow()
@@ -166,6 +168,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
         last = e->globalPos();
         move(x()+dx, y()+dy);
     }
+    qDebug()<<e->pos();
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
@@ -808,28 +811,47 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
     updateStatusPanel(displayStatus,status.PrinterStatus);
 }
 
+static int nPos = 0;
+void MainWindow::scrollCaption()
+{
+    if(fontMetrics().width(strScrollCation.mid(nPos)) < 119)
+    {
+        timerDeviceName->stop();
+    }
+    ui->deviceNameLabel->setText(strScrollCation.mid(nPos));
+    nPos ++;
+
+}
+
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if(obj == ui->label_10 && event->type() == QEvent::MouseButtonRelease){
         QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
     }
-//    else if(obj == ui->deviceNameBox && event->type() == QEvent::HoverEnter)
-//    {
-//        qDebug("HoverEnter");
-//        if(fontMetrics().width(ui->deviceNameBox->currentText())>119)
-//        {
-//            ui->deviceNameLabel->setText(ui->deviceNameBox->currentText());
-//            ui->deviceNameLabel->show();
-//            ui->deviceNameLabel->startTextTicker();
-//        }
-//    }
-//    else if(obj == ui->deviceNameLabel && event->type() == QEvent::HoverLeave)
-//    {
-//        qDebug("HoverLeave");
-//        ui->deviceNameLabel->setText("");
-//        ui->deviceNameLabel->hide();
-//        ui->deviceNameLabel->stopTextTicker();
-//    }
+    else if(obj == ui->deviceNameLabel_2 && event->type() == QEvent::Enter)
+    {
+        if(fontMetrics().width(ui->deviceNameBox->currentText())>119)
+        {
+            strScrollCation = ui->deviceNameBox->currentText();
+            ui->deviceNameLabel->setText(ui->deviceNameBox->currentText());
+            ui->deviceNameLabel->show();
+            timerDeviceName->start(200);
+            nPos = 0;
+        }
+    }
+    else if(obj == ui->deviceNameLabel_2 && event->type() == QEvent::Leave)
+    {
+        ui->deviceNameLabel->setText("");
+        ui->deviceNameLabel->hide();
+        if(timerDeviceName->isActive())
+        {
+            timerDeviceName->stop();
+        }
+    }
+    else if(obj == ui->deviceNameLabel_2 && event->type() == QEvent::MouseButtonRelease)
+    {
+        ui->deviceNameBox->showPopup();
+    }
     return QWidget::eventFilter(obj,event);
 }
 

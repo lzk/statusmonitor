@@ -6,6 +6,7 @@
 #include "moresettingsforscan.h"
 #include "moresettingsforcopy.h"
 #include "uinterface.h"
+#include <qtimer.h>
 
 namespace Ui {
 class TabStackedWidget;
@@ -89,6 +90,19 @@ private slots:
 
     void on_TWiFiBtn_3_clicked();
 
+    void on_btn_CopyNumReduce_pressed();
+
+    void on_btn_CopyNumReduce_released();
+
+    void on_btn_CopyNumAdd_pressed();
+
+    void on_btn_CopyNumAdd_released();
+
+    void onTimerCopyNumOut();
+
+    void onTimerCopyNumOut1();
+
+
 private:
     Ui::TabStackedWidget *ui;
 
@@ -107,6 +121,10 @@ private:
     Param_Copy paramCopy;
 
     UiSettings paramScan;
+
+    QTimer *timerCopyNum;
+
+    int timerCount;
 
 //signals:
 //    void cycleStartFromTab();

@@ -236,7 +236,7 @@ QSlider::handle:horizontal {
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>12</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
@@ -285,28 +285,6 @@ QSlider::handle:horizontal {
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label_DPI">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>21</y>
-      <width>101</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>微软雅黑</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>ResStr_DPI</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_ScanSize">
     <property name="geometry">
      <rect>
@@ -319,7 +297,7 @@ QSlider::handle:horizontal {
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>12</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
@@ -341,7 +319,7 @@ QSlider::handle:horizontal {
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>12</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
@@ -363,7 +341,7 @@ QSlider::handle:horizontal {
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>12</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
@@ -490,22 +468,6 @@ QSlider::handle:horizontal {
     </property>
     <property name="text">
      <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_Brightness_2">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>110</y>
-      <width>171</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ResStr_Color_Mode</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="btContrastAdd">
@@ -843,7 +805,7 @@ color:white;
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>12</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
@@ -1074,11 +1036,54 @@ QRadioButton::indicator::checked {
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="label_DPI">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>21</y>
+      <width>101</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_DPI</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Brightness_2">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>110</y>
+      <width>171</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_Color_Mode</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
    <zorder>groupBox_3</zorder>
    <zorder>slider_contrast</zorder>
    <zorder>label_DocType</zorder>
    <zorder>slider_brightness</zorder>
-   <zorder>label_DPI</zorder>
    <zorder>label_ScanSize</zorder>
    <zorder>label_Contrast</zorder>
    <zorder>label_Brightness</zorder>
@@ -1088,7 +1093,6 @@ QRadioButton::indicator::checked {
    <zorder>btModeColor</zorder>
    <zorder>btModeGreyscale</zorder>
    <zorder>btModeBW</zorder>
-   <zorder>label_Brightness_2</zorder>
    <zorder>btContrastAdd</zorder>
    <zorder>btContrastReduce</zorder>
    <zorder>btBrightnessAdd</zorder>
@@ -1101,6 +1105,8 @@ QRadioButton::indicator::checked {
    <zorder>btBrightnessBar</zorder>
    <zorder>label_ScanType</zorder>
    <zorder>groupBox_2</zorder>
+   <zorder>label_DPI</zorder>
+   <zorder>label_Brightness_2</zorder>
   </widget>
   <widget class="QPushButton" name="btClose">
    <property name="geometry">

@@ -67,9 +67,10 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     QValidator *validator1 = new QRegExpValidator(regexp1, this);
     ui->lineEdit_SSID->setValidator(validator1);
 
-    QRegExp regexp2("^[\\x0020-\\x007e]{8,63}$");
+    QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
     QValidator *validator2 = new QRegExpValidator(regexp2, this);
     ui->lineEdit_Password->setValidator(validator2);
+    ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
 
     ui->combox_encryption->setCurrentIndex(2);
     ui->label_keyid->hide();
@@ -78,7 +79,6 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     ui->btKey3->hide();
     ui->btKey4->hide();
 
-    ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 //    qRegisterMetaType<APInfo>("APInfo");
 #ifdef DEBUG
@@ -128,33 +128,12 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             {
                 is_wifi_now_on = true;
             }
-            isDoingCMD = false;
-            times = 0;
         }
-        else
-        {
-            if(!isDoingCMD)
-            {
-                isDoingCMD = true;
-                times = RETRYTIMES;
-            }
-            if(times > 0){
-                times--;
-                gUInterface->setCurrentPrinterCmd(UIConfig::CMD_WIFI_refresh_plus);
-            }
-            else{
-                isDoingCMD = false;
-            }
-        }
+        gUInterface->emitEnableCycleAnimation(false);
 
-        if(!isDoingCMD)
-        {
-            gUInterface->emitEnableCycleAnimation(false);
-        }
         break;
     case UIConfig::LS_CMD_WIFI_apply:
     {
-        qDebug()<<"LS_CMD_WIFI_apply"<<result<<isWitch;
         QString deviceMsg;
         if(!result && isWitch)
         {
@@ -166,10 +145,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 ui->btFlesh->show();
                 ui->label_line->show();
                 ui->label_network->show();
-//                on_btFlesh_clicked();
-////                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_get);
             }
-            gUInterface->emitEnableCycleAnimation(false);
             if((is_wifi_now_on == true && isWlanOn == false) || (is_wifi_now_on == false && isWlanOn == true) )
             {
                 deviceMsg = tr("ResStr_Msg_1");
@@ -185,60 +161,26 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             else
             {
                 deviceMsg = tr("ResStr_Setting_Successfully_");
-                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             }
-            isDoingCMD = false;
-            times = 0;
         }
         else
         {
-            if(!isDoingCMD && isWitch){
-                isDoingCMD = true;
-                times = RETRYTIMES;
-            }
-            if(times > 0){
-                times--;
-                QVariant value;
-                value.setValue<cmdst_wifi_get>(wifi_para);
-                gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            }
-            else{
-//                if(isWlanOn)
-//                {
-//                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
-//                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
-//                }
-//                else
-//                {
-//                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-//                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-//                }
-                gUInterface->emitEnableCycleAnimation(false);
-                isDoingCMD = false;
-                times = 0;
-            }
-        }
-        if(!isDoingCMD)
-        {
-            isWitch = false;
-            qDebug()<<result;
-            if(result != 0)
+            if(isWlanOn)
             {
-                if(isWlanOn)
-                {
-                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
-                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
-                }
-                else
-                {
-                    ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-                    ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-                }
-                deviceMsg = tr("ResStr_Setting_Fail");
+                ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+                ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
             }
-
-            gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+            else
+            {
+                ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+                ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+            }
+            deviceMsg = tr("ResStr_Setting_Fail");
         }
+
+        isWitch = false;
+        gUInterface->emitEnableCycleAnimation(false);
+        gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
     }
         break;
     default: break;
@@ -252,7 +194,6 @@ void WlanTitleCell::on_btWLANON1_clicked()
     isWitch = true;
     if(!*islogin)
     {
-        gUInterface->emitEnableCycleAnimation(true);
         AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
@@ -268,10 +209,6 @@ void WlanTitleCell::on_btWLANON1_clicked()
             wifi_para = orin_wifi_para;
             wifi_para.wifiEnable = 7;
 
-            QVariant value;
-            value.setValue<cmdst_wifi_get>(wifi_para);
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            gUInterface->emitEnableCycleAnimation(true);
         }
         else
         {
@@ -287,17 +224,13 @@ void WlanTitleCell::on_btWLANON1_clicked()
 
             wifi_para = orin_wifi_para;
             wifi_para.wifiEnable = 0;
-            QVariant value;
-            value.setValue<cmdst_wifi_get>(wifi_para);
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            gUInterface->emitEnableCycleAnimation(true);
         }
-    }
-    else
-    {
-        gUInterface->emitEnableCycleAnimation(false);
-    }
 
+        QVariant value;
+        value.setValue<cmdst_wifi_get>(wifi_para);
+        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
+        gUInterface->emitEnableCycleAnimation(true);
+    }
 }
 
 void WlanTitleCell::on_btManualWiFi_clicked()
@@ -330,7 +263,6 @@ void WlanTitleCell::on_btWLANON2_clicked()
     isWitch = true;
     if(!*islogin)
     {
-        gUInterface->emitEnableCycleAnimation(true);
         AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
@@ -346,11 +278,6 @@ void WlanTitleCell::on_btWLANON2_clicked()
             wifi_para = orin_wifi_para;
             wifi_para.wifiEnable = 7;
 
-            QVariant value;
-            value.setValue<cmdst_wifi_get>(wifi_para);
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-
-            gUInterface->emitEnableCycleAnimation(true);
         }
         else
         {
@@ -366,15 +293,11 @@ void WlanTitleCell::on_btWLANON2_clicked()
 
             wifi_para = orin_wifi_para;
             wifi_para.wifiEnable = 0;
-            QVariant value;
-            value.setValue<cmdst_wifi_get>(wifi_para);
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            gUInterface->emitEnableCycleAnimation(true);
         }
-    }
-    else
-    {
-        gUInterface->emitEnableCycleAnimation(false);
+        QVariant value;
+        value.setValue<cmdst_wifi_get>(wifi_para);
+        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
+        gUInterface->emitEnableCycleAnimation(true);
     }
 }
 
@@ -839,7 +762,17 @@ void WlanTitleCell::on_btKey4_toggled(bool checked)
 void WlanTitleCell::on_checkBox_visiable_toggled(bool checked)
 {
     if(checked)
+    {
+        QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
+        QValidator *validator2 = new QRegExpValidator(regexp2, this);
+        ui->lineEdit_Password->setValidator(validator2);
         ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
+    }
     else
+    {
+        QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
+        QValidator *validator2 = new QRegExpValidator(regexp2, this);
+        ui->lineEdit_Password->setValidator(validator2);
         ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
+    }
 }

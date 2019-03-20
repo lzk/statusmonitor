@@ -638,6 +638,50 @@ border-image: url(:/Images/shopCart_Disable.tif);
 </string>
        </property>
       </widget>
+      <widget class="QLabel" name="deviceNameLabel">
+       <property name="geometry">
+        <rect>
+         <x>34</x>
+         <y>51</y>
+         <width>119</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="deviceNameLabel_2">
+       <property name="geometry">
+        <rect>
+         <x>34</x>
+         <y>51</y>
+         <width>119</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <zorder>mofenProgressBar</zorder>
+      <zorder>label</zorder>
+      <zorder>label_2</zorder>
+      <zorder>label_5</zorder>
+      <zorder>label_6</zorder>
+      <zorder>label_10</zorder>
+      <zorder>horizontalLayoutWidget</zorder>
+      <zorder>horizontalLayoutWidget_2</zorder>
+      <zorder>btCar</zorder>
+      <zorder>deviceNameBox</zorder>
+      <zorder>deviceNameLabel</zorder>
+      <zorder>deviceNameLabel_2</zorder>
      </widget>
      <widget class="QWidget" name="tabButton" native="true">
       <property name="enabled">

@@ -49,11 +49,6 @@ SettingForIPv6::~SettingForIPv6()
     delete ui;
 }
 
-void SettingForIPv6::on_pushButton_clicked()
-{
-    close();
-}
-
 void SettingForIPv6::on_btCancel_clicked()
 {
     close();
@@ -325,66 +320,24 @@ void SettingForIPv6::cmdResult(int cmd,int result,QVariant data)
         {
             info_ipv6 = data.value<net_ipv6_st>();
             showInfo(info_ipv6);
-            LOGLOG("get ipv6 information");
-            isDoingCMD = false;
-            times = 0;
         }
-        else{
-            if(!isDoingCMD){
-                isDoingCMD = true;
-                times = RETRYTIMES;
-            }
-            if(times > 0){
-                times--;
-                gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_GetV6);
-            }
-            else {
-                isDoingCMD = false;
-            }
-        }
-        if(!isDoingCMD)
-            cycle->stopAnimation();
+        cycle->stopAnimation();
         break;
     case UIConfig::LS_CMD_NET_SetV6:
+    {
+        QString deviceMsg;
         if(!result)
         {
-            isDoingCMD = false;
-            times = 0;
-            LOGLOG("set ipv6 information");
+            deviceMsg = tr("ResStr_Msg_1");
+            close();
         }
-        else{
-            if(!isDoingCMD){
-                isDoingCMD = true;
-                times = RETRYTIMES;
-            }
-            if(times > 0){
-                times--;
-
-                QVariant data;
-                data.setValue(info_ipv6);
-                gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_SetV6,data);
-            }
-            else {
-                isDoingCMD = false;
-            }
-        }
-        if(!isDoingCMD)
+        else
         {
-            QString deviceMsg;
-            if(!result)
-            {
-                deviceMsg = tr("ResStr_Msg_1");
-                cycle->stopAnimation();
-                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
-                close();
-            }
-            else
-            {
-                deviceMsg = tr("ResStr_Setting_Fail");
-                cycle->stopAnimation();
-                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
-            }
+            deviceMsg = tr("ResStr_Setting_Fail");
         }
+        cycle->stopAnimation();
+        gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+    }
         break;
     default: break;
     }

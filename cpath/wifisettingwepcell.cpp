@@ -37,10 +37,10 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
     ui->lineEdit_Password->setValidator(validator);
 
     ui->checkBox_visiable->setChecked(isDisplayPW);
-    if(!isDisplayPW)
-        ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
-    else
-        ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
+    QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
+    QValidator *validator2 = new QRegExpValidator(regexp2, this);
+    ui->lineEdit_Password->setValidator(validator2);
+    ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
 
     if(NULL != _islogin)
     {
@@ -86,11 +86,17 @@ void WiFiSettingWEPCell::on_checkBox_visiable_clicked()
     if(ui->checkBox_visiable->isChecked())
     {
         isDisplayPW = true;
+        QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
+        QValidator *validator2 = new QRegExpValidator(regexp2, this);
+        ui->lineEdit_Password->setValidator(validator2);
         ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
     }
     else
     {
         isDisplayPW = false;
+        QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
+        QValidator *validator2 = new QRegExpValidator(regexp2, this);
+        ui->lineEdit_Password->setValidator(validator2);
         ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
     }
 }
@@ -188,7 +194,6 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
     }
     else
     {
-        emit doingConnect(this);
         if(!(*islogin ))
         {
             AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
@@ -234,13 +239,13 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
             QVariant value;
             value.setValue<cmdst_wifi_get>(wifi_para);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
+
+            emit doingConnect(this);
         }
         else
         {
             QString deviceMsg = tr("ResStr_Setting_Fail");
             gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
-
-            emit connectSuc(this, false);
         }
     }
 }
@@ -289,46 +294,27 @@ void WiFiSettingWEPCell::cmdResult(int cmd,int result ,QVariant data)
 {
     if(UIConfig::LS_CMD_WIFI_apply == cmd)
     {
+        QString deviceMsg = "";
         if(!result)
         {
-            if(1)
-            {
-                ui->label_APStatus->setText(tr("ResStr_Connected"));
-                ui->label_APStatus_2->setText(tr("ResStr_Connected"));
-                ui->label_StatusIcon->setStyleSheet("QLabel{border-image: url(:/Images/Signal_Connect.png);}");
-                ui->label_line1->setStyleSheet("QLabel{border:1px solid  rgb(105, 185, 18);}");
-                ui->label_line2->setStyleSheet("QLabel{border:1px solid  rgb(105, 185, 18);}");
-                apInfo.APStatus.clear();
-                apInfo.APStatus = tr("ResStr_Connected");
-     //           on_btCancel_clicked();
-                emit connectSuc(this, true);
+            ui->label_APStatus->setText(tr("ResStr_Connected"));
+            ui->label_APStatus_2->setText(tr("ResStr_Connected"));
+            ui->label_StatusIcon->setStyleSheet("QLabel{border-image: url(:/Images/Signal_Connect.png);}");
+            ui->label_line1->setStyleSheet("QLabel{border:1px solid  rgb(105, 185, 18);}");
+            ui->label_line2->setStyleSheet("QLabel{border:1px solid  rgb(105, 185, 18);}");
+            apInfo.APStatus.clear();
+            apInfo.APStatus = tr("ResStr_Connected");
+            emit connectSuc(this, true);
 
-                QString deviceMsg = tr("ResStr_Setting_Successfully_");
-                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
-            }
-            isDoingCMD = false;
-            times = 0;
-            //_Q_LOG("set wifi success");
+            deviceMsg = tr("ResStr_Setting_Successfully_");
         }
         else
         {
-            if(!isDoingCMD){
-                isDoingCMD = false;
-                times = RETRYTIMES;
-            }
-            if(times > 0){
-                times--;
-                on_btConnect_clicked();
-            }
-            else{
-
-                QString deviceMsg = tr("ResStr_Setting_Fail");
-                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
-                emit connectSuc(this, false);
-                isDoingCMD = false;
-            }
+            deviceMsg = tr("ResStr_Setting_Fail");
+            emit connectSuc(this, false);
         }
-        if(!isDoingCMD)
-            disconnect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
+
+        gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+        disconnect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
     }
 }

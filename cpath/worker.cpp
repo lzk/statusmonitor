@@ -125,13 +125,20 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     case UIConfig::LS_CMD_WIFI_apply_noread:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_wifi_get device_data = data.value<cmdst_wifi_get>();
-                    result = lshell->wifi_apply(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                cmdst_wifi_get device_data = data.value<cmdst_wifi_get>();
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        result = lshell->wifi_apply(&device_data);
+                        lshell->close();
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
+                value.setValue(device_data);
             }
         }
         cmdResult(cmd ,result ,value);
@@ -155,24 +162,29 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
                 struct_wifi_refresh_info wifi_refresh_data;
-                result = lshell->open(printer);
-                if(!result){
-                    result = lshell->wifi_get_para(&wifi_refresh_data.wifi_para);
-                    qDebug()<<"wifi_refresh_data"<<result<<" "<<wifi_refresh_data.wifi_para.wifiEnable;
-
-                    cmdst_wifi_status status_data = 0;
-                    wifi_refresh_data.wifi_status = false;
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
                     if(!result){
-                        result = lshell->wifi_get_status(&status_data);
-                        qDebug()<<"status_data"<<status_data;
+                        result = lshell->wifi_get_para(&wifi_refresh_data.wifi_para);
+
+                        cmdst_wifi_status status_data = 0;
+                        wifi_refresh_data.wifi_status = false;
+                        if(!result){
+                            result = lshell->wifi_get_status(&status_data);
+                        }
+                        if(status_data != 0 && !result){
+                            wifi_refresh_data.wifi_status = true;
+                            result = lshell->wifi_get_aplist(&wifi_refresh_data.wifi_aplist);
+                        }
+                        lshell->close();
                     }
-                    if(status_data != 0 && !result){
-                        wifi_refresh_data.wifi_status = true;
-                        result = lshell->wifi_get_aplist(&wifi_refresh_data.wifi_aplist);
-                    }
-                    value.setValue(wifi_refresh_data);
-                    lshell->close();
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
+                value.setValue(wifi_refresh_data);
             }
         }
         cmdResult(cmd ,result ,value);
@@ -194,12 +206,19 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     case UIConfig::LS_CMD_PASSWD_set:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_passwd device_data = data.value<cmdst_passwd>();
-                    result = lshell->password_set(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        cmdst_passwd device_data = data.value<cmdst_passwd>();
+                        result = lshell->password_set(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
         }
@@ -222,12 +241,19 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     case UIConfig::LS_CMD_PASSWD_confirm:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_passwd device_data = data.value<cmdst_passwd>();
-                    result = lshell->password_confirm(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        cmdst_passwd device_data = data.value<cmdst_passwd>();
+                        result = lshell->password_confirm(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
         }
@@ -278,12 +304,19 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     case UIConfig::LS_CMD_PRN_PSaveTime_Get:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_PSave_time device_data;
-                    result = lshell->savetime_get(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        cmdst_PSave_time device_data;
+                        result = lshell->savetime_get(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
         }
@@ -292,12 +325,19 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     case UIConfig::LS_CMD_PRN_PSaveTime_Set:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_PSave_time device_data = data.value<cmdst_PSave_time>();
-                    result = lshell->savetime_set(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        cmdst_PSave_time device_data = data.value<cmdst_PSave_time>();
+                        result = lshell->savetime_set(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
         }
@@ -335,117 +375,166 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     case UIConfig::LS_CMD_NET_GetV4:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    net_info_st device_data;
-                    result = lshell->ipv4_get(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        net_info_st device_data;
+                        result = lshell->ipv4_get(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_NET_SetV4:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    net_info_st device_data = data.value<net_info_st>();
-                    result = lshell->ipv4_set(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        net_info_st device_data = data.value<net_info_st>();
+                        result = lshell->ipv4_set(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_NET_GetV6:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    net_ipv6_st device_data;
-                    result = lshell->ipv6_get(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        net_ipv6_st device_data;
+                        result = lshell->ipv6_get(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_NET_SetV6:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    net_ipv6_st device_data = data.value<net_ipv6_st>();
-                    result = lshell->ipv6_set(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        net_ipv6_st device_data = data.value<net_ipv6_st>();
+                        result = lshell->ipv6_set(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_PRN_Set_UserConfig:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_userconfig device_data = data.value<cmdst_userconfig>();
-                    result = lshell->userconfig_set(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        cmdst_userconfig device_data = data.value<cmdst_userconfig>();
+                        result = lshell->userconfig_set(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_PRN_Get_UserConfig:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_userconfig device_data;
-                    result = lshell->userconfig_get(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        cmdst_userconfig device_data;
+                        result = lshell->userconfig_get(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_WIFI_Set_SoftAp:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_softap device_data = data.value<cmdst_softap>();
-                    result = lshell->wifi_softap_set(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        cmdst_softap device_data = data.value<cmdst_softap>();
+                        result = lshell->wifi_softap_set(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_WIFI_Get_SoftAp:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    cmdst_softap device_data;
-                    result = lshell->wifi_softap_get(&device_data);
-                    lshell->close();
-                    value.setValue(device_data);
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        cmdst_softap device_data;
+                        result = lshell->wifi_softap_get(&device_data);
+                        lshell->close();
+                        value.setValue(device_data);
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
 
@@ -455,39 +544,57 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     case UIConfig::LS_CMD_PRN_FusingScReset:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    result = lshell->fusingsc_reset();
-                    lshell->close();
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        result = lshell->fusingsc_reset();
+                        lshell->close();
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_PRN_TonerReset:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    result = lshell->toner_reset();
-                    lshell->close();
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        result = lshell->toner_reset();
+                        lshell->close();
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_PRN_DrumReset:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
-                result = lshell->open(printer);
-                if(!result){
-                    result = lshell->drum_reset();
-                    lshell->close();
+                for(int i = 0 ;i < 3 ;i++){
+                    result = lshell->open(printer);
+                    if(!result){
+                        result = lshell->drum_reset();
+                        lshell->close();
+                    }
+
+                    if(!result)
+                        break;
+                    else
+                        usleep(100 *1000);
                 }
             }
-
         }
         cmdResult(cmd ,result ,value);
         break;
@@ -570,6 +677,7 @@ void Worker::update_printer_status(PrinterInfo_struct ps)
     QVariant value;
     current_printer_info = ps;
     value.setValue<PrinterInfo_struct>(ps);
+    LOGLOG("CMD_GetStatus");
     cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
 }
 
