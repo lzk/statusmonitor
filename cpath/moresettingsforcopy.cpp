@@ -62,17 +62,18 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     {
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
-        if(country == QLocale::UnitedStates)
+
+        if(ParamForCopy->outputSize != OutPutSize_Copy_letter && ParamForCopy->outputSize != OutPutSize_Copy_A4 && ParamForCopy->outputSize != OutPutSize_Copy_A5 && ParamForCopy->outputSize != OutPutSize_Copy_B5)
         {
-            ParamForCopy->outputSize = OutPutSize_Copy_letter;
-        }else
-        {
-            ParamForCopy->outputSize = OutPutSize_Copy_A4;
+            if(country == QLocale::UnitedStates)
+            {
+                ParamForCopy->outputSize = OutPutSize_Copy_letter;
+            }else
+            {
+                ParamForCopy->outputSize = OutPutSize_Copy_A4;
+            }
         }
-//        if(ParamForCopy->docSize == DocSize_Copy_Executive)
-//        {
-//            ParamForCopy->docSize = DocSize_Copy_A4;
-//        }
+
         ParamForCopy->scaling = getScalingValue(ParamForCopy->outputSize,ParamForCopy->docSize);
 
         if(ParamForCopy->paperType > MediaType_Copy_Recycled)
@@ -224,6 +225,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         selectIDCardCopyMode(param->idCardCopyMode);
 
         ui->scaling->setText(text.setNum(param->scaling));
+        ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);
 
     }else if (_duplexCopyFlag)
     {
@@ -298,15 +300,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
         ui->scaling->setText(text.setNum(param->scaling));
-
-        if(param->duplexMode == Flip_Long_Edge)
-        {
-            ui->duplexCopyModeList->setCurrentIndex(0);
-        }
-        else
-        {
-            ui->duplexCopyModeList->setCurrentIndex(1);
-        }
+        ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);
     }
     else
     {
@@ -353,6 +347,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
         ui->scaling->setText(text.setNum(param->scaling));
+        ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);
     }
 }
 

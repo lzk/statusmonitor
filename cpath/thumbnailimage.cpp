@@ -61,6 +61,19 @@ void ThumbnailImage::listWidget_itemSelectionChanged()
 
 }
 
+void ThumbnailImage::setEnabled(bool b)
+{
+    setEnabled(b);
+    if(b)
+    {
+        ui->label->installEventFilter(this);
+    }
+    else
+    {
+        ui->label->removeEventFilter(this);
+    }
+}
+
 void ThumbnailImage::image_ask()
 {
     //get preview image
