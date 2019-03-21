@@ -962,6 +962,22 @@ background-color:white;
 border-width:0px;</string>
     </property>
    </widget>
+   <widget class="QLabel" name="disableScrollArea">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>305</y>
+      <width>390</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url();</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>label_Background</zorder>
    <zorder>btn_MoreSetting_Scan</zorder>
    <zorder>btn_Scan</zorder>
@@ -971,6 +987,7 @@ border-width:0px;</string>
    <zorder>label_ScanProgress</zorder>
    <zorder>progressBar_Scan</zorder>
    <zorder>scrollArea_ScanImage</zorder>
+   <zorder>disableScrollArea</zorder>
   </widget>
   <widget class="QWidget" name="settingPage">
    <property name="styleSheet">

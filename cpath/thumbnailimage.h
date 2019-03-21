@@ -33,7 +33,6 @@ protected:
     virtual void paintEvent(QPaintEvent *);
     bool eventFilter(QObject *, QEvent *);
     virtual void mouseDoubleClickEvent(QMouseEvent *);
-    void setEnabled(bool);
 
 signals:
     void image_ask(QObject* obj ,QListWidgetItem* item ,QSize size ,int weight ,int angle);

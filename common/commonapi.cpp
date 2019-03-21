@@ -4,7 +4,7 @@
 bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultValue ,bool set)
 {
     bool result = true;
-    QSettings settings;
+    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml");
     settings.setDefaultFormat(QSettings::NativeFormat);
     if(set){
         settings.setValue(key ,value);

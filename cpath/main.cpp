@@ -103,9 +103,9 @@ int main(int argc, char *argv[])
     }
     a.installTranslator(&trans);
 
-    QCoreApplication::setOrganizationName("Lenovo");
-    QCoreApplication::setApplicationName("VOP");
-    QSettings settings;
+//    QCoreApplication::setOrganizationName("Lenovo");
+//    QCoreApplication::setApplicationName("VOP");
+    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml" ,QSettings::NativeFormat);
     qDebug()<<settings.fileName();
 
     QSplashScreen *splash = new QSplashScreen;

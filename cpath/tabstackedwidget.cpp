@@ -15,7 +15,6 @@
 #include <qurl.h>
 #include <qapplication.h>
 #include "scannerapp.h"
-#include "qsettings.h"
 #include "lshell.h"
 #ifndef Q_OS_MAC
 #include <sys/statfs.h>
@@ -58,6 +57,7 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     timerCopyNum = new QTimer(this);
 
     on_scrollArea_ScanImage_itemSelectionChanged();
+    ui->disableScrollArea->hide();
 
     this->setDefault_Scan();
 
@@ -170,6 +170,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
 
         gUInterface->emitStopScanSignal();
         ui->scrollArea_ScanImage->setEnabled(true);
+        ui->disableScrollArea->hide();
         if(ui->scrollArea_ScanImage->selectedItems().isEmpty()){
             ui->btn_ScanSave->setEnabled(false);
         }else{
@@ -509,6 +510,7 @@ void TabStackedWidget::on_btn_Scan_clicked()
     gUInterface->emitStartScanSignal();
     ui->btn_ScanSave->setEnabled(false);
     ui->scrollArea_ScanImage->setEnabled(false);
+    ui->disableScrollArea->show();
     ui->btn_MoreSetting_Scan->setEnabled(false);
     ui->btn_Scan->setEnabled(false);
     ui->btn_ScanCancel->setEnabled(true);
@@ -816,23 +818,6 @@ void TabStackedWidget::on_btn_Copy_clicked()
         copyPara.duplexCopy = 0;
     }
 
-//    if(ui->cBox_IsIDCard->isChecked() == false && ui->cBox_DuplexCopy->isChecked() == false)
-//    {
-//        QSettings settings;
-//        settings.beginGroup("CopyParam");
-//        settings.setValue("Scaling",paramCopy.scaling);
-//        settings.setValue("DocType",paramCopy.docType);
-//        settings.setValue("DocSize",paramCopy.docSize);
-//        settings.setValue("DPI",paramCopy.docDpi);
-//        settings.setValue("OutputSize",paramCopy.outputSize);
-//        settings.setValue("PaperType",paramCopy.paperType);
-//        settings.setValue("IsNin1",paramCopy.isMultiPage);
-//        settings.setValue("MultiMode",paramCopy.multiMode);
-//        settings.setValue("PromotIDCard",paramCopy.promptInfo.isIDCard);
-//        settings.setValue("PromotMultible",paramCopy.promptInfo.isMultible);
-//        settings.endGroup();
-//    }
-
     QVariant data;
     data.setValue<copycmdset>(copyPara);
     gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_COPY,data);
@@ -848,27 +833,6 @@ void TabStackedWidget::recoverCopyMode()
     ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
     ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconDisable.tif);");
     ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));
-
-//    QSettings settings;
-//    settings.beginGroup("CopyParam");
-//    if(settings.contains("Scaling"))
-//    {
-//        paramCopy.scaling = settings.value("Scaling").toInt();
-//        paramCopy.docType = (DocType_Copy)settings.value("DocType").toInt();
-//        paramCopy.docSize = (DocSize_Copy)settings.value("DocSize").toInt();
-//        paramCopy.docDpi = (DocDpi_Copy)settings.value("DPI").toInt();
-//        paramCopy.outputSize = (OutPutSize_Copy)settings.value("OutputSize").toInt();
-//        paramCopy.paperType = (MediaType_Copy)settings.value("PaperType").toInt();
-//        paramCopy.isMultiPage = settings.value("IsNin1").toBool();
-//        paramCopy.multiMode = (MultiMode_Copy)settings.value("MultiMode").toInt();
-//        paramCopy.promptInfo.isIDCard = settings.value("PromotIDCard").toBool();
-//        paramCopy.promptInfo.isMultible = settings.value("PromotMultible").toBool();
-//    }
-//    else
-//    {
-//        setDefault_Copy();
-//    }
-//    settings.endGroup();
 }
 
 #define _QT_PDF 1
