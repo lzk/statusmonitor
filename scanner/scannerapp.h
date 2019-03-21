@@ -106,6 +106,8 @@ public:
         ,STATUS_Error_Error = 100
         ,STATUS_Cancel
         ,STATUS_Error_App
+        ,STATUS_Error_machine
+        ,STATUS_Error_busy
     } DEVSTATUS;
 
     int scan(Printer_struct* printer ,ScanSettings* settings);

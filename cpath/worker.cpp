@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QDateTime>
 #include "lshell.h"
+#include <unistd.h>
 Worker::Worker(QObject *parent) :
     QObject(parent)
   ,cmd_status(0)
@@ -651,11 +652,14 @@ void Worker::update_scan_progress(Printer_struct* printer ,int progress)
         emit signal_update_scan_progress(0);
     }else if(progress == -2){
         emit signal_update_scan_progress(100);
-        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
-        QVariant value;
-        value.setValue<PrinterInfo_struct>(current_printer_info);
-        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
-//        cmdFromUi(UIConfig::CMD_GetStatus ,printer->name);
+//        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
+//        QVariant value;
+//        value.setValue<PrinterInfo_struct>(current_printer_info);
+//        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+////        cmdFromUi(UIConfig::CMD_GetStatus ,printer->name);
+        current_printer_info.status.PrinterStatus = 0;
+    }else if(progress == -3){
+        current_printer_info.status.PrinterStatus = 0;
     }else{
         emit signal_update_scan_progress(progress);
     }
@@ -675,7 +679,7 @@ void Worker::update_printer_status(PrinterInfo_struct ps)
     if(current_printer_info.status.PrinterStatus == UIConfig::Usb_Scanning)
         return;
     QVariant value;
-    current_printer_info = ps;
+//    current_printer_info = ps;
     value.setValue<PrinterInfo_struct>(ps);
     LOGLOG("CMD_GetStatus");
     cmdResult(UIConfig::CMD_GetStatus ,0 ,value);

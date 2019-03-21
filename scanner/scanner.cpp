@@ -14,10 +14,6 @@ Scanner::~Scanner()
     delete scannner_api;
 }
 
-extern int usb_error_printing;
-extern int usb_error_scanning;
-extern int usb_error_usb_locked;
-extern int usb_error_busy;
 int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret;
@@ -27,24 +23,28 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     ret = scannner_api->open(printer);
     if(ret){
         LOGLOG("scanning...error:open");
-        return ScannerApp::STATUS_Error_Error;
+        return ScannerApp::STATUS_Error_App;
     }
     ret = scannner_api->lock();
     if(ret){
         LOGLOG("scanning...error:lock");
         scannner_api->close();
-        return ret;
+        if(ret == ScannerApp::STATUS_USEWITHOUTLOCK)
+            return ScannerApp::STATUS_Error_busy;
+        else
+            return ScannerApp::STATUS_Error_App;
     }
 
-    usb_error_usb_locked = usb_error_scanning;
     ret = scannner_api->set_parameters(settings);
     if(ret){
         LOGLOG("scanning...error:set parameters");
+        ret = ScannerApp::STATUS_Error_machine;
         goto ERROR_RETURN;
     }
 
     ret = scannner_api->start();
     if(ret){
+        ret = ScannerApp::STATUS_Error_machine;
         goto ERROR_RETURN;
     }
     scanner_app->start_scan(settings);
@@ -57,19 +57,21 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     buf_size = settings->info->source_buf_size;
     while(!m_cancel){
         ret = scannner_api->get_scan_status(&status);
-        if(ret)
+        if(ret){
+            ret = ScannerApp::STATUS_Error_machine;
             break;
+        }
         if(status.status == ScanStatus_Scanning){
             if(buf_size < status.data_size){
                 LOGLOG("not enough buffer");
-                ret = -1;
+                ret = ScannerApp::STATUS_Error_machine;
                 break;
             }
             size = scannner_api->get_scan_data(buffer ,status.data_size);
 //            LOGLOG("scanning...read:%d real:%d" ,status.data_size ,size);
             if(size != status.data_size){
                 LOGLOG("scanning...error:get scan para");
-                ret = -1;
+                ret = ScannerApp::STATUS_Error_machine;
                 break;
             }else{
                 scanner_app->save_scan_data(settings ,buffer ,size);
@@ -87,14 +89,11 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     scannner_api->stop();
 
  ERROR_RETURN:
-    usb_error_usb_locked = usb_error_busy;
     int aa = scannner_api->unlock();
     if(aa){
         LOGLOG("scanner unlock error:%d" ,aa);
     }
     scannner_api->close();
-//    if(ret < 0)
-//        ret = ScannerApp::STATUS_Error_Error;
     return ret;
 }
 

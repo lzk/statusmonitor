@@ -2,6 +2,7 @@
 #include "scanner.h"
 #include "imagetrans.h"
 #include "log.h"
+#include <unistd.h>
 void caculate_image_trans_data(ScanSettings* settings);
 void calculate_parameters(ScanSettings* scan_settings);
 
@@ -241,6 +242,10 @@ int ScannerApp::trans_process(ScanSettings* settings)
 }
 
 #define Test_Jerry 1
+extern int usb_error_printing;
+extern int usb_error_scanning;
+extern int usb_error_usb_locked;
+extern int usb_error_busy;
 int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret = 0;
@@ -263,7 +268,15 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 
     set_cancel(false);
     settings->received_bytes = 0;
-    ret = scanner->flat_scan(printer ,settings);
+    usb_error_usb_locked = usb_error_scanning;
+    for(int i = 0 ;i < 3 ;i++){
+        ret = scanner->flat_scan(printer ,settings);
+        if(ret != STATUS_Error_App)
+            break;
+        else
+            usleep(100 * 1000);
+    }
+    usb_error_usb_locked = usb_error_busy;
 //    exit_scan(settings);
     scan_buffer_exit();
     delete [] source_buf;
@@ -273,6 +286,10 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
         if(settings->callback)
             settings->callback(settings);
         trans_process(settings);
+    }else{
+        settings->progress  = -3;
+        if(settings->callback)
+            settings->callback(settings);
     }
     return ret;
 }

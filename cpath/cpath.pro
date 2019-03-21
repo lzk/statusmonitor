@@ -149,7 +149,7 @@ contains(CONFIG ,static){
 
 #LIBS +=  -lz
 mac{
-            LIBS += $${PWD}/../libs/mac/libtiff.a
+            LIBS += $${PWD}/../libs/mac/libtiff.a -lz
             LIBS += $${PWD}/../libs/mac/libjpeg.a
 }else{
     unix{
