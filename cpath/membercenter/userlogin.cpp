@@ -81,7 +81,7 @@ void UserLogin::loginAction(QString strPhoneNumber,QString strVerifyCode)
         {
             m_loginSuccess = true;
 
-            QSettings settings;
+            QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
             settings.setValue("loginPhone",strPhoneNumber);
             settings.setValue("password",strVerifyCode);
 
@@ -169,34 +169,6 @@ QString UserLogin::getUserInfo(QString strPhoneNumber)
 
     return strJsonText;
 }
-
-//void UserLogin::replyFinish_check(QNetworkReply* reply)
-//{
-//    QString strJsonText = reply->readAll();
-//    qDebug()<<"replyFinish_check"<<strJsonText;
-
-//    QJson::Parser parser;
-//    bool ok;
-//    QVariantMap result = parser.parse(strJsonText.toUtf8(),&ok).toMap();
-
-//    if(ok)
-//    {
-//        if(result["success"].toBool())
-//        {
-//            m_loginSuccess = true;
-
-//            QSettings settings;
-//            settings.setValue("loginPhone",ui->le_userName->text());
-//            settings.setValue("password",ui->le_autoCode->text());
-//            close();
-//        }
-//        else
-//        {
-//            ui->labMsg->setText(tr("ResStr_Msg_8"));
-//        }
-//    }
-//    reply->deleteLater();
-//}
 
 void UserLogin::on_bt_getAuthCode_clicked()
 {

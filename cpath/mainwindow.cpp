@@ -19,16 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(" ");
 //    LOGLOG("test!!!");
-    int country = QLocale::system().country();
-//    int country = QLocale::China;
-    if(country == QLocale::China)
-    {
-        ui->memberCenterWidget->setSW(ui->totalStackedWidget, ui->loginButton);
-    }
-    else
-    {
-        ui->loginButton->hide();
-    }
     selectState = "background-color: rgb(99, 99, 99);color:white;";
     unSelectState = "background-color: white;color:black;";
     timerDeviceMsg = new QTimer(this);
@@ -101,21 +91,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     createSysTray();
 
-    QSettings settings;
-    QVariant vCRM = settings.value("enableCRM");
-    if(vCRM.isNull())
-    {
-        bool bCRM = false;
-        ExperiencePro *exp = new ExperiencePro(this,bCRM);
-        exp->exec();
-        bCRM = exp->isStartCRM();
-        if(bCRM)
-        {
-            ui->memberCenterWidget->startCRM();
-        }
-        settings.setValue("enableCRM",bCRM);
-    }
 
+    int country = QLocale::system().country();
+//    int country = QLocale::China;
+    if(country == QLocale::China)
+    {
+        ui->memberCenterWidget->setSW(ui->totalStackedWidget, ui->loginButton);
+    }
+    else
+    {
+        ui->loginButton->hide();
+    }
     ui->deviceNameLabel_2->installEventFilter(this);
     ui->deviceNameLabel->hide();
 }

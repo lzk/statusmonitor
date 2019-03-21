@@ -29,49 +29,71 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
 
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)), this ,SLOT(cmdResult(int,int,QVariant)));
     isLogin = false;
-    QSettings settings;
-    loginPhone = settings.value("loginPhone").toString();
-    if(loginPhone != NULL)
+
+    int country = QLocale::system().country();
+//    int country = QLocale::China;
+    if(country == QLocale::China)
     {
+        QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
 
-        QString password = settings.value("password").toString();
-        UserLogin userLogin;
-        userLogin.loginAction(loginPhone,password);
-        if(userLogin.isLogin())
+        QString CRM = settings.value("enableCRM").toString();
+        qDebug()<<"CRM"<<CRM;
+        if(CRM != "true" )
         {
-            QString loginName;
-            settings.beginGroup(loginPhone);
-            loginName = settings.value("loginName").toString();
-            settings.endGroup();
-            if(loginName != NULL)
+            bool bCRM = false;
+            ExperiencePro *exp = new ExperiencePro(this,bCRM);
+            exp->exec();
+            bCRM = exp->isStartCRM();
+            if(bCRM)
             {
-                ui->login_name->setText(QString("%0(%1)").arg(loginName).arg(loginPhone));
+                startCRM();
             }
-            else
+            settings.setValue("enableCRM","true");
+        }
+
+        loginPhone = settings.value("loginPhone").toString();
+        if(loginPhone != NULL)
+        {
+            QString password = settings.value("password").toString();
+            UserLogin userLogin;
+            userLogin.loginAction(loginPhone,password);
+            if(userLogin.isLogin())
             {
-                ui->login_name->setText(loginPhone);
-            }
-            ui->btLogin->setDisabled(true);
-            ui->login_arrow->hide();
-            isLogin = true;
-            ui->btloginImg->setStyleSheet("QPushButton{"
-                                           "border-image: url(:/Images/Logon_Active.png);}"
-                                           "QPushButton:pressed{"
-                                           "border-image: url(:/Images/Logon_Normal.png);}");
-            ui->btloginImg2->setStyleSheet("QPushButton{"
-                                           "border-image: url(:/Images/Logon_Active.png);}"
-                                           "QPushButton:pressed{"
-                                           "border-image: url(:/Images/Logon_Normal.png)}");
+                QString loginName;
+                settings.beginGroup(loginPhone);
+                loginName = settings.value("loginName").toString();
+                qDebug()<<"loginName:"<<loginName;
+                settings.endGroup();
+                if(loginName != NULL)
+                {
+                    ui->login_name->setText(QString("%0(%1)").arg(loginName).arg(loginPhone));
+                }
+                else
+                {
+                    ui->login_name->setText(loginPhone);
+                }
+                ui->btLogin->setDisabled(true);
+                ui->login_arrow->hide();
+                isLogin = true;
+                ui->btloginImg->setStyleSheet("QPushButton{"
+                                               "border-image: url(:/Images/Logon_Active.png);}"
+                                               "QPushButton:pressed{"
+                                               "border-image: url(:/Images/Logon_Normal.png);}");
+                ui->btloginImg2->setStyleSheet("QPushButton{"
+                                               "border-image: url(:/Images/Logon_Active.png);}"
+                                               "QPushButton:pressed{"
+                                               "border-image: url(:/Images/Logon_Normal.png)}");
 
-            ui->btChInfo->setEnabled(true);
-            ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);}");
+                ui->btChInfo->setEnabled(true);
+                ui->changeMsg->setStyleSheet("QLabel{background-color: rgb(235, 235, 235);}");
 
-            m_bCRM = settings.value("enableCRM").toBool();
-            qDebug()<<"m_bCRM"<<m_bCRM;
+                m_bCRM = settings.value("enableCRM").toBool();
+                qDebug()<<"m_bCRM"<<m_bCRM;
 
-            if(m_bCRM)
-            {
-                crmTimer->start(30*60*1000);//30min
+                if(m_bCRM)
+                {
+                    crmTimer->start(30*60*1000);//30min
+                }
             }
         }
     }
@@ -79,8 +101,7 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
 
 MemberCenterWidget::~MemberCenterWidget()
 {
-    QSettings settings;
-
+    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
     if(loginPhone != NULL)
     {
         settings.beginGroup(loginPhone);
@@ -101,7 +122,7 @@ void MemberCenterWidget::on_btLogin_clicked()
     if(login->isLogin())
     {
 //        loginPhone = login->getPhone();
-        QSettings settings;
+        QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
         loginPhone = settings.value("loginPhone").toString();
         settings.beginGroup(loginPhone);
         QString userName = settings.value("loginName").toString();
