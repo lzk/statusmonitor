@@ -88,13 +88,13 @@ static int callback_Server(void* para,char* buffer,int bufsize)
     }else if(!cmd.compare("result")){
         int finger_checked_result;
 #if QT_VERSION > 0x050000
-    finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("result").toInt();
+        finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("result").toInt();
 #else
-    finger_checked_result = QUrl(url).queryItemValue("result").toInt();
+        finger_checked_result = QUrl(url).queryItemValue("result").toInt();
 #endif
-    if(finger_checked_result != Checked_Result_Disable){
-        wt->delete_finger_dialog(jobid);
-    }
+        if(finger_checked_result != Checked_Result_Disable){
+            wt->delete_finger_dialog(jobid);
+        }
         strcpy(buffer ,"resultok");
 
         QVariant value;
@@ -104,8 +104,8 @@ static int callback_Server(void* para,char* buffer,int bufsize)
             LOGLOG("record to file list");
             Job_history job;
             job.id = jobid;
-            job.is_finger_enable = (finger_checked_result != Checked_Result_Disable);
-            job.is_finger_checked = (finger_checked_result == Checked_Result_OK);
+            job.is_finger_enable = (finger_checked_result != Checked_Result_Disable) ?1 :0;
+            job.is_finger_checked = (finger_checked_result == Checked_Result_OK) ?1 :0;
             Tomcat::save_job_history(&job);
         }else{
             LOGLOG("do not record to file list");
@@ -165,15 +165,14 @@ void AppServer::client_cmd(const QString &s ,void* para)
 
 void AppServer::new_finger_dialog(int id ,const QString& s)
 {
-    CheckFingerDialog* dialog;
     foreach(FingerResult_struct fr ,finger_result_list){
-        dialog = static_cast<CheckFingerDialog* >(fr.dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == fr.id){
             LOGLOG("id:%d dialog exist!" ,id);
             return;
         }
     }
 
+    CheckFingerDialog* dialog;
     dialog = new CheckFingerDialog(s);
     connect(dialog ,SIGNAL(cancel_job(int)) ,this ,SLOT(cancel(int)));
     connect(dialog ,SIGNAL(job_timeout(int)) ,this ,SLOT(timeout(int)));
@@ -181,6 +180,7 @@ void AppServer::new_finger_dialog(int id ,const QString& s)
     dialog->raise();
 
     FingerResult_struct finger_result;
+    finger_result.id = id;
     finger_result.result = Checked_Result_checking;
     finger_result.dialog = dialog;
     finger_result_list << finger_result;
@@ -188,13 +188,14 @@ void AppServer::new_finger_dialog(int id ,const QString& s)
 
 void AppServer::delete_finger_dialog(int id)
 {
-    CheckFingerDialog* dialog;
     int index = -1;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
-        dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == finger_result_list[i].id){
             index = i;
-            delete dialog;
+            if(finger_result_list[i].dialog){
+                delete finger_result_list[i].dialog;
+                finger_result_list[i].dialog = NULL;
+            }
             break;
         }
     }
@@ -204,13 +205,13 @@ void AppServer::delete_finger_dialog(int id)
 
 void AppServer::cancel(int id)
 {
-    CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
-        dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == finger_result_list[i].id){
             finger_result_list[i].result = Checked_Result_Cancel;
-            delete dialog;
-            finger_result_list[i].dialog = NULL;
+            if(finger_result_list[i].dialog){
+                delete finger_result_list[i].dialog;
+                finger_result_list[i].dialog = NULL;
+            }
             break;
         }
     }
@@ -219,14 +220,13 @@ void AppServer::cancel(int id)
 
 void AppServer::timeout(int id)
 {
-    CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
-        dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == finger_result_list[i].id){
             finger_result_list[i].result = Checked_Result_timeout;
-//            dialog->close();
-            delete dialog;
-            finger_result_list[i].dialog = NULL;
+            if(finger_result_list[i].dialog){
+                delete finger_result_list[i].dialog;
+                finger_result_list[i].dialog = NULL;
+            }
             break;
         }
     }
@@ -235,10 +235,8 @@ void AppServer::timeout(int id)
 int AppServer::get_finger_result(int id)
 {
     int result = Checked_Result_invalidJobid;
-    CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
-        dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == finger_result_list[i].id){
             result = finger_result_list[i].result;
             break;
         }

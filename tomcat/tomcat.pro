@@ -65,5 +65,6 @@ CONFIG(debug ,debug|release){
     DEFINES += LOONGSON
 }else{
     DEFINES += LOONGSON
+    DEFINES += RELEASE_release
 }
 

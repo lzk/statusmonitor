@@ -10,6 +10,7 @@ typedef
 struct{
     CheckFingerDialog* dialog;
     int result;
+    int id;
 }
     FingerResult_struct;
 class AppServer : public QObject

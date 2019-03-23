@@ -6,13 +6,16 @@
 #include "uiconfig.h"
 bool use_status_thread = true;
 extern AppServer* app_server;
-Watcher::Watcher(DeviceManager* _device_manager ,QObject *parent)
+Watcher::Watcher(QObject *parent)
     : QThread(parent)
-    ,device_manager(_device_manager)
+    ,device_manager(new DeviceManager)
     ,abort(false)
 {
+#ifdef RELEASE_release
+    use_status_thread = false;
+#endif
     if(use_status_thread){
-        statusThread = new StatusThread();
+        statusThread = new StatusThread(this);
         statusThread->start();
     }else{
         statusThread = NULL;
@@ -25,17 +28,19 @@ Watcher::~Watcher()
     if(statusThread)
         delete statusThread;
     abort = true;
-    wait();
+    while(abort)usleep(1000);
+    delete device_manager;
 }
 
 void Watcher::run()
 {
     forever{
         if (abort)
-            return;
+            break;
         timerOut();
-        usleep(100*1000);
+        usleep(1000*1000);
     }
+    abort = false;
 }
 
 void Watcher::set_current_printer(const QString& printer)
@@ -78,11 +83,7 @@ int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterIn
 
 void Watcher::timerOut()
 {
-    static int count = 0;
-    count ++;
-    if(count == 100)
-        count = 0;
-    if((count % 10 == 0) && !is_app_running(SERVER_PATH_STM)){
+    if(!is_app_running(SERVER_PATH_STM)){
         server_restart();
     }
     //update printer list

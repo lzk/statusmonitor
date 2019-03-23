@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 #endif
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/image/app_icon.png"));
+    a.setQuitOnLastWindowClosed(false);
 
     app_server = new AppServer(SERVER_PATH_STM);
 

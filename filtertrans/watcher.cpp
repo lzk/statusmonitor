@@ -14,17 +14,18 @@ Watcher::Watcher(QObject *parent)
 Watcher::~Watcher()
 {
     abort = true;
-    wait();
+    while(abort)usleep(1000);
 }
 
 void Watcher::run()
 {
     forever{
         if (abort)
-            return;
+            break;
         timerOut();
         usleep(100*1000);
     }
+    abort = false;
 }
 
 void Watcher::timerOut()

@@ -340,7 +340,7 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
     }
     g_device = data.dev;
     g_dev_h = data.udev;
-    libusb_reset_device(g_dev_h);
+//    libusb_reset_device(g_dev_h);
     ret = config(g_device ,g_dev_h);
     if(ret){
         LOGLOG("libusb can not config");

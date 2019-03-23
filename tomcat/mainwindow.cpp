@@ -125,23 +125,23 @@ void MainWindow::messageClicked()
     showNormal();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-#ifdef Q_OS_OSX
-    if (!event->spontaneous() || !isVisible()) {
-        return;
-    }
-#endif
-    if (trayIcon->isVisible()) {
-//        QMessageBox::information(this, tr("Systray"),
-//                                 tr("The program will keep running in the "
-//                                    "system tray. To terminate the program, "
-//                                    "choose <b>Quit</b> in the context menu "
-//                                    "of the system tray entry."));
-        hide();
-        event->ignore();
-    }
-}
+//void MainWindow::closeEvent(QCloseEvent *event)
+//{
+//#ifdef Q_OS_OSX
+//    if (!event->spontaneous() || !isVisible()) {
+//        return;
+//    }
+//#endif
+//    if (trayIcon->isVisible()) {
+////        QMessageBox::information(this, tr("Systray"),
+////                                 tr("The program will keep running in the "
+////                                    "system tray. To terminate the program, "
+////                                    "choose <b>Quit</b> in the context menu "
+////                                    "of the system tray entry."));
+//        hide();
+//        event->ignore();
+//    }
+//}
 
 void MainWindow::cmdResult(int cmd,int result ,QVariant data)
 {

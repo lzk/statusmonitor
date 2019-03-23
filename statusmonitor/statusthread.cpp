@@ -26,7 +26,7 @@ StatusThread::StatusThread(QObject *parent)
 StatusThread::~StatusThread()
 {
     abort = true;
-    wait();
+    while(abort)usleep(1000);
     delete devicemanager;
 }
 
@@ -40,7 +40,7 @@ void StatusThread::run()
     int result;
     forever {
         if (abort)
-            return;
+            break;
         printers.clear();
         printerlist.clear();
 //        statusmanager.clearPrintersOfFile();
@@ -49,7 +49,7 @@ void StatusThread::run()
 
         foreach (Printer_struct printer, printers) {
             if (abort)
-                return;
+                break;
             mutex.lock();
             if(current_printer.compare(printer.name)){
                 mutex.unlock();
@@ -60,6 +60,8 @@ void StatusThread::run()
             if(result == usb_error_printing){
 
             }else{
+                if (abort)
+                    break;
                 mutex.lock();
                 if(result){
                     status.PrinterStatus = result;
@@ -103,6 +105,7 @@ void StatusThread::run()
         }
         sleep(6);
     }
+    abort = false;
 }
 
 void StatusThread::set_current_printer(const QString& printer)
@@ -114,7 +117,12 @@ void StatusThread::set_current_printer(const QString& printer)
 
 void StatusThread::set_device_id(const QString& printer ,const QString& device_id)
 {
-//    QMutexLocker locker(&mutex);
+    {
+        QMutexLocker locker(&mutex);
+        if(printer.compare(current_printer)){
+            return;
+        }
+    }
     PRINTER_STATUS printer_status;
     if(!DecodeStatusFromDeviceID(device_id.toLatin1().data() ,&printer_status)){
         statusmanager.saveStatusToFile(printer.toLatin1().constData() ,&printer_status);

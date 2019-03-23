@@ -6,7 +6,6 @@
 #include <QStringList>
 #include "statusmonitor.h"
 #include "serverthread.h"
-#include "devicemanager.h"
 #include "watcher.h"
 class Worker : public QObject
 {
@@ -30,7 +29,6 @@ private:
     int cmd_status;
     QStringList printers;
     QList<PrinterInfo_struct> printers_detail;
-    DeviceManager* deviceManager;
     DeviceIO* device;
     Printer_struct* get_printer(const QString& printer_name);//get printer exist in system
 

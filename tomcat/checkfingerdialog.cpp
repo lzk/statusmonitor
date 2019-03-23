@@ -27,11 +27,12 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
 //    ui->label_gif->setMovie(movie);
 
     QString homepath = QDir::homePath();
-    QSettings setting(homepath + "/.tjgd1z/setting.ini");
+    QSettings setting(homepath + "/.tjgd1z/setting.ini" ,QSettings::defaultFormat());
     bool ok;
     time_val = setting.value("TimeOut").toInt(&ok);
     if(!ok)
         time_val = 30;
+    ui->label_timeval->setText(QString("%1").arg(time_val));
 
     timer.setInterval(1000);
     connect(&timer ,SIGNAL(timeout()) ,this ,SLOT(timeout()));

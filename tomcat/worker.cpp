@@ -8,9 +8,8 @@
 Worker::Worker(QObject *parent) :
     QObject(parent)
   ,cmd_status(0)
-  ,deviceManager(new DeviceManager)
 {
-    watcher = new Watcher(deviceManager);
+    watcher = new Watcher(this);
     connect(this ,SIGNAL(set_current_printer(QString)) ,watcher ,SLOT(set_current_printer(QString)));
     connect(watcher ,SIGNAL(update_printer_status(PrinterInfo_struct)) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
     connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()));
@@ -20,7 +19,6 @@ Worker::Worker(QObject *parent) :
 Worker::~Worker()
 {
     delete watcher;
-    delete deviceManager;
 }
 
 void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
