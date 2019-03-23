@@ -11,12 +11,13 @@ Watcher::Watcher(QObject *parent)
     ,device_manager(new DeviceManager)
     ,abort(false)
 {
-#ifdef RELEASE_release
-    use_status_thread = false;
-#endif
+//#ifdef RELEASE_release
+//    use_status_thread = false;
+//#endif
     if(use_status_thread){
         statusThread = new StatusThread(this);
         statusThread->start();
+        connect(app_server ,SIGNAL(signal_set_device_id(QString,QString)) ,statusThread ,SLOT(set_device_id(QString,QString)));
     }else{
         statusThread = NULL;
     }

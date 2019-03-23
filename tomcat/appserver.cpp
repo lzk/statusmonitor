@@ -46,13 +46,17 @@ void AppServer::restart_server()
     thread_server->start();
 }
 
+void AppServer::set_device_id(const QString& printer ,const QString& device_id)
+{
+    signal_set_device_id(printer ,device_id);
+}
+
 static int callback_Server(void* para,char* buffer,int bufsize)
 {
-    AppServer* wt = (AppServer*)para;
-    QString ss(buffer);
-    QUrl url(ss);
+    AppServer* app_server = (AppServer*)para;
+    QString str(buffer);
+    QUrl url(str);
     QString cmd = url.scheme();
-    QString printer = url.host();
     int jobid;
 #if QT_VERSION > 0x050000
     jobid = QUrlQuery(QUrl(url)).queryItemValue("jobid").toInt();
@@ -63,18 +67,18 @@ static int callback_Server(void* para,char* buffer,int bufsize)
 
     memset(buffer ,0 ,bufsize);
     if(!cmd.compare("start")){
-        wt->new_finger_dialog(jobid ,ss);
+        app_server->new_finger_dialog(jobid ,str);
         strcpy(buffer ,"startok");
     }else if(!cmd.compare("check")){
-        int result = wt->get_finger_result(jobid);
+        int result = app_server->get_finger_result(jobid);
         switch(result){
         case Checked_Result_Cancel:
             strcpy(buffer ,"cancel");
-            wt->delete_finger_dialog(jobid);
+            app_server->delete_finger_dialog(jobid);
             break;
         case Checked_Result_timeout:
             strcpy(buffer ,"timeout");
-            wt->delete_finger_dialog(jobid);
+            app_server->delete_finger_dialog(jobid);
             break;
         case Checked_Result_checking:
             strcpy(buffer ,"checking");
@@ -82,7 +86,7 @@ static int callback_Server(void* para,char* buffer,int bufsize)
         case Checked_Result_invalidJobid:
         default:
             strcpy(buffer ,"invalid");
-            wt->delete_finger_dialog(jobid);
+            app_server->delete_finger_dialog(jobid);
             break;
         }
     }else if(!cmd.compare("result")){
@@ -93,7 +97,7 @@ static int callback_Server(void* para,char* buffer,int bufsize)
         finger_checked_result = QUrl(url).queryItemValue("result").toInt();
 #endif
         if(finger_checked_result != Checked_Result_Disable){
-            wt->delete_finger_dialog(jobid);
+            app_server->delete_finger_dialog(jobid);
         }
         strcpy(buffer ,"resultok");
 
@@ -110,6 +114,21 @@ static int callback_Server(void* para,char* buffer,int bufsize)
         }else{
             LOGLOG("do not record to file list");
         }
+    }else if(!cmd.compare("dvid")){
+        int index;
+        index = str.indexOf("://");
+//        cmd = str.left(index);
+//        LOGLOG("cmd is:%s" ,cmd.toLatin1().constData());
+        QString printer = QString(buffer).mid(index + strlen("://"));
+        index = printer.indexOf('?');
+        if(index > 0)
+            printer = printer.left(index);
+        index = str.indexOf("deviceid=");
+        QString device_id;
+        device_id = str.mid(index + strlen("deviceid="));
+        LOGLOG("device_id is:%s" ,device_id.toLatin1().constData());
+        app_server->set_device_id(printer ,device_id);
+        strcpy(buffer ,"didok");
     }
     return 0;
 }
@@ -176,8 +195,9 @@ void AppServer::new_finger_dialog(int id ,const QString& s)
     dialog = new CheckFingerDialog(s);
     connect(dialog ,SIGNAL(cancel_job(int)) ,this ,SLOT(cancel(int)));
     connect(dialog ,SIGNAL(job_timeout(int)) ,this ,SLOT(timeout(int)));
+    dialog->setWindowFlags(dialog->windowFlags() | Qt::WindowStaysOnTopHint);
     dialog->show();
-    dialog->raise();
+//    dialog->raise();
 
     FingerResult_struct finger_result;
     finger_result.id = id;

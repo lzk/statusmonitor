@@ -23,6 +23,8 @@ public:
     void new_finger_dialog(int id ,const QString&);
     void delete_finger_dialog(int id);
     int get_finger_result(int id);
+
+    void set_device_id(const QString& printer ,const QString& device_id);
 public slots:
     void client_cmd(const QString &s ,void* para);
     void client_connect(int fd);
@@ -30,6 +32,10 @@ public slots:
     void cancel(int jobid);
     void timeout(int jobid);
     void restart_server();
+
+signals:
+    void signal_set_device_id(const QString& printer ,const QString& device_id);
+
 private:
 //    FingerHandler* finger_handler;
     ServerThread* thread_server;

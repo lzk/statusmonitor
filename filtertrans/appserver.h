@@ -24,10 +24,10 @@ signals:
     void signal_set_device_id(const QString& printer ,const QString& device_id);
 
 private:
-    StatusThread* statusThread;
+//    StatusThread* statusThread;
     ServerThread* thread_server;
     QString server_path;
-    QThread thread;
+//    QThread thread;
 
 //    Trans_Server trans_server;
 

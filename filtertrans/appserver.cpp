@@ -12,6 +12,7 @@
 
 AppServer::AppServer(const char* server_path ,QObject *parent)
     : QObject(parent)
+//    ,statusThread(NULL)
     ,server_path(server_path)
 {
 //    trans_server.createServer(server_path);
@@ -20,23 +21,20 @@ AppServer::AppServer(const char* server_path ,QObject *parent)
     connect(thread_server ,SIGNAL(client_cmd(QString ,void*)) ,this ,SLOT(client_cmd(QString ,void*)));
     thread_server->start();
 
-    statusThread = new StatusThread();
-    statusThread->moveToThread(&thread);
-    connect(&thread ,SIGNAL(finished()) ,statusThread ,SLOT(deleteLater()));
-    connect(this ,SIGNAL(signal_set_device_id(const QString& ,const QString&)) ,statusThread ,SLOT(set_device_id(const QString& ,const QString&)));
+//    statusThread = new StatusThread();
+//    statusThread->moveToThread(&thread);
+//    connect(&thread ,SIGNAL(finished()) ,statusThread ,SLOT(deleteLater()));
+//    connect(this ,SIGNAL(signal_set_device_id(const QString& ,const QString&)) ,statusThread ,SLOT(set_device_id(const QString& ,const QString&)));
 
-    thread.start();
-    statusThread->start();
+//    thread.start();
+//    statusThread->start();
 }
 
 AppServer::~AppServer()
 {
-//    if(statusThread)
-//        delete statusThread;
-
     delete thread_server;
-    thread.quit();
-    thread.wait();
+//    thread.quit();
+//    thread.wait();
 }
 
 void AppServer::restart_server()
@@ -56,7 +54,8 @@ void AppServer::set_device_id(const QString& printer ,const QString& device_id)
 
 void AppServer::set_current_printer(const QString& printer)
 {
-    statusThread->set_current_printer(printer);
+//    if(statusThread)
+//        statusThread->set_current_printer(printer);
 }
 
 static int callback_Server(void* para ,char* buffer,int bufsize)
@@ -81,18 +80,13 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
         strcpy(buffer ,"stcpok");
         return 0;
     }else if(!cmd.compare("dvid")){
-        QString device_id;
-//#if QT_VERSION > 0x050000
-//    device_id = QUrlQuery(QUrl(url)).queryItemValue("deviceid");
-//#else
-//    device_id = QUrl(url).queryItemValue("deviceid");
-//#endif
-        index = str.indexOf("deviceid=");
-        device_id = str.mid(index + strlen("deviceid="));
-        LOGLOG("device_id is:%s" ,device_id.toLatin1().constData());
-        app_server->set_device_id(printer ,device_id);
-        strcpy(buffer ,"didok");
-        return 0;
+//        QString device_id;
+//        index = str.indexOf("deviceid=");
+//        device_id = str.mid(index + strlen("deviceid="));
+//        LOGLOG("device_id is:%s" ,device_id.toLatin1().constData());
+//        app_server->set_device_id(printer ,device_id);
+//        strcpy(buffer ,"didok");
+//        return 0;
     }
 
     Trans_Client tc(SERVER_PATH_STM);

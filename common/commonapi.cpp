@@ -70,11 +70,13 @@ bool is_app_running(const char* server_path)
 #include <QMutex>
 #include <QFile>
 #include <QTextStream>
-static QMutex mutex;
-static const QString tmp_file = "/tmp/lnttmp";
+//static QMutex mutex;
+//static const QString tmp_file = "/tmp/lnttmp";
+#include <QDateTime>
 QString get_string_from_shell_cmd(const QString& cmd ,int mode)
 {
-    QMutexLocker locker(&mutex);
+//    QMutexLocker locker(&mutex);
+    QString tmp_file = QString("/tmp/lnttmp_%1") + QDateTime::currentMSecsSinceEpoch();
     QString str;
     QString _cmd(cmd);
     _cmd += ">";

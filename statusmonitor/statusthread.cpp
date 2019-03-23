@@ -58,7 +58,7 @@ void StatusThread::run()
             mutex.unlock();
             result = getStatusFromDevice(devicemanager ,&printer ,&printer_status);
             if(result == usb_error_printing){
-
+                LOGLOG("now is printing,get status via cups");
             }else{
                 if (abort)
                     break;
@@ -112,7 +112,7 @@ void StatusThread::set_current_printer(const QString& printer)
 {
     QMutexLocker locker(&mutex);
     current_printer = printer;
-    memset(&status ,0 ,sizeof(status));
+    memset(&status ,-1 ,sizeof(status));
 }
 
 void StatusThread::set_device_id(const QString& printer ,const QString& device_id)
