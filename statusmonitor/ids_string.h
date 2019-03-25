@@ -136,6 +136,9 @@
 #define IDS_MEDIATYPE_COVER1_SIDE "厚纸1 - 反面"
 #define IDS_MEDIATYPE_ENVELOPE  "信封"
 #define IDS_MEDIATYPE_LABEL     "标签纸"
+#define IDS_PAPERSIZE_A6        "A6"
+#define IDS_PAPERSIZE_B6        "B6"
+#define IDS_PAPERSIZE_16K       "16K"
 //END
 
 //STRINGTABLE

@@ -5,6 +5,9 @@
 #include "tomcat.h"
 #include "jkinterface.h"
 #include <QUrl>
+#include <QDir>
+#include <QSettings>
+#include <QMessageBox>
 
 #include "filter_check_finger.h"
 
@@ -64,13 +67,22 @@ static int callback_Server(void* para,char* buffer,int bufsize)
     memset(buffer ,0 ,bufsize);
     if(!cmd.compare("start")){
         wt->new_finger_dialog(jobid ,ss);
-        strcpy(buffer ,"startok");
+        int time_val;
+        QString homepath = QDir::homePath();
+        QSettings setting(homepath + "/.tjgd1z/setting.ini", QSettings::defaultFormat());
+        bool ok;
+        time_val = setting.value("TimeOut").toInt(&ok);
+        if(!ok)
+            time_val = 30;
+        //strcpy(buffer ,"startok");
+        sprintf(buffer ,"startok:%d", time_val);
     }else if(!cmd.compare("check")){
         int result = wt->get_finger_result(jobid);
         switch(result){
         case Checked_Result_Cancel:
             strcpy(buffer ,"cancel");
             wt->delete_finger_dialog(jobid);
+
             break;
         case Checked_Result_timeout:
             strcpy(buffer ,"timeout");
@@ -85,15 +97,48 @@ static int callback_Server(void* para,char* buffer,int bufsize)
             wt->delete_finger_dialog(jobid);
             break;
         }
+
+
     }else if(!cmd.compare("result")){
         int finger_checked_result;
 #if QT_VERSION > 0x050000
-    finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("result").toInt();
+    //finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("result").toInt();
+        finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("status").toInt();
 #else
-    finger_checked_result = QUrl(url).queryItemValue("result").toInt();
+    //finger_checked_result = QUrl(url).queryItemValue("result").toInt();
+    finger_checked_result = QUrl(url).queryItemValue("status").toInt();
+
 #endif
     if(finger_checked_result != Checked_Result_Disable){
         wt->delete_finger_dialog(jobid);
+        if(finger_checked_result == Checked_Result_DevBusy)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("设备忙，当前打印作业将被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
+        else if(finger_checked_result == Checked_Result_Fail)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证失败，打印作业将被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
+        else if(finger_checked_result == Checked_Result_NoFinger)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("设备用户列表为空，无法进行指纹验证，当前打印作业将被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
+        else if(finger_checked_result == Checked_Result_timeout || finger_checked_result == Checked_Result_Cancel|| finger_checked_result == Checked_Result_invalidJobid)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证被用户取消，打印作业也将被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
     }
         strcpy(buffer ,"resultok");
 

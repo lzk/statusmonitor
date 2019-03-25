@@ -19,21 +19,21 @@ public:
     QStringList printerlist;
 #endif
     bool IsDeviceConnect(char *pPrinterName);
-    bool IsDeviceConnectForPrint(char *pPrinterName);
+    int IsDeviceConnectForPrint(char *pPrinterName);
     bool getDevice();
-    bool IsDeviceFingerOpen(char* pPrinterName);
-    bool IsDeviceFingerOpenForPrint(char* pPrinterName);
+    int IsDeviceFingerOpen(char* pPrinterName);
+    int IsDeviceFingerOpenForPrint(char* pPrinterName);
     bool OpenFinger(char* pPrinterName);
     bool CloseFinger(char* pPrinterName);
-    bool CheckFinger(char* pPrinterName, char* userName);
+    int CheckFinger(char* pPrinterName, char* userName);
     bool CancelFingerPrint(char* pPrinterName);
     int DeleteFinger(char* pPrinterName, char* userName);
     int DeleteFingers(char* pPrinterName);
 
     int AddFinger(char* pPrinterName, int mode, char* userName, int *ret_index);
-    bool ImportFinger(char* pPrinterName, char* fileName);
+    int ImportFinger(char* pPrinterName, char* fileName);
     int ExportFinger(char* pPrinterName, char* fileName, int *pdwLen);
-    bool IsFingerPrint(char* pPrinterName, char* userName, short* pIndex);
+    int IsFingerPrint(char* pPrinterName, char* userName, short* pIndex, int mTimeout);
 
 
 

@@ -23,13 +23,12 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->statusBar->hide();
     ui->mainToolBar->hide();
 
-    this->setFixedSize(600 ,500);
+    this->setFixedSize(520 ,450);
     ui->statusUpdate_groupBox->hide();
     ui->tableWidget_jobs->setFocusPolicy(Qt::ClickFocus);
 //    ui->tableWidget_printers->setFocusPolicy(Qt::NoFocus);
 
     createSysTray();
-
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
     QVariant value;
@@ -38,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->checkBox_record->setChecked(record_printlist);
 
     gUInterface->setCmd(UIConfig::CMD_GetPrinters ,QString());
+
 
 }
 
@@ -99,17 +99,17 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::Trigger:
         break;
     case QSystemTrayIcon::DoubleClick:{
-//        if(printers.isEmpty()){
+        if(printers.isEmpty()){
 
-//            QMessageBox message_box;
-//            message_box.setButtonText(QMessageBox::Ok ,"确定");
-//            message_box.setIcon(QMessageBox::Critical);
-//            message_box.setText("没有安装TOEC打印机");
-//            message_box.setWindowTitle(" ");
-//            message_box.exec();
-//        }else{
+            QMessageBox message_box;
+            message_box.setButtonText(QMessageBox::Ok ,"确定");
+            message_box.setIcon(QMessageBox::Critical);
+            message_box.setText("系统中未安装打印机。");
+            message_box.setWindowTitle(" ");
+            message_box.exec();
+        }else{
             showNormal();
-//        }
+        }
     }
         break;
     case QSystemTrayIcon::MiddleClick:
@@ -151,6 +151,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
             QString default_printer = data.toString();
             setcurrentPrinter(default_printer);
         }
+
     }
         break;
     case UIConfig::CMD_GetStatus:{
@@ -807,53 +808,65 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     text = "<html><head/><body>";
 
     ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize);
-    if(!ei.error || !ei.errorString){
-        text += QString() + "<p>" + get_Status_string(status) + "</p>";
-//        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
-        text += "</body></html>";
-        ui->label_status->setText(text);
-        ui->label_detail->setText("");
-    }else{
-        text += QString() + "<p>" + ei.errorString->title + "</p>";
-//        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
-//        text += "<br/>";
-        text += QString() + "<p>" + ei.error->code + "</p>";
-        text += "</body></html>";
-        ui->label_status->setText(text);
+        if(!ei.error || !ei.errorString){
+            text += QString() + "<p>" + get_Status_string(status) + "</p>";
+    //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
+            text += "</body></html>";
+            ui->label_status->setText(text);
+            ui->label_detail->setText("");
+        }else{
 
-        text = "<html><head/><body>";
-        const char* extra_string = "";
-        for(i = 0 ;i < ei.errorString->lines ;i++){
-//            text += "<br/>";
-            if(ei.errorString->mediaInfo){
-                if(i == ei.errorString->lines -2)
-                    extra_string = ei.paperSizeString;
-                else if(i == ei.errorString->lines - 1)
-                    extra_string = ei.paperTypeString;
+            if ((IsStatusError(currStatus) && !IsStatusVirtual(currStatus) && currStatus != PS_ERROR_NOT_AVAILABLE && currStatus != PS_ERROR_NOT_SUPPORT) || currStatus == PS_TONER_LOW || currStatus != PS_POWER_SAVING)
+            {
+                text += QString() + "<p>" + ei.errorString->title + "</p>";
+        //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
+        //        text += "<br/>";
+                text += QString() + "<p>" + ei.error->code + "</p>";
+                text += "</body></html>";
+                ui->label_status->setText(text);
+
+                text = "<html><head/><body>";
+                const char* extra_string = "";
+                for(i = 0 ;i < ei.errorString->lines ;i++){
+        //            text += "<br/>";
+                    if(ei.errorString->mediaInfo){
+                        if(i == ei.errorString->lines -2)
+                            extra_string = ei.paperSizeString;
+                        else if(i == ei.errorString->lines - 1)
+                            extra_string = ei.paperTypeString;
+                    }
+                    switch (i) {
+                    case 0:
+                        text += QString() + "<p>" + ei.errorString->line0 + "</p>";
+                        break;
+                    case 1:
+                        text += QString() + "<p>" + ei.errorString->line1 + "</p>";
+                        break;
+                    case 2:
+                        text += QString() + "<p>" + ei.errorString->line2 + extra_string + "</p>";
+                        break;
+                    case 3:
+                        text += QString() + "<p>" + ei.errorString->line3 + extra_string + "</p>";
+                        break;
+                    case 4:
+                        text += QString() + "<p>" + ei.errorString->line4 + extra_string + "</p>";
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                text += "</body></html>";
+                ui->label_detail->setText(text);
             }
-            switch (i) {
-            case 0:
-                text += QString() + "<p>" + ei.errorString->line0 + "</p>";
-                break;
-            case 1:
-                text += QString() + "<p>" + ei.errorString->line1 + "</p>";
-                break;
-            case 2:
-                text += QString() + "<p>" + ei.errorString->line2 + extra_string + "</p>";
-                break;
-            case 3:
-                text += QString() + "<p>" + ei.errorString->line3 + extra_string + "</p>";
-                break;
-            case 4:
-                text += QString() + "<p>" + ei.errorString->line4 + extra_string + "</p>";
-                break;
-            default:
-                break;
+            else
+            {
+                text += QString() + "<p>" + get_Status_string(status) + "</p>";
+        //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
+                text += "</body></html>";
+                ui->label_status->setText(text);
+                ui->label_detail->setText("");
             }
         }
-        text += "</body></html>";
-        ui->label_detail->setText(text);
-    }
 
 }
 
@@ -884,15 +897,46 @@ void MainWindow::updatePrinter(const QVariant& data)
 //        gUInterface->setCmd(UIConfig::CMD_GetStatus ,printerInfo.printer.name);
     }
     ui->tableWidget_printers->setColumnHidden(1 ,true);
-    if(printers.isEmpty()){
+    if(printers.isEmpty())
+    {
+
         LOGLOG("no printers");
-        setcurrentPrinter(QString());
-//        gUInterface->setTimer(0);
+ //       setcurrentPrinter(QString());
+//        gUInterface->setTimer(0);      
+        if(bCheckPrinter){
+            hide();
+            QMessageBox message_box;
+            message_box.setButtonText(QMessageBox::Ok ,"确定");
+            message_box.setIcon(QMessageBox::Critical);
+            message_box.setText("系统中未安装打印机。");
+            message_box.setWindowTitle(" ");
+            message_box.exec();
+            exit(0);
+        }
         return;
-    }else if(printers.contains(current_printer)){
+    }
+    else if(printers.contains(current_printer))
+    {
 //        setcurrentPrinter(current_printer);
+         bCheckPrinter = false;
+
     }else{
-        setcurrentPrinter(printers.at(index_of_defaultprinter));
+ //       bool bFindOnLinePrinter = false;
+         bCheckPrinter = false;
+ /*        if(bFindOnLinePrinter)
+         {
+             for(int i = 0 ;i < printerInfos.length() ;i++)
+             {
+                 printerInfo = printerInfos.at(i);
+                 setcurrentPrinter(printers.at(i));
+                 if(bFindOnLinePrinter)
+                 {
+                     break;
+                 }
+             }
+         }
+        if(!bFindOnLinePrinter)*/
+           setcurrentPrinter(printers.at(index_of_defaultprinter));
     }
     gUInterface->setCurrentPrinterCmd(UIConfig::CMD_GetStatus);
 }

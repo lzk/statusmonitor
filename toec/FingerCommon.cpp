@@ -84,7 +84,7 @@ bool  FingerCommon::IsDeviceConnect(char *pPrinterName)
 
 ///////////////////////////////////////////////////////////////////
 //check the printer is connected
-bool FingerCommon::IsDeviceConnectForPrint(char *pPrinterName)
+int FingerCommon::IsDeviceConnectForPrint(char *pPrinterName)
 {
 
      //DeviceIO* device = devicemanager.getDevice(pPrinterName);
@@ -139,7 +139,7 @@ bool FingerCommon::getDevice()
 
 //////////////////////////////////////////////////////////////////////////
 //check whether the finger function is open
-bool FingerCommon::IsDeviceFingerOpen(char* pPrinterName)
+int FingerCommon::IsDeviceFingerOpen(char* pPrinterName)
 {
     LOGLOG("\r\n####FM: IsDeviceFingerOpen===>Enter");
     //FingCmd cmd(pPrinterName);
@@ -147,15 +147,12 @@ bool FingerCommon::IsDeviceFingerOpen(char* pPrinterName)
 
 
     int nRet = -1;
-    if((nRet = cmd.GetFingerStatus()) == 1)
-    {
-        return true;
-    }
+    nRet = cmd.GetFingerStatus();
 
-    return false;
+    return nRet;
 }
 
-bool FingerCommon::IsDeviceFingerOpenForPrint(char* pPrinterName)
+int FingerCommon::IsDeviceFingerOpenForPrint(char* pPrinterName)
 {
     LOGLOG("\r\n####FM: IsDeviceFingerOpenForPrint===>Enter");
     LOGLOG("####FM:IsDeviceFingerOpenForPrint: %s",pPrinterName);
@@ -167,10 +164,19 @@ bool FingerCommon::IsDeviceFingerOpenForPrint(char* pPrinterName)
     if(nRet == 1)
     {
         LOGLOG("\r\n####FM: the finger function is open");
-        return true;
+        return 1;
     }
-    LOGLOG("\r\n####FM: the finger function is close");
-    return false;
+    if(nRet== 3)
+    {
+        LOGLOG("\r\n####FM: the finger function is open but not finger");
+    }
+    if(nRet == _Printer_busy)
+    {
+        LOGLOG("\r\n####FM: the finger device is busy");
+    }
+    else
+        LOGLOG("\r\n####FM: the finger function is close");
+    return nRet;
 }
 
 //////////////////////////////////////////////////////////////
@@ -197,7 +203,7 @@ bool FingerCommon::CloseFinger(char* pPrinterName)
 }
 //////////////////////////////////////////////////////////////////////
 //check whether the user finger is exist on the device
-bool FingerCommon::CheckFinger(char* pPrinterName, char* userName)
+int FingerCommon::CheckFinger(char* pPrinterName, char* userName)
 {
     LOGLOG("\r\n####FM: CheckFinger===Enter");
 
@@ -277,20 +283,20 @@ int FingerCommon::DeleteFingers(char* pPrinterName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //check finger
-bool FingerCommon::IsFingerPrint(char* pPrinterName, char* userName, short* pIndex)
+int FingerCommon::IsFingerPrint(char* pPrinterName, char* userName, short* pIndex, int mTimeout)
 {
    LOGLOG("\r\n####FM: IsFingerPrint===Enter");
    LOGLOG("\r\n####FM: IsFingerPrint: %s", pPrinterName);
 
    //FingCmd cmd(pPrinterName);
    cmd.SetFingCmdPrinter(pPrinterName, true);
-   int nResult = cmd.IsPrint(userName, pIndex);
+   int nResult = cmd.IsPrint(userName, pIndex, mTimeout);
    cmd.m_bFingerPrint = false;
    if(cmd.m_bIsFingerPrintCancel)
    {
        cmd.m_bIsFingerPrintCancel = false;
    }
-   return nResult == _ACK? true: false;
+   return nResult;// == _ACK? true: false;
 }
 
 
@@ -533,7 +539,7 @@ int FingerCommon::AddFinger(char* pPrinterName, int mode, char* userName, int* r
 }
 /////////////////////////////////////////////////////////////////////////////////
 //import the finger data to device from file
-bool FingerCommon::ImportFinger(char* pPrinterName, char* fileName)
+int FingerCommon::ImportFinger(char* pPrinterName, char* fileName)
 {
     LOGLOG("\r\n####FM: ImportFinger===Enter");
 
@@ -556,40 +562,55 @@ bool FingerCommon::ImportFinger(char* pPrinterName, char* fileName)
 
     dwFileSize = file.size();//GetFileSize(hFile, NULL);
 
-    pData = (char*)malloc(dwFileSize + 1);
-
-    if(pData != NULL)
+    if(dwFileSize > 0)
     {
-        char* pTemp = pData;
 
-        int len = dwFileSize/sizeof(FG_DATA_T);
+        pData = (char*)malloc(dwFileSize + 1);
 
-        while(dwFileSize>0)
+        if(pData != NULL)
         {
-            if(dwFileSize < 4096)
-                dwRead = dwFileSize;
-            else
-                dwRead = 4096;
+            char* pTemp = pData;
 
-            //ReadFile( hFile, pTemp, dwRead, &cbRead, NULL);
-            cbRead = file.read(pTemp, dwRead);
+            int len = dwFileSize/sizeof(FG_DATAF_T);
 
-            if(cbRead <= 0)//(cbRead == 0)
-                break;
+            while(dwFileSize>0)
+            {
+                if(dwFileSize < 4096)
+                    dwRead = dwFileSize;
+                else
+                    dwRead = 4096;
 
-            dwFileSize -= cbRead;
+                //ReadFile( hFile, pTemp, dwRead, &cbRead, NULL);
+                cbRead = file.read(pTemp, dwRead);
 
-            pTemp += cbRead;
+                if(cbRead <= 0)//(cbRead == 0)
+                    break;
+
+                dwFileSize -= cbRead;
+
+                pTemp += cbRead;
+            }
+
+
+
+            pFGData = (FG_DATAF_T*)pData;
+
+            nResult = cmd.Import(pFGData, len);
+
+            free(pData);
+            pData = NULL;
+        }
+        else
+        {
+            LOGLOG("\r\n####FM: ImportFinger:malloc memory fail");
         }
         file.close();
-        //CloseHandle(hFile);
 
-        pFGData = (FG_DATAF_T*)pData;
-
-        nResult = cmd.Import(pFGData, len);
-
-        free(pData);
-        pData = NULL;
+    }
+    else
+    {
+         file.close();
+         LOGLOG("\r\n####FM: ImportFinger:file size if 0!");
 
     }
 

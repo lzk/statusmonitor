@@ -18,7 +18,17 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
     time_val(30),
     job_info(_job_info)
 {
+    QString homepath = QDir::homePath();
+    QSettings setting(homepath + "/.tjgd1z/setting.ini", QSettings::defaultFormat());
+    bool ok;
+    time_val = setting.value("TimeOut").toInt(&ok);
+    if(!ok)
+        time_val = 30;
+
+    timer.setInterval(1000);
     ui->setupUi(this);
+    ui->label_timeval->setText(QString("%1").arg(time_val));
+
 
     ui->buttonBox->removeButton(ui->buttonBox->button(QDialogButtonBox::Ok));
 
@@ -26,14 +36,7 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
 //    movie = new QMovie(":/image/finger.gif");
 //    ui->label_gif->setMovie(movie);
 
-    QString homepath = QDir::homePath();
-    QSettings setting(homepath + "/.tjgd1z/setting.ini");
-    bool ok;
-    time_val = setting.value("TimeOut").toInt(&ok);
-    if(!ok)
-        time_val = 30;
 
-    timer.setInterval(1000);
     connect(&timer ,SIGNAL(timeout()) ,this ,SLOT(timeout()));
 
     connect(this ,SIGNAL(rejected()) ,this ,SLOT(cancel_and_delete()));

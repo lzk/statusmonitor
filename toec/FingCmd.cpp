@@ -4,6 +4,8 @@
 #include <cups/cups.h>
 #include <cups/backend.h>
 #include <cups/sidechannel.h>
+#include <sys/statfs.h>
+#include <sys/time.h>
 
 
 FingCmd::FingCmd()
@@ -872,10 +874,16 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
     int nResult = _ACK;
     int nCount = 0;
     bool bWriteSuccess = false;
-    LOGLOG("####FM:WriteDataViaUSBwithCUPS start");
-    while(nCount++ < 10 && !bWriteSuccess)
+    int needRead = *pcbLen;
+    if(needRead == 0)
     {
-        LOGLOG("####FM:WriteDataViaUSBwithCUPS");
+        needRead = MAX_SIZE_BUFF;
+    }
+    int timeout_cnt = 0;
+    LOGLOG("####FM:WriteDataViaUSBwithCUPS start");
+    while(nCount++ < 20 && !bWriteSuccess)
+    {
+        LOGLOG("####FM:WriteDataViaUSBwithCUPS nCount = %d", nCount);
         if(m_bIsFingerPrintCancel && m_bFingerPrint)
         {
             LOGLOG("####FM:WriteDataViaUSBwithCUPS: cancel");
@@ -885,6 +893,8 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
 
 
         int dwActualSize = 0;
+        int readOffset = 0;
+        int readedSize = 0;
 
         LOGLOG("####FM:WriteDataViaUSBwithCUPS(): write cmd...");
 
@@ -895,21 +905,72 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
         fflush(stdout);
         cups_sc_status_t sc_status = CUPS_SC_STATUS_OK;
         int buff_len =MAX_SIZE_BUFF;
-        //sc_status = cupsSideChannelDoRequest(CUPS_SC_CMD_DRAIN_OUTPUT, buffMax, &buff_len, 15.0);
-        LOGLOG("####FM:WriteDataViaUSBwithCUPS(): status=%d, gdatalen=%d\n",sc_status, buff_len);
+
+        sc_status = cupsSideChannelDoRequest(CUPS_SC_CMD_DRAIN_OUTPUT, buffMax, &buff_len, 15.0);
+
+            LOGLOG("####FM:WriteDataViaUSBwithCUPS(): status=%d, gdatalen=%d\n",sc_status, buff_len);
         if(sc_status == CUPS_SC_STATUS_OK)
         {
+            //timeout_cnt = 0;
             int nErrCnt = 0;
+            int errorDataCnt = 0;
             memset(buffMax, INIT_VALUE, sizeof(buffMax));
-
             while((dwActualSize = cupsBackChannelRead(buffMax, sizeof(buffMax), 30.0)) >=0)
+//            while((dwActualSize = cupsBackChannelRead(buffMax+readOffset, needRead - readOffset, 30.0)) >=0)
             {
+//                LOGLOG("####FM:WriteDataViaUSBwithCUPS: *pcbLen=%d",*pcbLen);
+
+//                if(*pcbLen !=0)
+//                {
+//                    readOffset += dwActualSize;
+//                    if(readOffset < needRead)
+//                    {
+//                        LOGLOG("####FM:WriteDataViaUSBwithCUPS: read data length enouth! continue");
+//                        continue;
+//                    }
+//                }
                 if(m_bIsFingerPrintCancel &&  m_bFingerPrint)
                 {
                     LOGLOG("####FM:WriteDataViaUSBwithCUPS: cancel 2");
                     nResult = _Printer_Cancel;
                     break;
                 }
+                if(dwActualSize >=8)
+                {
+                    char *p_STA;
+                    p_STA = strstr(buffMax, "STA");
+                    if(p_STA == NULL)
+                    {
+                        nResult = _SW_USB_DATA_FORMAT_ERROR;
+                        break;
+//                        errorDataCnt ++;
+//                        //LOGLOG("####FM:WriteDataViaUSBwithCUPS:  receive data is: %s", buffMax);
+//                        LOGLOG("####FM:WriteDataViaUSBwithCUPS:  receive data not contain STA");
+//                        if(errorDataCnt >10 )
+//                        {
+//                            errorDataCnt=0;
+//                            break;
+//                        }
+//                        usleep(10000);
+//                        continue;
+                    }
+                }
+                else
+                {
+                    errorDataCnt ++;
+
+                    nResult = _SW_USB_DATA_FORMAT_ERROR;
+                    break;
+//                    LOGLOG("####FM:WriteDataViaUSBwithCUPS:  Get command error. dwActualSize=%d", dwActualSize);
+//                    if(errorDataCnt > 10)
+//                    {
+//                         errorDataCnt=0;
+//                        break;
+//                    }
+//                    usleep(10000);
+//                    continue;
+                }
+
                 if (buffMax[0] == 0x1C && buffMax[1] == 0x2D) // sync info
                 {
                     LOGLOG("####FM:WriteDataViaUSBwithCUPS: get sync info");
@@ -933,7 +994,7 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
                         LOGLOG("####FM:WriteDataViaUSBwithCUPS: Recevie return command, and ack is %c", sta.ack);
                         if(sta.ack == 'A')
                         {
-                            LOGLOG("####FM:WriteDataViaUSBwithCUPS: printer is ready, and result is %d", sta.status);
+                            LOGLOG("####FM:WriteDataViaUSBwithCUPS: printer is ready, and result is %d, sta.len=%d", sta.status, sta.length);
                             nResult = _ACK;
                             bWriteSuccess = true;
                             *pbResult = sta.status;
@@ -957,17 +1018,26 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
                             else
                             {
                                 if(sta.ack == 'B')
+                                {
                                     nResult = _Printer_busy;
+                                    LOGLOG("####FM:WriteDataViaUSBwithCUPS:  get Busy");
+                                    bWriteSuccess = true;
+                                    break;
+
+                                }
                                 else
                                     nResult = _Printer_error;
                             }
                         }
+                        LOGLOG("####FM:WriteDataViaUSBwithCUPS:  get data success. dwActualSize=%d", dwActualSize);
+
                     }
                     else
                     {
                         nResult = _SW_USB_DATA_FORMAT_ERROR;
+                        LOGLOG("####FM:WriteDataViaUSBwithCUPS:  Get command error. dwActualSize=%d", dwActualSize);
+
                     }
-                    LOGLOG("####FM:WriteDataViaUSBwithCUPS:  get data success. dwActualSize=%d", dwActualSize);
                     break;
                 }
                 else
@@ -1159,8 +1229,31 @@ int FingCmd::WriteDataViaUSBwithCUPS(BYTE* pInput, DWORD cbInput, BYTE *pOutput,
         }
         else
         {
-            nResult = _SW_USB_WRITE_TIMEOUT;
-            LOGLOG("####FM:WriteDataViaUSBwithCUPS(): write usb timeout.");
+            if(sc_status == CUPS_SC_STATUS_IO_ERROR)
+            {
+                nResult = _SW_USB_WRITE_TIMEOUT;
+                LOGLOG("####FM:WriteDataViaUSBwithCUPS: CUPS_SC_STATUS_IO_ERROR: sc_status=%d", sc_status);
+                break;
+            }
+            else if(sc_status == CUPS_SC_STATUS_TIMEOUT)
+            {
+                nResult = _SW_USB_WRITE_TIMEOUT;
+                LOGLOG("####FM:WriteDataViaUSBwithCUPS(): write usb timeout.");
+
+            }
+            else if(sc_status == CUPS_SC_STATUS_NO_RESPONSE)
+            {
+                nResult = _SW_USB_WRITE_TIMEOUT;
+                LOGLOG("####FM:WriteDataViaUSBwithCUPS: CUPS_SC_STATUS_BAD_MESSAGE: sc_status=%d", sc_status);
+            }
+            else
+            {
+                nResult = _SW_USB_WRITE_TIMEOUT;
+                LOGLOG("####FM:WriteDataViaUSBwithCUPS: other error: sc_status=%d", sc_status);
+
+
+            }
+
         }
 
 
@@ -1183,7 +1276,7 @@ int FingCmd::WriteDataViaNet(BYTE* pInput, DWORD cbInput, BYTE *pOutput, WORD* p
     char buffMax[MAX_SIZE_BUFF];
     memset(buffMax ,0xfe ,sizeof(buffMax));
     //TCHAR		symbolicname[MAX_PATH];
-    int nResult = _ACK;
+    int nResult = _SW_NET_CONNECT_FAIL;
     int nCount = 0;
     bool bWriteSuccess = false;
     while(nCount++ < 5 && !bWriteSuccess)
@@ -1356,10 +1449,7 @@ int FingCmd::GetFingerStatus()
     }
     if(nResult == _ACK)
     {
-        if(result == 0)
-            return 0;
-        else
-            return 1;
+        return result;
     }
     return -1;
 }
@@ -1368,7 +1458,7 @@ int FingCmd::GetFingerStatusForPrint()
 {
     FG_FUNC_T fgCmd;
     BYTE result;
-    WORD length;
+    WORD length = 8;
     WORD cbRead=0;
     int nResult;
     BYTE cmd[4] = {'F','I','N','G'};
@@ -1385,7 +1475,14 @@ int FingCmd::GetFingerStatusForPrint()
         LOGLOG("####FM: GetFingerStatusForPrint U");
 
         //nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
-        nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
+        int trytime = 0;
+        do
+        {
+            nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
+            LOGLOG("####FM: GetFingerStatusForPrint U try %d times", trytime);
+            trytime++;
+
+        }while(trytime <=3 && nResult == _SW_USB_DATA_FORMAT_ERROR);
 
     }
     else
@@ -1395,12 +1492,9 @@ int FingCmd::GetFingerStatusForPrint()
         nResult = WriteDataViaNet((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
 
     }
-    if(nResult == _ACK)
+     if(nResult == _ACK)
     {
-        if(result == 0)
-            return 0;
-        else
-            return 1;
+        return result;
     }
     return -1;
 }
@@ -1436,7 +1530,7 @@ bool FingCmd::SetFingerStatus(unsigned char status)
     return false;
 }
 
-bool FingCmd::Check(char* userName, int len)
+int FingCmd::Check(char* userName, int len)
 {
     FG_CHECK_T fgCmd;
     WORD cbRead=0;
@@ -1469,18 +1563,21 @@ bool FingCmd::Check(char* userName, int len)
             nResult = WriteDataViaNet((unsigned char*)pData, dwSize, NULL, &length, &result, cbRead);
 
         }
-        free(pData);
-        pData = NULL;
 
         if(nResult == _ACK)
         {
+
             if(result == 0)
-                return false;
-            else
-                return true;
+                nResult = _User_Not_Exist;
+
         }
+
+        free(pData);
+        pData = NULL;
+
+
     }
-    return false;
+    return nResult;
 }
 
 bool FingCmd::CancelPrint()
@@ -1498,10 +1595,7 @@ bool FingCmd::CancelPrint()
     fgCmd.code = *(unsigned int*)&cmd[0];
     if(m_pDeviceIO->type() == DeviceIO::Type_usb)
     {
-        if(m_bFingerPrint)
             nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_CANCEL_T), NULL, &length, &result, cbRead);
-         else
-            nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_CANCEL_T), NULL, &length, &result, cbRead);
     }
     else
     {
@@ -1599,7 +1693,7 @@ int FingCmd::Delete(BYTE mode, char* userName, int len)
     return nResult;
 }
 
-int FingCmd::IsPrint(char* userName, short* pIndex)
+int FingCmd::IsPrint(char* userName, short* pIndex, int mTimeout)
 {
     FG_DISC_T fgCmd;
     WORD cbRead=0;
@@ -1612,10 +1706,11 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
     memset((unsigned char*)&fgCmd, 0, sizeof(FG_DISC_T));
 
     fgCmd.code = *(unsigned int*)&cmd[0];
+    //length = 8;
 #if OPEN_ONE
     bool bOpenSuccess = false;
     int nCount = 0;
-    while(nCount++ < 1 && !bOpenSuccess )
+    while(nCount++ < 1 && !bOpenSuccess)
     {
         if(m_bIsFingerPrintCancel)
         {
@@ -1685,14 +1780,25 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
 #endif
     if(nResult == _ACK)
     {
-        int count = 40;
+        int count = mTimeout *10 /2+4;
         FG_STATUS_T fgCmd1;
         BYTE cmd1[4] = {'S','T','U','S'};
 
         fgCmd1.code = *(unsigned int*)&cmd1[0];
-
+        //length = 8;
+        struct timeval tpstart, tpend;/*for test time*/
+        gettimeofday(&tpstart, 0);
         while(count--&& !m_bIsFingerPrintCancel)
         {
+            gettimeofday(&tpend, 0);
+            float timeuse = 1000000 * (tpend.tv_sec - tpstart.tv_sec) + tpend.tv_usec - tpstart.tv_usec;
+            timeuse /= 1000000;
+            if(timeuse -mTimeout > 0 )
+            {
+
+                CancelPrint();
+                break;
+            }
 #if OPEN_ONE
             //nResult = DataTransfer((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result,  cbRead);
             nResult = DataTransferForPrint((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result,  cbRead);
@@ -1724,8 +1830,10 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
                     pData = (unsigned char*)&fgData;
 
                     cbRead = sizeof(FG_DATA_T);
+                    //length = sizeof(FG_DATA_T) +10;
 
                     memset(pData, 0, cbRead);
+
 #if OPEN_ONE
                     nResult = DataTransferForPrint((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
 #else
@@ -1787,6 +1895,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
 
                     return _Printer_Finger_Wrong;
                 }
+
 //                else
 //                {
 //                    if(bOpenSuccess)
@@ -1796,10 +1905,27 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
 //                    return _Printer_Finger_Wrong;
 //                }
             }
-            usleep(500000);
+            else
+            {
+                if(nResult == _Printer_busy)
+                {
+                    return _Printer_busy;
+                }
+            }
+            usleep(200000);
         }
+
         //CancelPrintWithTrans();
     }
+    else
+    {
+        if(nResult == _Printer_busy)
+        {
+            return _Printer_busy;
+        }
+        nResult = _Printer_error;
+    }
+
     if(m_bIsFingerPrintCancel)
     {
 #if OPEN_ONE
@@ -1819,19 +1945,23 @@ int FingCmd::IsPrint(char* userName, short* pIndex)
         m_pDeviceIO->close();
     }
 #endif
+    if(nResult == _Printer_busy)
+    {
+        return _Printer_busy;
+    }
     return _Printer_Time_Out;
 }
 
-bool FingCmd::Import(FG_DATAF_T* pfgData, int len)
+int FingCmd::Import(FG_DATAF_T* pfgData, int len)
 {
     FG_IMPORT_T fgCmd;
-    WORD cbRead=0;
-    int nResult;
+    WORD cbRead=0, cbWritten = 0;
+    int nResult = _Printer_Time_Out;
     BYTE result;
     WORD length;
     BYTE cmd[4] = {'I','M','P','T'};
 
-#if OPEN_ONE
+
     bool bOpenSuccess = false;
     int nCount = 0;
     while(nCount++ < 5 && !bOpenSuccess)
@@ -1859,10 +1989,9 @@ bool FingCmd::Import(FG_DATAF_T* pfgData, int len)
     }
     if(!bOpenSuccess)
         return false;//nResult;
-#endif
 
     unsigned char* pData = NULL;
-    pData = (unsigned char*)malloc(len*sizeof(FG_DATAF_T)+2);
+    //pData = (unsigned char*)malloc(len*sizeof(FG_DATAF_T)+2);
 
     LOGLOG("####FM: Import");
     memset((unsigned char*)&fgCmd, 0, sizeof(FG_IMPORT_T));
@@ -1870,100 +1999,71 @@ bool FingCmd::Import(FG_DATAF_T* pfgData, int len)
     fgCmd.code = *(unsigned int*)&cmd[0];
     fgCmd.num = len;
 
-    if(pData != NULL)
-    {
-        DWORD dwSize = len*sizeof(FG_DATA_T);
 
-        memcpy(pData, &fgCmd, sizeof(FG_IMPORT_T));
-        memcpy(pData+sizeof(FG_IMPORT_T), (unsigned char*)pfgData, len*sizeof(FG_DATAF_T));
-#if OPEN_ONE
         nResult = DataTransfer((unsigned char*)&fgCmd, sizeof(FG_IMPORT_T), NULL, &length, &result,  0);
-#else
-//        if(m_pDeviceIO->type() == DeviceIO::Type_usb)
-//        {
-            nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_IMPORT_T), NULL, &length, &result,  0);
-//        }
-//        else
-//        {
-//            nResult = WriteDataViaNet((unsigned char*)&fgCmd, sizeof(FG_IMPORT_T), NULL, &length, &result,  0);
-//        }
-#endif
+
         if(nResult == _ACK)
         {
-            //memcpy(pData, (unsigned char*)pfgData, len*sizeof(FG_DATAF_T));
-            //nResult = m_pDeviceIO->WriteData(NULL, dwSize, pData, &length, &result, 0);
-
-            //if(nResult == _ACK)
-            //{
-                int count = 30;
-                FG_STATUS_T fgCmd1;
-                BYTE cmd1[4] = {'S','T','U','S'};
-
-                fgCmd1.code = *(unsigned int*)&cmd1[0];
-
+            DWORD dwSize = len*sizeof(FG_DATAF_T);
+            pData = (unsigned char*)malloc(len*sizeof(FG_DATAF_T)+8);
+            if(pData != NULL)
+            {
+                int count = 3;
                 while(count--)
                 {
-#if OPEN_ONE
-                    nResult = DataTransfer((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
-#else
-//                    if(m_pDeviceIO->type() == DeviceIO::Type_usb)
-//                    {
-                        nResult = WriteDataViaUSB((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
-//                    }
-//                    else
-//                    {
-//                        nResult = WriteDataViaNet((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
-//                    }
-#endif
 
-                    if(nResult == _ACK && result > 0)
+                    memcpy(pData, & fgCmd, sizeof(FG_IMPORT_T));
+                    memcpy(pData+sizeof(FG_IMPORT_T), pfgData, len*sizeof(FG_DATAF_T));
+                    DWORD writeSize = dwSize+8;
+                    DWORD writeSizePerTime = dwSize+8;
+                    DWORD wroteSize = 0;
+                    while(writeSize>0)
                     {
-#if OPEN_ONE
-                        if(bOpenSuccess)
+                        writeSizePerTime = writeSize;
+                        if(writeSizePerTime > 4096)
+                            writeSizePerTime = 4096;
+
+                        cbWritten = m_pDeviceIO->write_bulk((char*)pData+wroteSize, writeSizePerTime);
+                        if(cbWritten > 0)
                         {
-                            m_pDeviceIO->close();
+                            wroteSize +=cbWritten;
+                            writeSize -=cbWritten;
                         }
-#endif
-                        if(pData != NULL)
+                        if(cbWritten == 0)
                         {
-                            free(pData);
-                            pData = NULL;
-                        }
-                        if(result == 1)
-                        {
-                            return true;//_ACK;
-                        }
-                        else
-                        {
-                            return false;//_Printer_error;
+                            break;
                         }
                     }
-                    sleep(1);
+
+                   // if(cbWritten == len*sizeof(FG_DATAF_T)+8)
+                    if(wroteSize == dwSize+8)
+                    {
+                        LOGLOG("####FM: Import success");
+                        nResult = _ACK;
+                        break;
+                    }
+                    else
+                        sleep(1);
                 }
-
-                //CancelPrint();
-#if OPEN_ONE
-                CancelPrintWithTrans();
-#else
-                CancelPrint();
-#endif
-
-            //}
                 if(pData != NULL)
                 {
                     free(pData);
                     pData = NULL;
                 }
+            }
+
+               // CancelPrintWithTrans();
+
+
         }
 
-    }
-#if OPEN_ONE
+
     if(bOpenSuccess)
     {
         m_pDeviceIO->close();
     }
-#endif
-    return false;//_Printer_Time_Out;
+
+    return nResult;//_Printer_Time_Out;
 }
 
 
@@ -1973,7 +2073,7 @@ int FingCmd::Export(int* len)
     WORD cbRead=0;
     int nResult;
     BYTE result;
-    WORD length;
+    WORD length =0;
     BYTE cmd[4] = {'E','X','P','T'};
 
     LOGLOG("####CFingCmd: Export");
@@ -1983,7 +2083,16 @@ int FingCmd::Export(int* len)
     fgCmd.code = *(unsigned int*)&cmd[0];
 
     LOGLOG("Send Export command!");
-#if OPEN_ONE
+    if(m_pDeviceIO->type() != DeviceIO::Type_usb)
+    {
+        return -1;
+    }
+
+
+
+    //    nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_EXPORT_T), NULL, &length, &result, cbRead);
+
+    //    LOGLOG("nResult(%d) = %d",_ACK, nResult);
     bool bOpenSuccess = false;
     int nCount = 0;
     while(nCount++ < 5 && !bOpenSuccess)
@@ -2011,127 +2120,103 @@ int FingCmd::Export(int* len)
     }
     if(!bOpenSuccess)
         return nResult;
+        nResult = DataTransfer((unsigned char*)&fgCmd, sizeof(FG_EXPORT_T), NULL, &length, &result, cbRead);
 
+        LOGLOG("nResult(%d) = %d",_ACK, nResult);
 
-    nResult = DataTransfer((unsigned char*)&fgCmd, sizeof(FG_EXPORT_T), NULL, &length, &result, cbRead);
-#else
-//    if(m_pDeviceIO->type() == DeviceIO::Type_usb)
-//    {
-            nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_EXPORT_T), NULL, &length, &result, cbRead);
-//    }
-//    else
-//    {
-//            nResult = WriteDataViaNet((unsigned char*)&fgCmd, sizeof(FG_EXPORT_T), NULL, &length, &result, cbRead);
-//     }
-#endif
     if(nResult == _ACK)
     {
-        int count = 30;
-        FG_STATUS_T fgCmd1;
-        BYTE cmd1[4] = {'S','T','U','S'};
-
-        fgCmd1.code = *(unsigned int*)&cmd1[0];
-        result = 0;
-        length = 0;
-        LOGLOG("Send Status command!");
+        int count = 6;
+        FG_STA_T sta;
+        DWORD dwRead = 0;
+        usleep(100000);
         while(count--)
         {
-#if OPEN_ONE
-            nResult = DataTransfer((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
-#else
-//            if(m_pDeviceIO->type() == DeviceIO::Type_usb)
-//            {
-                    nResult = WriteDataViaUSB((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
-//            }
-//            else
-//            {
-//                    nResult = WriteDataViaNet((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
-//             }
-#endif
-            LOGLOG("Get Return command, and result is %d", result);
-            if(nResult == _ACK && result > 0)
+            dwRead = m_pDeviceIO->read_bulk((char*)&sta, 8);
+
+            LOGLOG("Get Return command, and dwRead is %d", dwRead);
+            if(dwRead > 0)
             {
-                LOGLOG("the finger nubmer is %d", length);
-                if(result == 1 )//&& length >0)
+                LOGLOG("sta code is %x, the expt is %x", sta.code, I4('EXPT'));
+                if(sta.code==I4('EXPT'))
                 {
-                    FG_GETRESULT_T fgCmd2;
-                    BYTE cmd2[4] = {'G','E','T','R'};
+                    int  flength = sta.length;
                     unsigned char* pData;
 
-                    length = 10;
-                    fgCmd2.code = *(unsigned int*)&cmd2[0];
+
                     result = 0;
                     if(m_pfgData != NULL)
                     {
                         free(m_pfgData);
                     }
-                    m_pfgData = (FG_DATAF_T*)malloc(sizeof(FG_DATAF_T)*length);
+                    m_pfgData = (FG_DATAF_T*)malloc(sizeof(FG_DATAF_T)*flength);
                     if(m_pfgData != NULL)
                     {
                         pData = (unsigned char*)m_pfgData;
-                        cbRead = sizeof(FG_DATAF_T)*length;
+                        DWORD needRead = sizeof(FG_DATAF_T)*flength;
+                        int readPerTime = 0;
+                        int readed = 0;
+                        int zeroTime = 0;
                         LOGLOG("Send GetResult Command!");
-#if OPEN_ONE
-                        nResult = DataTransfer((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
-#else
-//                        if(m_pDeviceIO->type() == DeviceIO::Type_usb)
-//                        {
-                                nResult = WriteDataViaUSB((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
-//                        }
-//                        else
-//                        {
-//                                nResult = WriteDataViaNet(((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
-//                         }
-#endif
-                        if(nResult == _ACK)
+                        while(needRead > 0)
                         {
-                            //nResult = m_pDeviceIO->WriteData(NULL, 0, pData, &status, cbRead*sizeof(FG_DATAF_T));
-                            //memcpy((unsigned char*)m_pfgData, pData, sizeof(FG_DATAF_T)*length);
-                            *len = length;
+                            //dwRead =  m_pDeviceIO->read_bulk((char*)pData, cbRead);
+                            readPerTime = needRead;
+                            if(readPerTime > 4096)
+                            {
+                                readPerTime = 4096;
+                            }
+                            dwRead =  m_pDeviceIO->read_bulk((char*)pData+readed, readPerTime);
+                            if(dwRead)
+                            {
+                                readed += dwRead;
+                                needRead -= dwRead;
+                                zeroTime = 0;
+                            }
+                            else
+                            {
+                                zeroTime++;
+                                if(zeroTime > 2)
+                                {
+                                    LOGLOG("read data 0 = %d!", zeroTime);
+                                    break;
+
+                                }
+                            }
+
+
+                        }
+
+                        if(readed > 0)
+                        {
+                            *len = flength;
+                            nResult = _ACK;
                             LOGLOG("read data success!");
                         }
+                        else
+                        {
+                            nResult = _Get_parameter_error;
+                        }
                     }
-#if OPEN_ONE
+
                     if(bOpenSuccess)
                     {
                         m_pDeviceIO->close();
                     }
-#endif
                     return nResult;
                 }
-                else
-                {
-#if OPEN_ONE
-                    if(bOpenSuccess)
-                    {
-                        m_pDeviceIO->close();
-                    }
-#endif
-                    if(result == 1)
-                    {
-                        *len = 0;
-                        return _ACK;
-                    }
-                    else
-                    {
-                        return _Get_parameter_error;
-                    }
-                }
+
             }
             sleep(1);
         }
-#if OPEN_ONE
         CancelPrintWithTrans();
-#else
-        CancelPrint();
-#endif
+
     }
-#if OPEN_ONE
     if(bOpenSuccess)
     {
         m_pDeviceIO->close();
     }
-#endif
+
     return _Printer_Time_Out;
 }
 
@@ -2422,7 +2507,11 @@ int FingCmd::AddFingerSecond(char* userName, short* pIndex)
                         }
                         else
                         {
-                            strcpy(userName, (const char*)fgData.UserName);
+                            //strcpy(userName, (const char*)fgData.UserName);
+                            if(strlen((const char*)fgData.UserName) >= 32)
+                                memcpy(userName, (const char*)fgData.UserName, sizeof(fgData.UserName));
+                            else
+                                strcpy(userName, (const char*)fgData.UserName);
                             *pIndex = fgData.ID;
                              LOGLOG("####FM:AddFingerSecond(): success.");
                              LOGLOG("####FM:AddFingerSecond(): id=%d, name=%s.", fgData.ID, fgData.UserName);

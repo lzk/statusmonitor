@@ -12,6 +12,7 @@ public:
     int job_id;
     int check_result;
     bool chenk_end;
+    int m_timeout;
     char m_device_uri[256];
     Finger mFinger;
     const char* server_path;

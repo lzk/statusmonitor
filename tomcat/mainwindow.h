@@ -82,6 +82,8 @@ private:
     void createSysTray();
 
     bool record_printlist;
+    bool bFindOnLinePrinter = false;
+    bool bCheckPrinter = true;
 //    QString password;
     int jobs_page;
 };

@@ -42,15 +42,15 @@ public:
 
     bool SetFingerStatus(unsigned char status);
 
-    bool Check(char* userName, int len);
+    int Check(char* userName, int len);
 
     bool CancelPrint();
 
     int Delete(BYTE mode, char* userName, int len);
 
-    int IsPrint(char* userName, short* pIndex);
+    int IsPrint(char* userName, short* pIndex, int mTimeout);
 
-    bool Import(FG_DATAF_T* pfgData, int len);
+    int Import(FG_DATAF_T* pfgData, int len);
 
     int Export(int* len);
 

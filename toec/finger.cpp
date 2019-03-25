@@ -5,35 +5,53 @@ Finger::Finger()
 {
 
 }
-bool Finger::finger_isEnabled(char* uri)
+int Finger::finger_isEnabled(char* uri)
 {
-    //if(fingercomm.IsDeviceConnectForPrint(uri))
+    int nRet = fingercomm.IsDeviceFingerOpenForPrint(uri);
+    if(nRet == 1)
     {
-        if(fingercomm.IsDeviceFingerOpenForPrint(uri))
-        {
-            return true;
-        }
-
+        LOGLOG("\r\n#finger_isEnabled: IsDeviceFingerOpenForPrint: open!");
+        return 1;
     }
-    return false;
+    else
+    {
+        if(nRet == 3)
+        {
+            LOGLOG("\r\n#finger_isEnabled: IsDeviceFingerOpenForPrint: open but no finger!");
+            return 3;
+        }
+        else if(nRet == 4)
+        {
+            LOGLOG("\r\n#finger_isEnabled: IsDeviceFingerOpenForPrint: busy!");
+        }
+        else
+        {
+            LOGLOG("\r\n#finger_isEnabled: IsDeviceFingerOpenForPrint: close!");
+        }
+    }
+
+
+    return 0;
 }
 
-bool Finger::finger_check(char* uri)
+int Finger::finger_check(char* uri, int mTimeout)
 {
     char userName[33] = {0};
     short index = 0;
-    if(fingercomm.IsFingerPrint(uri,userName, &index)/* == 0*/)
+    int ret = 0;
+
+    if((ret=fingercomm.IsFingerPrint(uri,userName, &index, mTimeout)) == 0)
     {
 //        qDebug()<<QString::fromUtf8("指纹识别成功,可以打印!");
 //        qDebug()<<"userName="<<userName<<" index="<<index;
-        return true;
+        return ret;
     }
     else
     {
 //        qDebug()<<QString::fromUtf8("指纹识别失败,再试一次!");
-        return false;
+        return ret;
     }
-    return false;
+    return ret;
 }
 
 void Finger::finger_cancel(char* uri)

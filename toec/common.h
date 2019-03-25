@@ -106,6 +106,8 @@
 #define  _SW_UNKNOWN_PORT                 31
 #define  _SW_INVALID_PARAMETER            32
 #define  _SW_INVALID_RETURN_VALUE         33
+#define  _SW_NET_CONNECT_FAIL         34
+
 
 
 #define DEVICE_NAME L"OEP3300CDN"

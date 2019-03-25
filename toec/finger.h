@@ -6,8 +6,8 @@ class Finger
 {
 public:
     Finger();
-    bool finger_isEnabled(char* uri);
-    bool finger_check(char* uri);
+    int finger_isEnabled(char* uri);
+    int finger_check(char* uri, int mTimeout);
     void finger_cancel(char* uri);
 private:
    FingerCommon fingercomm;
