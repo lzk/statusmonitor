@@ -21,6 +21,7 @@ AuthenticationDlg::AuthenticationDlg(QWidget *parent, bool*confirm) :
 
     cycle = new BusyRefreshLabel(this,true);
     cycle->setGeometry(QRect(180,70,50,50));
+    ui->label->hide();
 }
 
 AuthenticationDlg::~AuthenticationDlg()
@@ -54,6 +55,7 @@ void AuthenticationDlg::on_btApply_Login_clicked()
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PASSWD_confirm,data);
 
         cycle->startAnimation(20);
+        ui->label->show();
     }
 
 }
@@ -74,5 +76,6 @@ void AuthenticationDlg::cmdResult(int cmd,int result ,QVariant data)
             ui->label_msg->setStyleSheet("QLabel{color:red;}");
         }
         cycle->stopAnimation();
+        ui->label->hide();
     }
 }

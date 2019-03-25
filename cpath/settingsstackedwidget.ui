@@ -220,12 +220,6 @@ color:white;
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
     <property name="text">
      <string>ResStr_SSID</string>
     </property>

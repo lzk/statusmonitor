@@ -24,7 +24,6 @@ public:
     WlanTitleCell *titelCell;
     void changeStackIndex(int index);
     void setWifiEnabled(bool enabled);
-    void setEnabled(bool);
 
 protected slots:
     bool eventFilter(QObject *, QEvent *);

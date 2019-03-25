@@ -1,7 +1,7 @@
 #ifndef WIFISETTINGCELL_H
 #define WIFISETTINGCELL_H
 
-#include <QStackedWidget>
+#include <QWidget>
 #include "typedefine.h"
 #include "qvariant.h"
 
@@ -9,7 +9,7 @@ namespace Ui {
 class WiFiSettingCell;
 }
 
-class WiFiSettingCell : public QStackedWidget
+class WiFiSettingCell : public QWidget
 {
     Q_OBJECT
 
@@ -17,6 +17,7 @@ public:
     explicit WiFiSettingCell(QWidget *parent = 0, APInfo *info = 0, bool *_islogin = 0, bool isconnected = false);
     ~WiFiSettingCell();
     APInfo getAPInfo();
+    void tryConnect(APInfo);
 
 signals:
     void SizeChanged(QSize , QSize );
@@ -30,10 +31,10 @@ private slots:
         void on_pushButton_2_clicked();
         void on_checkBox_visiable_clicked();
         void initStatus();
+        void isShowStatus(bool);
 
         void changeStatus();
         void on_btConnect_clicked();
-        void tryConnect(APInfo);
         void cmdResult(int,int,QVariant);
 
 private:
@@ -43,8 +44,6 @@ private:
     bool *islogin;
     bool m_isLogin;
     bool isConnected;
-    bool isDoingCMD;
-    int  times;
 };
 
 #endif // WIFISETTINGCELL_H

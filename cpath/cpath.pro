@@ -105,7 +105,6 @@ FORMS += \
     thumbnailimage.ui \
     membercenterwidget.ui \
     membercenter/userlogin.ui \
-    wlantitlecell.ui \
     imagepreviewdialog.ui \
     moresettingsforscan.ui \
     moresettingsforcopy.ui \
@@ -115,8 +114,9 @@ FORMS += \
     ipv6status.ui \
     promptdialog.ui \
     settingwarming.ui \
-    wifisettingcell.ui \
-    wifisettingwepcell.ui
+    wifisettingwepcell.ui \
+    wlantitlecell.ui \
+    wifisettingcell.ui
 
 
 RESOURCES += \
