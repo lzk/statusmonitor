@@ -32,7 +32,7 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
         if(ret == ScannerApp::STATUS_USEWITHOUTLOCK)
             return ScannerApp::STATUS_Error_busy;
         else
-            return ScannerApp::STATUS_Error_App;
+            return ScannerApp::STATUS_Error_lock;
     }
 
     ret = scannner_api->set_parameters(settings);

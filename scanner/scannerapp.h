@@ -108,6 +108,7 @@ public:
         ,STATUS_Error_App
         ,STATUS_Error_machine
         ,STATUS_Error_busy
+        ,STATUS_Error_lock
     } DEVSTATUS;
 
     int scan(Printer_struct* printer ,ScanSettings* settings);
@@ -120,11 +121,12 @@ private:
     pthread_t thread;
     pthread_mutex_t mutex;
 
-    int init_scan(ScanSettings* settings);
+//    int init_scan(ScanSettings* settings);
     int start_scan(ScanSettings* settings);
     int save_scan_data(ScanSettings* settings ,char* buffer ,int buf_size);
-    int exit_scan(ScanSettings* settings);
+//    int exit_scan(ScanSettings* settings);
 
+    int trans_source_buffer(int type);
     int trans_process(ScanSettings* settings);
     friend class Scanner;
 

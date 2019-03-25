@@ -16,94 +16,148 @@ void calculate_parameters(ScanSettings* scan_settings);
 //    .scan_size = Scan_A4,
 //};
 
-const char* scan_tmp_file_name = "/tmp/tmpscan.raw";
-FILE* scan_file;
-int scan_buffer_open(const char* mode)
+FILE* cache_file = NULL;
+FILE* source_file = NULL;
+const char* jpg_file_name = "/tmp/tmpscan.jpg";
+const char* raw_file_name = "/tmp/tmpscan.raw";
+int cache_buffer_init(const char* mode ,int type=0);
+int cache_buffer_init(const char* mode ,int type)
 {
     int ret = 0;
-    scan_file = fopen(scan_tmp_file_name ,mode);
-    if(!scan_file){
+    const char* cache_file_name;
+    switch (type) {
+    case ImageTransFormat_raw:
+        cache_file_name = raw_file_name;
+        break;
+    case ImageTransFormat_jpg:
+        cache_file_name = jpg_file_name;
+        break;
+    default:
+        cache_file_name = NULL;
+        break;
+    }
+    cache_file = NULL;
+    if(cache_file_name){
+        cache_file = fopen(cache_file_name ,mode);
+    }
+    if(!cache_file){
+        ret = -1;
+    }
+    return ret;
+}
+int cache_buffer_write(char* buffer ,int buf_size)
+{
+    if(!cache_file)
+        return -1;
+    return fwrite(buffer ,sizeof(char) ,buf_size ,cache_file);
+}
+int cache_buffer_read(char* buffer ,int buf_size)
+{
+    if(!cache_file)
+        return -1;
+    return fread(buffer ,sizeof(char) ,buf_size ,cache_file);
+}
+int cache_buffer_exit()
+{
+    if(!cache_file)
+        return -1;
+    fclose(cache_file);
+    cache_file = NULL;
+    return 0;
+}
+int source_buffer_init(const char* mode)
+{
+    int ret = 0;
+    source_file = fopen(raw_file_name ,mode);
+    if(!source_file){
         ret = -1;
     }
     return ret;
 }
 
-int scan_buffer_read(char* buffer ,int buf_size)
+int source_buffer_read(char* buffer ,int buf_size)
 {
-    return fread(buffer ,sizeof(char) ,buf_size ,scan_file);
+    if(!source_file)
+        return -1;
+    return fread(buffer ,sizeof(char) ,buf_size ,source_file);
 }
 
-int scan_buffer_write(char* buffer ,int buf_size)
+int source_buffer_write(char* buffer ,int buf_size)
 {
-    return fwrite(buffer ,sizeof(char) ,buf_size ,scan_file);
+    if(!source_file)
+        return -1;
+    return fwrite(buffer ,sizeof(char) ,buf_size ,source_file);
 }
 
-int scan_buffer_exit()
+int source_buffer_exit()
 {
-    fclose(scan_file);
-    scan_file = NULL;
+    if(!source_file)
+        return -1;
+    fclose(source_file);
+    source_file = NULL;
+    return 0;
 }
 
-int trans_init(ScanSettings* settings)
-{
-    int ret;
-    ImageTransInfo* info = settings->info;
+//int trans_init(ScanSettings* settings)
+//{
+//    int ret;
+//    ImageTransInfo* info = settings->info;
 
-    caculate_image_trans_data(settings);
+//    caculate_image_trans_data(settings);
 
-    ret = settings->info->image_trans->init(info);
-    if(ret <= 0){
-        return ret;
-    }
-    info->target_buf_size = ret;
+//    ret = settings->info->image_trans->init(info);
+//    if(ret <= 0){
+//        return ret;
+//    }
+//    info->target_buf_size = ret;
 
-    settings->file = fopen(settings->filename ,"w+b");
-    if(!settings->file)
-        ret = -1;
-    //save head
-    else{
-        fwrite(info->target_buffer ,sizeof(char) ,info->target_buf_size ,settings->file);
-        fflush(settings->file);
-    }
-    return ret;
-}
+//    settings->file = fopen(settings->filename ,"w+b");
+//    if(!settings->file)
+//        ret = -1;
+//    //save head
+//    else{
+//        fwrite(info->target_buffer ,sizeof(char) ,info->target_buf_size ,settings->file);
+//        fflush(settings->file);
+//    }
+//    return ret;
+//}
 
-int trans_trans(ScanSettings* settings)
-{
-    ImageTransInfo* info = settings->info;
-    int ret;
-    ret = settings->info->image_trans->trans(info);
-    //save image
-    if(settings->file){
-        fwrite(info->target_buffer ,sizeof(char) ,info->target_buf_size ,settings->file);
-        fflush(settings->file);
-    }
-    return ret;
-}
+//int trans_trans(ScanSettings* settings)
+//{
+//    ImageTransInfo* info = settings->info;
+//    int ret;
+//    ret = settings->info->image_trans->trans(info);
+//    //save image
+//    if(settings->file){
+//        fwrite(info->target_buffer ,sizeof(char) ,info->target_buf_size ,settings->file);
+//        fflush(settings->file);
+//    }
+//    return ret;
+//}
 
-void trans_exit(ScanSettings* settings)
-{
-    if(settings->file){
-        fclose(settings->file);
-        settings->file = NULL;
-    }
-    settings->info->image_trans->exit();
-}
+//void trans_exit(ScanSettings* settings)
+//{
+//    if(settings->file){
+//        fclose(settings->file);
+//        settings->file = NULL;
+//    }
+//    settings->info->image_trans->exit();
+//}
 
-static void image_trans_thread(void *reference)
-{
-    int ret;
-    ScanSettings* settings = (ScanSettings*)reference;
-    ret = trans_init(settings);
-    if(ret < 0)
-        return;
-    while (1) {
-        ret = trans_trans(settings);
-        if(ret)
-            break;
-    }
-    trans_exit(settings);
-}
+//static void image_trans_thread(void *reference)
+//{
+//    int ret;
+//    ScanSettings* settings = (ScanSettings*)reference;
+//    ret = trans_init(settings);
+//    if(ret < 0)
+//        return;
+//    while (1) {
+//        ret = trans_trans(settings);
+//        if(ret)
+//            break;
+//    }
+//    trans_exit(settings);
+//}
 
 
 ScannerApp::ScannerApp(DeviceIOManager* _device_manager)
@@ -119,23 +173,23 @@ ScannerApp::~ScannerApp()
     delete image_trans;
 }
 
-int ScannerApp::init_scan(ScanSettings* settings)
-{
-    settings->info->image_trans = image_trans;
-    calculate_parameters(settings);
-    int ret = trans_init(settings);
-    if(ret < 0)
-        return ret;
-    else
-        ret = 0;
+//int ScannerApp::init_scan(ScanSettings* settings)
+//{
+//    settings->info->image_trans = image_trans;
+//    calculate_parameters(settings);
+//    int ret = trans_init(settings);
+//    if(ret < 0)
+//        return ret;
+//    else
+//        ret = 0;
 
-//    if (pthread_create(&thread, NULL, image_trans_thread, (void*)settings))
-//    {
-//        ret = -1;
-//    }
+////    if (pthread_create(&thread, NULL, image_trans_thread, (void*)settings))
+////    {
+////        ret = -1;
+////    }
 
-    return ret;
-}
+//    return ret;
+//}
 
 int ScannerApp::save_scan_data(ScanSettings* settings ,char* buffer ,int buf_size)
 {
@@ -147,59 +201,26 @@ int ScannerApp::save_scan_data(ScanSettings* settings ,char* buffer ,int buf_siz
     }
     if(settings->callback)
         settings->callback(settings);
-    scan_buffer_write(buffer ,buf_size);
+    cache_buffer_write(buffer ,buf_size);
     return 0;
 }
 
-int ScannerApp::exit_scan(ScanSettings* settings)
-{
-    trans_exit(settings);
-    return 0;
-}
+//int ScannerApp::exit_scan(ScanSettings* settings)
+//{
+//    trans_exit(settings);
+//    return 0;
+//}
 
 #define SCAN_BUFFER_SIZE 	0x10000
-#if 0
-int ScannerApp::scan(ScanSettings* settings)
-{
-    int ret;
-    char* source_buf = new char[SCAN_BUFFER_SIZE];
-    char* target_buf = new char[SCAN_BUFFER_SIZE];
-    char* resume_buf = new char[SCAN_BUFFER_SIZE];
-    ImageTransInfo image_trans_info;
-    ImageTransInfo* info = settings->info = &image_trans_info;
-    info->resume_buffer = resume_buf;
-    info->resume_buf_size = SCAN_BUFFER_SIZE;
-    info->source_buffer = source_buf;
-    info->source_buf_size = SCAN_BUFFER_SIZE;
-    info->target_buffer = target_buf;
-    info->target_buf_size = SCAN_BUFFER_SIZE;
-    settings->file = NULL;
-
-    ret = init_scan(settings);
-    if(ret){
-        return STATUS_Error_App;
-    }
-    set_cancel(false);
-    ret = scanner->flat_scan(settings);
-    exit_scan(settings);
-    delete [] source_buf;
-    delete [] target_buf;
-    delete [] resume_buf;
-    return ret;
-}
-#else
-
 int ScannerApp::trans_process(ScanSettings* settings)
 {
     int ret;
-    ret = scan_buffer_open("rb");
+    ret = source_buffer_init("rb");
     if(ret){
         return ret;
     }
 
     ImageTransInfo* info = settings->info;
-    caculate_image_trans_data(settings);
-
 
     int each_lines = 3;
     int each_source_size =  each_lines * info->source_line_buf_size;
@@ -227,12 +248,12 @@ int ScannerApp::trans_process(ScanSettings* settings)
             lines = rest_lines;
         }
         each_source_size = lines * info->source_line_buf_size;
-        scan_buffer_read(buffer ,each_source_size);
+        source_buffer_read(buffer ,each_source_size);
         info->each_source_size = each_source_size;
         info->lines = lines;
         image_trans->process(info);
     }
-    scan_buffer_exit();
+    source_buffer_exit();
     image_trans->exit();
 
     delete [] buffer;
@@ -253,6 +274,7 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     ImageTransInfo image_trans_info;
     settings->info = &image_trans_info;
     calculate_parameters(settings);
+    caculate_image_trans_data(settings);
 #if Test_Jerry
     ImageTransInfo* info = settings->info;
     char* source_buf = new char[SCAN_BUFFER_SIZE];
@@ -260,7 +282,7 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     info->source_buf_size = SCAN_BUFFER_SIZE;
     settings->file = NULL;
 
-    ret = scan_buffer_open("wb+");
+    ret = cache_buffer_init("wb+" ,info->source_format);
 //    ret = init_scan(settings);
     if(ret){
         return STATUS_Error_App;
@@ -271,21 +293,24 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     usb_error_usb_locked = usb_error_scanning;
     for(int i = 0 ;i < 3 ;i++){
         ret = scanner->flat_scan(printer ,settings);
-        if(ret != STATUS_Error_App)
+        if(ret != STATUS_Error_App && ret != STATUS_Error_lock && ret != STATUS_Error_busy)
             break;
         else
             usleep(100 * 1000);
     }
+    if(STATUS_Error_lock == ret)
+        ret = STATUS_Error_machine;
     usb_error_usb_locked = usb_error_busy;
 //    exit_scan(settings);
-    scan_buffer_exit();
+    cache_buffer_exit();
     delete [] source_buf;
 #endif
     if(!ret){
+        trans_source_buffer(info->source_format);
+        trans_process(settings);
         settings->progress  = -2;
         if(settings->callback)
             settings->callback(settings);
-        trans_process(settings);
     }else{
         settings->progress  = -3;
         if(settings->callback)
@@ -293,7 +318,7 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     }
     return ret;
 }
-#endif
+
 void ScannerApp::set_cancel(bool cancel)
 {
     scanner->set_cancel(cancel);
@@ -304,4 +329,17 @@ int ScannerApp::start_scan(ScanSettings* settings)
     settings->progress = -1;//start
     if(settings->callback)
         settings->callback(settings);
+}
+
+#include "trans_jpg.h"
+int ScannerApp::trans_source_buffer(int type)
+{
+    int ret = 0;
+    if(type == ImageTransFormat_jpg){
+        //transfer jpg to raw
+        source_buffer_init("wb+");
+        read_JPEG_file((char*)jpg_file_name ,source_buffer_write);
+        source_buffer_exit();
+    }
+    return ret;
 }
