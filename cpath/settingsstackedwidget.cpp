@@ -316,7 +316,8 @@ void SettingsStackedWidget::changeStackIndex(int index)
             ui->lineEdit_newPassWord->setText("");
             ui->lineEdit_confirm->setText("");
 
-            titelCell->setCurrentIndex(0);
+//            titelCell->setCurrentIndex(0);
+            titelCell->isShowStatusWidget(true);
             if(this->isEnabled() == true)
             {
                 titelCell->on_btFlesh_clicked();
@@ -1437,12 +1438,12 @@ void SettingsStackedWidget::hideEvent(QHideEvent *e)
     QWidget::hideEvent(e);
 }
 
-void SettingsStackedWidget::setEnabled(bool enabled)
-{
-    if(enabled == false)
-    {
-        isLogn = false;
-    }
-    QWidget::setEnabled(enabled);
-}
+//void SettingsStackedWidget::setEnabled(bool enabled)
+//{
+//    if(enabled == false)
+//    {
+//        isLogn = false;
+//    }
+//    QWidget::setEnabled(enabled);
+//}
 

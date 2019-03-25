@@ -3,16 +3,17 @@
 #include "settingwarming.h"
 #include "authenticationdlg.h"
 #include "uinterface.h"
-#define RETRYTIMES 3
+#include <qdebug.h>
 
 WiFiSettingCell::WiFiSettingCell(QWidget *parent, APInfo *info, bool *_islogin, bool isconnected) :
-    QStackedWidget(parent),
+    QWidget(parent),
     ui(new Ui::WiFiSettingCell),
     isConnected(isconnected),
     m_isLogin(false)
 {
     ui->setupUi(this);
-    this->setCurrentIndex(0);
+//    this->setCurrentIndex(0);
+    isShowStatus(true);
     if(info != NULL)
     {
         apInfo = *info;
@@ -55,8 +56,6 @@ WiFiSettingCell::WiFiSettingCell(QWidget *parent, APInfo *info, bool *_islogin, 
     {
         islogin = &m_isLogin;
     }
-    isDoingCMD = false;
-    times = 0;
 }
 
 WiFiSettingCell::~WiFiSettingCell()
@@ -64,9 +63,24 @@ WiFiSettingCell::~WiFiSettingCell()
     delete ui;
 }
 
+void WiFiSettingCell::isShowStatus(bool b)
+{
+    if(b)
+    {
+        ui->statusWidget->show();
+        ui->configWidget->hide();
+    }
+    else
+    {
+        ui->statusWidget->hide();
+        ui->configWidget->show();
+    }
+}
+
 void WiFiSettingCell::on_btCancel_clicked()
 {
-    this->setCurrentIndex(0);
+//    this->setCurrentIndex(0);
+    isShowStatus(true);
     this->resize(QSize(220, 51));
     this->setMinimumHeight(51);
     emit SizeChanged( QSize(220, 154), QSize(211, 51));
@@ -75,7 +89,8 @@ void WiFiSettingCell::on_btCancel_clicked()
 //
 void WiFiSettingCell::on_pushButton_clicked()
 {
-    this->setCurrentIndex(1);
+//    this->setCurrentIndex(1);
+    isShowStatus(false);
     this->resize(QSize(220, 154));
     this->setMinimumHeight(154);
     emit SizeChanged( QSize(220, 51), QSize(211, 154));
@@ -149,119 +164,25 @@ void WiFiSettingCell::on_btConnect_clicked()
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();
     }
-    else if(apInfo.encryType == NO_Securty)
+
+    //do something here; it is a short time that you can not saw the busyRefresh Label;
+
+    if(!(*islogin) )
     {
-        //do something here; it is a short time that you can not saw the busyRefresh Label;
-        cmdst_wifi_get wifi_para;
-        QString ssid;
-        QString passwd;
-        if(!(*islogin) )
-        {
-            AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
-            dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
-                                & ~Qt::WindowMinimizeButtonHint );
-            dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
-            dlg->exec();
-        }
-        if(*islogin)
-        {
-            ssid = apInfo.SSID;
-            passwd = apInfo.Password;
-            wifi_para.encryption = apInfo.encryType;
-            wifi_para.wepKeyId = apInfo.wepKeyID;
-           //ssid
-            if(strlen(ssid.toUtf8()) >= 32)
-                memcpy(wifi_para.ssid ,ssid.toUtf8() ,32);
-            else{
-                memset(wifi_para.ssid ,0 ,32);
-                strcpy(wifi_para.ssid ,ssid.toUtf8());
-            }
-
-            //passwd
-            if(strlen(passwd.toLatin1()) >= 64)
-                memcpy(wifi_para.pwd ,passwd.toLatin1() ,64);
-            else{
-                memset(wifi_para.pwd ,0 ,64);
-                strcpy(wifi_para.pwd ,passwd.toLatin1());
-            }
-
-            //encryption type
-           // C_LOG("wifi apply: wifi_para.encryption:%d" ,wifi_para.encryption);
-
-            //wep key id
-            if(!(wifi_para.wifiEnable & 1)){
-                //_Q_LOG("wifi apply:wifi have not been enable ,enable it");
-                wifi_para.wifiEnable &= ~1;
-                wifi_para.wifiEnable |= 1;//bit 0
-            }
-
-            connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
-
-            QVariant value;
-            value.setValue(wifi_para);
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            emit doingConnect(this);
-        }
-        else
-        {
-            QString deviceMsg = tr("ResStr_Setting_Fail");
-            gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
-        }
-
+        AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
+        dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                            & ~Qt::WindowMinimizeButtonHint );
+        dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
+        dlg->exec();
     }
-    else //if(apInfo.encryType == WPA2_PSK_AES || apInfo.encryType == Mixed_Mode_PSK)
+    if(*islogin)
     {
-        cmdst_wifi_get wifi_para;
-        QString ssid;
-        QString passwd;
-        if(!(*islogin) )
-        {
-            AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
-            dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
-                                & ~Qt::WindowMinimizeButtonHint );
-            dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
-            dlg->exec();
-        }
-        if(*islogin)
-        {
-            ssid = apInfo.SSID;
-            passwd = ui->lineEdit_Password->text();
-            //ssid
-             if(strlen(ssid.toUtf8()) >= 32)
-                 memcpy(wifi_para.ssid ,ssid.toUtf8() ,32);
-             else{
-                 memset(wifi_para.ssid ,0 ,32);
-                 strcpy(wifi_para.ssid ,ssid.toUtf8());
-             }
-
-             //passwd
-             if(strlen(passwd.toLatin1()) >= 64)
-                 memcpy(wifi_para.pwd ,passwd.toLatin1() ,64);
-             else{
-                 memset(wifi_para.pwd ,0 ,64);
-                 strcpy(wifi_para.pwd ,passwd.toLatin1());
-             }
-
-            //encryption type
-            wifi_para.encryption = apInfo.encryType;
-
-            //C_LOG("wifi apply: wifi_para.encryption:%d" ,wifi_para.encryption);
-            wifi_para.wepKeyId = 0;
-
-            wifi_para.wifiEnable = 1;
-
-            connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
-
-            QVariant value;
-            value.setValue(wifi_para);
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-            emit doingConnect(this);
-        }
-        else
-        {
-            QString deviceMsg = tr("ResStr_Setting_Fail");
-            gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
-        }
+        tryConnect(apInfo);
+    }
+    else
+    {
+        QString deviceMsg = tr("ResStr_Setting_Fail");
+        gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
     }
 }
 
@@ -298,11 +219,82 @@ APInfo WiFiSettingCell::getAPInfo()
 
 void WiFiSettingCell::tryConnect(APInfo ap)
 {
-    if(apInfo.SSID == ap.SSID)
+    cmdst_wifi_get wifi_para;
+    QString ssid;
+    QString passwd;
+    if(ap.encryType == NO_Securty)
     {
-        apInfo = ap;
-        ui->lineEdit_Password->setText(apInfo.Password);
-        on_btConnect_clicked();
+        ssid = ap.SSID;
+        passwd = ap.Password;
+        wifi_para.encryption = ap.encryType;
+        wifi_para.wepKeyId = ap.wepKeyID;
+       //ssid
+        if(strlen(ssid.toUtf8()) >= 32)
+            memcpy(wifi_para.ssid ,ssid.toUtf8() ,32);
+        else{
+            memset(wifi_para.ssid ,0 ,32);
+            strcpy(wifi_para.ssid ,ssid.toUtf8());
+        }
+
+        //passwd
+        if(strlen(passwd.toLatin1()) >= 64)
+            memcpy(wifi_para.pwd ,passwd.toLatin1() ,64);
+        else{
+            memset(wifi_para.pwd ,0 ,64);
+            strcpy(wifi_para.pwd ,passwd.toLatin1());
+        }
+
+        //encryption type
+       // C_LOG("wifi apply: wifi_para.encryption:%d" ,wifi_para.encryption);
+
+        //wep key id
+        if(!(wifi_para.wifiEnable & 1)){
+            //_Q_LOG("wifi apply:wifi have not been enable ,enable it");
+            wifi_para.wifiEnable &= ~1;
+            wifi_para.wifiEnable |= 1;//bit 0
+        }
+
+        connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
+
+        QVariant value;
+        value.setValue(wifi_para);
+        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
+        emit doingConnect(this);
+    }
+    else //if(apInfo.encryType == WPA2_PSK_AES || apInfo.encryType == Mixed_Mode_PSK)
+    {
+        ssid = ap.SSID;
+        passwd = ap.Password;
+        //ssid
+         if(strlen(ssid.toUtf8()) >= 32)
+             memcpy(wifi_para.ssid ,ssid.toUtf8() ,32);
+         else{
+             memset(wifi_para.ssid ,0 ,32);
+             strcpy(wifi_para.ssid ,ssid.toUtf8());
+         }
+
+         //passwd
+         if(strlen(passwd.toLatin1()) >= 64)
+             memcpy(wifi_para.pwd ,passwd.toLatin1() ,64);
+         else{
+             memset(wifi_para.pwd ,0 ,64);
+             strcpy(wifi_para.pwd ,passwd.toLatin1());
+         }
+
+        //encryption type
+        wifi_para.encryption = ap.encryType;
+
+        //C_LOG("wifi apply: wifi_para.encryption:%d" ,wifi_para.encryption);
+        wifi_para.wepKeyId = 0;
+
+        wifi_para.wifiEnable = 1;
+
+        connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
+
+        QVariant value;
+        value.setValue(wifi_para);
+        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
+        emit doingConnect(this);
     }
 }
 

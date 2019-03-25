@@ -19,6 +19,7 @@ public:
     ~WiFiSettingWEPCell();
 
     APInfo getAPInfo();
+    void tryConnect(APInfo);
 
 signals:
     void SizeChanged(QSize , QSize );
@@ -43,8 +44,9 @@ private slots:
         void on_btConnect_clicked();
 
         void changeStatus();
-        void tryConnect(APInfo);
         void cmdResult(int,int,QVariant);
+
+        void isShowStatusWidget(bool);
 
 private:
     Ui::WiFiSettingWEPCell *ui;
