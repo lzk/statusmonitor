@@ -88,6 +88,7 @@ public:
         OPCNearEnd                  = 0x86,
         OPCEnd                      = 0xCC,
         ManualFeedRequired          = 0x85,
+        DuplexNoFeed                = 0xBB,
         InitializeJam               = 0xBC,
         NofeedJam                   = 0xBD,
         JamAtRegistStayOn           = 0xBE,

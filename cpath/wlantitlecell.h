@@ -1,7 +1,7 @@
 #ifndef WLANTITLECELL_H
 #define WLANTITLECELL_H
 
-#include <QWidget>
+#include <QStackedWidget>
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QObjectList>
@@ -15,6 +15,7 @@
 #include "qvariant.h"
 #include "wifisettingwepcell.h"
 #include "wifisettingcell.h"
+#include <qscrollbar.h>
 
 //#define DEBUG
 
@@ -54,14 +55,13 @@ namespace Ui {
 class WlanTitleCell;
 }
 
-class WlanTitleCell : public QWidget
+class WlanTitleCell : public QStackedWidget
 {
     Q_OBJECT
 
 public:
-    explicit WlanTitleCell(QWidget *parent = 0, bool wlanON=true, bool *_islogin = 0);
+    explicit WlanTitleCell(QWidget *parent = 0,QScrollBar *_scrollBar = 0, bool wlanON=true, bool *_islogin = 0);
     ~WlanTitleCell();
-    void isShowStatusWidget(bool);
 
 //    BusyRefreshLabel *cycle;
     APInfo *currentAp;
@@ -124,7 +124,8 @@ private:
     QList<QWidget *> apList;
 
     QTimer *timer1;
-
+    QScrollBar *pScrollBar;
+    int oldScrollValue;
 
     QList<APInfo> aList;
 

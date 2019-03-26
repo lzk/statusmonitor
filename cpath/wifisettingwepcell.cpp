@@ -4,7 +4,6 @@
 #include "authenticationdlg.h"
 #include "jkinterface.h"
 #include "uinterface.h"
-#include <qdebug.h>
 
 WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_islogin, bool isconnected) :
     QStackedWidget(parent),
@@ -13,7 +12,7 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
     m_isLogin(false)
 {
     ui->setupUi(this);
-    isShowStatusWidget(true);
+    this->setCurrentIndex(0);
     if(info != NULL)
     {
         apInfo = *info;
@@ -50,7 +49,6 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
     {
         islogin = &m_isLogin;
     }
-
 }
 
 WiFiSettingWEPCell::~WiFiSettingWEPCell()
@@ -58,23 +56,9 @@ WiFiSettingWEPCell::~WiFiSettingWEPCell()
     delete ui;
 }
 
-void WiFiSettingWEPCell::isShowStatusWidget(bool b)
-{
-    if(b)
-    {
-        ui->statusWidget->show();
-        ui->configWidget->hide();
-    }
-    else
-    {
-        ui->statusWidget->hide();
-        ui->configWidget->show();
-    }
-}
-
 void WiFiSettingWEPCell::on_btCancel_clicked()
 {
-    isShowStatusWidget(true);
+    this->setCurrentIndex(0);
     this->resize(QSize(220, 51));
     this->setMinimumHeight(51);
     emit SizeChanged(QSize(220, 210), QSize(220, 51));
@@ -83,7 +67,7 @@ void WiFiSettingWEPCell::on_btCancel_clicked()
 //
 void WiFiSettingWEPCell::on_pushButton_clicked()
 {
-    isShowStatusWidget(false);
+    this->setCurrentIndex(1);
     this->resize(QSize(220, 210));
     this->setMinimumHeight(210);
     emit SizeChanged(QSize(220, 51), QSize(220, 210));
@@ -217,47 +201,8 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
         }
         if(*islogin)
         {
-<<<<<<< Updated upstream
+            apInfo.Password = ui->lineEdit_Password->text();
             tryConnect(apInfo);
-=======
-            cmdst_wifi_get wifi_para;
-            QString ssid;
-            QString passwd;
-
-            ssid = apInfo.SSID;
-            passwd = ui->lineEdit_Password->text();
-            //ssid
-            if(strlen(ssid.toUtf8()) >= 32)
-                memcpy(wifi_para.ssid ,ssid.toUtf8() ,32);
-            else{
-                memset(wifi_para.ssid ,0 ,32);
-                strcpy(wifi_para.ssid ,ssid.toUtf8());
-            }
-
-            //passwd
-            if(strlen(passwd.toLatin1()) >= 64)
-                memcpy(wifi_para.pwd ,passwd.toLatin1() ,64);
-            else{
-                memset(wifi_para.pwd ,0 ,64);
-                strcpy(wifi_para.pwd ,passwd.toLatin1());
-            }
-
-            //encryption type
-            wifi_para.encryption = apInfo.encryType;
-
-            //C_LOG("wifi apply: wifi_para.encryption:%d" ,wifi_para.encryption);
-            wifi_para.wepKeyId = apInfo.wepKeyID;
-//            wifi_para.channel = 0;
-
-            wifi_para.wifiEnable = 1;
-            connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
-
-            QVariant value;
-            value.setValue<cmdst_wifi_get>(wifi_para);
-            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
-
-            emit doingConnect(this);
->>>>>>> Stashed changes
         }
         else
         {

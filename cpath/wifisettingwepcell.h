@@ -46,8 +46,6 @@ private slots:
         void changeStatus();
         void cmdResult(int,int,QVariant);
 
-        void isShowStatusWidget(bool);
-
 private:
     Ui::WiFiSettingWEPCell *ui;
     APInfo apInfo;

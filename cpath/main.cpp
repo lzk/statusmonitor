@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
 //    a.setWindowIcon(QIcon(":/image/app_icon.png"));
 //    a.setStyle(new MyProxyStyle);
 
+
 #if QT_VERSION < 0x050000
         QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
         QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));

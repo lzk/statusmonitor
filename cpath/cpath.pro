@@ -105,6 +105,7 @@ FORMS += \
     thumbnailimage.ui \
     membercenterwidget.ui \
     membercenter/userlogin.ui \
+    wlantitlecell.ui \
     imagepreviewdialog.ui \
     moresettingsforscan.ui \
     moresettingsforcopy.ui \
@@ -114,9 +115,8 @@ FORMS += \
     ipv6status.ui \
     promptdialog.ui \
     settingwarming.ui \
-    wifisettingwepcell.ui \
-    wlantitlecell.ui \
-    wifisettingcell.ui
+    wifisettingcell.ui \
+    wifisettingwepcell.ui
 
 
 RESOURCES += \
@@ -149,16 +149,16 @@ contains(CONFIG ,static){
 
 #LIBS +=  -lz
 mac{
-            LIBS += $${PWD}/../libs/mac/libtiff.a -lz
-#            LIBS += $${PWD}/../libs/mac/libjpeg.a
+            LIBS += $${PWD}/../libs/mac/libtiff.a
+            LIBS += $${PWD}/../libs/mac/libjpeg.a
 }else{
     unix{
         contains(QT_ARCH, i386) {
             LIBS += $${PWD}/../libs/linux32/libtiff.a
-#            LIBS += $${PWD}/../libs/linux32/libjpeg.a
+            LIBS += $${PWD}/../libs/linux32/libjpeg.a
         }else{
             LIBS += $${PWD}/../libs/linux64/libtiff.a
-#            LIBS += $${PWD}/../libs/linux64/libjpeg.a
+            LIBS += $${PWD}/../libs/linux64/libjpeg.a
         }
     }
 }

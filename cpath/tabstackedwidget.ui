@@ -881,15 +881,15 @@ border-image: url(:/Images/background_scan1.png);</string>
    <widget class="QLabel" name="label_ImageSize">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>335</x>
       <y>530</y>
-      <width>331</width>
+      <width>339</width>
       <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>12</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
@@ -899,30 +899,30 @@ border-image: url(:/Images/background_scan1.png);</string>
    <widget class="QLabel" name="label_ScanProgress">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>335</x>
       <y>560</y>
-      <width>77</width>
-      <height>16</height>
+      <width>64</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
      <string>ResStr_Scanning_2</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar_Scan">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>401</x>
       <y>560</y>
-      <width>291</width>
+      <width>287</width>
       <height>20</height>
      </rect>
     </property>
@@ -955,6 +955,9 @@ border-radius:5px;
       <width>390</width>
       <height>171</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">background-image: url();

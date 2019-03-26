@@ -64,7 +64,7 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
                             "}"
                             );
     isLogn = false;     //isLogn :default false; false:did not comfirm the pw in the device;
-    titelCell = new WlanTitleCell(scrollArea, true, &isLogn);
+    titelCell = new WlanTitleCell(scrollArea,scrollArea->verticalScrollBar(), true, &isLogn);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(titelCell);
     timer1 = new QTimer(this);
@@ -316,8 +316,7 @@ void SettingsStackedWidget::changeStackIndex(int index)
             ui->lineEdit_newPassWord->setText("");
             ui->lineEdit_confirm->setText("");
 
-//            titelCell->setCurrentIndex(0);
-            titelCell->isShowStatusWidget(true);
+            titelCell->setCurrentIndex(0);
             if(this->isEnabled() == true)
             {
                 titelCell->on_btFlesh_clicked();

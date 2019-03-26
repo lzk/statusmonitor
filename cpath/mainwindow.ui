@@ -670,6 +670,19 @@ border-image: url(:/Images/shopCart_Disable.tif);
         <string/>
        </property>
       </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>104</y>
+         <width>154</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
       <zorder>mofenProgressBar</zorder>
       <zorder>label</zorder>
       <zorder>label_2</zorder>
@@ -682,6 +695,7 @@ border-image: url(:/Images/shopCart_Disable.tif);
       <zorder>deviceNameBox</zorder>
       <zorder>deviceNameLabel</zorder>
       <zorder>deviceNameLabel_2</zorder>
+      <zorder>label_3</zorder>
      </widget>
      <widget class="QWidget" name="tabButton" native="true">
       <property name="enabled">
