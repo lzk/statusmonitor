@@ -375,8 +375,7 @@ void MainWindow::updatePrinter(const QVariant& data)
         setcurrentPrinter(printers.at(index_of_defaultprinter));
     }
 
-    gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
-    gUInterface->setTimer(6);
+//    gUInterface->setTimer(6);
 
     if(enabledScanCopy && (!isOfflineStart))
     {
@@ -392,7 +391,6 @@ void MainWindow::setcurrentPrinter(const QString& str)
     current_printer = str;
     qDebug()<<"current printer:"<<current_printer;
     gUInterface->setcurrentPrinter(str);
-    gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
 
     if(str != "")
     {

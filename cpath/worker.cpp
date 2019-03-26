@@ -80,6 +80,7 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
                 QByteArray t_ba = str_time.toLatin1();
                 sprintf(device_data.filename, "%s/%s.bmp", imagePath, t_ba.constData());
 
+                device_data.settings.scan_type = Hight_Quality;
                 device_data.callback_para = this;
                 device_data.callback = scan_callback;
                 result = scanner->scan(printer ,&device_data);

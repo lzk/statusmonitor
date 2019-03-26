@@ -47,7 +47,7 @@ void Watcher::set_current_printer(const QString& printer)
 {
     if(!current_printer.compare(printer))
         return;
-
+#if 0
     if(use_status_thread){
         if(current_printer.isEmpty()){
             statusThread->set_current_printer(printer);
@@ -65,6 +65,11 @@ void Watcher::set_current_printer(const QString& printer)
 //                delete obj;
         }
     }
+#else
+    if(statusThread){
+        statusThread->set_current_printer(printer);
+    }
+#endif
     current_printer = printer;
 }
 
