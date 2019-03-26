@@ -21,7 +21,10 @@ AuthenticationDlg::AuthenticationDlg(QWidget *parent, bool*confirm) :
 
     cycle = new BusyRefreshLabel(this,true);
     cycle->setGeometry(QRect(180,70,50,50));
+<<<<<<< Updated upstream
     ui->label->hide();
+=======
+>>>>>>> Stashed changes
 }
 
 AuthenticationDlg::~AuthenticationDlg()

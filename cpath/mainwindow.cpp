@@ -98,10 +98,14 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         ui->memberCenterWidget->setSW(ui->totalStackedWidget, ui->loginButton);
     }
+<<<<<<< Updated upstream
     else
     {
         ui->loginButton->hide();
     }
+=======
+
+>>>>>>> Stashed changes
     ui->deviceNameLabel_2->installEventFilter(this);
     ui->deviceNameLabel->hide();
 }

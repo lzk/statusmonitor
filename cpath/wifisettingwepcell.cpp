@@ -217,7 +217,47 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
         }
         if(*islogin)
         {
+<<<<<<< Updated upstream
             tryConnect(apInfo);
+=======
+            cmdst_wifi_get wifi_para;
+            QString ssid;
+            QString passwd;
+
+            ssid = apInfo.SSID;
+            passwd = ui->lineEdit_Password->text();
+            //ssid
+            if(strlen(ssid.toUtf8()) >= 32)
+                memcpy(wifi_para.ssid ,ssid.toUtf8() ,32);
+            else{
+                memset(wifi_para.ssid ,0 ,32);
+                strcpy(wifi_para.ssid ,ssid.toUtf8());
+            }
+
+            //passwd
+            if(strlen(passwd.toLatin1()) >= 64)
+                memcpy(wifi_para.pwd ,passwd.toLatin1() ,64);
+            else{
+                memset(wifi_para.pwd ,0 ,64);
+                strcpy(wifi_para.pwd ,passwd.toLatin1());
+            }
+
+            //encryption type
+            wifi_para.encryption = apInfo.encryType;
+
+            //C_LOG("wifi apply: wifi_para.encryption:%d" ,wifi_para.encryption);
+            wifi_para.wepKeyId = apInfo.wepKeyID;
+//            wifi_para.channel = 0;
+
+            wifi_para.wifiEnable = 1;
+            connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
+
+            QVariant value;
+            value.setValue<cmdst_wifi_get>(wifi_para);
+            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
+
+            emit doingConnect(this);
+>>>>>>> Stashed changes
         }
         else
         {

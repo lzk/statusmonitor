@@ -148,9 +148,15 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
                                     & ~Qt::WindowMinimizeButtonHint);
                 errorWarning->exec();
             }
+<<<<<<< Updated upstream
             else if(result == ScannerApp::STATUS_OUTOFMEMERY)
             {
                 SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
+=======
+            else if(result == ScannerApp::STATUS_Cancel)
+            {
+                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_can_not_be_carried_out_due_to_software_has_error__please_try__again_after_reinstall_the_Driver_and_Virtual_Operation_Panel_"));
+>>>>>>> Stashed changes
                 errorWarning->setWindowTitle(tr("ResStr_Error"));
 
                 errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \

@@ -1529,6 +1529,7 @@ QRadioButton::indicator::checked {
    </property>
   </widget>
   <widget class="QComboBox" name="paperTypeList">
+<<<<<<< Updated upstream
    <property name="geometry">
     <rect>
      <x>312</x>
@@ -1585,6 +1586,12 @@ QRadioButton::indicator::checked {
     <rect>
      <x>374</x>
      <y>460</y>
+=======
+   <property name="geometry">
+    <rect>
+     <x>312</x>
+     <y>234</y>
+>>>>>>> Stashed changes
      <width>141</width>
      <height>21</height>
     </rect>
@@ -1598,6 +1605,58 @@ QRadioButton::indicator::checked {
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
+<<<<<<< Updated upstream
+=======
+   <property name="styleSheet">
+    <string notr="true">#outPutSizeList {
+	background: transparent;  
+}</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>ResStr_Plain_Paper</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ResStr_Recycled_Paper</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ResStr_Thick_Paper</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ResStr_Thin_Paper</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ResStr_Label</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="duplexCopyModeList">
+   <property name="geometry">
+    <rect>
+     <x>374</x>
+     <y>460</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+>>>>>>> Stashed changes
    <property name="styleSheet">
     <string notr="true">#outPutSizeList {
 	background: transparent;  

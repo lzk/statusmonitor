@@ -162,6 +162,7 @@ color:white;
     <string>ResStr_Login</string>
    </property>
   </widget>
+<<<<<<< Updated upstream
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -175,6 +176,8 @@ color:white;
     <string/>
    </property>
   </widget>
+=======
+>>>>>>> Stashed changes
  </widget>
  <resources/>
  <connections/>
