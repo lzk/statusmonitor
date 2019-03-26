@@ -109,6 +109,9 @@ color:white;
      </item>
      <item>
       <widget class="QPushButton" name="fit">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -120,6 +123,9 @@ color:white;
      </item>
      <item>
       <widget class="QPushButton" name="zoom_in">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -131,6 +137,9 @@ color:white;
      </item>
      <item>
       <widget class="QPushButton" name="zoom_out">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -142,6 +151,9 @@ color:white;
      </item>
      <item>
       <widget class="QPushButton" name="turn">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -197,6 +209,9 @@ color:white;
          <width>100</width>
          <height>35</height>
         </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
         <string>ResStr_Return</string>

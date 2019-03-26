@@ -42,13 +42,21 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
         ParamForCopy->scaling = 100;
 //        ParamForCopy->docType = DocType_Copy_Photo;
         ParamForCopy->docDpi = DocDpi_Copy_DPI300;
-        if(country == QLocale::UnitedStates)
+        if(ParamForCopy->idCardCopyMode != A5Mode)
         {
-            ParamForCopy->outputSize = OutPutSize_Copy_letter;
-        }else
-        {
-            ParamForCopy->outputSize = OutPutSize_Copy_A4;
+            if(country == QLocale::UnitedStates)
+            {
+                ParamForCopy->outputSize = OutPutSize_Copy_letter;
+            }else
+            {
+                ParamForCopy->outputSize = OutPutSize_Copy_A4;
+            }
         }
+        else
+        {
+            ParamForCopy->outputSize = OutPutSize_Copy_A5;
+        }
+
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
 
@@ -180,23 +188,11 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
         for(int i=0; i<8; i++)
         {
-            int country = QLocale::system().country();
-            if(country == QLocale::UnitedStates)
+            if((i!=param->outputSize) && (model != NULL))
             {
-                if((i!=0) && (i!=2) && (model != NULL))
-                {
-                    model->item(i)->setEnabled(false);
-                   //此处设置combobox的下拉选项字体显示灰色
-                   // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
-                }
-            }else
-            {
-                if((i!=1) && (i!=2) && (model != NULL))
-                {
-                    model->item(i)->setEnabled(false);
-                   //此处设置combobox的下拉选项字体显示灰色
-                   // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
-                }
+                model->item(i)->setEnabled(false);
+               //此处设置combobox的下拉选项字体显示灰色
+               // ui->outPutSizeList->setItemData(i,QColor(207,207,207),Qt::ForegroundRole);
             }
         }
 
@@ -299,6 +295,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
+        selectIDCardCopyMode(param->idCardCopyMode);
         ui->scaling->setText(text.setNum(param->scaling));
         ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);
     }
@@ -346,6 +343,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
+        selectIDCardCopyMode(param->idCardCopyMode);
         ui->scaling->setText(text.setNum(param->scaling));
         ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);
     }
@@ -382,15 +380,8 @@ void MoreSettingsForCopy::on_btOK_clicked()
     qDebug()<<"ParamForCopy->promptInfo.isIDCard"<<ParamForCopy->promptInfo.isIDCard;
     ParamForCopy->promptInfo.isMultible = ui->btNInOne->isChecked();
 
-    if(_idCardFlag)
-    {
-        ParamForCopy->idCardCopyMode = _idCardCopyMode;
-    }
-
-    if(_duplexCopyFlag)
-    {
-        ParamForCopy->duplexMode = ui->duplexCopyModeList->currentIndex();
-    }
+    ParamForCopy->idCardCopyMode = _idCardCopyMode;
+    ParamForCopy->duplexMode = ui->duplexCopyModeList->currentIndex();
 
     this->close();
 }
@@ -635,7 +626,7 @@ void MoreSettingsForCopy::enableIDCardCopyMode(bool checked)
 void MoreSettingsForCopy::selectIDCardCopyMode(int mode)
 {
 //    QStandardItemModel *model1 = qobject_cast<QStandardItemModel *>(ui->docSizeList->model());
-//    QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
+    QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
     switch (_idCardCopyMode)
     {
         case A4Mode1: ui->label_A4_1->setStyleSheet("#label_A4_1 {background-color: rgb(198, 198, 198);border-radius:8px;}"); break;
@@ -656,39 +647,46 @@ void MoreSettingsForCopy::selectIDCardCopyMode(int mode)
         default:break;
     }
 
-//    if(_idCardCopyMode == A5Mode)
-//    {
+    if(_idCardCopyMode == A5Mode)
+    {
 //        model1->item(0)->setEnabled(false);
 //        model1->item(2)->setEnabled(false);
 //        model1->item(3)->setEnabled(false);
 //        model1->item(4)->setEnabled(false);
 
-//        model2->item(0)->setEnabled(false);
-//        model2->item(1)->setEnabled(false);
-//        model2->item(3)->setEnabled(false);
-//        model2->item(4)->setEnabled(false);
-//        model2->item(5)->setEnabled(false);
-//        model2->item(6)->setEnabled(false);
-//        model2->item(7)->setEnabled(false);
-////        ui->docSizeList->setCurrentIndex(0);
-//        ui->outPutSizeList->setCurrentIndex(2);
-//    }else
-//    {
+        model2->item(0)->setEnabled(false);
+        model2->item(1)->setEnabled(false);
+        model2->item(3)->setEnabled(false);
+        model2->item(4)->setEnabled(false);
+        model2->item(5)->setEnabled(false);
+        model2->item(6)->setEnabled(false);
+        model2->item(7)->setEnabled(false);
+//        ui->docSizeList->setCurrentIndex(0);
+        ui->outPutSizeList->setCurrentIndex(2);
+    }else
+    {
 //        model1->item(1)->setEnabled(false);
 //        model1->item(2)->setEnabled(false);
 //        model1->item(3)->setEnabled(false);
 //        model1->item(4)->setEnabled(false);
 
-//        model2->item(0)->setEnabled(false);
-//        model2->item(2)->setEnabled(false);
-//        model2->item(3)->setEnabled(false);
-//        model2->item(4)->setEnabled(false);
-//        model2->item(5)->setEnabled(false);
-//        model2->item(6)->setEnabled(false);
-//        model2->item(7)->setEnabled(false);
-////        ui->docSizeList->setCurrentIndex(0);
-//        ui->outPutSizeList->setCurrentIndex(1);
-//    }
+        model2->item(0)->setEnabled(false);
+        model2->item(2)->setEnabled(false);
+        model2->item(3)->setEnabled(false);
+        model2->item(4)->setEnabled(false);
+        model2->item(5)->setEnabled(false);
+        model2->item(6)->setEnabled(false);
+        model2->item(7)->setEnabled(false);
+        int country = QLocale::system().country();
+        if(country == QLocale::UnitedStates)
+        {
+            ui->outPutSizeList->setCurrentIndex(0);
+        }
+        else
+        {
+            ui->outPutSizeList->setCurrentIndex(1);
+        }
+    }
 }
 
 void MoreSettingsForCopy::on_btA4_1_clicked()
@@ -971,10 +969,10 @@ void MoreSettingsForCopy::on_outPutSizeList_currentIndexChanged(int index)
                 ui->label_30->setEnabled(true);
             }
         }
+        int scaling = getScalingValue(index,ui->docSizeList->currentIndex());
+        QString text;
+        ui->scaling->setText(text.setNum(scaling));
     }
-    int scaling = getScalingValue(index,ui->docSizeList->currentIndex());
-    QString text;
-    ui->scaling->setText(text.setNum(scaling));
 }
 
 int MoreSettingsForCopy::getScalingValue(int outputSize, int inputSize)

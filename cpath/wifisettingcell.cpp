@@ -6,14 +6,13 @@
 #include <qdebug.h>
 
 WiFiSettingCell::WiFiSettingCell(QWidget *parent, APInfo *info, bool *_islogin, bool isconnected) :
-    QWidget(parent),
+    QStackedWidget(parent),
     ui(new Ui::WiFiSettingCell),
     isConnected(isconnected),
     m_isLogin(false)
 {
     ui->setupUi(this);
-//    this->setCurrentIndex(0);
-    isShowStatus(true);
+    this->setCurrentIndex(0);
     if(info != NULL)
     {
         apInfo = *info;
@@ -63,24 +62,9 @@ WiFiSettingCell::~WiFiSettingCell()
     delete ui;
 }
 
-void WiFiSettingCell::isShowStatus(bool b)
-{
-    if(b)
-    {
-        ui->statusWidget->show();
-        ui->configWidget->hide();
-    }
-    else
-    {
-        ui->statusWidget->hide();
-        ui->configWidget->show();
-    }
-}
-
 void WiFiSettingCell::on_btCancel_clicked()
 {
-//    this->setCurrentIndex(0);
-    isShowStatus(true);
+    this->setCurrentIndex(0);
     this->resize(QSize(220, 51));
     this->setMinimumHeight(51);
     emit SizeChanged( QSize(220, 154), QSize(211, 51));
@@ -89,8 +73,7 @@ void WiFiSettingCell::on_btCancel_clicked()
 //
 void WiFiSettingCell::on_pushButton_clicked()
 {
-//    this->setCurrentIndex(1);
-    isShowStatus(false);
+    this->setCurrentIndex(1);
     this->resize(QSize(220, 154));
     this->setMinimumHeight(154);
     emit SizeChanged( QSize(220, 51), QSize(211, 154));
@@ -177,6 +160,7 @@ void WiFiSettingCell::on_btConnect_clicked()
     }
     if(*islogin)
     {
+        apInfo.Password = ui->lineEdit_Password->text();
         tryConnect(apInfo);
     }
     else

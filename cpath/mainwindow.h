@@ -7,7 +7,8 @@
 #include "uiconfig.h"
 #include "busyrefreshlabel.h"
 #include <qsystemtrayicon.h>
-#include <QTimer>
+#include <qtimer.h>
+#include <qelapsedtimer.h>
 
 //#define DEBUG
 
@@ -122,6 +123,8 @@ private:
     QTimer *timerDeviceMsg;
     QTimer *timerBlink;
     QTimer *timerDeviceName;
+    QElapsedTimer elapsedTimer;
+    QString deviceStatusString;
 
     QString strScrollCation;
 

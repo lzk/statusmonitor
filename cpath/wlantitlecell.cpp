@@ -16,12 +16,15 @@
 #define DEFWIDTH 220
 #define DEFTITELHIGHT 180
 #define RETRYTIMES 3;
-WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
-    QWidget(parent),
+WlanTitleCell::WlanTitleCell(QWidget *parent, QScrollBar *_scrollBar,  bool wlanON, bool *_islogin) :
+    QStackedWidget(parent),
     ui(new Ui::WlanTitleCell),
     m_isLogin(false)
 {
     ui->setupUi(this);
+
+    pScrollBar = _scrollBar;
+    oldScrollValue = 0;
 
     QListView *listView = new QListView(ui->combox_encryption);
     listView->setStyleSheet("QListView{border-color:black;border-width:2px;border-radius:0px;}");
@@ -43,13 +46,10 @@ WlanTitleCell::WlanTitleCell(QWidget *parent,  bool wlanON, bool *_islogin) :
     ui->label_line->hide();
     ui->label_network->hide();
 
-//    this->setCurrentIndex(0);
-    isShowStatusWidget(true);
+    this->setCurrentIndex(0);
     this->resize(QSize(220,60));
-    ui->statusWidget->resize(220,60);
-    widget = new QWidget(ui->statusWidget);
+    widget = new QWidget(ui->page1);
     widget->setGeometry(QRect(0,73,DEFWIDTH,10));
-    widget->show();
     currentSize.setWidth(DEFWIDTH);
     currentSize.setHeight(10);
     pageLayout.setSpacing(1);
@@ -109,20 +109,6 @@ WlanTitleCell::~WlanTitleCell()
     delete ui;
     delete wifiWepCell;
     delete wifiCell;
-}
-
-void WlanTitleCell::isShowStatusWidget(bool b)
-{
-    if(b)
-    {
-        ui->manualWidget->hide();
-        ui->statusWidget->show();
-    }
-    else
-    {
-        ui->manualWidget->show();
-        ui->statusWidget->hide();
-    }
 }
 
 void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
@@ -232,8 +218,7 @@ void WlanTitleCell::on_btWLANON1_clicked()
         {
             ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
             ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-//            this->setCurrentIndex(0);
-            isShowStatusWidget(true);
+            this->setCurrentIndex(0);
             updateAP();
 
             ui->btManualWiFi->hide();
@@ -261,10 +246,11 @@ void WlanTitleCell::on_btManualWiFi_clicked()
     ui->combox_encryption->setCurrentIndex(2);
     ui->checkBox_visiable->setChecked(false);
 
+    qDebug()<<pScrollBar->value();
+
     this->resize(DEFWIDTH, 310);
     this->setMinimumHeight(310);
-//    this->setCurrentIndex(1);
-    isShowStatusWidget(false);
+    this->setCurrentIndex(1);
 }
 
 void WlanTitleCell::on_btCancel_clicked()
@@ -272,8 +258,10 @@ void WlanTitleCell::on_btCancel_clicked()
 //    emit SizeChanged( QSize(211, 310), QSize(211, 71));
     this->resize(DEFWIDTH, currentSize.height() + DEFTITELHIGHT);
     this->setMinimumHeight(currentSize.height() + DEFTITELHIGHT);
-//    this->setCurrentIndex(0);
-    isShowStatusWidget(true);
+//    qDebug()<<"this.height"<<this->size().height();
+//    parentScroll->scroll(0,0);
+    this->setCurrentIndex(0);
+    pScrollBar->setValue(0);
 }
 
 void WlanTitleCell::on_btWLANON2_clicked()
@@ -302,8 +290,7 @@ void WlanTitleCell::on_btWLANON2_clicked()
         {
             ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
             ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
-//            this->setCurrentIndex(0);
-            isShowStatusWidget(true);
+            this->setCurrentIndex(0);
             updateAP();
 
             ui->btManualWiFi->hide();
@@ -331,11 +318,19 @@ void WlanTitleCell::getSizeChanged(QSize oldSize, QSize newSize)
 
     this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
     this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
+    //bms7663
+    if(newSize.height()>oldSize.height())
+    {
+        oldScrollValue = pScrollBar->value();
+    }
+    else
+    {
+        pScrollBar->setValue(oldScrollValue);
+    }
 }
 
 void WlanTitleCell::addCell(QString ssid, EncrypType type, APInfo info, bool isConnected)
 {
-    qDebug()<<"addCell";
     WiFiSettingWEPCell *tmpWepCell;
     WiFiSettingCell *tmpCell;
     APInfo tmpinfo;
@@ -348,7 +343,6 @@ void WlanTitleCell::addCell(QString ssid, EncrypType type, APInfo info, bool isC
         currentSize.setHeight(51 + currentSize.height() + 1);
         this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
         this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
-        ui->statusWidget->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
         widget->setMinimumHeight(currentSize.height());
         widget->resize(currentSize);
 
@@ -357,7 +351,6 @@ void WlanTitleCell::addCell(QString ssid, EncrypType type, APInfo info, bool isC
         apList.append(tmpWepCell);
         pageLayout.addWidget(apList.last());
         widget->setLayout(&pageLayout);
-        qDebug()<<"tmpWepCell"<<tmpWepCell->geometry();
 
         connect(tmpWepCell, SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
         connect(tmpWepCell, SIGNAL(doingConnect(QWidget*)), this, SLOT(getConnectAction(QWidget*)));
@@ -366,44 +359,25 @@ void WlanTitleCell::addCell(QString ssid, EncrypType type, APInfo info, bool isC
     }
     else
     {
+        tmpinfo.SSID = ssid;
+        tmpinfo.encryType = type;
+
         currentSize.setHeight(51 + currentSize.height() + 1);
         this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
         this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
-        ui->statusWidget->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
         widget->setMinimumHeight(currentSize.height());
         widget->resize(currentSize);
 
-        tmpWepCell = new WiFiSettingWEPCell();
-        aList.append(tmpWepCell->getAPInfo());
-        apList.append(tmpWepCell);
+        tmpCell = new WiFiSettingCell(widget, &tmpinfo, islogin, isConnected);
+        aList.append(tmpCell->getAPInfo());
+        apList.append(tmpCell);
         pageLayout.addWidget(apList.last());
         widget->setLayout(&pageLayout);
-        qDebug()<<"tmpWepCell"<<tmpWepCell->geometry();
 
-        connect(tmpWepCell, SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
-        connect(tmpWepCell, SIGNAL(doingConnect(QWidget*)), this, SLOT(getConnectAction(QWidget*)));
-        connect(tmpWepCell, SIGNAL(connectSuc(QWidget*, bool)), this, SLOT(getConnectResult(QWidget*, bool)));
-//        tmpinfo.SSID = ssid;
-//        tmpinfo.encryType = type;
-
-//        currentSize.setHeight(51 + currentSize.height() + 1);
-//        this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
-//        this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
-//        ui->statusWidget->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
-//        widget->setMinimumHeight(currentSize.height());
-//        widget->resize(currentSize);
-
-//        tmpCell = new WiFiSettingCell(widget, &tmpinfo, islogin, isConnected);
-//        aList.append(tmpCell->getAPInfo());
-//        apList.append(tmpCell);
-//        pageLayout.addWidget(apList.last());
-//        widget->setLayout(&pageLayout);
-//        qDebug()<<"tmpCell"<<tmpCell->geometry();
-
-//        connect((tmpCell), SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
-//        connect((tmpCell), SIGNAL(doingConnect(QWidget*)), this, SLOT(getConnectAction(QWidget*)));
-//        connect((tmpCell), SIGNAL(connectSuc(QWidget*, bool)), this, SLOT(getConnectResult(QWidget*, bool)));
-////        connect(this, SIGNAL(tryToConnect(APInfo)), tmpCell, SLOT(tryConnect(APInfo)));
+        connect((tmpCell), SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
+        connect((tmpCell), SIGNAL(doingConnect(QWidget*)), this, SLOT(getConnectAction(QWidget*)));
+        connect((tmpCell), SIGNAL(connectSuc(QWidget*, bool)), this, SLOT(getConnectResult(QWidget*, bool)));
+//        connect(this, SIGNAL(tryToConnect(APInfo)), tmpCell, SLOT(tryConnect(APInfo)));
     }
 }
 
@@ -450,7 +424,6 @@ void WlanTitleCell::updateAP()
 
        this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
        this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
-       ui->statusWidget->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
        disconnect(qobject_cast<QWidget *>(apList.last()), SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
        pageLayout.removeWidget(qobject_cast<QWidget *>(apList.last()));
        apList.last()->deleteLater();
@@ -477,7 +450,6 @@ void WlanTitleCell::initCell(cmdst_wifi_get wifi_para, cmdst_aplist_get aplist)
 
        this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
        this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
-       ui->statusWidget->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
        disconnect(qobject_cast<QWidget *>(apList.last()), SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
        pageLayout.removeWidget(qobject_cast<QWidget *>(apList.last()));
        apList.last()->deleteLater();
@@ -558,7 +530,6 @@ void WlanTitleCell::emptyWifiList()
 
        this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
        this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
-       ui->statusWidget->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
        disconnect(qobject_cast<QWidget *>(apList.last()), SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
        pageLayout.removeWidget(qobject_cast<QWidget *>(apList.last()));
        apList.last()->deleteLater();
@@ -581,7 +552,6 @@ void WlanTitleCell::on_btFlesh_clicked()
 
        this->setMinimumHeight(DEFTITELHIGHT + currentSize.height());
        this->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
-       ui->statusWidget->resize(QSize(DEFWIDTH, DEFTITELHIGHT + currentSize.height()));
        disconnect(qobject_cast<QWidget *>(apList.last()), SIGNAL(SizeChanged(QSize,QSize)), this, SLOT(getSizeChanged(QSize,QSize)));
        pageLayout.removeWidget(qobject_cast<QWidget *>(apList.last()));
        apList.last()->deleteLater();
@@ -758,7 +728,6 @@ void WlanTitleCell::on_btConnect_clicked()
         QString deviceMsg = tr("ResStr_Setting_Fail");
         gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
     }
-
 }
 
 

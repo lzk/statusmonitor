@@ -164,6 +164,7 @@ int UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
                     case OPCNearEnd                  : st = Status_Ready; break;
                     case OPCEnd                      : st = Status_Error; break;
                     case ManualFeedRequired          : st = Status_Busy ; break;
+                    case DuplexNoFeed                : st = Status_Error; break;
                     case InitializeJam               : st = Status_Error; break;
                     case NofeedJam                   : st = Status_Error; break;
                     case JamAtRegistStayOn           : st = Status_Error; break;

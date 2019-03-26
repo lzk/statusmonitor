@@ -478,7 +478,7 @@ color:white;
      <rect>
       <x>90</x>
       <y>30</y>
-      <width>91</width>
+      <width>71</width>
       <height>20</height>
      </rect>
     </property>
@@ -511,8 +511,8 @@ QRadioButton::indicator::checked {
      <rect>
       <x>170</x>
       <y>30</y>
-      <width>61</width>
-      <height>17</height>
+      <width>71</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="font">
@@ -726,9 +726,9 @@ QRadioButton::indicator::checked {
    <widget class="QRadioButton" name="btManual">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>150</x>
       <y>162</y>
-      <width>81</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
@@ -887,9 +887,9 @@ QRadioButton::indicator::checked {
    <zorder>lineEdit_server</zorder>
    <zorder>btStatic</zorder>
    <zorder>label_gateway_error</zorder>
-   <zorder>label_ipaddr_error</zorder>
    <zorder>label_sumask_error</zorder>
    <zorder>btAuto</zorder>
+   <zorder>label_ipaddr_error</zorder>
    <zorder>label_server_error</zorder>
   </widget>
   <widget class="QWidget" name="TCPIPV6">

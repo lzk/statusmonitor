@@ -4,7 +4,6 @@
 #include "authenticationdlg.h"
 #include "jkinterface.h"
 #include "uinterface.h"
-#include <qdebug.h>
 
 WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_islogin, bool isconnected) :
     QStackedWidget(parent),
@@ -13,7 +12,7 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
     m_isLogin(false)
 {
     ui->setupUi(this);
-    isShowStatusWidget(true);
+    this->setCurrentIndex(0);
     if(info != NULL)
     {
         apInfo = *info;
@@ -50,7 +49,6 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
     {
         islogin = &m_isLogin;
     }
-
 }
 
 WiFiSettingWEPCell::~WiFiSettingWEPCell()
@@ -58,23 +56,9 @@ WiFiSettingWEPCell::~WiFiSettingWEPCell()
     delete ui;
 }
 
-void WiFiSettingWEPCell::isShowStatusWidget(bool b)
-{
-    if(b)
-    {
-        ui->statusWidget->show();
-        ui->configWidget->hide();
-    }
-    else
-    {
-        ui->statusWidget->hide();
-        ui->configWidget->show();
-    }
-}
-
 void WiFiSettingWEPCell::on_btCancel_clicked()
 {
-    isShowStatusWidget(true);
+    this->setCurrentIndex(0);
     this->resize(QSize(220, 51));
     this->setMinimumHeight(51);
     emit SizeChanged(QSize(220, 210), QSize(220, 51));
@@ -83,7 +67,7 @@ void WiFiSettingWEPCell::on_btCancel_clicked()
 //
 void WiFiSettingWEPCell::on_pushButton_clicked()
 {
-    isShowStatusWidget(false);
+    this->setCurrentIndex(1);
     this->resize(QSize(220, 210));
     this->setMinimumHeight(210);
     emit SizeChanged(QSize(220, 51), QSize(220, 210));
@@ -217,6 +201,7 @@ void WiFiSettingWEPCell::on_btConnect_clicked()
         }
         if(*islogin)
         {
+            apInfo.Password = ui->lineEdit_Password->text();
             tryConnect(apInfo);
         }
         else

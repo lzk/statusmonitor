@@ -58,6 +58,8 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
 
     on_scrollArea_ScanImage_itemSelectionChanged();
     ui->disableScrollArea->hide();
+    //bms:7670
+    ui->scrollArea_ScanImage->setFocusPolicy(Qt::NoFocus);
 
     this->setDefault_Scan();
 
@@ -80,7 +82,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
     {
     case UIConfig::LS_CMD_COPY:
     {
-        qDebug()<<result;
+        qDebug()<<"LS_CMD_COPY"<<result;
         gUInterface->emitEnableCycleAnimation(false);
         if(result != 0)
         {
@@ -130,8 +132,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
         else if(result != 0 && result != ScannerApp::STATUS_Cancel)
         {
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Scan_Fail"),result);
-            if(result == ScannerApp::STATUS_Error_busy)
-//            if(result == ScannerApp::STATUS_USEWITHOUTLOCK)
+            if(result == ScannerApp::STATUS_USEWITHOUTLOCK)
             {
                 SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_The_machine_is_busy__please_try_later_"),2);
                 busyWarning->setWindowTitle(tr("ResStr_Error"));
@@ -140,8 +141,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
                                     & ~Qt::WindowMinimizeButtonHint);
                 busyWarning->exec();
             }
-//            else if (result == ScannerApp::STATUS_ERROR)
-            else if (result == ScannerApp::STATUS_Error_machine)
+            else if (result == ScannerApp::STATUS_ERROR)
             {
                 SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
                 errorWarning->setWindowTitle(tr("ResStr_Error"));
@@ -150,8 +150,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
                                     & ~Qt::WindowMinimizeButtonHint);
                 errorWarning->exec();
             }
-//            else if(result == ScannerApp::STATUS_OUTOFMEMERY)
-            else if(result == ScannerApp::STATUS_Error_App)
+            else if(result == ScannerApp::STATUS_OUTOFMEMERY)
             {
                 SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
                 errorWarning->setWindowTitle(tr("ResStr_Error"));
@@ -759,7 +758,6 @@ void TabStackedWidget::on_btn_Copy_clicked()
 
         paramCopy.scaling = 100;
         paramCopy.docDpi = DocDpi_Copy_DPI300;
-        paramCopy.outputSize = OutPutSize_Copy_A4;
         paramCopy.isMultiPage = false;
         paramCopy.multiMode = TwoInOne;
 
@@ -810,6 +808,22 @@ void TabStackedWidget::on_btn_Copy_clicked()
     if(ui->cBox_IsIDCard->isChecked() == true)
     {
         copyPara.IDCardMode = paramCopy.idCardCopyMode;
+        if(copyPara.IDCardMode != A5Mode)
+        {
+            int country = QLocale::system().country();
+            if(country == QLocale::UnitedStates)
+            {
+                copyPara.paperSize = OutPutSize_Copy_letter;
+            }
+            else
+            {
+                copyPara.paperSize = OutPutSize_Copy_A4;
+            }
+        }
+        else
+        {
+            copyPara.paperSize = OutPutSize_Copy_A5;
+        }
     }
 
     if(ui->cBox_DuplexCopy->isChecked() == true)

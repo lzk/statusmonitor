@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
     timerBlink = new QTimer(this);
     connect(timerBlink,SIGNAL(timeout()),this,SLOT(blink()));
 
+    deviceStatusString = "";
+
     QListView *listView = new QListView(ui->deviceNameBox);
     listView->setStyleSheet("QListView{border-color:black;border-width:2px;border-radius:0px;}");
     listView->setStyleSheet("QListView::item:!selected{background-color:white;color:black;}");
@@ -370,6 +372,7 @@ void MainWindow::updatePrinter(const QVariant& data)
         return;
     }else if(printers.contains(current_printer)){
         ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
+        setcurrentPrinter(current_printer);
     }else{
         ui->deviceNameBox->setCurrentIndex(index_of_defaultprinter);
         setcurrentPrinter(printers.at(index_of_defaultprinter));
@@ -779,7 +782,6 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
         only_update_status = true;
         status.PrinterStatus = UIConfig::ScanScanning;
     }
-    ui->label_10->setStyleSheet("QLabel{color:break;}");
     if(!only_update_status){
         ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
         updateTonerCarStatus(status.TonelStatusLevelK);
@@ -788,10 +790,21 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
 //    status.PrinterStatus = UIConfig::InitializeJam;
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
-    QString errMsg = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);
+    QString statusString = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);
+    deviceStatus = status.PrinterStatus;
 
-    ui->label_10->setText(errMsg);
-    set_Message_Background_Color((UIConfig::EnumStatus)status.PrinterStatus);
+    if(statusString != deviceStatusString)
+    {
+        if(elapsedTimer.elapsed()<(2*1000))
+        {
+            sleep(1);
+        }
+        timerDeviceMsg->stop();
+        deviceStatusString = statusString;
+        ui->label_10->setText(deviceStatusString);
+        qDebug()<<"onStatusCh"<<deviceStatusString;
+        set_Message_Background_Color((UIConfig::EnumStatus)status.PrinterStatus);
+    }
     updateStatusPanel(displayStatus,status.PrinterStatus);
 }
 
@@ -937,7 +950,6 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         if(status >= UIConfig::InitializeJam && status <= UIConfig::JamAtExitStayOn)
         {
             ui->errorBtn->show();
-            deviceStatus = status;
         }else
         {
             ui->errorBtn->hide();
@@ -970,12 +982,18 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
 
 void MainWindow::onTimeout()
 {
-    ui->label_10->setText("");
+    ui->label_10->setText(deviceStatusString);
+    qDebug()<<"onTimeout"<<deviceStatusString;
+    if(deviceStatusString != "")
+    {
+        set_Message_Background_Color((UIConfig::EnumStatus)deviceStatus);
+    }
     timerDeviceMsg->stop();
 }
 
 void MainWindow::setDeviceMsg(const QString& msg, int result)
 {
+    qDebug()<<"setDeviceMsg"<<result;
     if(!result)
         ui->label_10->setStyleSheet("QLabel{color:black}");
     else
@@ -987,6 +1005,8 @@ void MainWindow::setDeviceMsg(const QString& msg, int result)
         timerDeviceMsg->stop();
     }
     timerDeviceMsg->start(10000);
+
+    elapsedTimer.start();
 }
 
 void MainWindow::enableCycleAnimation(bool enabled)

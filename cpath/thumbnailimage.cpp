@@ -58,7 +58,6 @@ void ThumbnailImage::listWidget_itemSelectionChanged()
         ui->label->setPixmap(pixmap);
         ui->label->setStyleSheet("background-color: white;");
     }
-
 }
 
 void ThumbnailImage::image_ask()

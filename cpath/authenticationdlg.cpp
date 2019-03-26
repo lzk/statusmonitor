@@ -34,13 +34,13 @@ void AuthenticationDlg::on_lineEdit_Password_textEdited(const QString &arg1)
     if(arg1.isEmpty())
     {
         ui->btApply_Login->setEnabled(false);
-        ui->label_msg->setText(tr("ResStr_Password_Tip"));
-        ui->label_msg->setStyleSheet("QLabel{color:black;}");
     }
     else
     {
         ui->btApply_Login->setEnabled(true);
     }
+    ui->label_msg->setText(tr("ResStr_Password_Tip"));
+    ui->label_msg->setStyleSheet("QLabel{color:black;}");
 }
 
 void AuthenticationDlg::on_btApply_Login_clicked()
