@@ -2,12 +2,21 @@ INCLUDEPATH += $${PWD}
 
 macx{
     LIBS += -L$${PWD}/../libs/mac -llnthr8zcl
+!contains(CONFIG ,static){
+            LIBS += $${PWD}/../libs/mac/libjpeg.a
+}
 }else{
     unix{
         contains(QT_ARCH, i386) {
             LIBS += -L$${PWD}/../libs/linux32 -llnthr8zcl
+!contains(CONFIG ,static){
+            LIBS += $${PWD}/../libs/linux32/libjpeg.a
+}
         }else{
             LIBS += -L$${PWD}/../libs/linux64 -llnthr8zcl
+!contains(CONFIG ,static){
+            LIBS += $${PWD}/../libs/linux64/libjpeg.a
+}
         }
     }
 }

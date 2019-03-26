@@ -130,7 +130,8 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
         else if(result != 0 && result != ScannerApp::STATUS_Cancel)
         {
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Scan_Fail"),result);
-            if(result == ScannerApp::STATUS_USEWITHOUTLOCK)
+            if(result == ScannerApp::STATUS_Error_busy)
+//            if(result == ScannerApp::STATUS_USEWITHOUTLOCK)
             {
                 SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_The_machine_is_busy__please_try_later_"),2);
                 busyWarning->setWindowTitle(tr("ResStr_Error"));
@@ -139,7 +140,8 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
                                     & ~Qt::WindowMinimizeButtonHint);
                 busyWarning->exec();
             }
-            else if (result == ScannerApp::STATUS_ERROR)
+//            else if (result == ScannerApp::STATUS_ERROR)
+            else if (result == ScannerApp::STATUS_Error_machine)
             {
                 SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
                 errorWarning->setWindowTitle(tr("ResStr_Error"));
@@ -148,8 +150,13 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
                                     & ~Qt::WindowMinimizeButtonHint);
                 errorWarning->exec();
             }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
             else if(result == ScannerApp::STATUS_OUTOFMEMERY)
+=======
+//            else if(result == ScannerApp::STATUS_OUTOFMEMERY)
+            else if(result == ScannerApp::STATUS_Error_App)
+>>>>>>> b8eb4c715e790c7b6bab5eea54821362f51c9ca5
             {
                 SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
 =======

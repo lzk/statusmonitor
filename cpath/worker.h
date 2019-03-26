@@ -16,7 +16,7 @@ class Worker : public QObject
 public:
     explicit Worker(QObject *parent = 0);
     ~Worker();
-    void update_scan_progress(Printer_struct* printer ,int progress);
+    void update_scan_progress(Printer_struct* printer ,int progress ,int is_jpg_mode = 0);
     
 signals:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
