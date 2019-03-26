@@ -71,6 +71,7 @@ void Watcher::set_current_printer(const QString& printer)
     }
 #endif
     current_printer = printer;
+    memset(&current_printer_status ,-1 ,sizeof(current_printer_status));
 }
 
 int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterInfo_struct> & ps2)

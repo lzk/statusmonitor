@@ -11,6 +11,7 @@
 #include <qlistview.h>
 #include <qsettings.h>
 #include "membercenter/experiencepro.h"
+#include "unistd.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
