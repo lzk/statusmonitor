@@ -188,8 +188,8 @@ int StatusMonitor::getPrinters(CALLBACK_getPrinterInfo callback,void* para)
     struct PrinterList_para_struct pl_para;
     pl_para.callback = callback;
     pl_para.para = para;
-    return StatusManager().getPrintersFromFile(getPrinterList ,(void*)&pl_para);
-//    return cups_get_printers(getPrinterList ,(void*)&pl_para);
+//    return StatusManager().getPrintersFromFile(getPrinterList ,(void*)&pl_para);
+    return cups_get_printers(getPrinterList ,(void*)&pl_para);
 }
 
 //int StatusMonitor::getPrinters(CALLBACK_getPrinters callback,void* para)

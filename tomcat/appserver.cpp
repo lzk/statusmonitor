@@ -9,7 +9,7 @@
 #include <QSettings>
 #include <QMessageBox>
 
-#include "filter_check_finger.h"
+#include "filterlib.h"
 
 #if QT_VERSION > 0x050000
 #include <QUrlQuery>
@@ -49,13 +49,17 @@ void AppServer::restart_server()
     thread_server->start();
 }
 
+void AppServer::set_device_id(const QString& printer ,const QString& device_id)
+{
+    signal_set_device_id(printer ,device_id);
+}
+
 static int callback_Server(void* para,char* buffer,int bufsize)
 {
-    AppServer* wt = (AppServer*)para;
-    QString ss(buffer);
-    QUrl url(ss);
+    AppServer* app_server = (AppServer*)para;
+    QString str(buffer);
+    QUrl url(str);
     QString cmd = url.scheme();
-    QString printer = url.host();
     int jobid;
 #if QT_VERSION > 0x050000
     jobid = QUrlQuery(QUrl(url)).queryItemValue("jobid").toInt();
@@ -66,10 +70,10 @@ static int callback_Server(void* para,char* buffer,int bufsize)
 
     memset(buffer ,0 ,bufsize);
     if(!cmd.compare("start")){
-        wt->new_finger_dialog(jobid ,ss);
+        app_server->new_finger_dialog(jobid ,str);
         int time_val;
-        QString homepath = QDir::homePath();
-        QSettings setting(homepath + "/.tjgd1z/setting.ini", QSettings::defaultFormat());
+        //QString homepath = QDir::homePath();
+        QSettings setting("/usr/share/tjgd1z/setting.ini", QSettings::defaultFormat());
         bool ok;
         time_val = setting.value("TimeOut").toInt(&ok);
         if(!ok)
@@ -77,16 +81,15 @@ static int callback_Server(void* para,char* buffer,int bufsize)
         //strcpy(buffer ,"startok");
         sprintf(buffer ,"startok:%d", time_val);
     }else if(!cmd.compare("check")){
-        int result = wt->get_finger_result(jobid);
+        int result = app_server->get_finger_result(jobid);
         switch(result){
         case Checked_Result_Cancel:
             strcpy(buffer ,"cancel");
-            wt->delete_finger_dialog(jobid);
-
+            app_server->delete_finger_dialog(jobid);
             break;
         case Checked_Result_timeout:
             strcpy(buffer ,"timeout");
-            wt->delete_finger_dialog(jobid);
+            app_server->delete_finger_dialog(jobid);
             break;
         case Checked_Result_checking:
             strcpy(buffer ,"checking");
@@ -94,7 +97,7 @@ static int callback_Server(void* para,char* buffer,int bufsize)
         case Checked_Result_invalidJobid:
         default:
             strcpy(buffer ,"invalid");
-            wt->delete_finger_dialog(jobid);
+            app_server->delete_finger_dialog(jobid);
             break;
         }
 
@@ -102,44 +105,41 @@ static int callback_Server(void* para,char* buffer,int bufsize)
     }else if(!cmd.compare("result")){
         int finger_checked_result;
 #if QT_VERSION > 0x050000
-    //finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("result").toInt();
         finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("status").toInt();
 #else
-    //finger_checked_result = QUrl(url).queryItemValue("result").toInt();
-    finger_checked_result = QUrl(url).queryItemValue("status").toInt();
-
+        finger_checked_result = QUrl(url).queryItemValue("status").toInt();
 #endif
-    if(finger_checked_result != Checked_Result_Disable){
-        wt->delete_finger_dialog(jobid);
-        if(finger_checked_result == Checked_Result_DevBusy)
-        {
-            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("设备忙，当前打印作业将被取消！"));
-            msg.setStandardButtons (QMessageBox::Ok);
-            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
-            msg.exec ();
+        if(finger_checked_result != Checked_Result_Disable){
+            app_server->delete_finger_dialog(jobid);
+            if(finger_checked_result == Checked_Result_DevBusy)
+            {
+                QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("设备忙，当前打印作业将被取消！"));
+                msg.setStandardButtons (QMessageBox::Ok);
+                msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+                msg.exec ();
+            }
+            else if(finger_checked_result == Checked_Result_Fail)
+            {
+                QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证失败，打印作业将被取消！"));
+                msg.setStandardButtons (QMessageBox::Ok);
+                msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+                msg.exec ();
+            }
+            else if(finger_checked_result == Checked_Result_NoFinger)
+            {
+                QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("设备用户列表为空，无法进行指纹验证，当前打印作业将被取消！"));
+                msg.setStandardButtons (QMessageBox::Ok);
+                msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+                msg.exec ();
+            }
+            else if(finger_checked_result == Checked_Result_timeout || finger_checked_result == Checked_Result_Cancel|| finger_checked_result == Checked_Result_invalidJobid)
+            {
+                QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证被用户取消，打印作业也将被取消！"));
+                msg.setStandardButtons (QMessageBox::Ok);
+                msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+                msg.exec ();
+            }
         }
-        else if(finger_checked_result == Checked_Result_Fail)
-        {
-            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证失败，打印作业将被取消！"));
-            msg.setStandardButtons (QMessageBox::Ok);
-            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
-            msg.exec ();
-        }
-        else if(finger_checked_result == Checked_Result_NoFinger)
-        {
-            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("设备用户列表为空，无法进行指纹验证，当前打印作业将被取消！"));
-            msg.setStandardButtons (QMessageBox::Ok);
-            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
-            msg.exec ();
-        }
-        else if(finger_checked_result == Checked_Result_timeout || finger_checked_result == Checked_Result_Cancel|| finger_checked_result == Checked_Result_invalidJobid)
-        {
-            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证被用户取消，打印作业也将被取消！"));
-            msg.setStandardButtons (QMessageBox::Ok);
-            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
-            msg.exec ();
-        }
-    }
         strcpy(buffer ,"resultok");
 
         QVariant value;
@@ -149,12 +149,27 @@ static int callback_Server(void* para,char* buffer,int bufsize)
             LOGLOG("record to file list");
             Job_history job;
             job.id = jobid;
-            job.is_finger_enable = (finger_checked_result != Checked_Result_Disable);
-            job.is_finger_checked = (finger_checked_result == Checked_Result_OK);
+            job.is_finger_enable = (finger_checked_result != Checked_Result_Disable) ?1 :0;
+            job.is_finger_checked = (finger_checked_result == Checked_Result_OK) ?1 :0;
             Tomcat::save_job_history(&job);
         }else{
             LOGLOG("do not record to file list");
         }
+    }else if(!cmd.compare("dvid")){
+        int index;
+        index = str.indexOf("://");
+//        cmd = str.left(index);
+//        LOGLOG("cmd is:%s" ,cmd.toLatin1().constData());
+        QString printer = QString(buffer).mid(index + strlen("://"));
+        index = printer.indexOf('?');
+        if(index > 0)
+            printer = printer.left(index);
+        index = str.indexOf("deviceid=");
+        QString device_id;
+        device_id = str.mid(index + strlen("deviceid="));
+        LOGLOG("device_id is:%s" ,device_id.toLatin1().constData());
+        app_server->set_device_id(printer ,device_id);
+        strcpy(buffer ,"didok");
     }
     return 0;
 }
@@ -210,22 +225,23 @@ void AppServer::client_cmd(const QString &s ,void* para)
 
 void AppServer::new_finger_dialog(int id ,const QString& s)
 {
-    CheckFingerDialog* dialog;
     foreach(FingerResult_struct fr ,finger_result_list){
-        dialog = static_cast<CheckFingerDialog* >(fr.dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == fr.id){
             LOGLOG("id:%d dialog exist!" ,id);
             return;
         }
     }
 
+    CheckFingerDialog* dialog;
     dialog = new CheckFingerDialog(s);
     connect(dialog ,SIGNAL(cancel_job(int)) ,this ,SLOT(cancel(int)));
     connect(dialog ,SIGNAL(job_timeout(int)) ,this ,SLOT(timeout(int)));
+    dialog->setWindowFlags(dialog->windowFlags() | Qt::WindowStaysOnTopHint);
     dialog->show();
-    dialog->raise();
+//    dialog->raise();
 
     FingerResult_struct finger_result;
+    finger_result.id = id;
     finger_result.result = Checked_Result_checking;
     finger_result.dialog = dialog;
     finger_result_list << finger_result;
@@ -233,13 +249,14 @@ void AppServer::new_finger_dialog(int id ,const QString& s)
 
 void AppServer::delete_finger_dialog(int id)
 {
-    CheckFingerDialog* dialog;
     int index = -1;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
-        dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == finger_result_list[i].id){
             index = i;
-            delete dialog;
+            if(finger_result_list[i].dialog){
+                delete finger_result_list[i].dialog;
+                finger_result_list[i].dialog = NULL;
+            }
             break;
         }
     }
@@ -249,13 +266,13 @@ void AppServer::delete_finger_dialog(int id)
 
 void AppServer::cancel(int id)
 {
-    CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
-        dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == finger_result_list[i].id){
             finger_result_list[i].result = Checked_Result_Cancel;
-            delete dialog;
-            finger_result_list[i].dialog = NULL;
+            if(finger_result_list[i].dialog){
+                delete finger_result_list[i].dialog;
+                finger_result_list[i].dialog = NULL;
+            }
             break;
         }
     }
@@ -264,14 +281,13 @@ void AppServer::cancel(int id)
 
 void AppServer::timeout(int id)
 {
-    CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
-        dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == finger_result_list[i].id){
             finger_result_list[i].result = Checked_Result_timeout;
-//            dialog->close();
-            delete dialog;
-            finger_result_list[i].dialog = NULL;
+            if(finger_result_list[i].dialog){
+                delete finger_result_list[i].dialog;
+                finger_result_list[i].dialog = NULL;
+            }
             break;
         }
     }
@@ -280,10 +296,8 @@ void AppServer::timeout(int id)
 int AppServer::get_finger_result(int id)
 {
     int result = Checked_Result_invalidJobid;
-    CheckFingerDialog* dialog;
     for(int i = 0 ; i < finger_result_list.count() ;i++){
-        dialog = static_cast<CheckFingerDialog* >(finger_result_list[i].dialog);
-        if(dialog && (id == dialog->get_id())){
+        if(id == finger_result_list[i].id){
             result = finger_result_list[i].result;
             break;
         }

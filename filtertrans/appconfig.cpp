@@ -1,6 +1,5 @@
-#include "uiconfig.h"
+#include "appconfig.h"
 
-#include "toecconfig.h"
 const QString app_name = QString::fromUtf8("打印机状态监视器");
 static bool _isDeviceSupported(Printer_struct* ps)
 {
@@ -26,7 +25,7 @@ static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
 extern
 int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
 
-UIConfig::UIConfig(QObject *parent) :
+AppConfig::AppConfig(QObject *parent) :
     QObject(parent)
 {
 }
@@ -34,7 +33,7 @@ UIConfig::UIConfig(QObject *parent) :
 extern const char* log_app_name;
 extern const char* app_version;
 extern int usb_error_printing;
-void UIConfig::initConfig()
+void AppConfig::initConfig()
 {
     //config status server thread
     status_file = "/tmp/.toecstatus";
@@ -49,13 +48,13 @@ void UIConfig::initConfig()
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
-    log_app_name = "tomcat";
-    app_version = "1.0.7";
+    log_app_name = "filter trans";
+    app_version = "1.0.1";
     log_init();
 }
 
 #include <QFile>
-void UIConfig::exit_app()
+void AppConfig::exit_app()
 {
     QFile::remove(status_file);
     QFile::remove(status_lock_file);

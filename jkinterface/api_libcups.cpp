@@ -535,3 +535,31 @@ int cups_get_printers(CALLBACK_getPrinters callback ,void* para)
    cupsFreeDests(num_dests, dests);
    return ret;
 }
+
+#include <cups/sidechannel.h>
+int cups_usb_getDeviceID(char* data ,int datalen)
+{
+    int result;
+//    char data[2049];
+//    int datalen;
+    cups_sc_status_t status;
+    /* Tell cupsSideChannelDoRequest() how big our buffer is, less 1 byte for
+       nul-termination... */
+//    datalen = sizeof(data) - 1;
+
+    /* Get the IEEE-1284 device ID, waiting for up to 1 second */
+    status = cupsSideChannelDoRequest(CUPS_SC_CMD_GET_DEVICE_ID, data, &datalen, 1.0);
+
+    /* Use the returned value if OK was returned and the length is non-zero */
+    if (status == CUPS_SC_STATUS_OK && datalen > 0)
+    {
+        data[datalen] = '\0';
+        result = 0;
+    }
+    else
+    {
+        data[0] = '\0';
+        result = -1;
+    }
+    return result;
+}

@@ -2,8 +2,6 @@
 #define WATCHER_H
 
 #include <QThread>
-class StatusThread;
-
 class Watcher : public QThread
 {
     Q_OBJECT

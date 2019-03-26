@@ -1780,7 +1780,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex, int mTimeout)
 #endif
     if(nResult == _ACK)
     {
-        int count = mTimeout *10 /2+4;
+        int count = mTimeout *10 /3+4;
         FG_STATUS_T fgCmd1;
         BYTE cmd1[4] = {'S','T','U','S'};
 
@@ -1909,10 +1909,12 @@ int FingCmd::IsPrint(char* userName, short* pIndex, int mTimeout)
             {
                 if(nResult == _Printer_busy)
                 {
-                    return _Printer_busy;
+                    //return _Printer_busy;
+                    LOGLOG("####FM:IsPrint(): STUS busy, try again!");
+
                 }
             }
-            usleep(200000);
+            usleep(333400);
         }
 
         //CancelPrintWithTrans();

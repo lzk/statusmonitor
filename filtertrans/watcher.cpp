@@ -8,22 +8,24 @@ Watcher::Watcher(QObject *parent)
     ,abort(false)
 {
     connect(this ,SIGNAL(server_restart()) ,app_server ,SLOT(restart_server()));
+
 }
 
 Watcher::~Watcher()
 {
     abort = true;
-    wait();
+    while(abort)usleep(1000);
 }
 
 void Watcher::run()
 {
     forever{
         if (abort)
-            return;
+            break;
         timerOut();
         usleep(100*1000);
     }
+    abort = false;
 }
 
 void Watcher::timerOut()

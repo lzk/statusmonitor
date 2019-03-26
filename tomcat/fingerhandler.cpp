@@ -1,6 +1,6 @@
 #include "fingerhandler.h"
 #include "finger.h"
-#include "filter_check_finger.h"
+#include "filterlib.h"
 #include <QThread>
 #include "jkinterface.h"
 #include "clientthread.h"

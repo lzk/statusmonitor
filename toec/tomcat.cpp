@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <QSettings>
 #include <QMutex>
-static const char* job_history_file_name = "/tmp/job_history.xml";
+static const char* job_history_file_name = "/usr/share/tjgd1z/job_history.xml";
 static const char* job_key ="jobs/id/";
 const int jobs_per_page = 20;
 static QMutex mutex;

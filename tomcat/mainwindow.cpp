@@ -125,23 +125,23 @@ void MainWindow::messageClicked()
     showNormal();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-#ifdef Q_OS_OSX
-    if (!event->spontaneous() || !isVisible()) {
-        return;
-    }
-#endif
-    if (trayIcon->isVisible()) {
-//        QMessageBox::information(this, tr("Systray"),
-//                                 tr("The program will keep running in the "
-//                                    "system tray. To terminate the program, "
-//                                    "choose <b>Quit</b> in the context menu "
-//                                    "of the system tray entry."));
-        hide();
-        event->ignore();
-    }
-}
+//void MainWindow::closeEvent(QCloseEvent *event)
+//{
+//#ifdef Q_OS_OSX
+//    if (!event->spontaneous() || !isVisible()) {
+//        return;
+//    }
+//#endif
+//    if (trayIcon->isVisible()) {
+////        QMessageBox::information(this, tr("Systray"),
+////                                 tr("The program will keep running in the "
+////                                    "system tray. To terminate the program, "
+////                                    "choose <b>Quit</b> in the context menu "
+////                                    "of the system tray entry."));
+//        hide();
+//        event->ignore();
+//    }
+//}
 
 void MainWindow::cmdResult(int cmd,int result ,QVariant data)
 {
@@ -837,10 +837,10 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
                     }
                     switch (i) {
                     case 0:
-                        text += QString() + "<p>" + ei.errorString->line0 + "</p>";
+                        text += QString() + "<p>" + ei.errorString->line0 + extra_string + "</p>";
                         break;
                     case 1:
-                        text += QString() + "<p>" + ei.errorString->line1 + "</p>";
+                        text += QString() + "<p>" + ei.errorString->line1 + extra_string + "</p>";
                         break;
                     case 2:
                         text += QString() + "<p>" + ei.errorString->line2 + extra_string + "</p>";
@@ -901,7 +901,7 @@ void MainWindow::updatePrinter(const QVariant& data)
     {
 
         LOGLOG("no printers");
- //       setcurrentPrinter(QString());
+        setcurrentPrinter(QString());
 //        gUInterface->setTimer(0);      
         if(bCheckPrinter){
             hide();
@@ -921,22 +921,8 @@ void MainWindow::updatePrinter(const QVariant& data)
          bCheckPrinter = false;
 
     }else{
- //       bool bFindOnLinePrinter = false;
          bCheckPrinter = false;
- /*        if(bFindOnLinePrinter)
-         {
-             for(int i = 0 ;i < printerInfos.length() ;i++)
-             {
-                 printerInfo = printerInfos.at(i);
-                 setcurrentPrinter(printers.at(i));
-                 if(bFindOnLinePrinter)
-                 {
-                     break;
-                 }
-             }
-         }
-        if(!bFindOnLinePrinter)*/
-           setcurrentPrinter(printers.at(index_of_defaultprinter));
+          setcurrentPrinter(printers.at(index_of_defaultprinter));
     }
     gUInterface->setCurrentPrinterCmd(UIConfig::CMD_GetStatus);
 }

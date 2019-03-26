@@ -23,6 +23,7 @@ signals:
 private:
     Trans_Server trans_server;
     bool abort;
+    QString m_server_path;
 
     friend class ClientThread;
     friend class AppServer;

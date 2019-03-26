@@ -6,18 +6,26 @@
 #include "uiconfig.h"
 bool use_status_thread = true;
 extern AppServer* app_server;
-Watcher::Watcher(DeviceManager* _device_manager ,QObject *parent)
+Watcher::Watcher(QObject *parent)
     : QThread(parent)
+    ,device_manager(new DeviceManager)
     ,abort(false)
-    ,device_manager(_device_manager)
 {
+//#ifdef RELEASE_release
+//    use_status_thread = false;
+//#endif
     if(use_status_thread){
-        statusThread = new StatusThread();
+        statusThread = new StatusThread(this);
         statusThread->start();
+        connect(app_server ,SIGNAL(signal_set_device_id(QString,QString)) ,statusThread ,SLOT(set_device_id(QString,QString)));
     }else{
         statusThread = NULL;
     }
     connect(this ,SIGNAL(server_restart()) ,app_server ,SLOT(restart_server()));
+
+    getPrinters();
+    current_printers = printers;
+    current_printers_detail = printers_detail;
 }
 
 Watcher::~Watcher()
@@ -25,17 +33,19 @@ Watcher::~Watcher()
     if(statusThread)
         delete statusThread;
     abort = true;
-    wait();
+    while(abort)usleep(1000);
+    delete device_manager;
 }
 
 void Watcher::run()
 {
     forever{
         if (abort)
-            return;
+            break;
         timerOut();
-        usleep(100*1000);
+        usleep(1000*1000);
     }
+    abort = false;
 }
 
 void Watcher::set_current_printer(const QString& printer)
@@ -43,6 +53,11 @@ void Watcher::set_current_printer(const QString& printer)
     current_printer = printer;
     if(statusThread)
         statusThread->set_current_printer(printer);
+
+    Trans_Client tc(SERVER_PATH);
+    char buffer[1024];
+    sprintf(buffer ,"stcp://%s" ,printer.toLatin1().constData());
+    tc.writeThenRead(buffer ,1024);
 }
 
 int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterInfo_struct> & ps2)
@@ -73,11 +88,7 @@ int Watcher::printerlist_compare(QList<PrinterInfo_struct> & ps1,QList<PrinterIn
 
 void Watcher::timerOut()
 {
-    static int count = 0;
-    count ++;
-    if(count == 100)
-        count = 0;
-    if((count % 10 == 0) && !is_app_running(SERVER_PATH)){
+    if(!is_app_running(SERVER_PATH_STM)){
         server_restart();
     }
     //update printer list

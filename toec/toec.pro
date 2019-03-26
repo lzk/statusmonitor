@@ -9,6 +9,8 @@ QT       -= core gui
 TARGET = tjgd1z
 TEMPLATE = lib
 
+CONFIG += shared
+
 DEFINES += TOEC_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
@@ -24,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include("../jkinterface/jkinterface.pri")
 include("../common/common.pri")
+#include("../statusmonitor/statusmonitor.pri")
 unix {
     target.path = /usr/lib
     INSTALLS += target
@@ -33,10 +36,12 @@ SOURCES += \
     $${PWD}/fingermanager.cpp \
     FingerCommon.cpp \
     finger.cpp \
-    FingCmd.cpp
+    FingCmd.cpp \
+    filterlib.cpp
 
 
 HEADERS += \
+    $${PWD}/toecconfig.h \
     $${PWD}/fingermanager.h \
     $${PWD}/filter_check_finger.h \
     FingerCommon.h \
@@ -46,13 +51,9 @@ HEADERS += \
     common.h
 
 
-        DEFINES += LOONGSON
-DEFINES += DEBUG_TO_STDERR
-#CONFIG(debug ,debug|release){
-#    DEFINES += DEBUG_TO_STDERR
-#}else{
-#    DEFINES += DEBUG_TO_STDERR
-##contains(QT_ARCH, loongson3a) {
-#        DEFINES += LOONGSON
-##}
-#}
+CONFIG(debug ,debug|release){
+    DEFINES += DEBUG_TO_STDERR
+    DEFINES += LOONGSON
+}else{
+    DEFINES += LOONGSON
+}

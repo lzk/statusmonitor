@@ -8,7 +8,7 @@
 #if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
-#include "filter_check_finger.h"
+#include "filterlib.h"
 #include "jkinterface.h"
 #include <QSettings>
 #include <QDir>
@@ -18,8 +18,8 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
     time_val(30),
     job_info(_job_info)
 {
-    QString homepath = QDir::homePath();
-    QSettings setting(homepath + "/.tjgd1z/setting.ini", QSettings::defaultFormat());
+    //QString homepath = QDir::homePath();
+    QSettings setting("/usr/share/tjgd1z/setting.ini", QSettings::defaultFormat());
     bool ok;
     time_val = setting.value("TimeOut").toInt(&ok);
     if(!ok)
@@ -35,7 +35,6 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
     ui->label_gif->setPixmap(QPixmap(":/image/finger.gif"));
 //    movie = new QMovie(":/image/finger.gif");
 //    ui->label_gif->setMovie(movie);
-
 
     connect(&timer ,SIGNAL(timeout()) ,this ,SLOT(timeout()));
 

@@ -1,6 +1,6 @@
 #include "fingermanager.h"
 #include "jkinterface.h"
-#include "filter_check_finger.h"
+#include "filterlib.h"
 #include "toecconfig.h"
 #include <string.h>
 #include <pthread.h>
@@ -409,16 +409,3 @@ int FingerManager::checkFinger(const char* server_path ,int jobid)
         return -1;
     }
 }
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-int checkFinger(int jobid)
-{
-    FingerManager fm;
-    return fm.checkFinger(ui_server_path ,jobid);
-}
-
-#ifdef __cplusplus
-}
-#endif

@@ -16,7 +16,7 @@ int FileLocker::lock(const char* filename)
     int ret = -1;
 //    LOGLOG("pid %ld get file %s lock" ,getpid() ,filename);
     fp = fopen(filename, "ab+");
-    chmod(filename ,0666);
+    chmod(filename ,DEFFILEMODE);
     int fd;
     if(fp){
 #ifdef JK_OS_MAC
@@ -39,7 +39,7 @@ int FileLocker::trylock(const char* filename)
 {
     int ret = -1;
     fp = fopen(filename, "ab+");
-    chmod(filename ,0666);
+    chmod(filename ,DEFFILEMODE);
     int fd;
     if(fp){
 #ifdef JK_OS_MAC

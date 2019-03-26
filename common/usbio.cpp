@@ -176,6 +176,9 @@ int UsbIO::getDeviceId(char *buffer, int bufsize)
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
+    }else if(usb_error_printing == ret){
+        ret = cups_usb_getDeviceID(buffer ,bufsize - 1);
+        LOGLOG("usb get device id when printing:%d" ,ret);
     }
     return ret;
 }
