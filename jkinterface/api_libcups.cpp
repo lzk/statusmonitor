@@ -411,7 +411,7 @@ int snmpGetDeviceID(const char* device_uri ,char* buffer ,int bufsize)
     httpSeparateURI(HTTP_URI_CODING_ALL, resolved_uri, scheme, sizeof(scheme),
                     username, sizeof(username), hostname, sizeof(hostname), &port,
             resource, sizeof(resource));
-//    if(port < 0)
+    if(port < 0)
         port = IPP_PORT;
     sprintf(portname, "%d", port);
     addrlist = httpAddrGetList(hostname, AF_UNSPEC, portname);

@@ -209,8 +209,8 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, i
 int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
 {
     //some host name can not get device id. change to ipv4 first.
-    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
-//    return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);
+//    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
+    return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);
 }
 
 bool NetIO::isConnected()

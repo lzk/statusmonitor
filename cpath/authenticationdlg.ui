@@ -83,14 +83,8 @@
     padding: 0 8px;
 }</string>
    </property>
-   <property name="text">
-    <string/>
-   </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>
-   </property>
-   <property name="dragEnabled">
-    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_psd">
