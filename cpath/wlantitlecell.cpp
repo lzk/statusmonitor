@@ -156,7 +156,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
 
                 SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_1"), 1);
-                warming->setWindowTitle(tr("ResStr_Prompt1"));
+                warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);

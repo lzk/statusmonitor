@@ -34,7 +34,7 @@ public:
         ERR_no_device = -3,
         ERR_wifi_have_not_been_inited = -4,
         ERR_WIFI_SET_SSID = -5,
-        ERR_lshell_cannot_support = -6,
+        ERR_lshell_cannot_support = -6
     };
 
 public:

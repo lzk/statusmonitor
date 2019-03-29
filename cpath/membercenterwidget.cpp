@@ -36,10 +36,11 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     {
         QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
 
-        QString CRM = settings.value("enableCRM").toString();
+        QString CRM = settings.value("CRMTips").toString();
         qDebug()<<"CRM"<<CRM;
         if(CRM != "true" )
         {
+            settings.setValue("CRMTips","true");
             bool bCRM = false;
             ExperiencePro *exp = new ExperiencePro(this,bCRM);
             exp->exec();
@@ -48,7 +49,6 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
             {
                 startCRM();
             }
-            settings.setValue("enableCRM","true");
         }
 
         loginPhone = settings.value("loginPhone").toString();

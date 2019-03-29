@@ -43,12 +43,15 @@ ThumbnailImage::ThumbnailImage(QListWidgetItem* _item ,ImageHandler* handler) :
     connect(this ,SIGNAL(image_save(QString,int)),image_handler ,SLOT(image_save(QString,int)));
 
 
+    pTimerSingleClick = new QTimer(this);
+    connect(pTimerSingleClick,SIGNAL(timeout()),this,SLOT(timerSingleClick()));
     listWidget_itemSelectionChanged();
     image_ask();
 }
 
-void ThumbnailImage::listWidget_itemSelectionChanged()
+void ThumbnailImage::timerSingleClick()
 {
+    pTimerSingleClick->stop();
     if(item->isSelected()){
         int index = item->listWidget()->selectedItems().indexOf(item) + 1;
 //        ui->label->setText(tr("<h2><i><font color=white>%1</font></i></h2>").arg(index));
@@ -58,6 +61,11 @@ void ThumbnailImage::listWidget_itemSelectionChanged()
         ui->label->setPixmap(pixmap);
         ui->label->setStyleSheet("background-color: white;");
     }
+}
+
+void ThumbnailImage::listWidget_itemSelectionChanged()
+{
+    pTimerSingleClick->start(430);
 }
 
 void ThumbnailImage::image_ask()
@@ -151,6 +159,8 @@ bool ThumbnailImage::eventFilter(QObject * obj, QEvent * event)
 
 void ThumbnailImage::mouseDoubleClickEvent(QMouseEvent *)
 {
+    pTimerSingleClick->stop();
+    item->setSelected(!item->isSelected());
     if(item){
         ImagePreviewDialog dialog(item ,image_handler);
         int ret = dialog.exec();

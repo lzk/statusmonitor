@@ -13,8 +13,6 @@
 #include <qbuttongroup.h>
 #include "promptdialog.h"
 
-#define RETRYTIMERS 3;
-
 SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
     ui(new Ui::SettingsStackedWidget)
@@ -91,9 +89,6 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     connect(ui->btAuto,SIGNAL(clicked(bool)),this,SLOT(onRadioClickDNS(bool)));
     connect(ui->btManual,SIGNAL(clicked(bool)),this,SLOT(onRadioClickDNS(bool)));
     ui->btAuto->setChecked(true);
-
-    isDoingCMD = false;
-    retryTimes = 0;
 
     //hide the softAP close/open button
     ui->label_close_AP->hide();
@@ -557,8 +552,6 @@ void SettingsStackedWidget::initPowerSave()
     ui->lineEdit_timeout->installEventFilter(this);
 
     ui->label_timeout_error->hide();
-
-    connect(timer1, SIGNAL(timeout()), this, SLOT(onTimer1Timeout())); //this timer work for add  & reduce button;
 }
 
 void SettingsStackedWidget::initPassword()
@@ -612,22 +605,6 @@ void SettingsStackedWidget::on_lineEdit_timeout_textEdited(const QString &arg1)
         ui->btTimeReduce->setEnabled(true);
         ui->btApply_Timeout->setEnabled(true);
     }
-}
-
-void SettingsStackedWidget::onTimer1Timeout()
-{
-    if(timercounter > 5)
-    {
-        if(isADD)
-        {
-            on_btTimeAdd_clicked();
-        }
-        else
-        {
-            on_btTimeReduce_clicked();
-        }
-    }
-    timercounter++;
 }
 
 void SettingsStackedWidget::initAdvanceSetting(cmdst_userconfig config, bool isFirst)
@@ -1446,3 +1423,165 @@ void SettingsStackedWidget::hideEvent(QHideEvent *e)
 //    QWidget::setEnabled(enabled);
 //}
 
+
+void SettingsStackedWidget::onTimer1Timeout_Add()
+{
+    if(timercounter > 9)
+    {
+        switch(pressBtn)
+        {
+        case TimeoutSetting:
+            on_btTimeAdd_clicked();
+            break;
+        case TopMargin:
+            on_btTopAdd_clicked();
+            break;
+        case LeftMargin:
+            on_btLeftAdd_clicked();
+            break;
+        case ImageDensity:
+            on_btDensityAdd_clicked();
+            break;
+        default:
+            break;
+        }
+    }
+    timercounter++;
+}
+
+void SettingsStackedWidget::onTimer1Timeout_Reduce()
+{
+    if(timercounter > 9)
+    {
+        switch(pressBtn)
+        {
+        case TimeoutSetting:
+            on_btTimeReduce_clicked();
+            break;
+        case TopMargin:
+            on_btTopReduce_clicked();
+            break;
+        case LeftMargin:
+            on_btLeftReduce_clicked();
+            break;
+        case ImageDensity:
+            on_btDensityReduce_clicked();
+            break;
+        default:
+            break;
+        }
+    }
+    timercounter++;
+}
+
+void SettingsStackedWidget::on_btTimeReduce_pressed()
+{
+    pressBtn = TimeoutSetting;
+    timercounter = 0;
+    connect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Reduce()));
+    timer1->start(60);
+}
+
+void SettingsStackedWidget::on_btTimeReduce_released()
+{
+    timer1->stop();
+    disconnect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Reduce()));
+}
+
+void SettingsStackedWidget::on_btTimeAdd_pressed()
+{
+    pressBtn = TimeoutSetting;
+    timercounter = 0;
+    connect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Add()));
+    timer1->start(60);
+}
+
+void SettingsStackedWidget::on_btTimeAdd_released()
+{
+    timer1->stop();
+    disconnect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Add()));
+}
+
+void SettingsStackedWidget::on_btTopReduce_pressed()
+{
+    pressBtn = TopMargin;
+    timercounter = 0;
+    connect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Reduce()));
+    timer1->start(60);
+}
+
+void SettingsStackedWidget::on_btTopReduce_released()
+{
+    timer1->stop();
+    disconnect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Reduce()));
+}
+
+void SettingsStackedWidget::on_btTopAdd_released()
+{
+    timer1->stop();
+    disconnect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Add()));
+}
+
+void SettingsStackedWidget::on_btTopAdd_pressed()
+{
+    pressBtn = TopMargin;
+    timercounter = 0;
+    connect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Add()));
+    timer1->start(60);
+}
+
+void SettingsStackedWidget::on_btLeftReduce_pressed()
+{
+    pressBtn = LeftMargin;
+    timercounter = 0;
+    connect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Reduce()));
+    timer1->start(60);
+}
+
+void SettingsStackedWidget::on_btLeftReduce_released()
+{
+    timer1->stop();
+    disconnect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Reduce()));
+}
+
+void SettingsStackedWidget::on_btLeftAdd_pressed()
+{
+    pressBtn = LeftMargin;
+    timercounter = 0;
+    connect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Add()));
+    timer1->start(60);
+}
+
+void SettingsStackedWidget::on_btLeftAdd_released()
+{
+    timer1->stop();
+    disconnect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Add()));
+}
+
+void SettingsStackedWidget::on_btDensityReduce_pressed()
+{
+    pressBtn = ImageDensity;
+    timercounter = 0;
+    connect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Reduce()));
+    timer1->start(60);
+}
+
+void SettingsStackedWidget::on_btDensityReduce_released()
+{
+    timer1->stop();
+    disconnect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Reduce()));
+}
+
+void SettingsStackedWidget::on_btDensityAdd_pressed()
+{
+    pressBtn = ImageDensity;
+    timercounter = 0;
+    connect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Add()));
+    timer1->start(60);
+}
+
+void SettingsStackedWidget::on_btDensityAdd_released()
+{
+    timer1->stop();
+    disconnect(timer1,SIGNAL(timeout()),this,SLOT(onTimer1Timeout_Add()));
+}

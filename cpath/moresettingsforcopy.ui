@@ -1522,7 +1522,7 @@ QRadioButton::indicator::checked {
     </font>
    </property>
    <property name="text">
-    <string>Duplex Copy Mode</string>
+    <string>ResStr_Duplex_Copy_Mode</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

@@ -994,7 +994,7 @@ void MainWindow::onTimeout()
 
 void MainWindow::setDeviceMsg(const QString& msg, int result)
 {
-    qDebug()<<"setDeviceMsg"<<result;
+//    qDebug()<<"setDeviceMsg"<<result;
     if(!result)
         ui->label_10->setStyleSheet("QLabel{color:black}");
     else

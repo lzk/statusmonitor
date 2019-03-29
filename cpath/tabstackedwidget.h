@@ -102,6 +102,8 @@ private slots:
 
     void onTimerCopyNumOut1();
 
+    void timerItemClick();
+
 
 private:
     Ui::TabStackedWidget *ui;
@@ -125,6 +127,8 @@ private:
     QTimer *timerCopyNum;
 
     int timerCount;
+
+    QTimer *timerClick;
 
 //signals:
 //    void cycleStartFromTab();

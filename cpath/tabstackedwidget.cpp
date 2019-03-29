@@ -56,6 +56,9 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
 
     timerCopyNum = new QTimer(this);
 
+    timerClick = new QTimer(this);
+    connect(timerClick,SIGNAL(timeout()),this,SLOT(timerItemClick()));
+
     on_scrollArea_ScanImage_itemSelectionChanged();
     ui->disableScrollArea->hide();
     //bms:7670
@@ -132,7 +135,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
         else if(result != 0 && result != ScannerApp::STATUS_Cancel)
         {
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Scan_Fail"),result);
-            if(result == ScannerApp::STATUS_USEWITHOUTLOCK)
+            if(result == ScannerApp::STATUS_Error_busy)
             {
                 SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_The_machine_is_busy__please_try_later_"),2);
                 busyWarning->setWindowTitle(tr("ResStr_Error"));
@@ -270,13 +273,19 @@ void TabStackedWidget::setDefault_Scan()
     paramScan.scan_type = Hight_Speed;
 }
 
-void TabStackedWidget::on_scrollArea_ScanImage_itemSelectionChanged()
+void TabStackedWidget::timerItemClick()
 {
+    timerClick->stop();
     if(ui->scrollArea_ScanImage->selectedItems().isEmpty()){
         ui->btn_ScanSave->setEnabled(false);
     }else{
         ui->btn_ScanSave->setEnabled(true);
     }
+}
+
+void TabStackedWidget::on_scrollArea_ScanImage_itemSelectionChanged()
+{
+    timerClick->start(440);
 }
 
 TabStackedWidget::~TabStackedWidget()

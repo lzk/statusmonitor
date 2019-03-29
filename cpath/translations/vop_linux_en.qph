@@ -2296,6 +2296,11 @@
 </phrase>
 
     <phrase>
+<source>ResStr_Duplex_Copy_Mode</source>
+<target>Duplex Copy Mode</target>
+</phrase>
+
+    <phrase>
 <source>ResStr_Copyright</source>
 <target>Copyright(C)(2019)&#x000D;&#x000A;Lenovo Image(Tianjin)Technology Co., LTD.&#x000D;&#x000A;All rights reserved.</target>
 </phrase>

@@ -2,6 +2,7 @@
 #define THUMBNAILIMAGE_H
 
 #include <QWidget>
+#include <qtimer.h>
 
 class QListWidgetItem;
 class ImageHandler;
@@ -28,6 +29,7 @@ private:
     QString origin_image;
     QImage image;
     QPixmap pixmap;
+    QTimer *pTimerSingleClick;
 
 protected:
     virtual void paintEvent(QPaintEvent *);
@@ -43,6 +45,7 @@ signals:
 private slots:
     void image_update(QObject* obj ,const QImage& image);
     void listWidget_itemSelectionChanged();
+    void timerSingleClick();
 };
 
 #endif // THUMBNAILIMAGE_H

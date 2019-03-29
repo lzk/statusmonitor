@@ -215,6 +215,7 @@ int UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
 QString UIConfig::getErrorMsg(EnumStatus status, EnumMachineJob job, bool isAbcPlusModel)
 {
     QString errMsg = "";
+    LOGLOG("EnumMachineJob:%d",job);
 
     switch (status)
     {
@@ -229,6 +230,8 @@ QString UIConfig::getErrorMsg(EnumStatus status, EnumMachineJob job, bool isAbcP
             if (job == IDCardCopyJob)
                 errMsg = tr("ResStr_Turn_card_over_to_copy_the_reverse_");
             else if (job == Nin1CopyJob)
+                errMsg = tr("ResStr_Place_Next_Page");
+            else if (job == NormalCopyJob)
                 errMsg = tr("ResStr_Place_Next_Page");
             else
                 errMsg = "";

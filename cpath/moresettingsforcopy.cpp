@@ -296,8 +296,9 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
         selectIDCardCopyMode(param->idCardCopyMode);
-        ui->scaling->setText(text.setNum(param->scaling));
         ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);
+        LOGLOG("scaling:%d",param->scaling);
+        ui->scaling->setText(text.setNum(param->scaling));
     }
     else
     {
@@ -647,44 +648,47 @@ void MoreSettingsForCopy::selectIDCardCopyMode(int mode)
         default:break;
     }
 
-    if(_idCardCopyMode == A5Mode)
+    if(_idCardFlag)
     {
-//        model1->item(0)->setEnabled(false);
-//        model1->item(2)->setEnabled(false);
-//        model1->item(3)->setEnabled(false);
-//        model1->item(4)->setEnabled(false);
-
-        model2->item(0)->setEnabled(false);
-        model2->item(1)->setEnabled(false);
-        model2->item(3)->setEnabled(false);
-        model2->item(4)->setEnabled(false);
-        model2->item(5)->setEnabled(false);
-        model2->item(6)->setEnabled(false);
-        model2->item(7)->setEnabled(false);
-//        ui->docSizeList->setCurrentIndex(0);
-        ui->outPutSizeList->setCurrentIndex(2);
-    }else
-    {
-//        model1->item(1)->setEnabled(false);
-//        model1->item(2)->setEnabled(false);
-//        model1->item(3)->setEnabled(false);
-//        model1->item(4)->setEnabled(false);
-
-        model2->item(0)->setEnabled(false);
-        model2->item(2)->setEnabled(false);
-        model2->item(3)->setEnabled(false);
-        model2->item(4)->setEnabled(false);
-        model2->item(5)->setEnabled(false);
-        model2->item(6)->setEnabled(false);
-        model2->item(7)->setEnabled(false);
-        int country = QLocale::system().country();
-        if(country == QLocale::UnitedStates)
+        if(_idCardCopyMode == A5Mode)
         {
-            ui->outPutSizeList->setCurrentIndex(0);
-        }
-        else
+    //        model1->item(0)->setEnabled(false);
+    //        model1->item(2)->setEnabled(false);
+    //        model1->item(3)->setEnabled(false);
+    //        model1->item(4)->setEnabled(false);
+
+            model2->item(0)->setEnabled(false);
+            model2->item(1)->setEnabled(false);
+            model2->item(3)->setEnabled(false);
+            model2->item(4)->setEnabled(false);
+            model2->item(5)->setEnabled(false);
+            model2->item(6)->setEnabled(false);
+            model2->item(7)->setEnabled(false);
+    //        ui->docSizeList->setCurrentIndex(0);
+            ui->outPutSizeList->setCurrentIndex(2);
+        }else
         {
-            ui->outPutSizeList->setCurrentIndex(1);
+    //        model1->item(1)->setEnabled(false);
+    //        model1->item(2)->setEnabled(false);
+    //        model1->item(3)->setEnabled(false);
+    //        model1->item(4)->setEnabled(false);
+
+            model2->item(0)->setEnabled(false);
+            model2->item(2)->setEnabled(false);
+            model2->item(3)->setEnabled(false);
+            model2->item(4)->setEnabled(false);
+            model2->item(5)->setEnabled(false);
+            model2->item(6)->setEnabled(false);
+            model2->item(7)->setEnabled(false);
+            int country = QLocale::system().country();
+            if(country == QLocale::UnitedStates)
+            {
+                ui->outPutSizeList->setCurrentIndex(0);
+            }
+            else
+            {
+                ui->outPutSizeList->setCurrentIndex(1);
+            }
         }
     }
 }

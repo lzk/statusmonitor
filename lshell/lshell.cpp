@@ -172,10 +172,16 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
     }
 
     if(cmd == _LS_WIFICMD  && sub_cmd == 0xff)
+    {
+        LOGLOG("writeNoRead");
         err = writeNoRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct);
+    }
     else
+    {
+        LOGLOG("writeThenRead");
         err = writeThenRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct
                                                ,buffer ,sizeof(COMM_HEADER)+data_buffer_size * (1 - direct));
+    }
     //check result
     if(!err && MAGIC_NUM == ppkg->magic){//ACK
         if(!direct){//get
@@ -190,6 +196,7 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
         }
     }else
         err = -1;
+    LOGLOG("lshell_cmd:%d",err);
     delete [] buffer;
     return err;
 }
@@ -230,6 +237,7 @@ int LShell::copy(copycmdset* para)
 //    LOGLOG("lshell cmd: copy set");
     int err;
     err = lshell_copy(para ,sizeof(*para));
+    LOGLOG("LShell:%d",err);
     return err;
 }
 
@@ -548,7 +556,10 @@ int LShell::open(Printer_struct* printer)
     int port = 0;
     device = device_manager->getDevice(printer);
     if(!device)
+    {
+        LOGLOG("get device fail")
         return -1;
+    }
     if(device->type() == DeviceIO::Type_net){
         port = 9100;
     }

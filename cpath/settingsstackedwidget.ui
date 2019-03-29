@@ -478,7 +478,7 @@ color:white;
      <rect>
       <x>90</x>
       <y>30</y>
-      <width>71</width>
+      <width>83</width>
       <height>20</height>
      </rect>
     </property>
@@ -509,7 +509,7 @@ QRadioButton::indicator::checked {
    <widget class="QRadioButton" name="btStatic">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>173</x>
       <y>30</y>
       <width>71</width>
       <height>20</height>
@@ -518,7 +518,7 @@ QRadioButton::indicator::checked {
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>11</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -760,7 +760,7 @@ QRadioButton::indicator::checked {
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>163</y>
+      <y>162</y>
       <width>61</width>
       <height>17</height>
      </rect>
@@ -889,8 +889,8 @@ QRadioButton::indicator::checked {
    <zorder>label_gateway_error</zorder>
    <zorder>label_sumask_error</zorder>
    <zorder>btAuto</zorder>
-   <zorder>label_ipaddr_error</zorder>
    <zorder>label_server_error</zorder>
+   <zorder>label_ipaddr_error</zorder>
   </widget>
   <widget class="QWidget" name="TCPIPV6">
    <widget class="QPushButton" name="btIPv6Setting">

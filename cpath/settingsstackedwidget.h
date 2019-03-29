@@ -13,6 +13,8 @@ namespace Ui {
 class SettingsStackedWidget;
 }
 
+enum Press_Btn {TimeoutSetting=0,TopMargin,LeftMargin,ImageDensity};
+
 class SettingsStackedWidget : public QStackedWidget
 {
     Q_OBJECT
@@ -46,10 +48,8 @@ private:
     bool isConrtolM;
     bool isCoolingM;
 
-    bool isADD;
+    int pressBtn;
     int timercounter;
-    bool isDoingCMD;
-    int retryTimes;
 
     net_info_st info_ipv4;
     net_info_st info_ipv4_orn;
@@ -77,7 +77,8 @@ private slots:
 
     void on_btTimeReduce_clicked();
     void on_btTimeAdd_clicked();
-    void onTimer1Timeout();
+    void onTimer1Timeout_Add();
+    void onTimer1Timeout_Reduce();
     void on_btApply_AP_clicked();
     void onbtDHCPtoggled(bool checked);
     void onbtStatictoggled(bool checked);
@@ -130,9 +131,22 @@ private slots:
 
     void on_btApply_clicked();
 
-//signals:
-//    void cycleStart();4312432
-//    void cycleStop();
+    void on_btTimeReduce_pressed();
+    void on_btTimeReduce_released();
+    void on_btTimeAdd_pressed();
+    void on_btTimeAdd_released();
+    void on_btTopReduce_pressed();
+    void on_btTopReduce_released();
+    void on_btTopAdd_released();
+    void on_btTopAdd_pressed();
+    void on_btLeftReduce_pressed();
+    void on_btLeftReduce_released();
+    void on_btLeftAdd_pressed();
+    void on_btLeftAdd_released();
+    void on_btDensityReduce_pressed();
+    void on_btDensityReduce_released();
+    void on_btDensityAdd_pressed();
+    void on_btDensityAdd_released();
 };
 
 #endif // SETTINGSSTACKEDWIDGET_H
