@@ -48,7 +48,7 @@ void AppConfig::initConfig()
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
-    log_app_name = "filter trans";
+    log_app_name = "filtertrans";
     app_version = "1.0.1";
     log_init();
 }

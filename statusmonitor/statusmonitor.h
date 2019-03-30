@@ -3,7 +3,7 @@
 
 #include "status.h"
 #include "jkinterface.h"
-#include "error.h"
+//#include <QList>
 typedef
 struct PrinterStatus_struct
 {
@@ -29,25 +29,26 @@ typedef struct PrinterInfo_struct
 }
     PrinterInfo_struct;
 
-typedef int (*CALLBACK_getPrinterInfo)(void* ,PrinterInfo_struct*);
+//typedef int (*CALLBACK_getPrinterInfo)(void* ,PrinterInfo_struct*);
 class StatusMonitor
 {
     
 public:
     StatusMonitor();
 
-    static int getPrinters(CALLBACK_getPrinterInfo ,void*);
-    static int getPrintersFromFile(CALLBACK_getPrinterInfo ,void*);
+//    static int getPrinters(CALLBACK_getPrinterInfo ,void*);
+//    static int getPrintersFromFile(CALLBACK_getPrinterInfo ,void*);
     static int getPrinterStatus(const char* printer ,PrinterStatus_struct* ps);
 //    static int getDeviceStatus(DeviceIO* device ,PrinterStatus_struct* ps);
     static int getDeviceStatus(DeviceIO* device ,Printer_struct* printer ,PrinterStatus_struct* ps);
     static int getDeviceStatus(DeviceIOManager* device_manager ,Printer_struct* printer ,PrinterStatus_struct* ps);
 
-    static bool AnyTonerReachLevel1(const PrinterStatus_struct& m_PrinterStatus);
-    static bool IsNonDellTonerMode(const PrinterStatus_struct& m_PrinterStatus);
-    static bool OnlyColorTonerEmpty(const PrinterStatus_struct& m_PrinterStatus);
-
+//    int get_printerlist(QList<Printer_struct >& printerlist);
+//    int get_printerlist_from_file(QList<Printer_struct >& printerlist);
+    static int getPrinters(CALLBACK_getPrinters ,void*);
+    static int getPrintersFromFile(CALLBACK_getPrinters ,void*);
 private:
+
 };
 
 #endif // STATUSMONITOR_H

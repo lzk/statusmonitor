@@ -52,3 +52,36 @@ int DeviceManager::getDeviceType(const char* device_uri)
     }
     return type;
 }
+
+int DeviceManager::get_device_connect_status(Printer_struct* printer)
+{
+    DeviceIO* device = new_device(printer);
+    if(device){
+        device->resolve(printer);
+        printer->isConnected = device->isConnected(printer);
+        strcpy(printer->connectTo
+           ,device->getDeviceAddress(printer));
+        delete device;
+    }
+    return 0;
+}
+
+DeviceIO* DeviceManager::new_device(Printer_struct* printer)
+{
+    int type = getDeviceType(printer->deviceUri);
+    DeviceIO* device;
+    switch (type) {
+    case DeviceIO::Type_usb:
+        device = new UsbIO;
+        break;
+
+    case DeviceIO::Type_net:
+        device = new NetIO;
+        break;
+
+    default:
+        device = NULL;
+        break;
+    }
+    return device;
+}

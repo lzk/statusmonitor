@@ -4,7 +4,7 @@
 #include <QThread>
 #include "jkinterface.h"
 #include "commonapi.h"
-#include "cupsmanager.h"
+//#include "cupsmanager.h"
 #include "statusmanager.h"
 #include <QMutex>
 class StatusThread : public QThread
@@ -28,12 +28,16 @@ public:
 
 private:
     DeviceManager* devicemanager;
-    CupsManager cupsmanager;
+//    CupsManager cupsmanager;
     StatusManager statusmanager;
 
     QString current_printer;
     QMutex mutex;
     PRINTER_STATUS status;
+
+    void get_printer_list();
+
+    friend class StatusWatcher;
 };
 
 #endif // STATUSTHREAD_H

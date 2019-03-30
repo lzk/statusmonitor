@@ -215,8 +215,12 @@ int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
 
 bool NetIO::isConnected()
 {
-    char buffer[1024];
-    return !getDeviceId_without_open(buffer ,sizeof(buffer));
+//    char buffer[1024];
+//    return !getDeviceId_without_open(buffer ,sizeof(buffer));
+    bool is_connected = open(9100) == 0 ?true :false;
+    if(is_connected)
+        close();
+    return is_connected;
 }
 
 const char* NetIO::getDeviceAddress()

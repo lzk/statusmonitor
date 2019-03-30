@@ -1,8 +1,7 @@
 #include "filterstatusthread.h"
 #include "jkinterface.h"
-#include "filtertask.h"
 #include "trans.h"
-#include "smconfig.h"
+#include "toecconfig.h"
 FilterStatusThread::FilterStatusThread(QObject *parent)
     : QThread(parent)
 {
@@ -25,7 +24,7 @@ void FilterStatusThread::run()
     char data[1025];
     int datalen = 1024;
 
-    Trans_Client tc(g_status_server_path);
+    Trans_Client tc(SERVER_PATH);
     char buffer[1124];
 
 //    QString str;
@@ -62,9 +61,9 @@ int filter_task_start(const  char* printer_name ,const char* printer_uri)
 //int filter_task_start(filter_task_struct* filter_data)
 {
     LOGLOG("filter_status_task: filter_task_start in");
-    Trans_Client tc(g_status_server_path);
+    Trans_Client tc(SERVER_PATH);
     int result = tc.tryConnectToServer();
-    LOGLOG("connect to server result %s:%d" ,g_status_server_path ,result);
+    LOGLOG("connect to server result %s:%d" ,SERVER_PATH ,result);
     if(!QString(printer_uri).startsWith("usb://")){
         LOGLOG("filter_status_task: only usb uri can run the thread!");
         return -1;

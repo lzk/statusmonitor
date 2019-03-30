@@ -10,6 +10,7 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include "commonapi.h"
+#include "statuspaser.h"
 #define TEST 0
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,7 +38,13 @@ MainWindow::MainWindow(QWidget *parent) :
     record_printlist = value.toBool();
     ui->checkBox_record->setChecked(record_printlist);
 
-    gUInterface->setCmd(UIConfig::CMD_GetPrinters ,QString());
+    //init
+    PrinterStatus_struct status;
+    memset(&status ,-1 ,sizeof(status));
+    updateToner(status.TonelStatusLevelC ,status.TonelStatusLevelM ,status.TonelStatusLevelY ,status.TonelStatusLevelK);
+    updateStatus(status);
+
+//    gUInterface->setCmd(UIConfig::CMD_GetPrinters ,QString());
 
 
 }
@@ -158,15 +165,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
     case UIConfig::CMD_GetStatus:{
         PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
         PrinterStatus_struct& status = printerInfo.status;
-//        LOGLOG("update status of %s" ,printerInfo.printer.name);
-        if(!result){
-//            LOGLOG("get status success:0x%02x" ,status.PrinterStatus);
-        }else{//get status fail
-            LOGLOG("get printer status fail!");
-//            memset(&status ,-1 ,sizeof(status));
-//                status.PrinterStatus = -1;
-        }
-        if(!current_printer.compare(printerInfo.printer.name)){
+        if(!printerInfo.printer.name[0] || !current_printer.compare(printerInfo.printer.name)){
 #if TEST
     status.PrinterStatus = 0;
     status.TonelStatusLevelC = 80;
@@ -177,7 +176,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
             updateToner(status.TonelStatusLevelC ,status.TonelStatusLevelM ,status.TonelStatusLevelY ,status.TonelStatusLevelK);
             updateStatus(status);
         }
-        updateOtherStatus(printerInfo.printer.name ,status);
+//        updateOtherStatus(printerInfo.printer.name ,status);
     }
         break;
 
@@ -204,7 +203,7 @@ void MainWindow::setcurrentPrinter(const QString& str)
     current_printer = str;
     gUInterface->setcurrentPrinter(str);
     setWindowTitle(app_name + " - " + str);
-    gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
+//    gUInterface->setCmd(UIConfig::CMD_GetStatus ,current_printer);
 }
 
 void MainWindow::on_checkBox_clicked()
@@ -568,8 +567,8 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     int currStatus = status.PrinterStatus;
     //update toner text
 /*    bool bShowLowTonerAlert = !!status.LowTonerAlert; // BMS#51330
-    if (bShowLowTonerAlert && !IsStatusUnknownToner(currStatus) && StatusMonitor::AnyTonerReachLevel1(status) && !StatusMonitor::IsNonDellTonerMode(status)) {
-        if (StatusMonitor::OnlyColorTonerEmpty(status)) {
+    if (bShowLowTonerAlert && !IsStatusUnknownToner(currStatus) && StatusPaser::AnyTonerReachLevel1(status) && !StatusPaser::IsNonDellTonerMode(status)) {
+        if (StatusPaser::OnlyColorTonerEmpty(status)) {
             if (IsStatusPrinting(currStatus))
                 toner_text = IDS_TONER_NEED_REPLACE;
             else
@@ -987,6 +986,7 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
 
 void MainWindow::updatePrinter(const QVariant& data)
 {
+#if 0
     printerInfos = data.value<QList<PrinterInfo_struct> >();
     PrinterInfo_struct printerInfo;
     int base = 0;
@@ -1011,6 +1011,38 @@ void MainWindow::updatePrinter(const QVariant& data)
         ui->tableWidget_printers->setItem(i ,base+3,item);
 //        gUInterface->setCmd(UIConfig::CMD_GetStatus ,printerInfo.printer.name);
     }
+#else
+    printerlist = data.value<QList<Printer_struct> >();
+    Printer_struct printer;
+    int base = 0;
+    ui->tableWidget_printers->setRowCount(printerlist.length());
+    printers.clear();
+    int index_of_online_printer = -1;
+    int index_of_defaultprinter = 0;
+    for(int i = 0 ;i < printerlist.length() ;i++){
+        printer = printerlist.at(i);
+        if(printer.isConnected){
+            if(index_of_online_printer < 0)
+                index_of_online_printer = i;
+        }
+        if(printer.isDefault){
+            index_of_defaultprinter =  i;
+        }
+        printers << printer.name;
+        QTableWidgetItem* item;
+        item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printer.name)));
+        ui->tableWidget_printers->setItem(i ,base+0 ,item);
+
+//        item = new QTableWidgetItem(tr("%1").arg(get_Status_string(printerInfo.status)));
+//        ui->tableWidget_printers->setItem(i ,base+1,item);
+        item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(printer.makeAndModel)));
+        ui->tableWidget_printers->setItem(i ,base+2,item);
+        item = new QTableWidgetItem(tr("%1").arg(printer.connectTo));
+        ui->tableWidget_printers->setItem(i ,base+3,item);
+//        gUInterface->setCmd(UIConfig::CMD_GetStatus ,printer.name);
+    }
+#endif
+
     ui->tableWidget_printers->setColumnHidden(1 ,true);
     if(printers.isEmpty())
     {
@@ -1034,7 +1066,9 @@ void MainWindow::updatePrinter(const QVariant& data)
     {
 //        setcurrentPrinter(current_printer);
          bCheckPrinter = false;
-
+    }else if(index_of_online_printer >= 0){
+        bCheckPrinter = false;
+        setcurrentPrinter(printers.at(index_of_online_printer));
     }else{
          bCheckPrinter = false;
           setcurrentPrinter(printers.at(index_of_defaultprinter));
@@ -1044,6 +1078,7 @@ void MainWindow::updatePrinter(const QVariant& data)
 
 void MainWindow::updateOtherStatus(const QString& printer ,const PrinterStatus_struct& status)
 {
+#if 0
     int base = 0;
     PrinterInfo_struct printerInfo;
     for(int i = 0 ;i < printerInfos.length() ;i++){
@@ -1062,7 +1097,25 @@ void MainWindow::updateOtherStatus(const QString& printer ,const PrinterStatus_s
 //        item = new QTableWidgetItem(tr("%1").arg(get_connect_to(printerInfo.printer.deviceUri)));
 //        ui->tableWidget_printers->setItem(i ,base+3,item);
     }
-
+#else
+    int base = 0;
+    Printer_struct ps;
+    for(int i = 0 ;i < printerlist.length() ;i++){
+        ps = printerlist.at(i);
+        if(printer.compare(ps.name)){
+            continue;
+        }
+        QTableWidgetItem* item;
+//        item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(ps.name)));
+//        ui->tableWidget_printers->setItem(i ,base+0 ,item);
+        item = new QTableWidgetItem(tr("%1").arg(get_Status_string(status)));
+        ui->tableWidget_printers->setItem(i ,base+1,item);
+//        item = new QTableWidgetItem(tr("%1").arg(QString::fromLocal8Bit(ps.makeAndModel)));
+//        ui->tableWidget_printers->setItem(i ,base+2,item);
+//        item = new QTableWidgetItem(tr("%1").arg(get_connect_to(ps.deviceUri)));
+//        ui->tableWidget_printers->setItem(i ,base+3,item);
+    }
+#endif
 }
 
 #include "tomcat.h"

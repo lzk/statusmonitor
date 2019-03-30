@@ -147,7 +147,7 @@ int getStatusFromDevice(DeviceIO* device ,Printer_struct* printer ,PRINTER_STATU
     memset(buffer ,0 ,sizeof(buffer));
     ret = device->getDeviceId(printer ,buffer ,sizeof(buffer));
     if(!ret){
-        LOGLOG("device get device id size:%d :%s" ,strlen(buffer) ,buffer);
+//        LOGLOG("device get device id size:%d :%s" ,strlen(buffer) ,buffer);
         ret = DecodeStatusFromDeviceID(buffer ,ps);
     }
     return ret;

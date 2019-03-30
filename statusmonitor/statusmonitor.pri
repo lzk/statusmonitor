@@ -8,9 +8,7 @@ SOURCES += \
     $$PWD/status.cpp \
     $$PWD/cupsmanager.cpp \
     $$PWD/smconfig.cpp \
-    $$PWD/filterstatusthread.cpp \
-#    $${PWD}/error.c \
-#    $${PWD}/loadresource.c \
+    $$PWD/statuswatcher.cpp
 
 
 HEADERS += \
@@ -20,7 +18,4 @@ HEADERS += \
     $$PWD/status.h \
     $$PWD/cupsmanager.h \
     $$PWD/smconfig.h \
-    $$PWD/filterstatusthread.h \
-    $$PWD/filtertask.h \
-#    $${PWD}/error.h \
-#    $${PWD}/ids_string.h \
+    $$PWD/statuswatcher.h

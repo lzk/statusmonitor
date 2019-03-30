@@ -55,7 +55,8 @@ private:
     QString current_printer;
 
     QStringList printers;
-    QList<PrinterInfo_struct> printerInfos;
+//    QList<PrinterInfo_struct> printerInfos;
+    QList<Printer_struct> printerlist;
 
     void setcurrentPrinter(const QString& str);
 

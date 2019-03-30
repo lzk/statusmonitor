@@ -49,7 +49,7 @@ void UIConfig::initConfig()
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
-    log_app_name = "tomcat";
+    log_app_name = "tjgd1zsmui";
     app_version = "1.0.8";
     log_init();
 }

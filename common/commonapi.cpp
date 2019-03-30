@@ -79,26 +79,27 @@ QString get_string_from_shell_cmd(const QString& cmd ,int mode)
     QString tmp_file = QString("/tmp/lnttmp_%1").arg(QDateTime::currentMSecsSinceEpoch());
     QString str;
     QString _cmd(cmd);
-    _cmd += ">";
+    _cmd += " > ";
     _cmd += tmp_file;
 //    _cmd += "&&chmod 666 ";
 //    _cmd += tmp_file;
 //    _cmd += " 2>>";
 //    _cmd += log_file;
-    if(!system(_cmd.toLatin1())){
-        QFile fl(tmp_file);
-        if(fl.open(QFile::ReadOnly)){
-            QTextStream in(&fl);
-            if(mode)
-                str = in.readAll();
-            else
-                str = in.readLine();
-            fl.close();
-        }
+    if(!system(_cmd.toLatin1().constData())){
+    }
+    QFile fl(tmp_file);
+    if(fl.open(QFile::ReadOnly)){
+        QTextStream in(&fl);
+        if(mode)
+            str = in.readAll();
+        else
+            str = in.readLine();
+        fl.close();
         fl.remove();
     }
     return str;
 }
+
 bool printer_is_printing(const QString& printer_name)
 {
     QString str("LANG=en lpstat -l -o ");
@@ -107,6 +108,6 @@ bool printer_is_printing(const QString& printer_name)
     str += log_file;
     str += "|grep -w ";
     str += printer_name;
-    QString printer_jobs = get_string_from_shell_cmd(str,0);
+    QString printer_jobs = get_string_from_shell_cmd(str ,0);
     return !printer_jobs.isEmpty();
 }

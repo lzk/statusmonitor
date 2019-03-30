@@ -13,6 +13,8 @@ struct Printer_struct{
 //    int port;
     char connectTo[256];
     bool isDefault;
+    bool isConnected;
+    int status;
 }
 Printer_struct;
 typedef int (*CALLBACK_getPrinters)(void* ,Printer_struct*);

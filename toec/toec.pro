@@ -37,23 +37,25 @@ SOURCES += \
     FingerCommon.cpp \
     finger.cpp \
     FingCmd.cpp \
-    filterlib.cpp
+    filterlib.cpp \
+#    $$PWD/filterstatusthread.cpp \
 
 
 HEADERS += \
     $${PWD}/toecconfig.h \
     $${PWD}/fingermanager.h \
-    $${PWD}/filter_check_finger.h \
     FingerCommon.h \
     finger.h \
     FingCmd.h \
     datadefine.h \
-    common.h
+    common.h \
+#    $$PWD/filterstatusthread.h \
 
 
 CONFIG(debug ,debug|release){
     DEFINES += DEBUG_TO_STDERR
     DEFINES += LOONGSON
 }else{
+    DEFINES += DEBUG_TO_STDERR
     DEFINES += LOONGSON
 }

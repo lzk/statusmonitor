@@ -11,7 +11,8 @@ Worker::Worker(QObject *parent) :
 {
     watcher = new Watcher(this);
     connect(this ,SIGNAL(set_current_printer(QString)) ,watcher ,SLOT(set_current_printer(QString)));
-    connect(watcher ,SIGNAL(update_printer_status(PrinterInfo_struct)) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
+//    connect(watcher ,SIGNAL(update_printer_status()) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
+    connect(watcher ,SIGNAL(update_current_printer_status()) ,this ,SLOT(update_current_printer_status()));
     connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()));
     watcher->start();
 }
@@ -28,36 +29,38 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     cmd_status = 1;
 
     QVariant value;
-    Printer_struct* printer = get_printer(printer_name);
-    int result = -1;
+//    Printer_struct ps;
+//    Printer_struct* printer;
+//    int index = watcher->get_printer_from_current_list(printer_name ,ps);
+//    if(index < 0){
+//        printer = NULL;
+//    }else{
+//        printer = &ps;
+//    }
+//    int result = -1;
 
     switch (cmd) {
-    case UIConfig::CMD_GetDefaultPrinter:{
-        QString default_printer;
-        if(!printers.isEmpty())
-            default_printer= printers.first();
-        value.setValue(default_printer);
-        cmdResult(cmd ,0 ,value);
-    }
-        break;
     case UIConfig::CMD_GetPrinters:
 //        getPrinters();
-        watcher->get_printer_list(printers_detail);
-        value.setValue(printers_detail);
-        cmdResult(cmd ,0 ,value);
+        update_printerlist();
         break;
 
     case UIConfig::CMD_GetStatus:
-        if(printer){
-            PrinterInfo_struct printerInfo;
-            strcpy(printerInfo.printer.name ,printer->name);
-            PrinterStatus_struct* status = &printerInfo.status;
-            result = StatusMonitor::getPrinterStatus(printer->name ,status);
-            value.setValue(printerInfo);
-
-        }
-        cmdResult(cmd ,result ,value);
+    case UIConfig::CMD_GetCurrentPrinterStatus:
+        update_current_printer_status();
         break;
+
+//    case UIConfig::CMD_GetStatus:
+//        if(printer){
+//            PrinterInfo_struct printerInfo;
+//            strcpy(printerInfo.printer.name ,printer->name);
+//            PrinterStatus_struct* status = &printerInfo.status;
+//            result = StatusMonitor::getPrinterStatus(printer->name ,status);
+//            value.setValue(printerInfo);
+
+//        }
+//        cmdResult(cmd ,result ,value);
+//        break;
 
     case UIConfig::CMD_GetJobs:
     {
@@ -67,7 +70,8 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             Tomcat::get_job_history(&jobs);
             value.setValue(jobs);
             cmdResult(cmd ,0 ,value);
-        }
+//        }
+    }
         break;
     default:
         break;
@@ -75,52 +79,28 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     cmd_status = 0;
 }
 
-static int callback_getPrinters(void* para,PrinterInfo_struct* ps)
+void Worker::update_current_printer_status()
 {
-    Worker* worker = (Worker*)para;
-//    strcpy(ps->printer.connectTo ,worker->getDevice(ps->printer.deviceUri)->getDeviceAddress());
-    worker->setPrinters(ps);
-    return 1;
-}
-
-void Worker::setPrinters(PrinterInfo_struct* ps)
-{
-    printers << ps->printer.name;
-    printers_detail << *ps;
-}
-
-void Worker::getPrinters()
-{
-    printers.clear();
-    printers_detail.clear();
-    StatusMonitor::getPrinters(callback_getPrinters ,(void*)this);
-}
-
-Printer_struct* Worker::get_printer(const QString& printer_name)
-{
-    Printer_struct* printer = NULL;
-    for(int i = 0 ;i < printers_detail.count() ;i++){
-        if(!printer_name.compare(printers_detail[i].printer.name)){
-            printer = &printers_detail[i].printer;
-            break;
-        }
-    }
-    return printer;
-}
-
-void Worker::update_printer_status(PrinterInfo_struct ps)
-{
-    LOGLOG("watcher update status:%02x" ,ps.status.PrinterStatus);
+    PrinterInfo_struct ps;
+    watcher->get_currentprinter_info(ps);
     QVariant value;
     value.setValue<PrinterInfo_struct>(ps);
     cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
 }
+//void Worker::update_printer_status(const QString& printer_name)
+//{
+//    PrinterInfo_struct ps;
+//    watcher->get_printer_info(printer_name ,ps);
+//    QVariant value;
+//    value.setValue<PrinterInfo_struct>(ps);
+//    cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+//}
 
 void Worker::update_printerlist()
 {
-    LOGLOG("watcher update printer list");
+    QList<Printer_struct> printer_list;
     QVariant value;
-    watcher->get_printer_list(printers_detail);
-    value.setValue(printers_detail);
+    watcher->get_printer_list(printer_list);
+    value.setValue(printer_list);
     cmdResult(UIConfig::CMD_GetPrinters ,0 ,value);
 }

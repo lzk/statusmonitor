@@ -24,7 +24,8 @@ SOURCES += \
     checkfingerdialog.cpp \
     fingerhandler.cpp \
     clientthread.cpp \
-    about.cpp
+    about.cpp \
+    statuspaser.cpp
 
 HEADERS  += mainwindow.h \
     enterpassword.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     checkfingerdialog.h \
     fingerhandler.h \
     clientthread.h \
-    about.h
+    about.h \
+    statuspaser.h
 
 FORMS    += mainwindow.ui \
     enterpassword.ui \

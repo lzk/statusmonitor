@@ -11,7 +11,6 @@ int usb_error_printing = -100;
 int usb_error_scanning = -101;
 int usb_error_usb_locked = -102;
 int usb_error_busy = -103;
-extern const char* log_file;
 
 static int _getpidvid(const QString& ,int* pid ,int* vid)
 {
@@ -213,7 +212,7 @@ int UsbIO::resolveUrl(const char* url)
 
 bool UsbIO::isConnected()
 {
-    bool ret = !usb->isConnected(vid ,pid ,serial);
+    bool ret = usb->isConnected(vid ,pid ,serial);
     return ret;
 }
 

@@ -20,6 +20,15 @@ enum{
 int checkFinger(int jobid ,const char* username ,const char* filename);
 
 int get_device_id_via_filter(const char* printer_name ,const char* printer_uri);
+
+//typedef struct
+//{
+//    char printer[512];
+//    int jobid;
+//}
+//    filter_task_struct;
+
+//int filter_task_start(filter_task_struct* filter_data);
 //int filter_task_start(const  char* printer_name ,const char* printer_uri);
 //int filter_task_end();
 #ifdef __cplusplus
