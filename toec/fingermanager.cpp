@@ -146,9 +146,8 @@ void callback_getJob(void* para,Job_struct* js)
     //                             usleep(10000);
     //                         }
                     sm->check_result = Checked_Result_Cancel;
-
-                    sprintf(buffer ,"result://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
-
+                    sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                            ,sm->username ,sm->filename);
                     tc.writeThenRead(buffer ,sizeof(buffer));
                     if(!strcmp(buffer ,"resultok"))
                     {
@@ -171,9 +170,8 @@ void callback_getJob(void* para,Job_struct* js)
     //                            usleep(10000);
     //                        }
                     sm->check_result = Checked_Result_timeout;
-
-                    sprintf(buffer ,"result://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
-
+                    sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                            ,sm->username ,sm->filename);
                     tc.writeThenRead(buffer ,sizeof(buffer));
                     if(!strcmp(buffer ,"resultok"))
                     {
@@ -198,8 +196,8 @@ void callback_getJob(void* para,Job_struct* js)
                         usleep(200000);
                         sm->mFinger.finger_cancel(sm->m_device_uri);
                         sm->check_result = Checked_Result_Cancel;
-                        sprintf(buffer ,"result://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
-
+                        sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                                ,sm->username ,sm->filename);
                         tc.writeThenRead(buffer ,sizeof(buffer));
                         if(!strcmp(buffer ,"resultok"))
                         {
@@ -214,8 +212,8 @@ void callback_getJob(void* para,Job_struct* js)
                     LOGLOG("gavin: show Dlg...close");
                     // while(1)
                     {
-                        sprintf(buffer ,"result://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
-
+                        sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                                ,sm->username ,sm->filename);
                         tc.writeThenRead(buffer ,sizeof(buffer));
                         if(!strcmp(buffer ,"resultok"))
                         {
@@ -273,7 +271,8 @@ void callback_getJob(void* para,Job_struct* js)
     {
         LOGLOG("libtoec: finger is open, but not finger data");
         sm->check_result = Checked_Result_NoFinger;
-        sprintf(buffer ,"result://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
+        sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                ,sm->username ,sm->filename);
         tc.writeThenRead(buffer ,sizeof(buffer));
         if(!strcmp(buffer ,"resultok")){
             LOGLOG("gavin: result ok");
@@ -286,7 +285,8 @@ void callback_getJob(void* para,Job_struct* js)
 
         LOGLOG("libtoec: finger  not open");
         sm->check_result = Checked_Result_Disable;
-        sprintf(buffer ,"result://%s?jobid=%d&status=%d",js->printer ,js->id, sm->check_result);
+        sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                ,sm->username ,sm->filename);
         tc.writeThenRead(buffer ,sizeof(buffer));
         if(!strcmp(buffer ,"resultok")){
             LOGLOG("gavin: result ok");
@@ -388,7 +388,7 @@ void callback_getJob(void* para,Job_struct* js)
 #endif
 }
 
-int FingerManager::checkFinger(const char* server_path ,int jobid)
+int FingerManager::checkFinger(const char* server_path ,int jobid ,const char* username ,const char* filename)
 {
     LOGLOG("libtoec: start check finger job id:%d" ,job_id);
     this->job_id = jobid;

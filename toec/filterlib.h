@@ -17,7 +17,7 @@ enum{
     Checked_Result_DevBusy,
 };
 
-int checkFinger(int jobid);
+int checkFinger(int jobid ,const char* username ,const char* filename);
 
 int get_device_id_via_filter(const char* printer_name ,const char* printer_uri);
 //int filter_task_start(const  char* printer_name ,const char* printer_uri);

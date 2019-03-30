@@ -35,4 +35,8 @@ void MainWindow::on_pushButton_clicked()
     if(!strcmp(buffer ,"startok")){
         LOGLOG("test ok");
     }
+
+//    sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s","printer" ,ui->spinBox->value(), 1
+//            ,"username" ,"filename");
+//    tc.writeThenRead(buffer ,sizeof(buffer));
 }

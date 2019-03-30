@@ -25,7 +25,8 @@ static void callback_getJob(void* para,Job_struct* js)
 //    StatusMonitor* sm = (StatusMonitor*)para;
     char job_history[256];
     sprintf(job_history ,"%d,%s,%s,%s,%s,%d,%d,%d"
-            ,js->id ,js->printer ,hostname,js->user_name  ,js->name
+//            ,js->id ,js->printer ,hostname,js->user_name  ,js->name
+            ,js->id ,js->printer ,hostname,job->username.toLatin1().constData()  ,job->filename.toLatin1().constData()
              ,(js->copies < 1) ?1 :js->copies
             ,job->is_finger_enable,job->is_finger_checked//是，成功
             );
@@ -50,7 +51,7 @@ int Tomcat::save_job_history(Job_history* job)
 
 bool sort_jobs(const QString &s1, const QString &s2)
 {
-    return s1.toInt() < s2.toInt();
+    return s1.toInt() > s2.toInt();
 }
 
 int Tomcat::get_job_history(Jobs_struct* pJobs)

@@ -151,6 +151,13 @@ static int callback_Server(void* para,char* buffer,int bufsize)
             job.id = jobid;
             job.is_finger_enable = (finger_checked_result != Checked_Result_Disable) ?1 :0;
             job.is_finger_checked = (finger_checked_result == Checked_Result_OK) ?1 :0;
+#if QT_VERSION > 0x050000
+        job.username = QUrlQuery(QUrl(url)).queryItemValue("username");
+        job.filename = QUrl(url).queryItemValue("filename");
+#else
+        job.username = QUrl(url).queryItemValue("username");
+        job.filename = QUrl(url).queryItemValue("filename");
+#endif
             Tomcat::save_job_history(&job);
         }else{
             LOGLOG("do not record to file list");

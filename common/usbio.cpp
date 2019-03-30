@@ -12,18 +12,6 @@ int usb_error_scanning = -101;
 int usb_error_usb_locked = -102;
 int usb_error_busy = -103;
 extern const char* log_file;
-bool printer_is_printing(const QString& printer_name)
-{
-    QString str("LANG=en lpstat -l -o ");
-    str += printer_name;
-    str += " 2>>";
-    str += log_file;
-    str += "|grep -w ";
-    str += printer_name;
-    QString printer_jobs = get_string_from_shell_cmd(str);
-    return !printer_jobs.isEmpty();
-}
-
 
 static int _getpidvid(const QString& ,int* pid ,int* vid)
 {
@@ -233,7 +221,8 @@ const char* UsbIO::getDeviceAddress()
 {
     int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address);
     if(ret){
-       address = 0;
+       address = -1;
+       return "";
     }
     return QString().sprintf("USB%03d" ,address).toLatin1().constData();
 }

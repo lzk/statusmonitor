@@ -1,11 +1,14 @@
 #ifndef TOMCAT_H
 #define TOMCAT_H
 
+#include <QStringList>
 typedef
 struct{
     int id;
     int is_finger_enable;
     int is_finger_checked;
+    QString username;
+    QString filename;
 }
     Job_history;
 
@@ -22,7 +25,6 @@ enum{
     JobHistoryIndex_isJobCompleted,
     JobHistoryIndex_time,
 };
-#include <QStringList>
 typedef struct
 {
     unsigned int pages;

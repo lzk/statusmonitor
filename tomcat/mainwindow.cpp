@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ,about_dialog(NULL)
 {
     ui->setupUi(this);
+    ui->tabWidget->setCurrentIndex(3);
     setWindowTitle(app_name);
 //    setWindowIcon(QIcon(":/image/app_icon.png"));
 //    ui->menuBar->hide();
@@ -329,7 +330,7 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
     QString k_uri = ":/image/";
     if(c < 0){
         c_uri += "t_unknown";
-    }else if(c < 5){
+    }else if(c == 0){
         c_uri += "t_0";
     }else if(c < 10){
         c_uri += "c5";
@@ -356,7 +357,7 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
     }
     if(m < 0){
         m_uri += "t_unknown";
-    }else if(m < 5){
+    }else if(m == 0 ){
         m_uri += "t_0";
     }else if(m < 10){
         m_uri += "m5";
@@ -383,7 +384,7 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
     }
     if(y < 0){
         y_uri += "t_unknown";
-    }else if(y < 5){
+    }else if(y == 0){
         y_uri += "t_0";
     }else if(y < 10){
         y_uri += "y5";
@@ -410,7 +411,7 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
     }
     if(k < 0){
         k_uri += "t_unknown";
-    }else if(k < 5){
+    }else if(k == 0){
         k_uri += "t_0";
     }else if(k < 10){
         k_uri += "k5";
@@ -467,7 +468,10 @@ QString MainWindow::get_Status_string(const PrinterStatus_struct& status)
                 str_status = QString() + ei.errorString->title + "(" + ei.error->code + ")";
             }
         }else{
-            str_status = IDS_STATUSReady;
+            if(current_printer.isEmpty())
+                str_status = IDS_STRUnknow;
+            else
+                str_status = IDS_STATUSReady;
         }
         break;
     case 1://Printing
@@ -563,7 +567,7 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
 
     int currStatus = status.PrinterStatus;
     //update toner text
-    bool bShowLowTonerAlert = !!status.LowTonerAlert; // BMS#51330
+/*    bool bShowLowTonerAlert = !!status.LowTonerAlert; // BMS#51330
     if (bShowLowTonerAlert && !IsStatusUnknownToner(currStatus) && StatusMonitor::AnyTonerReachLevel1(status) && !StatusMonitor::IsNonDellTonerMode(status)) {
         if (StatusMonitor::OnlyColorTonerEmpty(status)) {
             if (IsStatusPrinting(currStatus))
@@ -582,6 +586,22 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
         ui->label_toner->hide();
     }
     ui->textEdit_toner->setText(toner_text);
+*/
+    if(status.TonelStatusLevelC <20 || status.TonelStatusLevelK <20 || status.TonelStatusLevelM <20 || status.TonelStatusLevelY <20)
+    {
+        toner_text = "请更换碳粉盒。";
+        ui->label_toner->setPixmap(QPixmap(":/image/toner.png"));
+        ui->textEdit_toner->setText(toner_text);
+        ui->textEdit_toner->show();
+        ui->label_toner->show();
+    }
+    else
+    {
+        ui->label_toner->hide();
+        ui->textEdit_toner->hide();
+    }
+
+
 
     //update toner picture
     QString toner_pic = ":/image/";
@@ -783,7 +803,7 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
 //        warning_status = 2;
 //        break;
 //	}
-    if(IsStatusError(currStatus)){
+    if(IsStatusError(currStatus)&& printer_is_printing(current_printer)){
         warning_status = 2;
     }else if(IsStatusAbnormal(currStatus)){
         warning_status = 1;
@@ -818,45 +838,140 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
 
             if ((IsStatusError(currStatus) && !IsStatusVirtual(currStatus) && currStatus != PS_ERROR_NOT_AVAILABLE && currStatus != PS_ERROR_NOT_SUPPORT) || currStatus == PS_TONER_LOW || currStatus != PS_POWER_SAVING)
             {
-                text += QString() + "<p>" + ei.errorString->title + "</p>";
-        //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
-        //        text += "<br/>";
-                text += QString() + "<p>" + ei.error->code + "</p>";
-                text += "</body></html>";
-                ui->label_status->setText(text);
+                if(currStatus == PS_ERROR_NO_TONER ||currStatus == PS_TONER_LOW)
+                {
+                    if((status.TonelStatusLevelC <20 && status.TonelStatusLevelK >20 && status.TonelStatusLevelM>20 && status.TonelStatusLevelY >20)
+                        ||(status.TonelStatusLevelC >20 && status.TonelStatusLevelK <20 && status.TonelStatusLevelM>20 && status.TonelStatusLevelY >20)
+                        ||(status.TonelStatusLevelC >20 && status.TonelStatusLevelK >20 && status.TonelStatusLevelM<20 && status.TonelStatusLevelY >20)
+                        ||(status.TonelStatusLevelC >20 && status.TonelStatusLevelK >20 && status.TonelStatusLevelM>20 && status.TonelStatusLevelY <20))
+                    {
+                        text += QString() + "<p>" + ei.errorString->title + "</p>";
+                //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
+                //        text += "<br/>";
+                        text += QString() + "<p>" + ei.error->code + "</p>";
+                        text += "</body></html>";
+                        ui->label_status->setText(text);
 
-                text = "<html><head/><body>";
-                const char* extra_string = "";
-                for(i = 0 ;i < ei.errorString->lines ;i++){
-        //            text += "<br/>";
-                    if(ei.errorString->mediaInfo){
-                        if(i == ei.errorString->lines -2)
-                            extra_string = ei.paperSizeString;
-                        else if(i == ei.errorString->lines - 1)
-                            extra_string = ei.paperTypeString;
+                        text = "<html><head/><body>";
+                        const char* extra_string = "";
+                        for(i = 0 ;i < ei.errorString->lines ;i++){
+                //            text += "<br/>";
+                            if(ei.errorString->mediaInfo){
+                                if(i == ei.errorString->lines -2)
+                                    extra_string = ei.paperSizeString;
+                                else if(i == ei.errorString->lines - 1)
+                                    extra_string = ei.paperTypeString;
+                            }
+                            switch (i) {
+                            case 0:
+                                text += QString() + "<p>" + ei.errorString->line0 + extra_string + "</p>";
+                                break;
+                            case 1:
+                                text += QString() + "<p>" + ei.errorString->line1 + extra_string + "</p>";
+                                break;
+                            case 2:
+                                text += QString() + "<p>" + ei.errorString->line2 + extra_string + "</p>";
+                                break;
+                            case 3:
+                                text += QString() + "<p>" + ei.errorString->line3 + extra_string + "</p>";
+                                break;
+                            case 4:
+                                text += QString() + "<p>" + ei.errorString->line4 + extra_string + "</p>";
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                        text += "</body></html>";
+                        ui->label_detail->setText(text);
                     }
-                    switch (i) {
-                    case 0:
-                        text += QString() + "<p>" + ei.errorString->line0 + extra_string + "</p>";
-                        break;
-                    case 1:
-                        text += QString() + "<p>" + ei.errorString->line1 + extra_string + "</p>";
-                        break;
-                    case 2:
-                        text += QString() + "<p>" + ei.errorString->line2 + extra_string + "</p>";
-                        break;
-                    case 3:
-                        text += QString() + "<p>" + ei.errorString->line3 + extra_string + "</p>";
-                        break;
-                    case 4:
-                        text += QString() + "<p>" + ei.errorString->line4 + extra_string + "</p>";
-                        break;
-                    default:
-                        break;
+                    else
+                    {
+                        QString TonerColor ="";
+                        QString TonerStatus ="";
+                        char cTonerColor[256];
+                        memset(cTonerColor ,0 ,sizeof(cTonerColor));
+                        if(status.TonelStatusLevelK< 20)
+                        {
+                            if (strlen(cTonerColor)>0)
+                                 strcat(cTonerColor, "、");
+                            strcat(cTonerColor, IDS_BLACK);
+                        }
+                        if(status.TonelStatusLevelC< 20)
+                        {
+                            if (strlen(cTonerColor)>0)
+                                 strcat(cTonerColor, "、");
+                            strcat(cTonerColor, IDS_CYAN);
+                        }
+                        if(status.TonelStatusLevelM< 20)
+                        {
+                            if (strlen(cTonerColor)>0)
+                                 strcat(cTonerColor, "、");
+                            strcat(cTonerColor, IDS_MAGENTA);
+                        }
+                        if(status.TonelStatusLevelY< 20)
+                        {
+                            if (strlen(cTonerColor)>0)
+                                 strcat(cTonerColor, "、");
+                            strcat(cTonerColor, IDS_YELLOW);
+                        }
+                        switch (currStatus)
+                        {
+                        case PS_TONER_LOW:
+                             TonerStatus = QString().sprintf("需要立即更换%s粉仓。",cTonerColor);
+                            break;
+                        case PS_ERROR_NO_TONER:
+                             TonerStatus = QString().sprintf("更换%s粉仓。",cTonerColor);
+                            break;
+                        }
+                       QString TonerRecoveryStr = QString().sprintf("打开碳粉盒入口盖。然后卸下所用的%s粉仓并安装新的%s粉仓。" ,cTonerColor ,cTonerColor);
+                        ui->label_status->setText(TonerStatus);
+                        ui->label_detail->setText(TonerRecoveryStr);
                     }
                 }
-                text += "</body></html>";
-                ui->label_detail->setText(text);
+                else
+                {
+                    text += QString() + "<p>" + ei.errorString->title + "</p>";
+            //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
+            //        text += "<br/>";
+                    text += QString() + "<p>" + ei.error->code + "</p>";
+                    text += "</body></html>";
+                    ui->label_status->setText(text);
+
+                    text = "<html><head/><body>";
+                    const char* extra_string = "";
+                    for(i = 0 ;i < ei.errorString->lines ;i++){
+            //            text += "<br/>";
+                        if(ei.errorString->mediaInfo){
+                            if(i == ei.errorString->lines -2)
+                                extra_string = ei.paperSizeString;
+                            else if(i == ei.errorString->lines - 1)
+                                extra_string = ei.paperTypeString;
+                        }
+                        switch (i) {
+                        case 0:
+                            text += QString() + "<p>" + ei.errorString->line0 + extra_string + "</p>";
+                            break;
+                        case 1:
+                            text += QString() + "<p>" + ei.errorString->line1 + extra_string + "</p>";
+                            break;
+                        case 2:
+                            text += QString() + "<p>" + ei.errorString->line2 + extra_string + "</p>";
+                            break;
+                        case 3:
+                            text += QString() + "<p>" + ei.errorString->line3 + extra_string + "</p>";
+                            break;
+                        case 4:
+                            text += QString() + "<p>" + ei.errorString->line4 + extra_string + "</p>";
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                    text += "</body></html>";
+                    ui->label_detail->setText(text);
+                }
+
             }
             else
             {

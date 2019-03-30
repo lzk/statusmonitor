@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-int checkFinger(int jobid)
+int checkFinger(int jobid ,const char* username ,const char* filename)
 {
     FingerManager fm;
-    return fm.checkFinger(SERVER_PATH ,jobid);
+    return fm.checkFinger(SERVER_PATH ,jobid ,username ,filename);
 }
 
 int get_device_id_via_filter(const char* printer_name ,const char* printer_uri)

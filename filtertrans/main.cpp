@@ -37,19 +37,19 @@ int main(int argc, char *argv[])
     app_server = new AppServer(SERVER_PATH);
     Watcher* watcher = new Watcher;
     watcher->start();
-    pid_t pid = fork();
-    switch(pid)
-    {
-    case -1:
-        LOGLOG("fork failed");
-        exit(1);
-        break;
-    case 0:
-        execlp("tjgd1zsmui", "tjgd1zsmui" ,"-hide" ,0);
-        return 0;
-    default:
-        break;
-    }
+//    pid_t pid = fork();
+//    switch(pid)
+//    {
+//    case -1:
+//        LOGLOG("fork failed");
+//        exit(1);
+//        break;
+//    case 0:
+//        execlp("tjgd1zsmui", "tjgd1zsmui" ,"-hide" ,0);
+//        return 0;
+//    default:
+//        break;
+//    }
     int ret = a.exec();
     delete watcher;
     delete app_server;

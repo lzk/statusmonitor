@@ -1,6 +1,7 @@
 #include <QSettings>
 #include "log.h"
 #include "trans.h"
+extern const char* log_file;
 bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultValue ,bool set)
 {
     bool result = true;
@@ -93,9 +94,19 @@ QString get_string_from_shell_cmd(const QString& cmd ,int mode)
             else
                 str = in.readLine();
             fl.close();
-            fl.remove();
         }
+        fl.remove();
     }
     return str;
 }
-
+bool printer_is_printing(const QString& printer_name)
+{
+    QString str("LANG=en lpstat -l -o ");
+    str += printer_name;
+    str += " 2>>";
+    str += log_file;
+    str += "|grep -w ";
+    str += printer_name;
+    QString printer_jobs = get_string_from_shell_cmd(str,0);
+    return !printer_jobs.isEmpty();
+}
