@@ -26,7 +26,6 @@ void ServerThread::run()
 {
     forever {
         if (abort){
-            abort = false;
             break;
         }
         int fd = trans_server.any_client_connected();
@@ -34,5 +33,6 @@ void ServerThread::run()
             client_connect(fd);
         }
     }
+    abort = false;
 }
 

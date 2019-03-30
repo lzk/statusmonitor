@@ -4,7 +4,9 @@
 #include <cups/cups.h>
 #include <cups/backend.h>
 #include <cups/sidechannel.h>
+#ifndef Q_OS_MAC
 #include <sys/statfs.h>
+#endif
 #include <sys/time.h>
 
 

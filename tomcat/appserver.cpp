@@ -153,7 +153,7 @@ static int callback_Server(void* para,char* buffer,int bufsize)
             job.is_finger_checked = (finger_checked_result == Checked_Result_OK) ?1 :0;
 #if QT_VERSION > 0x050000
         job.username = QUrlQuery(QUrl(url)).queryItemValue("username");
-        job.filename = QUrl(url).queryItemValue("filename");
+        job.filename = QUrlQuery(QUrl(url)).queryItemValue("filename");
 #else
         job.username = QUrl(url).queryItemValue("username");
         job.filename = QUrl(url).queryItemValue("filename");

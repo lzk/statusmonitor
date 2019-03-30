@@ -63,7 +63,7 @@ static const char* my_libusb_strerror(int errcode)
 }
 
 
-int iterateDevices(usbDeviceHandler handler ,void* handlerData)
+int UsbApi::iterateDevices(usbDeviceHandler handler ,void* handlerData)
 {
     int ret = -1;
     libusb_device **devlist;
@@ -76,7 +76,7 @@ int iterateDevices(usbDeviceHandler handler ,void* handlerData)
     int i;
     for (i = 0; i < ndev; i++){
         dev = devlist[i];
-#if DEBUG
+#ifdef DEBUG
       print_device(dev ,0);
 #endif
         if(handler){
@@ -326,7 +326,6 @@ int UsbApi::exit()
 
 int UsbApi::open(int vid, int pid, const char *serial ,int interface)
 {
-//    interface = 0;
     struct_device data;
     memset((void*)&data ,0 ,sizeof(data));
     data.deviceInfo.vid = vid;
@@ -348,7 +347,6 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
         return ret;
     }
     g_interface = interface;
-//    ret = claimInterface(g_dev_h ,0);
     ret = claimInterface(g_dev_h ,g_interface);
     if(ret){
         LOGLOG("libusb can not claim interface:%d" ,g_interface);

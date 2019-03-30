@@ -5,6 +5,7 @@
 #include<fcntl.h>
 #include <sys/file.h>
 #include <sys/stat.h>
+#include <string.h>
 
 FileLocker::FileLocker():
     fp(NULL)
@@ -17,8 +18,10 @@ int FileLocker::lock(const char* filename)
 //    LOGLOG("pid %ld get file %s lock" ,getpid() ,filename);
     fp = fopen(filename, "ab+");
     chmod(filename ,DEFFILEMODE);
-    int fd;
+    strcpy(lock_file ,filename);
+
     if(fp){
+        int fd;
 #ifdef JK_OS_MAC
         fd = fp->_file;
 #else
@@ -35,28 +38,6 @@ int FileLocker::lock(const char* filename)
     return ret;
 }
 
-int FileLocker::trylock(const char* filename)
-{
-    int ret = -1;
-    fp = fopen(filename, "ab+");
-    chmod(filename ,DEFFILEMODE);
-    int fd;
-    if(fp){
-#ifdef JK_OS_MAC
-        fd = fp->_file;
-#else
-        fd = fp->_fileno;
-#endif
-        if (flock(fd, LOCK_EX | LOCK_NB)){
-            ret = 0;
-        }else{
-            fclose(fp);
-            fp = NULL;
-        }
-    }
-    return ret;
-}
-
 int FileLocker::unlock()
 {
     if(fp){
@@ -66,10 +47,14 @@ int FileLocker::unlock()
 #else
         fd = fp->_fileno;
 #endif
-        flock(fd, LOCK_UN);
+        int ret = flock(fd, LOCK_UN);
         fclose(fp);
         fp = NULL;
 //        LOGLOG("pid %d unlocked" ,getpid());
+        if(ret){
+            LOGLOG("unlock fail,remove it!");
+            remove(lock_file);
+        }
     }
     return 0;
 }
