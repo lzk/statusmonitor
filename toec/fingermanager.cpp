@@ -46,17 +46,17 @@ void* checkFingerThread(void *para)
 
 void callback_getJob(void* para,Job_struct* js)
 {
-    LOGLOG("callback_getJob: start check finger");
 
     FingerManager* sm = (FingerManager*)para;
     if(js->id != sm->job_id)
     {
-        LOGLOG("callback_getJob: id fail return");
-
+//        LOGLOG("callback_getJob: id fail return");
         return;
     }
 
+    LOGLOG("callback_getJob: start check finger");
     LOGLOG("callback_getJob:server_path=%s",ui_server_path);
+    LOGLOG("callback_getJob user name:%s ,file name:%s" ,sm->username ,sm->filename);
 
     Trans_Client tc(ui_server_path);//(sm->server_path);
     char buffer[256];
@@ -390,8 +390,13 @@ void callback_getJob(void* para,Job_struct* js)
 
 int FingerManager::checkFinger(const char* server_path ,int jobid ,const char* username ,const char* filename)
 {
-    LOGLOG("libtoec: start check finger job id:%d" ,job_id);
+    LOGLOG("libtoec: start check finger job id:%d" ,jobid);
+    LOGLOG("filterlib checkfinger user name:%s ,filename:%s" ,username ,filename);
     this->job_id = jobid;
+    strcpy(this->username ,username);
+    strcpy(this->filename ,filename);
+//    this->username  = username;
+//    this->filename  = filename;
     this->server_path = server_path;
     check_result = Checked_Result_invalidJobid;
     this->m_timeout = 30;
