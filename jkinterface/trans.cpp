@@ -117,6 +117,7 @@ int Trans_Server::createServer(const char* server_path)
 //    char command[256];
 //    sprintf(command ,"chmod a+w %s" ,path);
 //    system(command);
+    chmod(path ,DEFFILEMODE);
     return listen_fd;
 }
 
@@ -168,7 +169,7 @@ Trans_Client::Trans_Client(const char* server_path)
     memset(path ,0 ,sizeof(path));
     if(server_path)
         strcpy(path ,server_path);
-    LOGLOG("try to get server path:%s" ,server_path);
+//    LOGLOG("try to get server path:%s" ,server_path);
 
 }
 

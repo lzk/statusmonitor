@@ -111,3 +111,8 @@ int DeviceIO::getDeviceId(Printer_struct* printer ,char *buffer, int bufsize)
     }else
         return -1;
 }
+
+bool DeviceIO::is_the_same_device(Printer_struct* printer)
+{
+    return !strcmp(printer->deviceUri ,device_uri);
+}

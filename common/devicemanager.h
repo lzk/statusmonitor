@@ -11,6 +11,8 @@ public:
     ~DeviceManager();
     virtual DeviceIO* getDevice(Printer_struct* printer);
     static int getDeviceType(const char* uri);
+    static int get_device_connect_status(Printer_struct* printer);
+    static DeviceIO* new_device(Printer_struct* printer);
 private:
     DeviceIO* device;
     DeviceIO* usbIO;

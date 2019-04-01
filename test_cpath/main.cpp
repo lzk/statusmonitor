@@ -18,7 +18,7 @@ void quit(int)
 
 int main(int argc, char *argv[])
 {
-    if(isRunning(SERVER_PATH)){
+    if(is_app_running(SERVER_PATH)){
         return 0;
     }
     UIConfig::initConfig();

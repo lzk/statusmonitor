@@ -103,7 +103,7 @@ private:
     BusyRefreshLabel *cycle;
 
     QStringList printers;
-    QList<PrinterInfo_struct> printerInfos;
+    QList<Printer_struct> printerlist;
 
     QAction *quitAction;
     QSystemTrayIcon *trayIcon;

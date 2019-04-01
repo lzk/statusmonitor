@@ -10,6 +10,8 @@
 extern bool use_status_thread;
 #define SERVER_PATH "/tmp/lnvvop.domain"
 
+Q_DECLARE_METATYPE(Printer_struct)
+Q_DECLARE_METATYPE(QList<Printer_struct>)
 Q_DECLARE_METATYPE(PrinterInfo_struct)
 Q_DECLARE_METATYPE(QList<PrinterInfo_struct>)
 Q_DECLARE_METATYPE(copycmdset)

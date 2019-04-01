@@ -69,7 +69,7 @@ void quit(int)
 
 int main(int argc, char *argv[])
 {
-    if(isRunning(SERVER_PATH)){
+    if(is_app_running(SERVER_PATH)){
         LOGLOG("There has been a same app running!");
         return 0;
     }

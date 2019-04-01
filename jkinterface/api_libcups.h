@@ -13,6 +13,8 @@ struct Printer_struct{
 //    int port;
     char connectTo[256];
     bool isDefault;
+    bool isConnected;
+    int status;
 }
 Printer_struct;
 typedef int (*CALLBACK_getPrinters)(void* ,Printer_struct*);
@@ -53,4 +55,5 @@ int cups_get_device_uri(const char* printer ,char* device_uri);
 int cups_get_printers(CALLBACK_getPrinters callback ,void* para);
 int snmpGetDeviceID(const char* device_uri ,char* buffer ,int bufsize);
 int cups_resolve_uri(const char* device_uri ,char* buffer ,int bufsize);
+int cups_usb_getDeviceID(char* data ,int datalen);
 #endif // API_LIBCUPS_H
