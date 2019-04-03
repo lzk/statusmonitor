@@ -52,23 +52,16 @@ extern int usb_error_printing;
 void WatcherStatusThread::work(PrinterInfo_struct* printerinfo)
 {
     int result;
-    if(printer_is_printing(printerinfo->printer.name)){
-        result = usb_error_printing;
-        printerinfo->printer.status = usb_error_printing;
-//        LOGLOG("now is printing,get status via cups");
-    }
-    if((result != usb_error_printing) || (device->type() == DeviceIO::Type_net) ){
-//        LOGLOG("printer %s get device status" ,printerinfo->printer.name);
-        result = StatusMonitor::getDeviceStatus(device ,&printerinfo->printer ,&printerinfo->status);
-        printerinfo->printer.status = result;
-        StatusWatcher* monitor = qobject_cast<StatusWatcher* >(parent());
-        if(monitor){
-            QString cp;
-            monitor->mutex.lock();
-            cp = current_printer;
-            monitor->mutex.unlock();
-            monitor->set_current_printer_info(printerinfo);
-        }
+//    LOGLOG("printer %s get device status" ,printerinfo->printer.name);
+    result = StatusMonitor::getDeviceStatus(device ,&printerinfo->printer ,&printerinfo->status);
+    printerinfo->printer.status = result;
+    StatusWatcher* monitor = qobject_cast<StatusWatcher* >(parent());
+    if(monitor){
+        QString cp;
+        monitor->mutex.lock();
+        cp = current_printer;
+        monitor->mutex.unlock();
+        monitor->set_current_printer_info(printerinfo);
     }
 }
 

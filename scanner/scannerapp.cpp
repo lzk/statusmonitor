@@ -330,14 +330,14 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     set_cancel(false);
     settings->received_bytes = 0;
     usb_error_usb_locked = usb_error_scanning;
-    ret = scanner->flat_scan(printer ,settings);
-//    for(int i = 0 ;i < 3 ;i++){
-//        ret = scanner->flat_scan(printer ,settings);
-//        if(ret != STATUS_Error_App && ret != STATUS_Error_lock && ret != STATUS_Error_busy)
-//            break;
-//        else
-//            usleep(100 * 1000);
-//    }
+//    ret = scanner->flat_scan(printer ,settings);
+    for(int i = 0 ;i < 3 ;i++){
+        ret = scanner->flat_scan(printer ,settings);
+        if(ret != STATUS_Error_App && ret != STATUS_Error_lock && ret != STATUS_Error_busy)
+            break;
+        else
+            usleep(100 * 1000);
+    }
     if(STATUS_Error_lock == ret)
         ret = STATUS_Error_machine;
     usb_error_usb_locked = usb_error_busy;
