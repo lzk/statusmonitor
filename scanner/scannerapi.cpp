@@ -292,11 +292,11 @@ void caculate_image_trans_data(ScanSettings* settings)
     Image_Data_Struct* target = &pCalc->target;
 
     if(settings->settings.scan_type == Hight_Speed){
-        info->source_format = ImageTransFormat_jpg;
-        info->target_format = ImageTransFormat_bmp;
+        source->format = ImageTransFormat_jpg;
+        target->format = ImageTransFormat_bmp;
     }else{
-        info->source_format = ImageTransFormat_raw;
-        info->target_format = ImageTransFormat_bmp;
+        source->format = ImageTransFormat_raw;
+        target->format = ImageTransFormat_bmp;
     }
 
     info->source_pixelsOfWidth = source->pixels_per_line;
@@ -467,7 +467,7 @@ int ScannerApi::get_cmd_status()
         return ret;
     }
     if(statusRsp.cmdID != CMDID_PSTATUS){
-        ret = -1;
+        ret = ScannerApp::STATUS_Error_Error;
     }else{
         ret = statusRsp.status;
     }
@@ -493,10 +493,11 @@ int ScannerApi::lock()
         }
         ret = get_cmd_status();
         if(ret == ScannerApp::STATUS_WARMINGUP){
-            LOGLOG("warming up,please try again later");
+            LOGLOG("scanner:warming up,please try again later");
         }else if(ret == ScannerApp::STATUS_USEWITHOUTLOCK){
+            LOGLOG("scanner:busy");
 //            unlock();
-            break;
+//            break;
         }else{
             break;
         }

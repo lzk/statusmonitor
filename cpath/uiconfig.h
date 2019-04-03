@@ -172,6 +172,7 @@ public:
         CMD_GetPrinters,
         CMD_GetStatus,
         CMD_Scan,
+        CMD_SetCurrentPrinter,
 
         CMD_WIFI_refresh_plus,
 

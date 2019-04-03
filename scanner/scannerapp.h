@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include "imagetrans.h"
+#include "imageinfo.h"
 
 //namespace Scanner {
 
@@ -32,15 +33,6 @@ typedef struct
 }
     UiSettings;
 
-typedef struct
-{
-    int dpi_x;
-    int dpi_y;
-    int pixels_per_line;
-    int total_lines;
-    int bits_per_pixel;
-}Image_Data_Struct;
-
 typedef
 struct{
     Image_Data_Struct source;
@@ -54,6 +46,8 @@ struct{
 //    int pixels_per_line;
 //    int source_bit_per_pixel;
     long long source_size;
+    char* scan_buffer;
+    int scan_buffer_size;
 }
     Calc_Data;
 
@@ -61,7 +55,7 @@ struct Printer_struct;
 typedef void (*callback_scan)(void* para);
 typedef struct{
     ImageTransInfo* info;
-    FILE* file;
+//    FILE* file;
     callback_scan callback;
     void* callback_para;
     int progress;
@@ -126,7 +120,6 @@ private:
     int save_scan_data(ScanSettings* settings ,char* buffer ,int buf_size);
 //    int exit_scan(ScanSettings* settings);
 
-    int trans_source_buffer(int type);
     int trans_process(ScanSettings* settings);
     friend class Scanner;
 

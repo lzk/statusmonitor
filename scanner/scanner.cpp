@@ -38,14 +38,18 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     ret = scannner_api->set_parameters(settings);
     if(ret){
         LOGLOG("scanning...error:set parameters");
+        if(ret > 0)//not -1,not communication error
+            exit_scan();
         ret = ScannerApp::STATUS_Error_machine;
-        goto ERROR_RETURN;
+        return ret;
     }
 
     ret = scannner_api->start();
     if(ret){
+        if(ret > 0)//not -1,not communication error
+            exit_scan();
         ret = ScannerApp::STATUS_Error_machine;
-        goto ERROR_RETURN;
+        return ret;
     }
     scanner_app->start_scan(settings);
 
@@ -53,22 +57,28 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     int size;
     char* buffer;
     int buf_size;
-    buffer = settings->info->source_buffer;
-    buf_size = settings->info->source_buf_size;
+    Calc_Data *pCalc = &settings->calc_data;
+    buffer = pCalc->scan_buffer;
+    buf_size = pCalc->scan_buffer_size;
     while(!m_cancel){
         ret = scannner_api->get_scan_status(&status);
         if(ret){
-            ret = ScannerApp::STATUS_Error_machine;
+            //maybe communication error
             break;
         }
         if(status.status == ScanStatus_Scanning){
             if(buf_size < status.data_size){
-                LOGLOG("not enough buffer");
-                ret = ScannerApp::STATUS_Error_machine;
+                LOGLOG("scanning...not enough buffer");
+                ret = ScannerApp::STATUS_Error_App;
                 break;
             }
             size = scannner_api->get_scan_data(buffer ,status.data_size);
 //            LOGLOG("scanning...read:%d real:%d" ,status.data_size ,size);
+            if(size < 0){
+                //communication error
+                ret = -1;
+                break;
+            }
             if(size != status.data_size){
                 LOGLOG("scanning...error:get scan para");
                 ret = ScannerApp::STATUS_Error_machine;
@@ -82,19 +92,30 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
         }
     }
     if(m_cancel){
-        scannner_api->abort();
-        ret = ScannerApp::STATUS_Cancel;//cancel
+        if(ret >= 0)
+            ret = scannner_api->abort();
     }
 
-    scannner_api->stop();
+    if(ret >= 0)
+        ret = scannner_api->stop();
 
- ERROR_RETURN:
+    if(ret >= 0)
+        exit_scan();
+    if(ret < 0)
+        ret = ScannerApp::STATUS_Error_machine;
+    if(m_cancel){
+        ret = ScannerApp::STATUS_Cancel;//cancel
+    }
+    return ret;
+}
+
+void Scanner::exit_scan()
+{
     int aa = scannner_api->unlock();
     if(aa){
         LOGLOG("scanner unlock error:%d" ,aa);
     }
     scannner_api->close();
-    return ret;
 }
 
 int Scanner::adf_scan(Printer_struct*  ,ScanSettings*)

@@ -1,4 +1,5 @@
 #include "uiconfig.h"
+#include "commonapi.h"
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
@@ -76,10 +77,10 @@ extern int usb_error_busy;
 void UIConfig::initConfig()
 {
     //config status server thread
-    status_file = "/tmp/.lntstatus";
-    statusKey = "statusmonitor/status/";
-    printersKey = "statusmonitor/printerlist/";
-    status_lock_file = "/tmp/.locklntstatus";
+//    status_file = "/tmp/.lntstatus";
+//    status_lock_file = "/tmp/.locklntstatus";
+//    statusKey = "statusmonitor/status/";
+//    printersKey = "statusmonitor/printerlist/";
 
     //usb special config
     lock_scan_file = "/tmp/.lenovo_m10x_lock";
@@ -93,9 +94,15 @@ void UIConfig::initConfig()
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
-    log_app_name = "lenovo cpath";
-    app_version = "1.0.0.13";
+    log_app_name = "lenovo_cpath";
+    app_version = "1.0.0.14beta";
     log_init();
+    LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
+    QString str;
+    str = get_string_from_shell_cmd("uname -a");
+    LOGLOG("%s" ,str.toLatin1().constData());
+    str = get_string_from_shell_cmd("cat /etc/issue");
+    LOGLOG("%s\n\n" ,str.toLatin1().constData());
 }
 #include <QFile>
 void UIConfig::exit_app()

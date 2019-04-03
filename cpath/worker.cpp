@@ -16,7 +16,6 @@ Worker::Worker(QObject *parent) :
   ,scanner(new ScannerApp(deviceManager))
 {
     watcher = new Watcher(this);
-    connect(this ,SIGNAL(set_current_printer(QString)) ,watcher ,SLOT(set_current_printer(QString)));
 //    connect(watcher ,SIGNAL(update_printer_status()) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
     connect(watcher ,SIGNAL(update_current_printer_status()) ,this ,SLOT(update_current_printer_status()));
     connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()));
@@ -51,6 +50,13 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     int result = -1;
 
     switch (cmd) {
+    case UIConfig::CMD_SetCurrentPrinter:
+        watcher->set_current_printer(printer_name);
+        value = 1;
+        result = 0;
+        cmdResult(cmd ,result ,value);
+        break;
+
     case UIConfig::CMD_GetPrinters:
         update_printerlist();
         break;
@@ -641,21 +647,23 @@ void Worker::update_scan_progress(Printer_struct* printer ,int progress ,int is_
         emit signal_update_scan_progress(0);
     }else if(progress == -2){
         emit signal_update_scan_progress(100);
+        current_printer_info.status.PrinterStatus = 0;
 //        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
 //        QVariant value;
 //        value.setValue<PrinterInfo_struct>(current_printer_info);
 //        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
-////        cmdFromUi(UIConfig::CMD_GetStatus ,printer->name);
-        current_printer_info.status.PrinterStatus = 0;
     }else if(progress == -3){
         current_printer_info.status.PrinterStatus = 0;
+//        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
+//        QVariant value;
+//        value.setValue<PrinterInfo_struct>(current_printer_info);
+//        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
     }else{
         if(is_jpg_mode){
             progress *= 20;
-            if(progress > 80)
-                progress = 80;
-        }else{
         }
+        if(progress > 100)
+            progress = 100;
         emit signal_update_scan_progress(progress);
     }
 }

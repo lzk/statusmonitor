@@ -34,6 +34,8 @@ class ImageTrans;
 typedef struct
 {
     ImageTrans* image_trans;
+    Image_Data_Struct* source;
+    Image_Data_Struct* target;
     ImageInfo target_image_info;
     ImageTransParameter image_trans_parameter;
 
@@ -42,15 +44,10 @@ typedef struct
     int source_total_lines;
     int source_pixelsOfWidth;
 
-    int source_format;
-    int target_format;
-
     char* resume_buffer;
     int resume_buf_size;
     int scanned_buf_size;
     int resume_bytes;
-    char* source_buffer;
-    int source_buf_size;
     int source_line_buf_size;
     char* target_buffer;
     int target_buf_size;
@@ -79,7 +76,7 @@ public:
     ImageTrans(NtdcmsApi* api = 0);
     ~ImageTrans();
     int init(ImageTransInfo* source_info);
-    int trans(ImageTransInfo* source_info);
+//    int trans(ImageTransInfo* source_info);
     int exit();
     int process(ImageTransInfo* source_info);
 private:

@@ -147,23 +147,24 @@ contains(CONFIG ,static){
 }
 }
 
+INCLUDEPATH += $${PWD}/../libs/libtiff
 #LIBS +=  -lz
 mac{
             LIBS += $${PWD}/../libs/mac/libtiff.a -lz
 !contains(CONFIG ,static){
-            LIBS += $${PWD}/../libs/mac/libjpeg.a
+#            LIBS += $${PWD}/../libs/mac/libjpeg.a
 }
 }else{
     unix{
         contains(QT_ARCH, i386) {
             LIBS += $${PWD}/../libs/linux32/libtiff.a
 !contains(CONFIG ,static){
-            LIBS += $${PWD}/../libs/linux32/libjpeg.a
+#            LIBS += $${PWD}/../libs/linux32/libjpeg.a
 }
         }else{
             LIBS += $${PWD}/../libs/linux64/libtiff.a
 !contains(CONFIG ,static){
-            LIBS += $${PWD}/../libs/linux64/libjpeg.a
+#            LIBS += $${PWD}/../libs/linux64/libjpeg.a
 }
         }
     }

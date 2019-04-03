@@ -16,16 +16,16 @@ WatcherStatusThread::WatcherStatusThread(const QString& printername ,QObject *pa
 WatcherStatusThread::~WatcherStatusThread()
 {
     abort = true;
-    LOGLOG("printer %s abort" ,current_printer.toLatin1().constData());
+//    LOGLOG("printer %s abort" ,current_printer.toLatin1().constData());
     while(abort)usleep(1000);
     if(device)
         delete device;
-    LOGLOG("printer %s exit" ,current_printer.toLatin1().constData());
+//    LOGLOG("printer %s exit" ,current_printer.toLatin1().constData());
 }
 
 void WatcherStatusThread::run()
 {
-    LOGLOG("printer %s start" ,current_printer.toLatin1().constData());
+//    LOGLOG("printer %s start" ,current_printer.toLatin1().constData());
     StatusWatcher* monitor = qobject_cast<StatusWatcher* >(parent());
     PrinterInfo_struct printerinfo;
     int index;
@@ -33,10 +33,15 @@ void WatcherStatusThread::run()
     forever {
         if (abort)
             break;
-
-        index = monitor->get_printer_from_current_list(current_printer ,printerinfo.printer);
-        if(index >= 0){
-            work(&printerinfo);
+        if(monitor){
+            QString cp;
+            monitor->mutex.lock();
+            cp = current_printer;
+            monitor->mutex.unlock();
+            index = monitor->get_printer_from_current_list(cp ,printerinfo.printer);
+            if(index >= 0){
+                work(&printerinfo);
+            }
         }
         sleep(6);
     }
@@ -50,18 +55,22 @@ void WatcherStatusThread::work(PrinterInfo_struct* printerinfo)
     if(printer_is_printing(printerinfo->printer.name)){
         result = usb_error_printing;
         printerinfo->printer.status = usb_error_printing;
-        LOGLOG("now is printing,get status via cups");
+//        LOGLOG("now is printing,get status via cups");
     }
     if((result != usb_error_printing) || (device->type() == DeviceIO::Type_net) ){
-        LOGLOG("printer %s get device status" ,printerinfo->printer.name);
+//        LOGLOG("printer %s get device status" ,printerinfo->printer.name);
         result = StatusMonitor::getDeviceStatus(device ,&printerinfo->printer ,&printerinfo->status);
         printerinfo->printer.status = result;
         StatusWatcher* monitor = qobject_cast<StatusWatcher* >(parent());
-        monitor->set_current_printer_info(printerinfo);
+        if(monitor){
+            QString cp;
+            monitor->mutex.lock();
+            cp = current_printer;
+            monitor->mutex.unlock();
+            monitor->set_current_printer_info(printerinfo);
+        }
     }
-
 }
-
 
 bool use_status_thread = true;
 static int callback_getPrinters(void* para,Printer_struct* ps)
@@ -135,6 +144,15 @@ void StatusWatcher::run()
         if(count % 6 == 0){
             get_printer_list();
         }
+        if(!use_status_thread){
+            PrinterInfo_struct pis;
+            mutex.lock();
+            pis= current_printer_info;
+            mutex.unlock();
+            StatusMonitor::getPrinterStatus(pis.printer.name ,&pis.status);
+            pis.printer.status = 0;
+            set_current_printer_info(&pis);
+        }
         watcher_job();
         if(60 == count++)
             count = 0;
@@ -174,14 +192,16 @@ void StatusWatcher::set_current_printer(const QString& printer)
         if(statusThread){
             //same uri ,not printer name
             if(statusThread->device && statusThread->device->is_the_same_device(&printerinfo.printer)){
+                mutex.lock();
                 statusThread->current_printer = printer;
-                LOGLOG("same device,only change printer name:%s" ,printer.toLatin1().constData());
+                mutex.unlock();
+//                LOGLOG("same device,only change printer name:%s" ,printer.toLatin1().constData());
                 statusThread->work(&printerinfo);
                 return;
             }
             statusThread->deleteLater();
         }
-        LOGLOG("%s will start"  ,printer.toLatin1().constData());
+//        LOGLOG("%s will start"  ,printer.toLatin1().constData());
         statusThread = new WatcherStatusThread(printer ,this);
         statusThread->device = DeviceManager::new_device(&printerinfo.printer);
         if(statusThread->device){
@@ -189,7 +209,6 @@ void StatusWatcher::set_current_printer(const QString& printer)
             statusThread->start();
         }
     }
-
 }
 
 int StatusWatcher::printer_compare(const Printer_struct* pps1,const Printer_struct* pps2)
@@ -236,7 +255,7 @@ void StatusWatcher::set_current_printer_info(PrinterInfo_struct* pis)
 {
 //    QMutexLocker locker(&mutex);
     mutex.lock();
-    LOGLOG("%s will update status" ,pis->printer.name);
+//    LOGLOG("%s will update status" ,pis->printer.name);
     if(current_printer.compare(pis->printer.name)){
         mutex.unlock();
         return;
@@ -250,7 +269,7 @@ void StatusWatcher::set_current_printer_info(PrinterInfo_struct* pis)
         current_printer_info = *pis;
         mutex.unlock();
         update_current_printer_status();
-        LOGLOG("%s update status" ,pis->printer.name);
+//        LOGLOG("%s update status" ,pis->printer.name);
         return;
     }
 
@@ -273,7 +292,7 @@ void StatusWatcher::set_current_printer_info(PrinterInfo_struct* pis)
         current_printer_info = *pis;
         mutex.unlock();
         update_current_printer_status();
-        LOGLOG("%s update status" ,pis->printer.name);
+//        LOGLOG("%s update status" ,pis->printer.name);
     }else{
         mutex.unlock();
     }

@@ -69,11 +69,11 @@ void quit(int)
 
 int main(int argc, char *argv[])
 {
+    UIConfig::initConfig();
     if(is_app_running(SERVER_PATH)){
         LOGLOG("There has been a same app running!");
         return 0;
     }
-    UIConfig::initConfig();
 
 //    ServerThread* thread_server = new ServerThread(SERVER_PATH);
 //    thread_server->start();

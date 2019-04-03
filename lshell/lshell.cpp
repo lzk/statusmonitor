@@ -465,6 +465,28 @@ void LShell::copy_get_defaultPara(copycmdset* p)
     memcpy(p ,&default_copy_parameter ,sizeof(default_copy_parameter));
 }
 
+int LShell::open(Printer_struct* printer)
+{
+    int port = -1;
+    device = device_manager->getDevice(printer);
+    if(!device)
+    {
+        LOGLOG("get device fail")
+        return -1;
+    }
+    if(device->type() == DeviceIO::Type_net){
+        port = 9100;
+    }
+    return device->open(printer ,port);
+}
+
+int LShell::close(void)
+{
+    if(!device)
+        return -1;
+    return device->close();
+}
+
 int device_init(DeviceIO* device)
 {
     if(!device)
@@ -479,23 +501,24 @@ int device_init(DeviceIO* device)
 
     char buffer[1460];
     ret = device->getDeviceId_without_open(buffer ,sizeof(buffer));
-    if(ret){
-        char inBuffer[522] = {0};
-        char outBuffer[12] = {0};
+//    if(ret){
+//        char inBuffer[522] = {0};
+//        char outBuffer[12] = {0};
 
-        inBuffer[0] = 0x1b;
-        inBuffer[1] = 0x4d;
-        inBuffer[2] = 0x53;
-        inBuffer[3] = 0x55;
-        inBuffer[4] = 0xe0;
-        inBuffer[5] = 0x2b;
-        device->write_bulk(inBuffer ,10 ,1);
-        device->write_bulk(inBuffer+10 ,512 ,1);
+//        inBuffer[0] = 0x1b;
+//        inBuffer[1] = 0x4d;
+//        inBuffer[2] = 0x53;
+//        inBuffer[3] = 0x55;
+//        inBuffer[4] = 0xe0;
+//        inBuffer[5] = 0x2b;
+//        device->write_bulk(inBuffer ,10 ,1);
+//        device->write_bulk(inBuffer+10 ,512 ,1);
 
-        device->read_bulk(outBuffer ,sizeof(outBuffer) ,1);
-    }
+//        device->read_bulk(outBuffer ,sizeof(outBuffer) ,1);
+//    }
 
-    device->read(buffer ,sizeof(buffer));
+    if(ret)
+        device->read(buffer ,sizeof(buffer));
     return 0;
 }
 
@@ -519,7 +542,7 @@ int LShell::writeNoRead(char* wrBuffer ,int wrSize)
     }
     return ret;
 }
-
+#if 1
 int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
 {
     if(!device)
@@ -527,48 +550,107 @@ int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize
     int ret = 0;
     char write_buffer[wrSize];
     memcpy(write_buffer ,wrBuffer ,wrSize);
-//    for(int i = 0 ;i < 3 ;i++)
-    {
-        ret = device_init(device);
-        if(!ret){
-//            LOGLOG("lshell write cmd:"
-//                   "0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
-//                   " ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
-//                   ,write_buffer[0] ,write_buffer[1] ,write_buffer[2] ,write_buffer[3] ,write_buffer[4] ,write_buffer[5]
-//                    ,write_buffer[6] ,write_buffer[7] ,write_buffer[8] ,write_buffer[9] ,write_buffer[10]);
-            usleep(1  * 1000 * 1000);
-            ret = device->writeThenRead(wrBuffer ,wrSize ,rdBuffer ,rdSize);
-//            LOGLOG("lshell read cmd:"
-//                   "0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
-//                   " ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
-//                   ,rdBuffer[0] ,rdBuffer[1] ,rdBuffer[2] ,rdBuffer[3] ,rdBuffer[4] ,rdBuffer[5]
-//                    ,rdBuffer[6] ,rdBuffer[7] ,rdBuffer[8] ,rdBuffer[9] ,rdBuffer[10]);
+    ret = device_init(device);
+    int sleep_time = 0;
+    if(device->type() == DeviceIO::Type_usb)
+        sleep_time = 1;
+    if(!ret){
+//        LOGLOG("lshell write cmd:"
+//               "0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
+//               " ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
+//               ,write_buffer[0] ,write_buffer[1] ,write_buffer[2] ,write_buffer[3] ,write_buffer[4] ,write_buffer[5]
+//                ,write_buffer[6] ,write_buffer[7] ,write_buffer[8] ,write_buffer[9] ,write_buffer[10]);
+
+        usleep(sleep_time * 1000 * 1000);
+//            ret = device->writeThenRead(write_buffer ,wrSize ,rdBuffer ,rdSize);
+        ret = device->write(write_buffer ,wrSize);
+        if(ret == wrSize || device->type() == DeviceIO::Type_usb){
+            for(int i = 0 ;i < 20 ;i++){
+                usleep(sleep_time  * 100 * 1000);
+                ret = device->read(rdBuffer ,rdSize);
+                if(ret == rdSize){
+                    if( (rdBuffer[0] == 0x4d)
+                    && (rdBuffer[1] == 0x3c)
+                    && (rdBuffer[2] == 0x2b)
+                    && (rdBuffer[3] == 0x1a)){
+                        ret = 0;
+                        break;
+                    }
+                    ret = -1;
+                }else{
+//                    LOGLOG("read wrong");
+                    ret = -1;
+                }
+            }
         }
-//        if(!ret)
-//            break;
-//        usleep(1  * 1000 * 1000);
     }
+//    LOGLOG("lshell read cmd:"
+//           "0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
+//           " ,0x%02x ,0x%02x ,0x%02x ,0x%02x ,0x%02x"
+//           ,rdBuffer[0] ,rdBuffer[1] ,rdBuffer[2] ,rdBuffer[3] ,rdBuffer[4] ,rdBuffer[5]
+//            ,rdBuffer[6] ,rdBuffer[7] ,rdBuffer[8] ,rdBuffer[9] ,rdBuffer[10]);
     return ret;
 }
-
-int LShell::open(Printer_struct* printer)
+#else
+#include <time.h>
+#define sleep100ms(x ,y) {if(y) usleep((x)  * 100 * 1000);}
+int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
 {
-    int port = 0;
-    device = device_manager->getDevice(printer);
-    if(!device)
+    bool ifdelay = false;
+    if(device->type() == DeviceIO::Type_usb)
+        ifdelay = true;
+    int err = device->write(wrBuffer ,wrSize);
+    if(err == wrSize || device->type() == Type_usb)
     {
-        LOGLOG("get device fail")
-        return -1;
-    }
-    if(device->type() == DeviceIO::Type_net){
-        port = 9100;
-    }
-    return device->open(printer ,port);
-}
+        int j;
+        int _read_size = 0;
+        int nocheck=0;
 
-int LShell::close(void)
-{
-    if(!device)
-        return -1;
-    return device->close();
+        sleep100ms(9 ,ifdelay);
+        time_t first_time = time(NULL);
+        time_t second_time;
+        for(j = 0 ;j < 50 ;j++){
+            second_time = time(NULL);
+            if(second_time - first_time > 10){
+                LOGLOG("usb try %d times timeout" ,j + 1);
+                break;
+            }
+            if(!nocheck){
+                if(1 == device->read(rdBuffer,1)){
+                    if(0x4d != rdBuffer[0]){
+//                        LOGLOG("waiting for 0x4d:%#.2x" ,rdBuffer[0]);
+                        sleep100ms (1 ,ifdelay);
+                        continue;
+                    }
+                }else{
+//                    LOGLOG("cannot read now,wait 100 ms read again");
+                    sleep100ms (1 ,ifdelay);
+                    continue;
+                }
+            }
+            nocheck = 0;
+            sleep100ms (1 ,ifdelay);
+            if(1 == device->read(rdBuffer+1,1)){
+                if(0x3c == rdBuffer[1]){
+                    sleep100ms (1 ,ifdelay);
+                    _read_size = device->read(rdBuffer+2 ,rdSize-2);
+//                    LOGLOG("read size:%d" ,_read_size == -1 ?-1 : _read_size + 2);
+                    j++;
+                    break;
+                }else if(0x4d == rdBuffer[1]){
+                    nocheck = 1;
+                }
+            }
+            sleep100ms (1 ,ifdelay);
+        }
+
+        if(_read_size == rdSize -2){
+            err = 0;
+        }else{
+            LOGLOG("read wrong");
+            err = -1;
+        }
+    }
+    return err;
 }
+#endif

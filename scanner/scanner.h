@@ -17,6 +17,7 @@ private:
     ScannerApi* scannner_api;
     ScannerApp* scanner_app;
     bool m_cancel;
+    void exit_scan();
 };
 
 #endif // SCANNER_H

@@ -39,7 +39,6 @@ QHostAddress get_ip_address(const QString& host)
 NetIO::NetIO():
     tcpSocket(NULL)
 {
-    ifdelay = 0;
 }
 NetIO::~NetIO()
 {

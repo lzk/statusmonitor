@@ -32,7 +32,6 @@ signals:
     void startScan();
     void stopScan();
     void signal_update_scan_progress(int progress);//(0 - 100)
-    void set_current_printer(const QString& printer);
     void signalEnabledCycleAnimation(bool enabled);
 
 private slots:

@@ -10,7 +10,7 @@ static const oid oidName[] = {1,3,6,1,4,1,2699,1,2,1,2,1,1,3,1};
 static const size_t sizeofOidName = sizeof(oidName)/sizeof(oidName[0]);
 int snmpGetResponse(char* ip ,char* buffer ,int bufsize)
 {
-    LOGLOG("ip is:%s" ,ip);
+//    LOGLOG("ip is:%s" ,ip);
     bool ret = -1;
     netsnmp_session session;
 //    init_snmp ("snmp");

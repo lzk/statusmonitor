@@ -340,6 +340,12 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
 #endif
     }
         break;
+    case UIConfig::CMD_SetCurrentPrinter:
+        ui->deviceNameBox->setEnabled(true);
+        ui->deviceNameLabel->setEnabled(true);
+        ui->deviceNameLabel_2->setEnabled(true);
+        ui->deviceNameLabel_2->installEventFilter(this);
+        break;
     default:
         break;
     }
@@ -369,7 +375,7 @@ void MainWindow::updatePrinter(const QVariant& data)
         LOGLOG("no printers");
         setcurrentPrinter(QString());
 //        errorStatus(true);
-        gUInterface->setTimer(0);
+//        gUInterface->setTimer(0);
         return;
     }else if(printers.contains(current_printer)){
         ui->deviceNameBox->setCurrentIndex(printers.indexOf(current_printer));
@@ -394,6 +400,10 @@ void MainWindow::setcurrentPrinter(const QString& str)
 {
     current_printer = str;
     qDebug()<<"current printer:"<<current_printer;
+    ui->deviceNameBox->setEnabled(false);
+    ui->deviceNameLabel->setEnabled(false);
+    ui->deviceNameLabel_2->setEnabled(false);
+    ui->deviceNameLabel_2->removeEventFilter(this);
     gUInterface->setcurrentPrinter(str);
 
     if(str != "")

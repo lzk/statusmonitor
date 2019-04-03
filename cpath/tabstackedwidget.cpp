@@ -136,6 +136,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
         {
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Scan_Fail"),result);
             if(result == ScannerApp::STATUS_Error_busy)
+//            if(result == ScannerApp::STATUS_USEWITHOUTLOCK)
             {
                 SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_The_machine_is_busy__please_try_later_"),2);
                 busyWarning->setWindowTitle(tr("ResStr_Error"));
@@ -143,15 +144,6 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 busyWarning->setWindowFlags(busyWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 busyWarning->exec();
-            }
-            else if (result == ScannerApp::STATUS_ERROR)
-            {
-                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
-                errorWarning->setWindowTitle(tr("ResStr_Error"));
-
-                errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
-                                    & ~Qt::WindowMinimizeButtonHint);
-                errorWarning->exec();
             }
             else if(result == ScannerApp::STATUS_OUTOFMEMERY)
             {
@@ -162,9 +154,19 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
                                     & ~Qt::WindowMinimizeButtonHint);
                 errorWarning->exec();
             }
+//            else if(result == ScannerApp::STATUS_Error_App)
+//            {
+//                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_can_not_be_carried_out_due_to_software_has_error__please_try__again_after_reinstall_the_Driver_and_Virtual_Operation_Panel_"));
+//                errorWarning->setWindowTitle(tr("ResStr_Error"));
+
+//                errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+//                                    & ~Qt::WindowMinimizeButtonHint);
+//                errorWarning->exec();
+//            }
             else
+//                if(result == ScannerApp::STATUS_Error_machine)
             {
-                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_can_not_be_carried_out_due_to_software_has_error__please_try__again_after_reinstall_the_Driver_and_Virtual_Operation_Panel_"));
+                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Operation_can_not_be_carried_out_due_to_machine_malfunction_"));
                 errorWarning->setWindowTitle(tr("ResStr_Error"));
 
                 errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \

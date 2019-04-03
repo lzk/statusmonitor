@@ -21,7 +21,6 @@ public:
 signals:
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
     void signal_update_scan_progress(int progress);//(0 - 100)
-    void set_current_printer(const QString& printer);
     
 public slots:
     void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());

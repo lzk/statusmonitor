@@ -89,10 +89,12 @@ int UsbIO::open_with_mode(int port ,int mode)
         LOGLOG("device is opened");
         return -1;
     }
-    if(printer_is_printing(printer_name.toLatin1().constData())){
-        return usb_error_printing;
-    }else if(is_device_scanning()){
-        return usb_error_scanning;
+    if(port >= 0){
+        if(printer_is_printing(printer_name.toLatin1().constData())){
+            return usb_error_printing;
+        }else if(is_device_scanning()){
+            return usb_error_scanning;
+        }
     }
     if(mode == 0){
         while (true) {
@@ -115,8 +117,8 @@ int UsbIO::open_with_mode(int port ,int mode)
     }
     int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
     if(ret){
-        LOGLOG("can not find device");
         mutex.unlock();
+        LOGLOG("can not find device:vid:%d,pid:%d:serial:%s" ,vid ,pid ,serial);
         return -1;
     }
     ret = usb->open(vid ,pid ,serial ,port);
@@ -176,7 +178,7 @@ int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
 
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
-    int ret = open_with_mode(interface ,0);
+    int ret = open_with_mode(-1 ,0);
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
@@ -200,16 +202,19 @@ int UsbIO::resolveUrl(const char* url)
     QUrl printer_url = QUrl(url);
 #if QT_VERSION > 0x050000
     tmp_serial = QUrlQuery(printer_url).queryItemValue("serial");
-    interface = QUrlQuery(printer_url).queryItemValue("interface").toInt();
+//    interface = QUrlQuery(printer_url).queryItemValue("interface").toInt();
 #else
     tmp_serial = printer_url.queryItemValue("serial");
-    interface = printer_url.queryItemValue("interface").toInt();
+//    interface = printer_url.queryItemValue("interface").toInt();
 #endif
     QString modelname = printer_url.host() + printer_url.path();
-    if(getpidvid(modelname ,pid ,vid ,interface))
+    if(getpidvid(modelname ,pid ,vid ,interface)){
         ret = -1;
+        LOGLOG("can not get pid vid of modelname:%s" ,modelname.toLatin1().constData());
+    }
     if(tmp_serial.isEmpty()){
         memset(this->serial ,0 ,sizeof(this->serial));
+        LOGLOG("can not get serial of url:%s" ,url);
     }else{
         strcpy(this->serial ,tmp_serial.toLatin1().constData());
         ret = 0;

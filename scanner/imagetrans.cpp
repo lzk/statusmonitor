@@ -21,7 +21,7 @@ ImageTrans::~ImageTrans()
         pNtdcmsApi = NULL;
     }
 }
-
+#if 0
 //int ImageTrans::trans_header(ImageTransInfo* info)
 //{
 //    char* buffer = info->target_buffer;
@@ -165,7 +165,7 @@ int ImageTrans::trans(ImageTransInfo* info)
 
     return 0;
 }
-
+#endif
 int ImageTrans::trans_header(ImageTransInfo* info)
 {
     char* buffer = info->target_buffer;
@@ -175,7 +175,7 @@ int ImageTrans::trans_header(ImageTransInfo* info)
     if(!buffer)
         return -1;
 
-    if(info->target_format == ImageTransFormat_bmp){
+    if(info->target->format == ImageTransFormat_bmp){
         index = RawToBmp::trans_header(buffer ,buf_size ,&info->target_image_info);
     }
 
@@ -196,7 +196,7 @@ int ImageTrans::init(ImageTransInfo* info)
 //    info->scanned_buf_size = 0;
     pNtdcmsApi->caculate_parameter(info);
 
-    if(info->target_format == ImageTransFormat_bmp){
+    if(info->target->format == ImageTransFormat_bmp){
         char buffer[2048];
         int size;
         size = RawToBmp::trans_header(buffer ,2048 ,&info->target_image_info);
@@ -248,7 +248,7 @@ int ImageTrans::process(ImageTransInfo* info)
 #endif
 
 
-    if(info->target_format == ImageTransFormat_bmp){
+    if(info->target->format == ImageTransFormat_bmp){
         if(info->target_image_info.BitsPerPixel == 24){
             RawToBmp::rgb2bgr(target_buffer ,target_size ,target_buffer ,target_size);
         }
