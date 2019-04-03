@@ -14,7 +14,7 @@
    <string>StackedWidget</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="page0">
    <widget class="QLabel" name="label_APStatus">
@@ -63,6 +63,9 @@ border:1px solid  rgb(181, 181, 181);
       <width>201</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -140,6 +143,9 @@ QPushButton{
       <family>Arial</family>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QRadioButton{	
@@ -240,6 +246,9 @@ QRadioButton::indicator::checked {
       <height>28</height>
      </size>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image:url(:/Images/Btn_Green.png);
@@ -267,6 +276,9 @@ QPushButton:pressed{
       <width>211</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -298,6 +310,9 @@ QPushButton{
       <family>Arial</family>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QRadioButton{	
@@ -362,6 +377,9 @@ QRadioButton::indicator::checked {
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QRadioButton{	
 	spacing: 1px;
@@ -396,6 +414,9 @@ QRadioButton::indicator::checked {
      <font>
       <pointsize>9</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QCheckBox{	
@@ -439,6 +460,9 @@ QCheckBox::indicator::checked {
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QRadioButton{	
 	spacing: 1px;
@@ -470,7 +494,7 @@ QRadioButton::indicator::checked {
      </rect>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::StrongFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">border:2px groove gray;
@@ -494,6 +518,9 @@ border-radius:5px;</string>
       <width>90</width>
       <height>28</height>
      </size>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{

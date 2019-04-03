@@ -103,7 +103,6 @@
         <file>Images/LED_Green.png</file>
         <file>Images/LED_Red.png</file>
         <file>Images/Line.png</file>
-        <file>Images/LogoForAbout.png</file>
         <file>Images/Logon_Active.png</file>
         <file>Images/Logon_Click.png</file>
         <file>Images/Logon_Normal.png</file>
@@ -204,5 +203,6 @@
         <file>Images/A4(4).tif</file>
         <file>Images/moreSettings_Copy.png</file>
         <file>Images/moreSettings_Copy_1.png</file>
+        <file>Images/LogoForAbout_new.png</file>
     </qresource>
 </RCC>

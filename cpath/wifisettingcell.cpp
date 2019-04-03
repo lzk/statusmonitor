@@ -40,10 +40,10 @@ WiFiSettingCell::WiFiSettingCell(QWidget *parent, APInfo *info, bool *_islogin, 
 
     isDisplayPW = false;
     ui->checkBox_visiable->setChecked(isDisplayPW);
+    ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
     QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
     QValidator *validator2 = new QRegExpValidator(regexp2, this);
     ui->lineEdit_Password->setValidator(validator2);
-    ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
 
     isConnected = isconnected;
     initStatus();
@@ -89,18 +89,18 @@ void WiFiSettingCell::on_checkBox_visiable_clicked()
     if(ui->checkBox_visiable->isChecked())
     {
         isDisplayPW = true;
+        ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
         QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
         QValidator *validator2 = new QRegExpValidator(regexp2, this);
         ui->lineEdit_Password->setValidator(validator2);
-        ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
     }
     else
     {
         isDisplayPW = false;
+        ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
         QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
         QValidator *validator2 = new QRegExpValidator(regexp2, this);
         ui->lineEdit_Password->setValidator(validator2);
-        ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
     }
 }
 
@@ -147,27 +147,28 @@ void WiFiSettingCell::on_btConnect_clicked()
         msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint );
         msgWarm->exec();
     }
-
-    //do something here; it is a short time that you can not saw the busyRefresh Label;
-
-    if(!(*islogin) )
-    {
-        AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
-        dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
-                            & ~Qt::WindowMinimizeButtonHint );
-        dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
-        dlg->exec();
-    }
-    if(*islogin)
-    {
-        apInfo.Password = ui->lineEdit_Password->text();
-        tryConnect(apInfo);
-    }
     else
     {
-        QString deviceMsg = tr("ResStr_Setting_Fail");
-        gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
+        if(!(*islogin) )
+        {
+            AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
+            dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint );
+            dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
+            dlg->exec();
+        }
+        if(*islogin)
+        {
+            apInfo.Password = ui->lineEdit_Password->text();
+            tryConnect(apInfo);
+        }
+        else
+        {
+            QString deviceMsg = tr("ResStr_Setting_Fail");
+            gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
+        }
     }
+    //do something here; it is a short time that you can not saw the busyRefresh Label;
 }
 
 void WiFiSettingCell::changeStatus()

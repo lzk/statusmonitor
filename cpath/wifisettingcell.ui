@@ -61,6 +61,9 @@ border:1px solid  rgb(181, 181, 181);
       <height>41</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">
 QPushButton{
@@ -137,6 +140,9 @@ QPushButton{
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image:url(:/Images/Btn_Gray.png);
@@ -173,6 +179,9 @@ QPushButton:pressed{
      <font>
       <pointsize>12</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
@@ -247,6 +256,9 @@ border:1px solid  rgb(181, 181, 181);
       <pointsize>9</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QCheckBox{	
 	spacing: 3px;
@@ -276,6 +288,9 @@ QCheckBox::indicator::checked {
       <width>211</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -321,7 +336,7 @@ QPushButton{
      </rect>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::StrongFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">border:2px groove gray;
@@ -329,6 +344,9 @@ border-radius:5px;</string>
     </property>
     <property name="text">
      <string>123465</string>
+    </property>
+    <property name="maxLength">
+     <number>64</number>
     </property>
    </widget>
    <widget class="QLabel" name="label_APStatus_2">

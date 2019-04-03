@@ -195,6 +195,9 @@ QComboBox{
       <height>22</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">
 QSlider::groove:horizontal {
@@ -254,6 +257,9 @@ QSlider::handle:horizontal {
       <width>156</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -360,6 +366,9 @@ QSlider::handle:horizontal {
       <height>38</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">
 #btBgColor{
@@ -379,6 +388,9 @@ QSlider::handle:horizontal {
       <width>51</width>
       <height>38</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -400,6 +412,9 @@ QSlider::handle:horizontal {
       <height>38</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">
 #btBgBW{
@@ -419,6 +434,9 @@ QSlider::handle:horizontal {
       <width>32</width>
       <height>32</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -440,6 +458,9 @@ QSlider::handle:horizontal {
       <height>32</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">
 #btModeGreyscale {
@@ -459,6 +480,9 @@ QSlider::handle:horizontal {
       <width>32</width>
       <height>32</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -483,6 +507,9 @@ QSlider::handle:horizontal {
      <font>
       <pointsize>12</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -518,6 +545,9 @@ QSlider::handle:horizontal {
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">
 #btContrastReduce{
@@ -552,6 +582,9 @@ QSlider::handle:horizontal {
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">
 #btBrightnessAdd{
@@ -585,6 +618,9 @@ QSlider::handle:horizontal {
      <font>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -662,7 +698,7 @@ QSlider::handle:horizontal {
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::TabFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -704,6 +740,9 @@ color:white;
       <family>Arial</family>
       <pointsize>12</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -845,6 +884,9 @@ color:white;
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">
 QRadioButton::indicator {
@@ -884,6 +926,9 @@ QRadioButton::indicator::checked {
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">
 QRadioButton::indicator {
@@ -922,6 +967,9 @@ QRadioButton::indicator::checked {
        <family>Arial</family>
        <pointsize>10</pointsize>
       </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="styleSheet">
       <string notr="true">
@@ -975,6 +1023,9 @@ QRadioButton::indicator::checked {
        <pointsize>9</pointsize>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">
 QRadioButton::indicator {
@@ -1013,6 +1064,9 @@ QRadioButton::indicator::checked {
        <family>Arial</family>
        <pointsize>9</pointsize>
       </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="styleSheet">
       <string notr="true">
@@ -1116,6 +1170,9 @@ QRadioButton::indicator::checked {
      <width>13</width>
      <height>13</height>
     </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
     <string notr="true">

@@ -14,9 +14,6 @@ AuthenticationDlg::AuthenticationDlg(QWidget *parent, bool*confirm) :
     QRegExp rx("^[0-9a-zA-Z]{0,32}$");
     QRegExpValidator *validator = new QRegExpValidator(rx, this);
     ui->lineEdit_Password->setValidator(validator);
-    ui->lineEdit_Password->setEnabled(true);
-    ui->lineEdit_Password->clear();
-    ui->lineEdit_Password->setEnabled(true);
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
     cycle = new BusyRefreshLabel(this,true);

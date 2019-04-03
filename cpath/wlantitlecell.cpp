@@ -14,8 +14,7 @@
 
 
 #define DEFWIDTH 220
-#define DEFTITELHIGHT 180
-#define RETRYTIMES 3;
+#define DEFTITELHIGHT 65
 WlanTitleCell::WlanTitleCell(QWidget *parent, QScrollBar *_scrollBar,  bool wlanON, bool *_islogin) :
     QStackedWidget(parent),
     ui(new Ui::WlanTitleCell),
@@ -69,10 +68,9 @@ WlanTitleCell::WlanTitleCell(QWidget *parent, QScrollBar *_scrollBar,  bool wlan
     QValidator *validator1 = new QRegExpValidator(regexp1, this);
     ui->lineEdit_SSID->setValidator(validator1);
 
-    QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
+    QRegExp regexp2("^[\\x0020-\\x007e]{0,64}$");
     QValidator *validator2 = new QRegExpValidator(regexp2, this);
     ui->lineEdit_Password->setValidator(validator2);
-    ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
 
     ui->combox_encryption->setCurrentIndex(2);
     ui->label_keyid->hide();
@@ -235,6 +233,11 @@ void WlanTitleCell::on_btWLANON1_clicked()
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
         gUInterface->emitEnableCycleAnimation(true);
     }
+    else
+    {
+        QString deviceMsg = tr("ResStr_Setting_Fail");
+        gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
+    }
 }
 
 void WlanTitleCell::on_btManualWiFi_clicked()
@@ -305,6 +308,11 @@ void WlanTitleCell::on_btWLANON2_clicked()
         value.setValue<cmdst_wifi_get>(wifi_para);
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
         gUInterface->emitEnableCycleAnimation(true);
+    }
+    else
+    {
+        QString deviceMsg = tr("ResStr_Setting_Fail");
+        gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
     }
 }
 
@@ -628,7 +636,7 @@ void WlanTitleCell::on_combox_encryption_currentIndexChanged(int index)
         ui->btKey4->hide();
         ui->label_Password->setEnabled(false);
         ui->lineEdit_Password->setEnabled(false);
-        ui->lineEdit_Password->clear();
+        ui->lineEdit_Password->setText("");
         ui->lineEdit_Password->setStyleSheet("border:2px solid rgb(198, 198, 198);border-radius:5px;");
         ui->checkBox_visiable->setEnabled(false);
     }
@@ -675,7 +683,12 @@ void WlanTitleCell::on_btConnect_clicked()
 
     APInfo tmpInfo;
     tmpInfo.SSID = ui->lineEdit_SSID->text();
-    tmpInfo.encryType = EncrypType(ui->combox_encryption->currentIndex());
+//    tmpInfo.encryType = EncrypType(ui->combox_encryption->currentIndex());
+    if(ui->combox_encryption->currentIndex()<2)//2:WPA_PSK_TKIP no use
+        tmpInfo.encryType = EncrypType(ui->combox_encryption->currentIndex());
+    else
+        tmpInfo.encryType = EncrypType(ui->combox_encryption->currentIndex()+1);
+
     tmpInfo.Password = ui->lineEdit_Password->text();
     tmpInfo.wepKeyID = currentAp->wepKeyID;
 
@@ -767,16 +780,18 @@ void WlanTitleCell::on_checkBox_visiable_toggled(bool checked)
 {
     if(checked)
     {
+        ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
+        ui->lineEdit_Password->setMaxLength(64);
         QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
         QValidator *validator2 = new QRegExpValidator(regexp2, this);
         ui->lineEdit_Password->setValidator(validator2);
-        ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
     }
     else
     {
+        ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
+        ui->lineEdit_Password->setMaxLength(64);
         QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
         QValidator *validator2 = new QRegExpValidator(regexp2, this);
         ui->lineEdit_Password->setValidator(validator2);
-        ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
     }
 }
