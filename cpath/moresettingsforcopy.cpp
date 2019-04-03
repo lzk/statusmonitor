@@ -82,7 +82,7 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
             }
         }
 
-        ParamForCopy->scaling = getScalingValue(ParamForCopy->outputSize,ParamForCopy->docSize);
+//        ParamForCopy->scaling = getScalingValue(ParamForCopy->outputSize,ParamForCopy->docSize);
 
         if(ParamForCopy->paperType > MediaType_Copy_Recycled)
         {

@@ -73,6 +73,9 @@
      <bold>false</bold>
     </font>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
 	border-image:url(:/Images/Btn_Green.png);
@@ -286,6 +289,9 @@ QPushButton:pressed{
      <bold>false</bold>
     </font>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
 	border-image:url(:/Images/Btn_Gray.png);
@@ -333,6 +339,9 @@ QPushButton:hover{
      <height>20</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="text">
     <string>ResStr_Obtain_address_from_DHCP</string>
    </property>
@@ -348,6 +357,9 @@ QPushButton:hover{
      <width>181</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="text">
     <string>ResStr_Use_Manual_Address</string>

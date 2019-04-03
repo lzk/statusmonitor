@@ -788,7 +788,7 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
         updateTonerCarStatus(status.TonelStatusLevelK);
     }
     //test
-//    status.PrinterStatus = UIConfig::InitializeJam;
+//    status.PrinterStatus = UIConfig::PolygomotorOnTimeoutError;
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
     QString statusString = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);
@@ -828,7 +828,8 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
     else if(obj == ui->deviceNameLabel_2 && event->type() == QEvent::Enter)
     {
-        if(fontMetrics().width(ui->deviceNameBox->currentText())>119)
+        qDebug()<<fontMetrics().width(ui->deviceNameBox->currentText());
+        if(fontMetrics().width(ui->deviceNameBox->currentText())>107)
         {
             strScrollCation = ui->deviceNameBox->currentText();
             ui->deviceNameLabel->setText(ui->deviceNameBox->currentText());
@@ -1052,6 +1053,7 @@ void MainWindow::startScan()
     ui->refreshBtn->setEnabled(false);
 
     ui->deviceNameBox->setEnabled(false);
+    ui->deviceNameLabel_2->removeEventFilter(this);
 }
 
 void MainWindow::stopScan()
@@ -1066,6 +1068,7 @@ void MainWindow::stopScan()
     ui->refreshBtn->setEnabled(true);
 
     ui->deviceNameBox->setEnabled(true);
+    ui->deviceNameLabel_2->installEventFilter(this);
 }
 
 void MainWindow::on_errorBtn_clicked()

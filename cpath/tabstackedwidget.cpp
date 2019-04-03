@@ -253,9 +253,11 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
         ui->mark3_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
         ui->mark4_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
 
+        ui->cBox_DuplexCopy->setChecked(false);
         ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
         ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconDisable.tif);");
 
+        ui->cBox_IsIDCard->setChecked(false);
         ui->cBox_IsIDCard->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
         ui->icon_IDCardCopy->setStyleSheet("border-image: url(:/Images/IDCardCopyIconDisable.png);");
         ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));

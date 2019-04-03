@@ -143,7 +143,7 @@ void SettingForIPv6::on_btApply_clicked()
 
     if(!(*islogin ))
     {
-        AuthenticationDlg *dlg = new AuthenticationDlg(this, islogin);
+        AuthenticationDlg *dlg = new AuthenticationDlg(this->parentWidget(), islogin);
         dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                             & ~Qt::WindowMinimizeButtonHint );
         dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
@@ -174,6 +174,11 @@ void SettingForIPv6::on_btApply_clicked()
         QVariant data;
         data.setValue<net_ipv6_st>(info_ipv6);
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_SetV6,data);
+    }
+    else
+    {
+        QString deviceMsg = tr("ResStr_Setting_Fail");
+        gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
     }
 }
 

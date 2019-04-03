@@ -82,7 +82,7 @@
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -118,6 +118,9 @@
       <weight>50</weight>
       <bold>false</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -158,7 +161,7 @@ color:white;
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -342,6 +345,9 @@ color:white;
       <bold>false</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image:url(:/Images/Btn_Green.png);
@@ -488,6 +494,9 @@ color:white;
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QRadioButton::indicator {
     width: 20px;
@@ -520,6 +529,9 @@ QRadioButton::indicator::checked {
       <family>Arial</family>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QRadioButton::indicator {
@@ -581,7 +593,7 @@ QRadioButton::indicator::checked {
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -645,7 +657,7 @@ QRadioButton::indicator::checked {
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -684,7 +696,7 @@ QRadioButton::indicator::checked {
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -738,6 +750,9 @@ QRadioButton::indicator::checked {
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QRadioButton::indicator {
     width: 20px;
@@ -770,6 +785,9 @@ QRadioButton::indicator::checked {
       <family>Arial</family>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QRadioButton::indicator {
@@ -821,7 +839,7 @@ QRadioButton::indicator::checked {
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -870,6 +888,10 @@ QRadioButton::indicator::checked {
      <bool>true</bool>
     </property>
    </widget>
+   <zorder>label_server_error</zorder>
+   <zorder>label_gateway_error</zorder>
+   <zorder>label_sumask_error</zorder>
+   <zorder>label_ipaddr_error</zorder>
    <zorder>background_TCPIPV41</zorder>
    <zorder>btApply_IPConfig</zorder>
    <zorder>label_ipType</zorder>
@@ -886,11 +908,7 @@ QRadioButton::indicator::checked {
    <zorder>label_Server</zorder>
    <zorder>lineEdit_server</zorder>
    <zorder>btStatic</zorder>
-   <zorder>label_gateway_error</zorder>
-   <zorder>label_sumask_error</zorder>
    <zorder>btAuto</zorder>
-   <zorder>label_server_error</zorder>
-   <zorder>label_ipaddr_error</zorder>
   </widget>
   <widget class="QWidget" name="TCPIPV6">
    <widget class="QPushButton" name="btIPv6Setting">
@@ -909,6 +927,9 @@ QRadioButton::indicator::checked {
       <weight>50</weight>
       <bold>false</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
@@ -943,6 +964,9 @@ color: rgb(255, 255, 255);
       <weight>50</weight>
       <bold>false</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
@@ -1038,7 +1062,7 @@ color: rgb(255, 255, 255);
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -1070,7 +1094,7 @@ color: rgb(255, 255, 255);
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
@@ -1177,7 +1201,7 @@ QPushButton::pressed{
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
@@ -1232,6 +1256,9 @@ QPushButton::pressed{
       <bold>false</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image:url(:/Images/Btn_Green.png);
@@ -1280,6 +1307,9 @@ color:white;
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
@@ -1337,6 +1367,9 @@ QPushButton::pressed{
       <bold>true</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image: url(:/Images/Btn_BackGround.png);
@@ -1372,7 +1405,7 @@ QPushButton::pressed{
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -1436,7 +1469,7 @@ border:1px solid  rgb(181, 181, 181);
      </rect>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -1510,6 +1543,9 @@ border:1px solid  rgb(181, 181, 181);
       <bold>false</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image: url(:/Images/Btn_Green.png);
@@ -1550,6 +1586,9 @@ color:white;
       <bold>false</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">
 QPushButton{
@@ -1583,6 +1622,9 @@ QPushButton:pressed{
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
@@ -1701,7 +1743,7 @@ border:1px solid  rgb(181, 181, 181);
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -1772,6 +1814,9 @@ border:1px solid  rgb(181, 181, 181);
       <bold>true</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image: url(:/Images/Btn_BackGround.png);
@@ -1830,6 +1875,9 @@ QPushButton::pressed{
       <bold>true</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image: url(:/Images/Btn_BackGround.png);
@@ -1880,6 +1928,9 @@ QPushButton::pressed{
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
@@ -1944,7 +1995,7 @@ QPushButton::pressed{
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -1978,6 +2029,9 @@ border:transparent;
       <weight>50</weight>
       <bold>false</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -2013,6 +2067,9 @@ QPushButton:pressed{
       <weight>50</weight>
       <bold>false</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">
@@ -2088,6 +2145,9 @@ QPushButton:pressed{
      <bool>true</bool>
     </property>
    </widget>
+   <zorder>label_ImageDensity_error</zorder>
+   <zorder>label_LeftMargin_error</zorder>
+   <zorder>label_TopMargin_error</zorder>
    <zorder>background_UserConfig1</zorder>
    <zorder>btTopReduce</zorder>
    <zorder>label_LowHumidity</zorder>
@@ -2115,9 +2175,6 @@ QPushButton:pressed{
    <zorder>lineEdit_TopMargin</zorder>
    <zorder>btDrumReset</zorder>
    <zorder>btTonerReset</zorder>
-   <zorder>label_TopMargin_error</zorder>
-   <zorder>label_LeftMargin_error</zorder>
-   <zorder>label_ImageDensity_error</zorder>
   </widget>
   <widget class="QWidget" name="Password">
    <widget class="QLineEdit" name="lineEdit_confirm">
@@ -2135,7 +2192,7 @@ QPushButton:pressed{
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -2170,7 +2227,7 @@ QPushButton:pressed{
      </font>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
@@ -2287,6 +2344,9 @@ QPushButton:pressed{
       <bold>false</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	border-image: url(:/Images/Btn_Green.png);
@@ -2318,6 +2378,10 @@ color:white;
    <zorder>btApply</zorder>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_newPassWord</tabstop>
+  <tabstop>lineEdit_confirm</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

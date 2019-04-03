@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>ResStr_Print_Preview</string>
+   <string>ResStr_Preview</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QPushButton{
@@ -69,6 +69,9 @@ color:white;
     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
      <item>
       <widget class="QScrollArea" name="scrollArea">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
        </property>
@@ -236,9 +239,7 @@ color:white;
   </layout>
  </widget>
  <tabstops>
-  <tabstop>fit</tabstop>
   <tabstop>scrollArea</tabstop>
-  <tabstop>back</tabstop>
  </tabstops>
  <resources>
   <include location="resource.qrc"/>

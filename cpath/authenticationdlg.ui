@@ -74,7 +74,7 @@
     </font>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="styleSheet">
     <string notr="true">QLineEdit{
@@ -82,6 +82,9 @@
     border-radius: 12px;
     padding: 0 8px;
 }</string>
+   </property>
+   <property name="maxLength">
+    <number>32</number>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>
@@ -128,7 +131,7 @@
     </font>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::StrongFocus</enum>
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
     <string notr="true">
@@ -170,6 +173,9 @@ color:white;
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_Password</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

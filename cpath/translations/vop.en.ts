@@ -93,12 +93,12 @@ All rights reserved.</translation>
         <translation>The default password for this unit is &quot;888888&quot;. For security of your equipment, please change this password.</translation>
     </message>
     <message>
-        <location filename="../authenticationdlg.ui" line="112"/>
+        <location filename="../authenticationdlg.ui" line="106"/>
         <source>ResStr_Password</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../authenticationdlg.ui" line="162"/>
+        <location filename="../authenticationdlg.ui" line="156"/>
         <source>ResStr_Login</source>
         <translation>Login</translation>
     </message>
@@ -197,8 +197,12 @@ All rights reserved.</translation>
 <context>
     <name>ImagePreviewDialog</name>
     <message>
-        <location filename="../imagepreviewdialog.ui" line="26"/>
         <source>ResStr_Print_Preview</source>
+        <translation type="obsolete">Preview</translation>
+    </message>
+    <message>
+        <location filename="../imagepreviewdialog.ui" line="26"/>
+        <source>ResStr_Preview</source>
         <translation>Preview</translation>
     </message>
     <message>
@@ -221,7 +225,7 @@ All rights reserved.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="386"/>
-        <location filename="../mainwindow.cpp" line="902"/>
+        <location filename="../mainwindow.cpp" line="901"/>
         <source>ResStr_Offline</source>
         <translation>Offline</translation>
     </message>
@@ -251,33 +255,33 @@ All rights reserved.</translation>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="69"/>
-        <location filename="../mainwindow.cpp" line="862"/>
+        <location filename="../mainwindow.cpp" line="70"/>
+        <location filename="../mainwindow.cpp" line="861"/>
         <source>ResStr_Ready</source>
         <translation>Ready</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="118"/>
+        <location filename="../mainwindow.cpp" line="119"/>
         <source>ResStr_Exit</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="172"/>
+        <location filename="../mainwindow.cpp" line="173"/>
         <source>ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_</source>
         <translation>The scanned images will be deleted after the application is closed. Close application?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="885"/>
+        <location filename="../mainwindow.cpp" line="884"/>
         <source>ResStr_Sleep</source>
         <translation>Sleep</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="916"/>
+        <location filename="../mainwindow.cpp" line="915"/>
         <source>ResStr_Busy</source>
         <translation>Busy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="932"/>
+        <location filename="../mainwindow.cpp" line="931"/>
         <source>ResStr_Error</source>
         <translation>Error</translation>
     </message>
@@ -1503,313 +1507,314 @@ All rights reserved.</translation>
 <context>
     <name>UIConfig</name>
     <message>
-        <location filename="../uiconfig.cpp" line="222"/>
+        <location filename="../uiconfig.cpp" line="223"/>
         <source>ResStr_Printing</source>
         <translation>Printing</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="224"/>
+        <location filename="../uiconfig.cpp" line="225"/>
         <source>ResStr_WarmingUp</source>
         <translation>WarmingUp</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="225"/>
+        <location filename="../uiconfig.cpp" line="226"/>
         <source>ResStr_Print_Cancelling</source>
         <translation>Print Cancelling</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="226"/>
+        <location filename="../uiconfig.cpp" line="227"/>
         <source>ResStr_Processing</source>
         <translation>Processing</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="227"/>
-        <location filename="../uiconfig.cpp" line="236"/>
+        <location filename="../uiconfig.cpp" line="228"/>
+        <location filename="../uiconfig.cpp" line="239"/>
         <source>ResStr_Copying</source>
         <translation>Copying</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="230"/>
+        <location filename="../uiconfig.cpp" line="231"/>
         <source>ResStr_Turn_card_over_to_copy_the_reverse_</source>
         <translation>Turn the ID card over and put it in place. Close the cover and press the printer copy key.</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="232"/>
+        <location filename="../uiconfig.cpp" line="233"/>
+        <location filename="../uiconfig.cpp" line="235"/>
         <source>ResStr_Place_Next_Page</source>
         <translation>Place Next Page</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="237"/>
+        <location filename="../uiconfig.cpp" line="240"/>
         <source>ResStr_Copy_Cancelling</source>
         <translation>Copy Cancelling</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="238"/>
+        <location filename="../uiconfig.cpp" line="241"/>
         <source>ResStr_ID_Card_Mode</source>
         <translation>ID Card Mode</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="239"/>
-        <location filename="../uiconfig.cpp" line="240"/>
+        <location filename="../uiconfig.cpp" line="242"/>
+        <location filename="../uiconfig.cpp" line="243"/>
         <source>ResStr_Scanning</source>
         <translation>Scanning</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="241"/>
+        <location filename="../uiconfig.cpp" line="244"/>
         <source>ResStr_Scan_Cancelling</source>
         <translation>Scan Cancelling</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="242"/>
+        <location filename="../uiconfig.cpp" line="245"/>
         <source>ResStr_Scanner_Busy</source>
         <translation>Scanner Busy</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="247"/>
-        <location filename="../uiconfig.cpp" line="258"/>
+        <location filename="../uiconfig.cpp" line="250"/>
+        <location filename="../uiconfig.cpp" line="261"/>
         <source>ResStr_Toner_End_ABC_Plus</source>
         <translation>Toner End
 Please replace a new toner cartridge and click the＂Reset Toner Cartridge” button of Advanced Settings.</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="251"/>
-        <location filename="../uiconfig.cpp" line="262"/>
+        <location filename="../uiconfig.cpp" line="254"/>
+        <location filename="../uiconfig.cpp" line="265"/>
         <source>ResStr_Toner_End_ABC</source>
         <translation>Toner End
 Please replace a new toner cartridge.</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="265"/>
+        <location filename="../uiconfig.cpp" line="268"/>
         <source>ResStr_Toner_Near_End</source>
         <translation>Toner Near End</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="266"/>
+        <location filename="../uiconfig.cpp" line="269"/>
         <source>ResStr_OPC_Near_End</source>
         <translation>OPC Near End</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="271"/>
+        <location filename="../uiconfig.cpp" line="274"/>
         <source>ResStr_OPC_End_ABC_Plus</source>
         <translation>OPC End
 Please replace a new drum cartridge and click the＂Reset Drum Cartridge” button of Advanced Settings.</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="275"/>
+        <location filename="../uiconfig.cpp" line="278"/>
         <source>ResStr_OPC_End_ABC</source>
         <translation>OPC End
 Please replace a new toner cartridge.</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="278"/>
+        <location filename="../uiconfig.cpp" line="281"/>
         <source>ResStr_Waiting_2nd_pages_when_print_manual_duplex_job</source>
         <translation>Waiting 2nd pages when print manual duplex job</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="279"/>
+        <location filename="../uiconfig.cpp" line="282"/>
         <source>ResStr_Paper_Jam__Paper_Remained</source>
         <translation>Paper Jam: Paper Remained</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="280"/>
+        <location filename="../uiconfig.cpp" line="283"/>
         <source>ResStr_Paper_Jam__Nofeed</source>
         <translation>Paper Jam: No feed</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="281"/>
+        <location filename="../uiconfig.cpp" line="284"/>
         <source>ResStr_Paper_Jam__Regist</source>
         <translation>Paper Jam: Regist</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="282"/>
+        <location filename="../uiconfig.cpp" line="285"/>
         <source>ResStr_Paper_Jam__Exit_NotReach</source>
         <translation>Paper Jam: Inner</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="283"/>
+        <location filename="../uiconfig.cpp" line="286"/>
         <source>ResStr_Paper_Jam__Exit</source>
         <translation>Paper Jam: Exit</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="284"/>
+        <location filename="../uiconfig.cpp" line="287"/>
         <source>ResStr_Cover_Open</source>
         <translation>Cover Open</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="285"/>
+        <location filename="../uiconfig.cpp" line="288"/>
         <source>ResStr_No_Toner_Cartridge</source>
         <translation>No Toner Cartridge</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="286"/>
+        <location filename="../uiconfig.cpp" line="289"/>
         <source>ResStr_Please_Replace_Toner</source>
         <translation>Please Replace Toner</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="287"/>
+        <location filename="../uiconfig.cpp" line="290"/>
         <source>ResStr_PDL_Memory_Overflow</source>
         <translation>PDL Memory Overflow! Press power key to clear this error.</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="288"/>
+        <location filename="../uiconfig.cpp" line="291"/>
         <source>ResStr_FW_Updating</source>
         <translation>FW Updating</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="289"/>
+        <location filename="../uiconfig.cpp" line="292"/>
         <source>ResStr_Overheat</source>
         <translation>Overheat</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="291"/>
-        <location filename="../uiconfig.cpp" line="295"/>
-        <location filename="../uiconfig.cpp" line="299"/>
-        <location filename="../uiconfig.cpp" line="303"/>
-        <location filename="../uiconfig.cpp" line="307"/>
-        <location filename="../uiconfig.cpp" line="311"/>
-        <location filename="../uiconfig.cpp" line="315"/>
-        <location filename="../uiconfig.cpp" line="319"/>
-        <location filename="../uiconfig.cpp" line="347"/>
-        <location filename="../uiconfig.cpp" line="351"/>
-        <location filename="../uiconfig.cpp" line="355"/>
-        <location filename="../uiconfig.cpp" line="363"/>
-        <location filename="../uiconfig.cpp" line="367"/>
-        <location filename="../uiconfig.cpp" line="371"/>
+        <location filename="../uiconfig.cpp" line="294"/>
+        <location filename="../uiconfig.cpp" line="298"/>
+        <location filename="../uiconfig.cpp" line="302"/>
+        <location filename="../uiconfig.cpp" line="306"/>
+        <location filename="../uiconfig.cpp" line="310"/>
+        <location filename="../uiconfig.cpp" line="314"/>
+        <location filename="../uiconfig.cpp" line="318"/>
+        <location filename="../uiconfig.cpp" line="322"/>
+        <location filename="../uiconfig.cpp" line="350"/>
+        <location filename="../uiconfig.cpp" line="354"/>
+        <location filename="../uiconfig.cpp" line="358"/>
+        <location filename="../uiconfig.cpp" line="366"/>
+        <location filename="../uiconfig.cpp" line="370"/>
+        <location filename="../uiconfig.cpp" line="374"/>
         <source>ResStr_Turn_off_the_printer__and_turn_it_on_again_Contact_customer_support_if_this_failure_is_repeated_SCxxx</source>
         <translation>Turn off the printer, and turn it on again.
 Contact customer support if this failure is repeated:
 Error message:</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="292"/>
+        <location filename="../uiconfig.cpp" line="295"/>
         <source>ResStr_Polygon_Motor_on_timeout_error</source>
         <translation>Polygon Motor on timeout error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="296"/>
+        <location filename="../uiconfig.cpp" line="299"/>
         <source>ResStr_Polygon_Motor_off_timeout_error</source>
         <translation>Polygon Motor off timeout error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="300"/>
+        <location filename="../uiconfig.cpp" line="303"/>
         <source>ResStr_Polygon_Motor_lock_signal_error</source>
         <translation>Polygon Motor lock signal error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="304"/>
+        <location filename="../uiconfig.cpp" line="307"/>
         <source>ResStr_Beam_synchronize_error</source>
         <translation>Beam synchronize error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="308"/>
+        <location filename="../uiconfig.cpp" line="311"/>
         <source>ResStr_Bias_leak</source>
         <translation>Bias leak</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="312"/>
+        <location filename="../uiconfig.cpp" line="315"/>
         <source>ResStr_plate_action_error</source>
         <translation>Plate action error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="316"/>
+        <location filename="../uiconfig.cpp" line="319"/>
         <source>ResStr_Main_Motor_error</source>
         <translation>Main Motor error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="320"/>
+        <location filename="../uiconfig.cpp" line="323"/>
         <source>ResStr_Fan_Motor_error</source>
         <translation>Fan Motor error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="323"/>
-        <location filename="../uiconfig.cpp" line="327"/>
-        <location filename="../uiconfig.cpp" line="331"/>
-        <location filename="../uiconfig.cpp" line="335"/>
-        <location filename="../uiconfig.cpp" line="339"/>
-        <location filename="../uiconfig.cpp" line="343"/>
+        <location filename="../uiconfig.cpp" line="326"/>
+        <location filename="../uiconfig.cpp" line="330"/>
+        <location filename="../uiconfig.cpp" line="334"/>
+        <location filename="../uiconfig.cpp" line="338"/>
+        <location filename="../uiconfig.cpp" line="342"/>
+        <location filename="../uiconfig.cpp" line="346"/>
         <source>ResStr_Please_contact_customer_support__SCxxx</source>
         <translation>Please contact customer support:
 Error message:</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="324"/>
+        <location filename="../uiconfig.cpp" line="327"/>
         <source>ResStr_Fuser_thermistor_error</source>
         <translation>Fuser thermistor error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="328"/>
+        <location filename="../uiconfig.cpp" line="331"/>
         <source>ResStr_Fuser_reload_error</source>
         <translation>Fuser reload error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="332"/>
+        <location filename="../uiconfig.cpp" line="335"/>
         <source>ResStr_High_temperature_soft_check_error</source>
         <translation>High temperature soft check error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="336"/>
+        <location filename="../uiconfig.cpp" line="339"/>
         <source>ResStr_High_temperature_hard_check_error</source>
         <translation>High temperature hard check error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="340"/>
+        <location filename="../uiconfig.cpp" line="343"/>
         <source>ResStr_Fuser_full_heater_error</source>
         <translation>Fuser full heater error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="344"/>
+        <location filename="../uiconfig.cpp" line="347"/>
         <source>ResStr_Fuser_3times_jam_error</source>
         <translation>Fuser 3times jam error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="348"/>
+        <location filename="../uiconfig.cpp" line="351"/>
         <source>ResStr_Low_voltage_fuser_reload_error</source>
         <translation>Low voltage fuser reload error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="352"/>
+        <location filename="../uiconfig.cpp" line="355"/>
         <source>ResStr_Machine_thermistor_error</source>
         <translation>Machine thermistor error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="356"/>
+        <location filename="../uiconfig.cpp" line="359"/>
         <source>ResStr_Print_request_signal_doesnt_come</source>
         <translation>Print request signal doesn&apos;t come</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="359"/>
+        <location filename="../uiconfig.cpp" line="362"/>
         <source>ResStr_USB_write_failed_during_scan_job_cancelling</source>
         <translation>USB write failed during scan, job cancelling.</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="360"/>
+        <location filename="../uiconfig.cpp" line="363"/>
         <source>ResStr_NET_write_failed_during_scan_job_cancelling</source>
         <translation>NET write failed during scan, job cancelling.</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="364"/>
+        <location filename="../uiconfig.cpp" line="367"/>
         <source>ResStr_Scanner_not_found_home_position</source>
         <translation>Scanner not found home position</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="368"/>
+        <location filename="../uiconfig.cpp" line="371"/>
         <source>ResStr_Scan_Calibration_Error</source>
         <translation>Scan Calibration Error</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="372"/>
+        <location filename="../uiconfig.cpp" line="375"/>
         <source>ResStr_Wireless_Dongle_Config_Fail</source>
         <translation>Wireless Dongle Config Fail</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="375"/>
+        <location filename="../uiconfig.cpp" line="378"/>
         <source>ResStr_DMA_Error_SCxxx</source>
         <translation>Turn off the printer, and turn it on again:
 
 Error message:</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="376"/>
+        <location filename="../uiconfig.cpp" line="379"/>
         <source>ResStr_DMA_Error</source>
         <translation>DMA Error</translation>
     </message>
@@ -2232,14 +2237,14 @@ Error message:</translation>
     </message>
     <message>
         <location filename="../wlantitlecell.cpp" line="182"/>
-        <location filename="../wlantitlecell.cpp" line="728"/>
+        <location filename="../wlantitlecell.cpp" line="733"/>
         <source>ResStr_Setting_Fail</source>
         <translation>Configure failed</translation>
     </message>
     <message>
         <location filename="../wlantitlecell.cpp" line="204"/>
         <location filename="../wlantitlecell.cpp" line="276"/>
-        <location filename="../wlantitlecell.cpp" line="706"/>
+        <location filename="../wlantitlecell.cpp" line="711"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>Administrator Authentication</translation>
     </message>
@@ -2250,18 +2255,18 @@ Error message:</translation>
     </message>
     <message>
         <location filename="../wlantitlecell.cpp" line="657"/>
-        <location filename="../wlantitlecell.cpp" line="685"/>
-        <location filename="../wlantitlecell.cpp" line="694"/>
+        <location filename="../wlantitlecell.cpp" line="690"/>
+        <location filename="../wlantitlecell.cpp" line="699"/>
         <source>ResStr_Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="684"/>
+        <location filename="../wlantitlecell.cpp" line="689"/>
         <source>ResStr_Msg_2</source>
         <translation>The password must be 5 or 13 ASCII characters or 10 or 26 hex characters, please check and enter again.</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="693"/>
+        <location filename="../wlantitlecell.cpp" line="698"/>
         <source>ResStr_Msg_3</source>
         <translation>The password must be 8 to 63 ASCII characters or 64 hex characters, please check and enter again.</translation>
     </message>

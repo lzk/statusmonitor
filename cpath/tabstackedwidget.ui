@@ -89,7 +89,7 @@ background-color: transparent;</string>
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
@@ -133,7 +133,7 @@ color:white;
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
@@ -171,7 +171,7 @@ color:white;
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QLineEdit{
@@ -203,7 +203,7 @@ color:white;
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
@@ -241,7 +241,7 @@ QPushButton::pressed{
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
@@ -278,7 +278,7 @@ QPushButton::pressed{
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
@@ -315,7 +315,7 @@ QPushButton::pressed{
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
@@ -522,7 +522,7 @@ QPushButton::pressed{
           </size>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">border-image: url(:/Images/CheckBox_Close.png);
@@ -586,7 +586,7 @@ QPushButton::pressed{
           </size>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">border-image: url(:/Images/CheckBox_Close.png);
@@ -634,6 +634,9 @@ QPushButton::pressed{
         <pointsize>8</pointsize>
         <underline>true</underline>
        </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
@@ -686,6 +689,9 @@ border-width:0px;</string>
         <pointsize>8</pointsize>
         <underline>true</underline>
        </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
@@ -757,6 +763,9 @@ border-width:0px;</string>
       <height>35</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 border-image: url(:/Images/Btn_Gray.png) 16;
@@ -797,6 +806,9 @@ color:gray;
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/background_scan_btn2.png);color:white;
 }
@@ -835,6 +847,9 @@ color:white;
       <pointsize>13</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	background-color:lightgray;
@@ -853,6 +868,9 @@ color:white;
       <width>75</width>
       <height>35</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">border-image: url(:/Images/background_scan_btn1.png);</string>
@@ -1023,6 +1041,9 @@ background-image: url(:/Images/PageScan.tif);
       <height>31</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/Btn_Gray.png);}
 QPushButton::hover{
@@ -1093,6 +1114,9 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
       <height>31</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/Btn_Gray.png);}
 QPushButton::hover{
@@ -1121,7 +1145,7 @@ background-color: transparent;
 </string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="WiFi_3">
      <widget class="QLabel" name="background_WiFi1_3">
@@ -1382,6 +1406,9 @@ background-color: transparent;
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/Btn_Gray.png);}
 QPushButton::hover{
@@ -1420,6 +1447,9 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
       <height>31</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/Btn_Gray.png);}
 QPushButton::hover{
@@ -1446,6 +1476,9 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
       <height>31</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/Btn_Gray.png);}
 QPushButton::hover{
@@ -1467,6 +1500,9 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:whit
       <width>121</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/Btn_Green.png);color:white;
@@ -1508,6 +1544,9 @@ QPushButton::Pressed{border-image: url(:/Images/Btn_Green_Pressed.png);color:whi
       <width>121</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{border-image: url(:/Images/Btn_Gray.png);}

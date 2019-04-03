@@ -21,6 +21,7 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     this->setCurrentIndex(0);
 
     scrollArea = new QScrollArea(ui->WiFi);
+    scrollArea->setFocusPolicy(Qt::NoFocus);
     scrollArea->setGeometry(QRect(13, 14, 235, 274));
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollArea->setStyleSheet("QScrollBar:vertical"
@@ -89,6 +90,8 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     connect(ui->btAuto,SIGNAL(clicked(bool)),this,SLOT(onRadioClickDNS(bool)));
     connect(ui->btManual,SIGNAL(clicked(bool)),this,SLOT(onRadioClickDNS(bool)));
     ui->btAuto->setChecked(true);
+    onbtAutotoggled(true);
+    onbtManualtoggled(false);
 
     //hide the softAP close/open button
     ui->label_close_AP->hide();
@@ -159,6 +162,7 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
                 ui->lineEdit_IPAddressv4->setText("0.0.0.0");
                 ui->lineEdit_Gatewayv4->setText("0.0.0.0");
                 ui->lineEdit_Submaskv4->setText("0.0.0.0");
+                ui->lineEdit_server->setText("0.0.0.0");
             }
             gUInterface->emitEnableCycleAnimation(false);
             break;
@@ -231,18 +235,21 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             QString deviceMsg;
             if(!result)
             {
+
+                deviceMsg = tr("ResStr_Setting_Successfully_");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+
                 SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), 1);
                 warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
-                deviceMsg = tr("ResStr_Setting_Successfully_");
             }
             else {
                 deviceMsg = tr("ResStr_Setting_Fail");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             }
-            gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             gUInterface->emitEnableCycleAnimation(false);
         }
             break;
@@ -251,18 +258,20 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             QString deviceMsg;
             if(!result)
             {
+                deviceMsg = tr("ResStr_Setting_Successfully_");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+
                 SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), 1);
                 warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
-                deviceMsg = tr("ResStr_Setting_Successfully_");
             }
             else {
                 deviceMsg = tr("ResStr_Setting_Fail");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             }
-            gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             gUInterface->emitEnableCycleAnimation(false);
         }
             break;
@@ -271,18 +280,20 @@ void SettingsStackedWidget::cmdResult(int cmd,int result,QVariant data)
             QString deviceMsg;
             if(!result)
             {
+                deviceMsg = tr("ResStr_Setting_Successfully_");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
+
                 SettingWarming *warming = new SettingWarming(this, tr("ResStr_Please_turn_off_the_printer_until_it_cools_to_room_temperature"), 1);
                 warming->setWindowTitle(tr("ResStr_Prompt"));
 
                 warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
                                     & ~Qt::WindowMinimizeButtonHint);
                 warming->exec();
-                deviceMsg = tr("ResStr_Setting_Successfully_");
             }
             else {
                 deviceMsg = tr("ResStr_Setting_Fail");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             }
-            gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             gUInterface->emitEnableCycleAnimation(false);
         }
             break;
@@ -324,6 +335,21 @@ void SettingsStackedWidget::changeStackIndex(int index)
         break;
     case 1:                                     //softAP setting
         {
+            ui->lineEdit_SSID_AP->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_Password_AP->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_SSID_AP->setFocus();
+
+            ui->lineEdit_IPAddressv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Submaskv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Gatewayv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_server->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_timeout->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_TopMargin->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_LeftMargin->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_ImageDensity->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_newPassWord->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_confirm->setFocusPolicy(Qt::NoFocus);
+
             //bms 7428
             ui->lineEdit_newPassWord->setText("");
             ui->lineEdit_confirm->setText("");
@@ -345,18 +371,30 @@ void SettingsStackedWidget::changeStackIndex(int index)
             ui->lineEdit_newPassWord->setText("");
             ui->lineEdit_confirm->setText("");
 
+            ui->lineEdit_SSID_AP->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Password_AP->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_IPAddressv4->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_Submaskv4->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_Gatewayv4->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_server->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_timeout->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_TopMargin->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_LeftMargin->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_ImageDensity->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_newPassWord->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_confirm->setFocusPolicy(Qt::NoFocus);
+
+            ui->lineEdit_IPAddressv4->setText("0.0.0.0");
+            ui->lineEdit_Gatewayv4->setText("0.0.0.0");
+            ui->lineEdit_Submaskv4->setText("0.0.0.0");
+            ui->lineEdit_server->setText("0.0.0.0");
+
             if(this->isEnabled() == true)
             {
                 QVariant data;
                 data.setValue<net_info_st>(info_ipv4);
                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_GetV4);
                 gUInterface->emitEnableCycleAnimation(true);
-            }
-            else
-            {
-                ui->lineEdit_IPAddressv4->setText("0.0.0.0");
-                ui->lineEdit_Gatewayv4->setText("0.0.0.0");
-                ui->lineEdit_Submaskv4->setText("0.0.0.0");
             }
         }
         break;
@@ -372,6 +410,19 @@ void SettingsStackedWidget::changeStackIndex(int index)
             //bms 7428
             ui->lineEdit_newPassWord->setText("");
             ui->lineEdit_confirm->setText("");
+
+            ui->lineEdit_SSID_AP->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Password_AP->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_IPAddressv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Submaskv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Gatewayv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_server->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_timeout->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_TopMargin->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_LeftMargin->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_ImageDensity->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_newPassWord->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_confirm->setFocusPolicy(Qt::NoFocus);
 
             if(this->isEnabled() == true)
             {
@@ -408,6 +459,20 @@ void SettingsStackedWidget::changeStackIndex(int index)
             ui->lineEdit_newPassWord->setText("");
             ui->lineEdit_confirm->setText("");
 
+            ui->lineEdit_SSID_AP->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Password_AP->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_IPAddressv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Submaskv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Gatewayv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_server->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_timeout->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_TopMargin->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_LeftMargin->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_ImageDensity->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_TopMargin->setFocus();
+            ui->lineEdit_newPassWord->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_confirm->setFocusPolicy(Qt::NoFocus);
+
             if(this->isEnabled() == true)
             {
                 gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Get_UserConfig);
@@ -417,6 +482,19 @@ void SettingsStackedWidget::changeStackIndex(int index)
         break;
     case 6:                                   //new password setting
         {
+            ui->lineEdit_SSID_AP->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Password_AP->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_IPAddressv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Submaskv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_Gatewayv4->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_server->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_timeout->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_TopMargin->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_LeftMargin->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_ImageDensity->setFocusPolicy(Qt::NoFocus);
+            ui->lineEdit_newPassWord->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_confirm->setFocusPolicy(Qt::StrongFocus);
+            ui->lineEdit_newPassWord->setFocus();
         }
         break;
     default:
@@ -701,6 +779,11 @@ void SettingsStackedWidget::on_btApply_AP_clicked()
             gUInterface->emitEnableCycleAnimation(true);
             LOGLOG("customer setting soft AP");
         }
+        else
+        {
+            QString deviceMsg = tr("ResStr_Setting_Fail");
+            gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
+        }
     }
 }
 
@@ -754,6 +837,11 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
         data.setValue<net_info_st>(info_ipv4);
         gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_NET_SetV4,data);
         gUInterface->emitEnableCycleAnimation(true);
+    }
+    else
+    {
+        QString deviceMsg = tr("ResStr_Setting_Fail");
+        gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
     }
 
     ui->btApply_IPConfig->setFocus();
