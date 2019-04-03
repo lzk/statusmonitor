@@ -149,6 +149,8 @@ static int savePrinter(Printer_struct* printer)
     settings.setValue("deviceUri" ,printer->deviceUri);
     settings.setValue("connectTo" ,printer->connectTo);
     settings.setValue("isDefault" ,printer->isDefault);
+    settings.setValue("isConnected" ,printer->isConnected);
+    settings.setValue("status" ,printer->status);
     settings.endGroup();
     settings.sync();
     return 0;
@@ -169,6 +171,8 @@ static int getPrinter(CALLBACK_getPrinters callback,void* para)
         strncpy(ps.deviceUri ,settings.value("deviceUri").toString().toUtf8().constData() ,sizeof(ps.deviceUri));
         strncpy(ps.connectTo ,settings.value("connectTo").toString().toUtf8().constData() ,sizeof(ps.connectTo));
         ps.isDefault = settings.value("isDefault").toBool();
+        ps.isConnected = settings.value("isConnected").toBool();
+        ps.status = settings.value("status").toInt();
         settings.endGroup();
         if(callback){
             callback(para ,&ps);

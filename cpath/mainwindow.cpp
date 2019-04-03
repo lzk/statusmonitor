@@ -347,21 +347,21 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
 
 void MainWindow::updatePrinter(const QVariant& data)
 {
-    printerInfos.clear();
-    printerInfos = data.value<QList<PrinterInfo_struct> >();
-    PrinterInfo_struct printerInfo;
+    printerlist.clear();
+    printerlist = data.value<QList<Printer_struct> >();
+    Printer_struct printer;
 
     printers.clear();
     disconnect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
     ui->deviceNameBox->clear();
 
     int index_of_defaultprinter = 0;
-    for(int i = 0 ;i < printerInfos.length() ;i++){
-        printerInfo = printerInfos.at(i);
-        printers << printerInfo.printer.name;
+    for(int i = 0 ;i < printerlist.length() ;i++){
+        printer = printerlist.at(i);
+        printers << printer.name;
 
-        ui->deviceNameBox->addItem(printerInfo.printer.name);
-        if(printerInfo.printer.isDefault){
+        ui->deviceNameBox->addItem(printer.name);
+        if(printer.isDefault){
             index_of_defaultprinter =  i;
         }
     }
@@ -398,9 +398,9 @@ void MainWindow::setcurrentPrinter(const QString& str)
 
     if(str != "")
     {
-        PrinterInfo_struct printerInfo = printerInfos.at(ui->deviceNameBox->currentIndex());
-        int modelType = UIConfig::getModelSerial(&printerInfo.printer);
-        qDebug()<<"printer"<<&printerInfo.printer<<"    modelType:"<<modelType;
+        Printer_struct printer = printerlist.at(ui->deviceNameBox->currentIndex());
+        int modelType = UIConfig::getModelSerial(&printer);
+//        qDebug()<<"printer"<<printer.name<<"    modelType:"<<modelType;
         if((modelType & UIConfig::ModelSerial_M) == UIConfig::ModelSerial_M)//M:3in1
         {
             enableMPrinter(true);

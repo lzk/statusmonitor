@@ -17,7 +17,7 @@ int FileLocker::lock(const char* filename)
     int ret = -1;
 //    LOGLOG("pid %ld get file %s lock" ,getpid() ,filename);
     fp = fopen(filename, "ab+");
-    chmod(filename ,0666);
+    chmod(filename ,DEFFILEMODE);
     strcpy(lock_file ,filename);
 
     if(fp){

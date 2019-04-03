@@ -26,20 +26,17 @@ signals:
 public slots:
     void cmdFromUi(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void cancel();
-    void update_printer_status(PrinterInfo_struct);
+    void update_current_printer_status();
     void update_printerlist();
 
 private:
     int cmd_status;
-    QStringList printers;
     DeviceManager* deviceManager;
     LShell* lshell;
     ScannerApp* scanner;
-    QList<PrinterInfo_struct> printers_detail;
     PrinterInfo_struct current_printer_info;
     Watcher* watcher;
 
-    Printer_struct* get_printer(const QString& printer_name);//get printer exist in system
     bool cmd_status_validate(Printer_struct* printer ,int cmd);
 };
 

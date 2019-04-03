@@ -3,7 +3,17 @@ INCLUDEPATH += $${PWD}
 INCLUDEPATH += ../libs ../libs/cups-2.2.8
 
 LIBS += -L$${PWD}/../libs -lusb-1.0  -lcups
-#LIBS += -lnetsnmp
+mac{
+    LIBS += -lnetsnmp
+}else{
+    unix{
+        contains(QT_ARCH, i386) {
+            LIBS += $${PWD}/../libs/linux32/libnetsnmp.a
+        }else{
+            LIBS += $${PWD}/../libs/linux64/libnetsnmp.a
+        }
+    }
+}
 
 macx: LIBS += -L/Volumes/work/software/libusb
 
@@ -21,7 +31,8 @@ SOURCES += \
     $$PWD/commonapi.cpp \
     $$PWD/usbio.cpp \
     $$PWD/netio.cpp \
-    $$PWD/devicemanager.cpp
+    $$PWD/devicemanager.cpp \
+    $$PWD/snmpapi.cpp
 
 
 mac{

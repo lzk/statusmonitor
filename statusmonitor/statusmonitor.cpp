@@ -102,7 +102,7 @@ int StatusMonitor::getPrinterStatus(const char* printer ,PrinterStatus_struct* p
 //    PRINTER_STATUS status;
 //    int ret = getStatusFromDevice(device ,&status);
 //    if(ret){
-//        memset(&status ,0 ,sizeof(status));
+//        memset(&status ,-1 ,sizeof(status));
 ////        status.PrinterStatus = PS_ERROR_POWER_OFF;
 //        status.PrinterStatus = PS_UNKNOWN;
 //    }else{
@@ -126,16 +126,10 @@ int StatusMonitor::getDeviceStatus(DeviceIO* device ,Printer_struct* printer ,Pr
 //    if(device->isConnected(printer) || (device->type() == DeviceIO::Type_usb)){
         ret = getStatusFromDevice(device ,printer ,&status);
 //    }
+        printer->status = ret;
     if(ret){
-        memset(&status ,0 ,sizeof(status));
-//        status.PrinterStatus = PS_ERROR_POWER_OFF;
-//        status.PrinterStatus = PS_UNKNOWN;
-        status.PrinterStatus = ret;
+        memset(&status ,-1 ,sizeof(status));
     }else{
-//        if(IsStatusAbnormal(status.PrinterStatus)){
-//            status.PrinterStatus = PS_OFFLINE;
-//            status.PrinterStatus = PS_PAUSED;
-//        }
     }
     parsePrinterStatus(&status ,ps);
     return ret;
@@ -150,9 +144,52 @@ int StatusMonitor::getDeviceStatus(DeviceIOManager* device_manager ,Printer_stru
     return getDeviceStatus(device ,printer ,ps);
 }
 
+//struct PrinterList_para_struct
+//{
+//    CALLBACK_getPrinterInfo callback;
+//    void* para;
+//};
+
+//static int getPrinterList(void* para ,Printer_struct* ps)
+//{
+//    int ret = 1;
+//    if(isDeviceSupported && isDeviceSupported(ps)){
+
+//        struct PrinterList_para_struct* pl_para = (struct PrinterList_para_struct*) para;
+
+//        struct PrinterInfo_struct pis;
+//        pis.printer = *ps;
+//        memset((void*)&pis.status ,-1 ,sizeof(pis.status));
+//    //    if(!StatusMonitor::getPrinterStatus(ps->name ,&pis.status)){
+//    //        LOGLOG("can not get printer status");
+//    //    }
+
+//        if(pl_para->callback){
+//            ret = pl_para->callback(pl_para->para ,&pis);
+//        }
+//    }
+//    return ret;
+//}
+
+//int StatusMonitor::getPrintersFromFile(CALLBACK_getPrinterInfo callback,void* para)
+//{
+//    struct PrinterList_para_struct pl_para;
+//    pl_para.callback = callback;
+//    pl_para.para = para;
+//    return StatusManager().getPrintersFromFile(getPrinterList ,(void*)&pl_para);
+//}
+
+//int StatusMonitor::getPrinters(CALLBACK_getPrinterInfo callback,void* para)
+//{
+//    struct PrinterList_para_struct pl_para;
+//    pl_para.callback = callback;
+//    pl_para.para = para;
+//    return cups_get_printers(getPrinterList ,(void*)&pl_para);
+//}
+
 struct PrinterList_para_struct
 {
-    CALLBACK_getPrinterInfo callback;
+    CALLBACK_getPrinters callback;
     void* para;
 };
 
@@ -163,21 +200,22 @@ static int getPrinterList(void* para ,Printer_struct* ps)
 
         struct PrinterList_para_struct* pl_para = (struct PrinterList_para_struct*) para;
 
-        struct PrinterInfo_struct pis;
-        pis.printer = *ps;
-        memset((void*)&pis.status ,0 ,sizeof(pis.status));
-    //    if(!StatusMonitor::getPrinterStatus(ps->name ,&pis.status)){
-    //        LOGLOG("can not get printer status");
-    //    }
-
         if(pl_para->callback){
-            ret = pl_para->callback(pl_para->para ,&pis);
+            ret = pl_para->callback(pl_para->para ,ps);
         }
     }
     return ret;
 }
 
-int StatusMonitor::getPrintersFromFile(CALLBACK_getPrinterInfo callback,void* para)
+int StatusMonitor::getPrinters(CALLBACK_getPrinters callback,void* para)
+{
+    struct PrinterList_para_struct pl_para;
+    pl_para.callback = callback;
+    pl_para.para = para;
+    return cups_get_printers(getPrinterList ,(void*)&pl_para);
+}
+
+int StatusMonitor::getPrintersFromFile(CALLBACK_getPrinters callback,void* para)
 {
     struct PrinterList_para_struct pl_para;
     pl_para.callback = callback;
@@ -185,41 +223,3 @@ int StatusMonitor::getPrintersFromFile(CALLBACK_getPrinterInfo callback,void* pa
     return StatusManager().getPrintersFromFile(getPrinterList ,(void*)&pl_para);
 }
 
-int StatusMonitor::getPrinters(CALLBACK_getPrinterInfo callback,void* para)
-{
-    struct PrinterList_para_struct pl_para;
-    pl_para.callback = callback;
-    pl_para.para = para;
-//    return StatusManager().getPrintersFromFile(getPrinterList ,(void*)&pl_para);
-    return cups_get_printers(getPrinterList ,(void*)&pl_para);
-}
-
-//int StatusMonitor::getPrinters(CALLBACK_getPrinters callback,void* para)
-//{
-//    return StatusManager().getPrintersFromFile(callback ,para);
-//}
-
-bool StatusMonitor::AnyTonerReachLevel1(const PrinterStatus_struct& m_PrinterStatus)
-{
-    if (m_PrinterStatus.PrinterStatus == PS_ERROR_POWER_OFF)
-        return false;
-    if (m_PrinterStatus.TonelStatusLevelC <= 20 || m_PrinterStatus.TonelStatusLevelM <= 20 || m_PrinterStatus.TonelStatusLevelY <= 20 || m_PrinterStatus.TonelStatusLevelK <= 20)
-        return true;
-    else	return false;
-}
-
-bool StatusMonitor::IsNonDellTonerMode(const PrinterStatus_struct& m_PrinterStatus)
-{
-    if (m_PrinterStatus.NonDellTonerMode)
-        return true;
-    else	return false;
-}
-
-bool StatusMonitor::OnlyColorTonerEmpty(const PrinterStatus_struct& m_PrinterStatus)
-{
-    if (m_PrinterStatus.PrinterStatus == PS_ERROR_POWER_OFF)
-        return false;
-    if (m_PrinterStatus.TonelStatusLevelK != 0 && (m_PrinterStatus.TonelStatusLevelC == 0 || m_PrinterStatus.TonelStatusLevelM == 0 || m_PrinterStatus.TonelStatusLevelY == 0))
-        return true;
-    else	return false;
-}

@@ -73,4 +73,6 @@ class DeviceIO;
 int getStatusFromDevice(DeviceIO* device ,Printer_struct* printer ,PRINTER_STATUS* ps);
 class DeviceIOManager;
 int getStatusFromDevice(DeviceIOManager* device_manager ,Printer_struct* printer ,PRINTER_STATUS* ps);
+
+int DecodeStatusFromDeviceID(char* device_id, PRINTER_STATUS* status);
 #endif // STATUS_H

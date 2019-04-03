@@ -30,6 +30,8 @@ public:
     virtual bool isConnected(Printer_struct* printer);
     virtual const char* getDeviceAddress(Printer_struct* printer);
     virtual int getDeviceId(Printer_struct* printer ,char *buffer, int bufsize);
+
+    bool is_the_same_device(Printer_struct* printer);
 protected:
     char device_uri[256];
     int ifdelay;

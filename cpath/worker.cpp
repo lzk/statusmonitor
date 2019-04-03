@@ -17,9 +17,8 @@ Worker::Worker(QObject *parent) :
 {
     watcher = new Watcher(this);
     connect(this ,SIGNAL(set_current_printer(QString)) ,watcher ,SLOT(set_current_printer(QString)));
-    connect(watcher ,SIGNAL(update_printer_status(PrinterInfo_struct))
-            ,this ,SLOT(update_printer_status(PrinterInfo_struct))
-            ,Qt::DirectConnection);
+//    connect(watcher ,SIGNAL(update_printer_status()) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
+    connect(watcher ,SIGNAL(update_current_printer_status()) ,this ,SLOT(update_current_printer_status()));
     connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()));
     watcher->start();
 }
@@ -41,27 +40,32 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     cmd_status = 1;
 
     QVariant value;
-    Printer_struct* printer = get_printer(printer_name);
+    Printer_struct* printer;
+    Printer_struct ps;
+    int index  = watcher->get_printer_from_current_list(printer_name ,ps);
+    if(index<0){
+        printer = NULL;
+    }else{
+        printer = &ps;
+    }
     int result = -1;
 
     switch (cmd) {
     case UIConfig::CMD_GetPrinters:
-//        LOGLOG("CMD_GetPrinters from ui");
-//        value.setValue(printers_detail);
-//        cmdResult(cmd ,0 ,value);
         update_printerlist();
         break;
 
     case UIConfig::CMD_GetStatus:{
-        if(printer){
-            PrinterInfo_struct printer_info;
-            printer_info.printer = *printer;
-            PrinterStatus_struct* status = &printer_info.status;
-            result = StatusMonitor::getDeviceStatus(deviceManager ,printer ,status);
-            value.setValue(printer_info);
-            LOGLOG("get current status:0x%02x" ,printer_info.status.PrinterStatus);
-        }
-        cmdResult(cmd ,result ,value);
+        update_current_printer_status();
+//        if(printer){
+//            PrinterInfo_struct printer_info;
+//            printer_info.printer = *printer;
+//            PrinterStatus_struct* status = &printer_info.status;
+//            result = StatusMonitor::getDeviceStatus(deviceManager ,printer ,status);
+//            value.setValue(printer_info);
+//            LOGLOG("get current status:0x%02x" ,printer_info.status.PrinterStatus);
+//        }
+//        cmdResult(cmd ,result ,value);
     }
         break;
     case UIConfig::CMD_Scan:
@@ -80,7 +84,7 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
                 QByteArray t_ba = str_time.toLatin1();
                 sprintf(device_data.filename, "%s/%s.bmp", imagePath, t_ba.constData());
 
-                device_data.settings.scan_type = Hight_Quality;
+//                device_data.settings.scan_type = Hight_Quality;
                 device_data.callback_para = this;
                 device_data.callback = scan_callback;
                 result = scanner->scan(printer ,&device_data);
@@ -621,18 +625,6 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     cmd_status = 0;
 }
 
-Printer_struct* Worker::get_printer(const QString& printer_name)
-{
-    Printer_struct* printer = NULL;
-    for(int i = 0 ;i < printers_detail.count() ;i++){
-        if(!printer_name.compare(printers_detail[i].printer.name)){
-            printer = &printers_detail[i].printer;
-            break;
-        }
-    }
-    return printer;
-}
-
 void Worker::cancel()
 {
     scanner->set_cancel(true);
@@ -675,38 +667,40 @@ static void scan_callback(void* para)
     worker->update_scan_progress(settings->printer ,settings->progress ,(settings->settings.scan_type == Hight_Speed) ?1 :0);
 }
 
-void Worker::update_printer_status(PrinterInfo_struct ps)
+void Worker::update_current_printer_status()
 {
-    LOGLOG("update status:%02x" ,ps.status.PrinterStatus);
-    //update status via update_scan_progress function when usb scanning
     if(current_printer_info.status.PrinterStatus == UIConfig::Usb_Scanning)
         return;
+    PrinterInfo_struct ps;
+    watcher->get_currentprinter_info(ps);
     QVariant value;
-//    current_printer_info = ps;
     value.setValue<PrinterInfo_struct>(ps);
-    LOGLOG("CMD_GetStatus");
     cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
 }
 
 void Worker::update_printerlist()
 {
-    LOGLOG("update printer list");
+    QList<Printer_struct> printer_list;
     QVariant value;
-    watcher->get_printer_list(printers_detail);
-    value.setValue(printers_detail);
+    watcher->get_printer_list(printer_list);
+    value.setValue(printer_list);
     cmdResult(UIConfig::CMD_GetPrinters ,0 ,value);
 }
 
 bool Worker::cmd_status_validate(Printer_struct* printer ,int cmd)
 {
-    PrinterStatus_struct status;
-    int result = StatusMonitor::getDeviceStatus(deviceManager ,printer ,&status);
-    if(result < 0){
+    PrinterInfo_struct ps;
+    watcher->get_currentprinter_info(ps);
+    if(strcmp(printer->name ,ps.printer.name))
         return false;
-    }
+    PrinterStatus_struct* status = &ps.status;
+//    int result = StatusMonitor::getDeviceStatus(deviceManager ,printer ,status);
+//    if(result < 0){
+//        return false;
+//    }
     bool valid = true;
 
-    switch(status.PrinterStatus){
+    switch(status->PrinterStatus){
     case UIConfig::Printing:
     case UIConfig::PrintCanceling:
     case UIConfig::CopyScanning:
@@ -734,6 +728,6 @@ bool Worker::cmd_status_validate(Printer_struct* printer ,int cmd)
     default:
         break;
     }
-    LOGLOG("cmd_status_validate:%d,%d",valid,status.PrinterStatus);
+    LOGLOG("cmd_status_validate:%d,%d",valid,status->PrinterStatus);
     return valid;
 }

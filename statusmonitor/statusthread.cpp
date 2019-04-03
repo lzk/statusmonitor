@@ -1,8 +1,8 @@
 #include "statusthread.h"
 #include "commonapi.h"
 #include "status.h"
-#include "error.h"
 #include "smconfig.h"
+#include "statusmonitor.h"
 
 static int callback_getPrinters(void* para,Printer_struct* ps)
 {
@@ -10,7 +10,6 @@ static int callback_getPrinters(void* para,Printer_struct* ps)
     if(isDeviceSupported && isDeviceSupported(ps)){
         st->printers << *ps;
         st->printerlist << ps->name;
-//        st->statusmanager.savePrinterToFile(ps);
     }
     return st->abort ?0 :1;
 }

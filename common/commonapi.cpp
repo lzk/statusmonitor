@@ -1,11 +1,11 @@
 #include <QSettings>
 #include "log.h"
 #include "trans.h"
+extern const char* log_file;
 bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultValue ,bool set)
 {
     bool result = true;
-    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml");
-    settings.setDefaultFormat(QSettings::NativeFormat);
+    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml" ,QSettings::NativeFormat);
     if(set){
         settings.setValue(key ,value);
         LOGLOG("set key %s value:%s" ,key.toLatin1().constData() ,settings.value(key ,defaultValue).toString().toLatin1().constData());
@@ -21,7 +21,7 @@ bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultVal
  #include <QLocalServer>
 #include <QFile>
 QLocalServer* m_localServer;
-bool isRunning(const char* serverName)
+bool is_app_running(const char* serverName)
 {
     bool running = true;
     QLocalSocket socket;
@@ -47,20 +47,20 @@ bool isRunning(const char* serverName)
     return running;
 }
 #else
-bool isRunning(const char* server_path)
+bool is_app_running(const char* server_path)
 {
     bool running = true;
     Trans_Client tc(server_path);
     int ret = tc.tryConnectToServer();
     switch (ret) {
     case 0:
-        LOGLOG("There has been a same app running!");
+//        LOGLOG("There has been a same app running!");
         break;
     case -2:
         running = false;
         break;
     default:
-        LOGLOG("There is something error!");
+//        LOGLOG("There is something error!");
         break;
     }
     return running;
@@ -70,31 +70,44 @@ bool isRunning(const char* server_path)
 #include <QMutex>
 #include <QFile>
 #include <QTextStream>
-static QMutex mutex;
-static const QString tmp_file = "/tmp/lnttmp";
+//static QMutex mutex;
+//static const QString tmp_file = "/tmp/lnttmp";
+#include <QDateTime>
 QString get_string_from_shell_cmd(const QString& cmd ,int mode)
 {
-    QMutexLocker locker(&mutex);
+//    QMutexLocker locker(&mutex);
+    QString tmp_file = QString("/tmp/lnttmp_%1").arg(QDateTime::currentMSecsSinceEpoch());
     QString str;
     QString _cmd(cmd);
-    _cmd += ">";
+    _cmd += " > ";
     _cmd += tmp_file;
 //    _cmd += "&&chmod 666 ";
 //    _cmd += tmp_file;
 //    _cmd += " 2>>";
 //    _cmd += log_file;
     if(!system(_cmd.toLatin1().constData())){
-        QFile fl(tmp_file);
-        if(fl.open(QFile::ReadOnly)){
-            QTextStream in(&fl);
-            if(mode)
-                str = in.readAll();
-            else
-                str = in.readLine();
-            fl.close();
-            fl.remove();
-        }
+    }
+    QFile fl(tmp_file);
+    if(fl.open(QFile::ReadOnly)){
+        QTextStream in(&fl);
+        if(mode)
+            str = in.readAll();
+        else
+            str = in.readLine();
+        fl.close();
+        fl.remove();
     }
     return str;
 }
 
+bool printer_is_printing(const QString& printer_name)
+{
+    QString str("LANG=en lpstat -l -o ");
+    str += printer_name;
+    str += " 2>>";
+    str += log_file;
+    str += "|grep -w ";
+    str += printer_name;
+    QString printer_jobs = get_string_from_shell_cmd(str ,0);
+    return !printer_jobs.isEmpty();
+}
