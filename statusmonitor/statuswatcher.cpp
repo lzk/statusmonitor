@@ -174,7 +174,7 @@ void StatusWatcher::set_current_printer(const QString& printer)
     memset(&current_printer_info.printer ,0 ,sizeof(Printer_struct));
     memset(&current_printer_info.status ,-1 ,sizeof(PrinterStatus_struct));
     mutex.unlock();
-    update_current_printer_status();
+//    update_current_printer_status();
 
     if(printer.isEmpty()){
         if(statusThread){

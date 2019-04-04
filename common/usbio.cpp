@@ -179,7 +179,7 @@ int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
 
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
-    int ret = open_with_mode(-1 ,0);
+    int ret = open_with_mode(0 ,0);//will change to -1
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
