@@ -118,7 +118,7 @@ int UsbIO::open_with_mode(int port ,int mode)
     int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
     if(ret){
         mutex.unlock();
-        LOGLOG("can not find device:vid:%d,pid:%d:serial:%s" ,vid ,pid ,serial);
+        LOGLOG("can not find device:vid:0x%04x,pid:0x%04x:serial:%s" ,vid ,pid ,serial);
         return -1;
     }
     ret = usb->open(vid ,pid ,serial ,port);
@@ -222,13 +222,12 @@ int UsbIO::resolveUrl(const char* url)
     if(!ret){
         ret = DeviceIO::resolveUrl(url);
     }
-
     return ret;
 }
 
 bool UsbIO::isConnected()
 {
-    bool ret = !usb->isConnected(vid ,pid ,serial);
+    bool ret = usb->isConnected(vid ,pid ,serial);
     return ret;
 }
 
@@ -236,7 +235,8 @@ const char* UsbIO::getDeviceAddress()
 {
     int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address);
     if(ret){
-       address = 0;
+       address = -1;
+       return "";
     }
     return QString().sprintf("USB%03d" ,address).toLatin1().constData();
 }

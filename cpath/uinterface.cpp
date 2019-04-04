@@ -22,7 +22,6 @@ UInterface::UInterface(QObject *parent) :
 
 UInterface::~UInterface()
 {
-
     thread.quit();
     thread.wait();
 }
@@ -49,7 +48,6 @@ void UInterface::setTimer(int timeVal)
 
 void UInterface::timerOut()
 {
-    //cmdToWorker(UIConfig::CMD_GetPrinters);
     cmdToWorker(UIConfig::CMD_GetStatus ,current_printer);
 }
 
@@ -59,15 +57,9 @@ void UInterface::cmdResult_slot(int cmd,int result ,QVariant data)
     (void)data;
     switch (cmd) {
     case UIConfig::CMD_GetStatus:
-        qDebug("UInterface");
         if(timeval > 0){
             timer.start(timeval * 1000);
         }
-//        if(!result){
-//            emit updateStatus(data);
-//        }else{//get status fail
-//            LOGLOG("get printer status fail!");
-//        }
         break;
     default:
         break;

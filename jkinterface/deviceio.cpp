@@ -19,7 +19,6 @@ int DeviceIO::open(Printer_struct* printer ,int port)
     ret = resolve(printer);
     if(!ret)
         ret = open(port);
-    LOGLOG("open:%d",ret);
     return ret;
 }
 

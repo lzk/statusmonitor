@@ -61,7 +61,7 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         update_printerlist();
         break;
 
-    case UIConfig::CMD_GetStatus:{
+    case UIConfig::CMD_GetStatus:
         update_current_printer_status();
 //        if(printer){
 //            PrinterInfo_struct printer_info;
@@ -72,7 +72,6 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 //            LOGLOG("get current status:0x%02x" ,printer_info.status.PrinterStatus);
 //        }
 //        cmdResult(cmd ,result ,value);
-    }
         break;
     case UIConfig::CMD_Scan:
         if(printer){
