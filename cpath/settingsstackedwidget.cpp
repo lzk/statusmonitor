@@ -896,6 +896,7 @@ void SettingsStackedWidget::onbtManualtoggled(bool checked)
     {
         ui->lineEdit_server->setStyleSheet("QLineEdit{\
                                               border:2px solid rgb(170, 170, 170);\
+                                              padding: 0 8px;\
                                               border-radius:12px;}");
     }
     else
@@ -903,6 +904,7 @@ void SettingsStackedWidget::onbtManualtoggled(bool checked)
         ui->lineEdit_server->setStyleSheet("QLineEdit{\
                                           border:2px solid rgb(170, 170, 170);\
                                           border-radius:12px;\
+                                          padding: 0 8px;\
                                           background-color: rgb(189, 189, 189);\
                                           color: rgb(255, 255, 255);}");
     }
@@ -932,28 +934,35 @@ void SettingsStackedWidget::onbtStatictoggled(bool checked)
     {
         ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
                                                 border:2px solid rgb(170, 170, 170);\
+                                                padding: 0 8px;\
                                                 border-radius:12px;}");
         ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
                                               border:2px solid rgb(170, 170, 170);\
+                                              padding: 0 8px;\
                                               border-radius:12px;}");
         ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
                                               border:2px solid rgb(170, 170, 170);\
+                                              padding: 0 8px;\
                                               border-radius:12px;}");
     }
     else
     {
         ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
                                                 border:2px solid rgb(170, 170, 170);\
+                                                padding: 0 8px;\
                                                 border-radius:12px;\
                                                 background-color: rgb(189, 189, 189);\
                                                 color: rgb(255, 255, 255);}");
         ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
                                               border:2px solid rgb(170, 170, 170);\
+                                              padding: 0 8px;\
                                               border-radius:12px;\
                                               background-color: rgb(189, 189, 189);\
+                                              padding: 0 8px;\
                                               color: rgb(255, 255, 255);}");
         ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
                                               border:2px solid rgb(170, 170, 170);\
+                                              padding: 0 8px;\
                                               border-radius:12px;\
                                               background-color: rgb(189, 189, 189);\
                                               color: rgb(255, 255, 255);}");
@@ -1286,6 +1295,7 @@ void SettingsStackedWidget::on_lineEdit_IPAddressv4_textEdited(const QString &ar
          ui->label_ipaddr_error->show();
          ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
                                                  border:2px solid red;\
+                                                 padding: 0 8px;\
                                                  border-radius:12px;}");
         ui->btApply_IPConfig->setDisabled(true);
     }
@@ -1293,6 +1303,7 @@ void SettingsStackedWidget::on_lineEdit_IPAddressv4_textEdited(const QString &ar
     {
         ui->label_ipaddr_error->hide();
         ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
+                                                padding: 0 8px;\
                                                 border:2px solid rgb(170, 170, 170);\
                                                 border-radius:12px;}");
         ui->btApply_IPConfig->setEnabled(true);
@@ -1306,6 +1317,7 @@ void SettingsStackedWidget::on_lineEdit_Gatewayv4_textEdited(const QString &arg1
     {
          ui->label_gateway_error->show();
          ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
+                                               padding: 0 8px;\
                                                border:2px solid red;\
                                                border-radius:12px;}");
         ui->btApply_IPConfig->setDisabled(true);
@@ -1314,6 +1326,7 @@ void SettingsStackedWidget::on_lineEdit_Gatewayv4_textEdited(const QString &arg1
     {
         ui->label_gateway_error->hide();
         ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
+                                              padding: 0 8px;\
                                               border:2px solid rgb(170, 170, 170);\
                                               border-radius:12px;}");
         ui->btApply_IPConfig->setEnabled(true);
@@ -1327,6 +1340,7 @@ void SettingsStackedWidget::on_lineEdit_Submaskv4_textEdited(const QString &arg1
     {
          ui->label_sumask_error->show();
          ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
+                                               padding: 0 8px;\
                                                border:2px solid red;\
                                                border-radius:12px;}");
         ui->btApply_IPConfig->setDisabled(true);
@@ -1335,6 +1349,7 @@ void SettingsStackedWidget::on_lineEdit_Submaskv4_textEdited(const QString &arg1
     {
         ui->label_sumask_error->hide();
         ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
+                                              padding: 0 8px;\
                                               border:2px solid rgb(170, 170, 170);\
                                               border-radius:12px;}");
         ui->btApply_IPConfig->setEnabled(true);
@@ -1348,6 +1363,7 @@ void SettingsStackedWidget::on_lineEdit_server_textEdited(const QString &arg1)
     {
          ui->label_server_error->show();
          ui->lineEdit_server->setStyleSheet("QLineEdit{\
+                                               padding: 0 8px;\
                                                border:2px solid red;\
                                                border-radius:12px;}");
         ui->btApply_IPConfig->setDisabled(true);
@@ -1356,6 +1372,7 @@ void SettingsStackedWidget::on_lineEdit_server_textEdited(const QString &arg1)
     {
         ui->label_server_error->hide();
         ui->lineEdit_server->setStyleSheet("QLineEdit{\
+                                              padding: 0 8px;\
                                               border:2px solid rgb(170, 170, 170);\
                                               border-radius:12px;}");
         ui->btApply_IPConfig->setEnabled(true);
@@ -1377,6 +1394,7 @@ bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
                 ui->lineEdit_IPAddressv4->setText("0.0.0.0");
                 ui->label_ipaddr_error->hide();
                 ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
+                                                        padding: 0 8px;\
                                                       border:2px solid rgb(170, 170, 170);\
                                                       border-radius:12px;}");
                 ui->btApply_IPConfig->setEnabled(true);
@@ -1392,6 +1410,7 @@ bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
                 ui->lineEdit_Gatewayv4->setText("0.0.0.0");
                 ui->label_gateway_error->hide();
                 ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
+                                                      padding: 0 8px;\
                                                       border:2px solid rgb(170, 170, 170);\
                                                       border-radius:12px;}");
                 ui->btApply_IPConfig->setEnabled(true);
@@ -1407,6 +1426,7 @@ bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
                 ui->lineEdit_Submaskv4->setText("0.0.0.0");
                 ui->label_sumask_error->hide();
                 ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\
+                                                      padding: 0 8px;\
                                                       border:2px solid rgb(170, 170, 170);\
                                                       border-radius:12px;}");
                 ui->btApply_IPConfig->setEnabled(true);
@@ -1422,6 +1442,7 @@ bool SettingsStackedWidget::eventFilter(QObject *watched, QEvent *event)
                 ui->lineEdit_server->setText("0.0.0.0");
                 ui->label_server_error->hide();
                 ui->lineEdit_server->setStyleSheet("QLineEdit{\
+                                                   padding: 0 8px;\
                                                   border:2px solid rgb(170, 170, 170);\
                                                   border-radius:12px;}");
                 ui->btApply_IPConfig->setEnabled(true);

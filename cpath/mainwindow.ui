@@ -681,7 +681,7 @@ border-image: url(:/Images/shopCart_Disable.tif);
       <widget class="QLabel" name="deviceNameLabel_2">
        <property name="geometry">
         <rect>
-         <x>34</x>
+         <x>33</x>
          <y>50</y>
          <width>119</width>
          <height>19</height>
