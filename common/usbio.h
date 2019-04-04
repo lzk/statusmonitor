@@ -29,6 +29,7 @@ protected:
 
 private:
     bool is_device_scanning();
+    int open_with_mode(int port ,int mode);
 private:
     UsbApi* usb;
 

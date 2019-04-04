@@ -30,5 +30,4 @@ private:
     QHostAddress hostAddress;
     QString resolved_url;
 };
-
 #endif // NETIO_H

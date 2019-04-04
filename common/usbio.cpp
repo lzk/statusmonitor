@@ -4,6 +4,7 @@
 #include "log.h"
 #include <QString>
 #include "commonapi.h"
+#include <unistd.h>
 
 const char* lock_scan_file = "/tmp/.scanner_lock";
 const char* lock_scan_info_file = "/tmp/.scanner_info_lock";
@@ -82,32 +83,46 @@ bool UsbIO::is_device_scanning()
     return false;
 }
 
-int UsbIO::open(int port)
+
+int UsbIO::open_with_mode(int port ,int mode)
 {
-    (void)(port);
     if(device_is_open){
         LOGLOG("device is opened");
         return -1;
     }
-    if(printer_is_printing(printer_name.toLatin1().constData())){
-        LOGLOG("printer is priting!!!");
-        return usb_error_printing;
-    }else if(is_device_scanning()){
-        return usb_error_scanning;
+    if(port >= 0){
+        if(printer_is_printing(printer_name.toLatin1().constData())){
+            return usb_error_printing;
+        }else if(is_device_scanning()){
+            return usb_error_scanning;
+        }
+    }
+    if(mode == 0){
+        while (true) {
+            mutex.lock();
+            if(!locked_printers.contains(device_uri)){
+        //    if(address == locked_address && bus == locked_bus){
+                break;
+            }
+            mutex.unlock();
+            usleep(10*1000);
+        }
+    }else{
+        mutex.lock();
+        if(locked_printers.contains(device_uri)){
+    //    if(address == locked_address && bus == locked_bus){
+            mutex.unlock();
+            LOGLOG("usb device:%s locked" ,printer_name.toLatin1().constData());
+            return usb_error_usb_locked;
+        }
     }
     int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
     if(ret){
-        LOGLOG("can not find device");
+        mutex.unlock();
+        LOGLOG("can not find device:vid:%d,pid:%d:serial:%s" ,vid ,pid ,serial);
         return -1;
     }
-    mutex.lock();
-    if(locked_printers.contains(device_uri)){
-//    if(address == locked_address && bus == locked_bus){
-        mutex.unlock();
-        LOGLOG("usb device:%s locked" ,printer_name.toLatin1().constData());
-        return usb_error_usb_locked;
-    }
-    ret = usb->open(vid ,pid ,serial ,interface);
+    ret = usb->open(vid ,pid ,serial ,port);
     if(ret){
     }else{
         device_is_open = true;
@@ -117,6 +132,11 @@ int UsbIO::open(int port)
     }
     mutex.unlock();
     return ret;
+}
+
+int UsbIO::open(int port)
+{
+    return open_with_mode(port ,0);
 }
 
 int UsbIO::close(void)
@@ -159,13 +179,10 @@ int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
 
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
-    int ret = open();
+    int ret = open_with_mode(-1 ,0);
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
-    }else if(usb_error_printing == ret){
-        ret = cups_usb_getDeviceID(buffer ,bufsize - 1);
-        LOGLOG("usb get device id when printing:%d" ,ret);
     }
     return ret;
 }
@@ -181,9 +198,7 @@ int UsbIO::resolveUrl(const char* url)
     if((device_uri[0] != 0) && !QString(device_uri).compare(url)){
         return 0;
     }
-    int ret = DeviceIO::resolveUrl(url);
-    if(ret)
-        return ret;
+    int ret = 0;
     QString tmp_serial;
     QUrl printer_url = QUrl(url);
 #if QT_VERSION > 0x050000
@@ -194,18 +209,19 @@ int UsbIO::resolveUrl(const char* url)
 //    interface = printer_url.queryItemValue("interface").toInt();
 #endif
     QString modelname = printer_url.host() + printer_url.path();
-    if(getpidvid(modelname ,&pid ,&vid))
+    if(getpidvid(modelname ,&pid ,&vid)){
         ret = -1;
+        LOGLOG("can not get pid vid of modelname:%s" ,modelname.toLatin1().constData());
+    }
     if(tmp_serial.isEmpty()){
         memset(this->serial ,0 ,sizeof(this->serial));
+        LOGLOG("can not get serial of url:%s" ,url);
     }else{
         strcpy(this->serial ,tmp_serial.toLatin1().constData());
         ret = 0;
     }
     if(!ret){
-//        LOGLOG("device's vid:0x%02x ,pid:0x%02x ,serial:%s" ,vid ,pid ,serial);
-    }else{
-        LOGLOG("can not resolve url");
+        ret = DeviceIO::resolveUrl(url);
     }
     return ret;
 }

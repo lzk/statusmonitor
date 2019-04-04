@@ -1,4 +1,5 @@
 #include "uiconfig.h"
+#include "commonapi.h"
 
 #include "toecconfig.h"
 const QString app_name = QString::fromUtf8("打印机状态监视器");
@@ -20,6 +21,9 @@ static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
     *pid = -1;
     if(makeAndModel.startsWith("toec/OEP3300CDN")){
         *pid = 0x002c;
+    }else if(makeAndModel.startsWith("lenovo/M7268W")){
+        *vid = 0x17ef;
+        *pid = 0x563a;
     }
     return (*pid == -1) ?-1 :0;
 }
@@ -37,10 +41,10 @@ extern int usb_error_printing;
 void UIConfig::initConfig()
 {
     //config status server thread
-    status_file = "/tmp/.toecstatus";
-    statusKey = "statusmonitor/status/";
-    printersKey = "statusmonitor/printerlist/";
-    status_lock_file = "/tmp/.locktoecstatus";
+//    status_file = "/tmp/.toecstatus";
+//    status_lock_file = "/tmp/.locktoecstatus";
+//    statusKey = "statusmonitor/status/";
+//    printersKey = "statusmonitor/printerlist/";
 
 //    ui_server_path = SERVER_PATH;
     usb_error_printing = 0x01;
@@ -52,11 +56,17 @@ void UIConfig::initConfig()
     log_app_name = "tjgd1zsmui";
     app_version = "1.0.8";
     log_init();
+    LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
+    QString str;
+    str = get_string_from_shell_cmd("uname -a");
+    LOGLOG("%s" ,str.toLatin1().constData());
+    str = get_string_from_shell_cmd("cat /etc/issue");
+    LOGLOG("%s\n\n" ,str.toLatin1().constData());
 }
 
 #include <QFile>
 void UIConfig::exit_app()
 {
-    QFile::remove(status_file);
-    QFile::remove(status_lock_file);
+//    QFile::remove(status_file);
+//    QFile::remove(status_lock_file);
 }

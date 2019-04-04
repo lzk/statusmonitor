@@ -10,7 +10,6 @@ Worker::Worker(QObject *parent) :
   ,cmd_status(0)
 {
     watcher = new Watcher(this);
-    connect(this ,SIGNAL(set_current_printer(QString)) ,watcher ,SLOT(set_current_printer(QString)));
 //    connect(watcher ,SIGNAL(update_printer_status()) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
     connect(watcher ,SIGNAL(update_current_printer_status()) ,this ,SLOT(update_current_printer_status()));
     connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()));
@@ -37,16 +36,21 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 //    }else{
 //        printer = &ps;
 //    }
-//    int result = -1;
+    int result = -1;
 
     switch (cmd) {
+    case UIConfig::CMD_SetCurrentPrinter:
+        watcher->set_current_printer(printer_name);
+        value = 1;
+        result = 0;
+        cmdResult(cmd ,result ,value);
+        break;
+
     case UIConfig::CMD_GetPrinters:
-//        getPrinters();
         update_printerlist();
         break;
 
     case UIConfig::CMD_GetStatus:
-    case UIConfig::CMD_GetCurrentPrinterStatus:
         update_current_printer_status();
         break;
 
