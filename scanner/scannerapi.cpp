@@ -497,7 +497,7 @@ int ScannerApi::lock()
         }else if(ret == ScannerApp::STATUS_USEWITHOUTLOCK){
             LOGLOG("scanner:busy");
 //            unlock();
-//            break;
+            break;
         }else{
             break;
         }

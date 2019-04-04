@@ -1097,6 +1097,8 @@ void MainWindow::on_errorBtn_clicked()
 
 void MainWindow::on_btCar_clicked()
 {
+    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
+    settings.setValue("stopBlink","true");
     if(ui->memberCenterWidget->loginPhone !="")
     {
         QString url = QString("http://ibase.lenovoimage.com/buy_abc2.aspx?id=%0").arg(ui->memberCenterWidget->loginPhone);

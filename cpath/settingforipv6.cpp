@@ -61,14 +61,17 @@ void SettingForIPv6::on_checkBox_isManualAddress_toggled(bool checked)
         ui->lineEdit_address->setEnabled(true);
         ui->lineEdit_address->setStyleSheet("QLineEdit{\
                                             border: 2px solid rgb(170, 170, 170);\
+                                            padding: 0 8px;\
                                             border-radius:12;}");
         ui->lineEdit_SubMask->setEnabled(true);
         ui->lineEdit_SubMask->setStyleSheet("QLineEdit{\
                                             border: 2px solid rgb(170, 170, 170);\
+                                            padding: 0 8px;\
                                             border-radius:12;}");
         ui->lineEdit_GateAddress->setEnabled(true);
         ui->lineEdit_GateAddress->setStyleSheet("QLineEdit{\
                                             border: 2px solid rgb(170, 170, 170);\
+                                            padding: 0 8px;\
                                             border-radius:12;}");
     }
     else
@@ -77,18 +80,21 @@ void SettingForIPv6::on_checkBox_isManualAddress_toggled(bool checked)
         ui->lineEdit_address->setStyleSheet("QLineEdit{\
                                             border: 2px solid rgb(170, 170, 170);\
                                             border-radius:12;\
+                                            padding: 0 8px;\
                                             background-color: rgb(189, 189, 189);\
                                             color: rgb(255, 255, 255);}");
         ui->lineEdit_SubMask->setDisabled(true);
         ui->lineEdit_SubMask->setStyleSheet("QLineEdit{\
                                             border: 2px solid rgb(170, 170, 170);\
                                             border-radius:12;\
+                                            padding: 0 8px;\
                                             background-color: rgb(189, 189, 189);\
                                             color: rgb(255, 255, 255);}");
         ui->lineEdit_GateAddress->setDisabled(true);
         ui->lineEdit_GateAddress->setStyleSheet("QLineEdit{\
                                             border: 2px solid rgb(170, 170, 170);\
                                             border-radius:12;\
+                                            padding: 0 8px;\
                                             background-color: rgb(189, 189, 189);\
                                             color: rgb(255, 255, 255);}");
     }
@@ -273,6 +279,7 @@ bool SettingForIPv6::eventFilter(QObject *watched, QEvent *event)
                 ui->label_gateway_error->hide();
                 ui->lineEdit_GateAddress->setStyleSheet("QLineEdit{\
                                                               border:2px solid rgb(170, 170, 170);\
+                                                              padding: 0 8px;\
                                                               border-radius:12px;}");
                 ui->btApply->setEnabled(true);
             }
@@ -288,6 +295,7 @@ bool SettingForIPv6::eventFilter(QObject *watched, QEvent *event)
                 ui->label_submask_error->hide();
                 ui->lineEdit_SubMask->setStyleSheet("QLineEdit{\
                                                               border:2px solid rgb(170, 170, 170);\
+                                                              padding: 0 8px;\
                                                               border-radius:12px;}");
                 ui->btApply->setEnabled(true);
             }

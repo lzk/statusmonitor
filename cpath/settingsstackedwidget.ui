@@ -888,10 +888,6 @@ QRadioButton::indicator::checked {
      <bool>true</bool>
     </property>
    </widget>
-   <zorder>label_server_error</zorder>
-   <zorder>label_gateway_error</zorder>
-   <zorder>label_sumask_error</zorder>
-   <zorder>label_ipaddr_error</zorder>
    <zorder>background_TCPIPV41</zorder>
    <zorder>btApply_IPConfig</zorder>
    <zorder>label_ipType</zorder>
@@ -909,6 +905,10 @@ QRadioButton::indicator::checked {
    <zorder>lineEdit_server</zorder>
    <zorder>btStatic</zorder>
    <zorder>btAuto</zorder>
+   <zorder>label_gateway_error</zorder>
+   <zorder>label_ipaddr_error</zorder>
+   <zorder>label_server_error</zorder>
+   <zorder>label_sumask_error</zorder>
   </widget>
   <widget class="QWidget" name="TCPIPV6">
    <widget class="QPushButton" name="btIPv6Setting">
@@ -2145,9 +2145,6 @@ QPushButton:pressed{
      <bool>true</bool>
     </property>
    </widget>
-   <zorder>label_ImageDensity_error</zorder>
-   <zorder>label_LeftMargin_error</zorder>
-   <zorder>label_TopMargin_error</zorder>
    <zorder>background_UserConfig1</zorder>
    <zorder>btTopReduce</zorder>
    <zorder>label_LowHumidity</zorder>
@@ -2175,6 +2172,9 @@ QPushButton:pressed{
    <zorder>lineEdit_TopMargin</zorder>
    <zorder>btDrumReset</zorder>
    <zorder>btTonerReset</zorder>
+   <zorder>label_TopMargin_error</zorder>
+   <zorder>label_LeftMargin_error</zorder>
+   <zorder>label_ImageDensity_error</zorder>
   </widget>
   <widget class="QWidget" name="Password">
    <widget class="QLineEdit" name="lineEdit_confirm">

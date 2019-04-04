@@ -271,6 +271,9 @@ QPushButton:pressed{
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
    </property>
+   <property name="cursorPosition">
+    <number>2</number>
+   </property>
   </widget>
   <widget class="QPushButton" name="btCancel">
    <property name="geometry">
