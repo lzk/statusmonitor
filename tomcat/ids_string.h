@@ -107,7 +107,7 @@
 #define IDS_MEDIATYPE_YOUGATA6  "6号西式信封"
 #define IDS_MEDIATYPE_NAGAGATA3 "3号长信封"
 #define IDS_MEDIATYPE_NAGAGATA4 "4号长信封"
-#define IDS_MEDIATYPE_BOND      "债券纸"
+#define IDS_MEDIATYPE_BOND      "乙烯基标签"
 #define IDS_MEDIATYPE_YOUNAGA3  "3号西式长信封"
 #define IDS_PAPERSIZE_A4        "A4"
 #define IDS_PAPERSIZE_A5        "A5"
@@ -149,7 +149,7 @@
 #define IDS_MEDIATYPE_RECYCLED  "再生纸"
 #define IDS_MEDIATYPE_RECYCLED_SIDE "再生纸 - 反面"
 #define IDS_MEDIATYPE_THICK_SIDE "债券纸 - 反面"
-#define IDS_MEDIATYPE_LIGHT_CARD "厚纸1"
+#define IDS_MEDIATYPE_LIGHT_CARD "卡片纸"
 #define IDS_MEDIATYPE_KAKUGATA3 "3号方信封"
 #define IDS_MEDIATYPE_LIGHT_GLOSSY_CARD "涂层纸"
 #define IDS_MEDIATYPE_JAP_GLOSSY_CARD "涂层纸(薄)"
@@ -239,7 +239,7 @@
 #define IDS_SHOWMEHOW           "显示操作方式(&S)"
 #define IDS_BLACK               "黑色"
 #define IDS_CYAN                "青色"
-#define IDS_MAGENTA             "洋红色"
+#define IDS_MAGENTA             "品红色"
 #define IDS_YELLOW              "黃色"
 //END
 
