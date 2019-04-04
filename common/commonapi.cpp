@@ -60,7 +60,7 @@ bool is_app_running(const char* server_path)
         running = false;
         break;
     default:
-//        LOGLOG("There is something error!");
+        LOGLOG("tryConnectToServer:There is something error!");
         break;
     }
     return running;
