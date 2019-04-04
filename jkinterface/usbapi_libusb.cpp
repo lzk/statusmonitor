@@ -326,6 +326,7 @@ int UsbApi::exit()
 
 int UsbApi::open(int vid, int pid, const char *serial ,int interface)
 {
+    g_interface = interface;
     struct_device data;
     memset((void*)&data ,0 ,sizeof(data));
     data.deviceInfo.vid = vid;
@@ -339,14 +340,15 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
     }
     g_device = data.dev;
     g_dev_h = data.udev;
-//    libusb_reset_device(g_dev_h);
+    if(interface < 0)
+        return ret;
+    libusb_reset_device(g_dev_h);
     ret = config(g_device ,g_dev_h);
     if(ret){
         LOGLOG("libusb can not config");
         libusb_close(g_dev_h);
         return ret;
     }
-    g_interface = interface;
     ret = claimInterface(g_dev_h ,g_interface);
     if(ret){
         LOGLOG("libusb can not claim interface:%d" ,g_interface);
@@ -359,12 +361,13 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
 
 int UsbApi::close()
 {
-//    releaseInterface(g_dev_h ,0);
-    releaseInterface(g_dev_h ,g_interface);
+    if(g_interface >= 0)
+        releaseInterface(g_dev_h ,g_interface);
 
     libusb_close(g_dev_h);
     g_dev_h = NULL;
     g_device = NULL;
+    return 0;
 }
 
 bool UsbApi::isConnected(int vid, int pid, const char *serial)

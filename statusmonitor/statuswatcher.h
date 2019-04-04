@@ -44,7 +44,6 @@ signals:
 //    void update_printer_status(const QString&);
     void update_current_printer_status();
     void update_printerlist();
-    void server_restart();
 
 public slots:
     void set_current_printer(const QString& printer);

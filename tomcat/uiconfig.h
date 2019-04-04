@@ -41,7 +41,7 @@ public:
     enum CmdType{
         CMD_GetDefaultPrinter,
         CMD_GetPrinters,
-        CMD_GetCurrentPrinterStatus,
+        CMD_SetCurrentPrinter,
         CMD_GetStatus,
         CMD_GetJobs,
     };

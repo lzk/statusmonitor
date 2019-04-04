@@ -12,8 +12,7 @@ public:
     };
 
     DeviceIO()
-        :ifdelay(1)
-      ,device_is_open(false){}
+        :device_is_open(false){}
     virtual ~DeviceIO(){}
     virtual int type() = 0;
     virtual int close(void) = 0;
@@ -22,8 +21,6 @@ public:
     virtual int getDeviceId_without_open(char* ,int) = 0;
     virtual int write_bulk(char *buffer, int bufsize ,unsigned int interface=0) = 0;
     virtual int read_bulk(char *buffer, int bufsize ,unsigned int interface=0) = 0;
-
-    virtual int writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize);
 
     virtual int open(Printer_struct* printer ,int port);
     virtual int resolve(Printer_struct* printer);
@@ -34,7 +31,6 @@ public:
     bool is_the_same_device(Printer_struct* printer);
 protected:
     char device_uri[256];
-    int ifdelay;
     bool device_is_open;
     virtual int open(int port) = 0;
     virtual int resolveUrl(const char* url);

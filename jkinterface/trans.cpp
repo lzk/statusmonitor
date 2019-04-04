@@ -180,14 +180,14 @@ int Trans_Client::tryConnectToServer()
     struct sockaddr_un srv_addr;
 
     if(!path[0]){
-        LOGLOG("cannot get server path");
+        LOGLOG("tryConnectToServer:cannot get server path");
         return -1;
     }
 
     // creat unix socket
     connect_fd=socket(PF_UNIX,SOCK_STREAM,0);
     if(connect_fd<0){
-        LOGLOG("cannot creat socket");
+        LOGLOG("tryConnectToServer:cannot creat socket");
         return -1;
     }
 
@@ -196,7 +196,7 @@ int Trans_Client::tryConnectToServer()
     //connect server
     ret = connect(connect_fd,(struct sockaddr*)&srv_addr,sizeof(srv_addr));
     if (ret < 0){
-        LOGLOG("cannot connect server");
+//        LOGLOG("cannot connect server");
         close(connect_fd);
         return -2;
     }

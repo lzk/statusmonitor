@@ -39,7 +39,6 @@ QHostAddress get_ip_address(const QString& host)
 NetIO::NetIO():
     tcpSocket(NULL)
 {
-    ifdelay = 0;
 }
 NetIO::~NetIO()
 {
@@ -205,7 +204,7 @@ int NetIO::getDeviceId(char *buffer, int bufsize)
     return getDeviceId_without_open(buffer ,bufsize);
 }
 
-static int _platform_net_get_device_id(const QString& device_uri,char *buffer, size_t bufsize);
+static int _platform_net_get_device_id(const QString& device_uri,char *buffer, int bufsize);
 int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
 {
     //some host name can not get device id. change to ipv4 first.
@@ -240,41 +239,43 @@ int NetIO::read_bulk(char *buffer, int bufsize ,unsigned int)
 
 #include <QUdpSocket>
 #include <unistd.h>
-static int _platform_net_get_device_id(const QString& device_uri,char *buffer, size_t bufsize)
+static int _platform_net_get_device_id(const QString& device_uri,char *buffer, int bufsize)
 {
     QHostAddress host_address = get_ip_address(QUrl(device_uri).host());
 //    LOGLOG("get device id from host address:%s" ,host_address.toString().toLatin1().constData());
 
     const unsigned char data[] =
-    {0x30, 0x2d, 0x02, 0x01, 00, 0x04, 0x06, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0xa0, 0x20,
-            0x02, 0x01, 0x04, 0x02, 0x01, 00, 0x02, 0x01, 00, 0x30, 0x15, 0x30, 0x13, 0x06,
+    {0x30, 0x30, 0x02, 0x01, 0x01, 0x04, 0x06, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0xa0, 0x23,
+            0x02, 0x04, 0x63, 0xd5 ,0xdb ,0xc9 ,0x02, 0x01, 00, 0x02, 0x01, 00, 0x30, 0x15, 0x30, 0x13, 0x06,
             0x0f, 0x2b, 0x06, 0x01, 0x04, 0x01, 0x95, 0x0b, 0x01, 0x02, 0x01, 0x02, 0x01,
      0x01, 0x03, 0x01, 0x05, 00};
+//    const unsigned char data[] =
+//    {0x30, 0x2d, 0x02, 0x01, 00, 0x04, 0x06, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0xa0, 0x20,
+//            0x02, 0x01, 0x04, 0x02, 0x01, 00, 0x02, 0x01, 00, 0x30, 0x15, 0x30, 0x13, 0x06,
+//            0x0f, 0x2b, 0x06, 0x01, 0x04, 0x01, 0x95, 0x0b, 0x01, 0x02, 0x01, 0x02, 0x01,
+//     0x01, 0x03, 0x01, 0x05, 00};
 
     int bytes = sizeof(data);
 
     QUdpSocket udpSocket;
+    udpSocket.open(QIODevice::ReadWrite);
     udpSocket.connectToHost(host_address ,161);
     if (!udpSocket.waitForConnected(5000)) {
+        LOGLOG("udp connect fial!");
         return -1;
     }
     int ret;
     ret = udpSocket.write((const char*)data ,bytes);
 //    ret = udpSocket.writeDatagram((const char*)data ,bytes ,host_address ,161);
     if(ret != bytes){
+        LOGLOG("udp write fial!");
         return -1;
     }
 
-//    udpSocket.bind(host_address ,161);
-    int times = 0;
-    while (!udpSocket.hasPendingDatagrams()){
-        times ++;
-        usleep( 10 * 1000);//10ms
-        if(times > 500) //5s
-            break;
+    if(!udpSocket.waitForReadyRead(5000)){
+        LOGLOG("udp no data to read!");
+        return -1;
     }
-//    qDebug()<<"wait for reading time:"<<times * 10 <<"ms";
-
     QByteArray ba;
     while (udpSocket.hasPendingDatagrams()) {
         QByteArray datagram;
@@ -287,10 +288,13 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, s
         ba += datagram;
     }
     udpSocket.close();
-    if(ba.size() > 60){
-        if(bufsize >= ba.size() - 60)
-            memcpy(buffer ,ba.data() + 59 ,ba.size() - 60);
+
+    ret = -1;
+    int index = ba.indexOf("MFG");
+    if(index > 0){
+        ret = 0;
+        memcpy(buffer ,ba.data() + index ,ba.size() - index -1);
     }
-    return 0;
+    return ret;
 }
 

@@ -21,7 +21,6 @@ public:
 signals:
     void cmdToWorker(int cmd ,const QString& printer_name = QString() ,QVariant data = QVariant());
     void cmdResult(int cmd,int result ,QVariant data=QVariant());
-    void set_current_printer(const QString& printer);
 
 private slots:
     void timerOut();
