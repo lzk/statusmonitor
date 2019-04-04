@@ -16,8 +16,10 @@ public:
     char m_device_uri[256];
     Finger mFinger;
     const char* server_path;
-    const char* username;
-    const char* filename;
+    char username[256];
+    char filename[256];
+//    const char* username;
+//    const char* filename;
 };
 
 #endif // FINGERMANAGER_H

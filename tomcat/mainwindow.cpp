@@ -802,9 +802,10 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
 //        warning_status = 2;
 //        break;
 //	}
-    if(IsStatusError(currStatus)&& printer_is_printing(current_printer)){
+    if(IsStatusError(currStatus)){
         warning_status = 2;
-    }else if(IsStatusAbnormal(currStatus)){
+    }else if(IsStatusAbnormal(currStatus) || (currStatus == PS_READY &&  status.ErrorCodeGroup == 0x05 && (status.ErrorCodeID == 72 || status.ErrorCodeID == 73 )))
+    {
         warning_status = 1;
     }
     switch (warning_status) {
