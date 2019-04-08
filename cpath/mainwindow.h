@@ -122,6 +122,7 @@ private:
 
     QTimer *timerDeviceMsg;
     QTimer *timerBlink;
+    int _oldToner;
     QTimer *timerDeviceName;
     QElapsedTimer elapsedTimer;
     QString deviceStatusString;

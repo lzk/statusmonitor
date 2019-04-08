@@ -343,10 +343,13 @@ QPushButton{
 border-radius:5px;</string>
     </property>
     <property name="text">
-     <string>123465</string>
+     <string/>
     </property>
     <property name="maxLength">
      <number>64</number>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label_APStatus_2">

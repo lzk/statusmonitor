@@ -40,11 +40,6 @@ WiFiSettingCell::WiFiSettingCell(QWidget *parent, APInfo *info, bool *_islogin, 
 
     isDisplayPW = false;
     ui->checkBox_visiable->setChecked(isDisplayPW);
-    ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
-    QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
-    QValidator *validator2 = new QRegExpValidator(regexp2, this);
-    ui->lineEdit_Password->setValidator(validator2);
-
     isConnected = isconnected;
     initStatus();
     if(NULL != _islogin)
@@ -106,7 +101,7 @@ void WiFiSettingCell::on_checkBox_visiable_clicked()
 
 void WiFiSettingCell::initStatus()
 {
-    QRegExp regexp("^[\\x0020-\\x007e]{8,63}$");
+    QRegExp regexp("^[\\x0020-\\x007e]{1,64}$");
     QValidator *validator = new QRegExpValidator(regexp, this);
     ui->lineEdit_Password->setValidator(validator);
 

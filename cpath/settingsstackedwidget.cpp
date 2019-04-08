@@ -1150,8 +1150,24 @@ void SettingsStackedWidget::on_btDrumReset_clicked()
     pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     if (pDialog->exec() == QDialog::Accepted)
     {
-        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_DrumReset);
-        gUInterface->emitEnableCycleAnimation(true);
+        if(!isLogn)// && CMD_STATUS_COMPLETE == device->get_cmdStatus())
+        {
+            AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
+            dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint );
+            dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
+            dlg->exec();
+        }
+        if(isLogn)
+        {
+            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_DrumReset);
+            gUInterface->emitEnableCycleAnimation(true);
+        }
+        else
+        {
+            QString deviceMsg = tr("ResStr_Setting_Fail");
+            gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
+        }
     }
 }
 
@@ -1213,8 +1229,24 @@ void SettingsStackedWidget::on_btTonerReset_clicked()
     pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     if (pDialog->exec() == QDialog::Accepted)
     {
-        gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_TonerReset);
-        gUInterface->emitEnableCycleAnimation(true);
+        if(!isLogn)// && CMD_STATUS_COMPLETE == device->get_cmdStatus())
+        {
+            AuthenticationDlg *dlg = new AuthenticationDlg(this, &isLogn);
+            dlg->setWindowFlags(dlg->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint );
+            dlg->setWindowTitle(tr("ResStr_Identity_Authentication"));
+            dlg->exec();
+        }
+        if(isLogn)
+        {
+            gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_TonerReset);
+            gUInterface->emitEnableCycleAnimation(true);
+        }
+        else
+        {
+            QString deviceMsg = tr("ResStr_Setting_Fail");
+            gUInterface->setDeviceMsgFrmUI(deviceMsg,1);
+        }
     }
 }
 
