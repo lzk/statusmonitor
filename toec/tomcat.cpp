@@ -26,7 +26,7 @@ static void callback_getJob(void* para,Job_struct* js)
     char job_history[256];
     sprintf(job_history ,"%d,%s,%s,%s,%s,%d,%d,%d"
 //            ,js->id ,js->printer ,hostname,js->user_name  ,js->name
-            ,js->id ,js->printer ,hostname,job->username.toLatin1().constData()  ,job->filename.toLatin1().constData()
+            ,js->id ,js->printer ,hostname,job->username.toUtf8().constData()  ,job->filename.toUtf8().constData()
              ,(js->copies < 1) ?1 :js->copies
             ,job->is_finger_enable,job->is_finger_checked//是，成功
             );

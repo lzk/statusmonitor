@@ -461,6 +461,13 @@ static const Error_struct error_table[] =
 	,.showMeHowFileName = "smh_replace_toner.pdf"
 	,.string_index = MSG_05044
 	}
+    ,{
+        .group = 05
+        ,.id = 45
+    ,.code = "545-045"
+    ,.showMeHowFileName = "smh_replace_toner.pdf"
+    ,.string_index = MSG_05045
+    }
 	,{
 		.group = 05
 		,.id = 46
