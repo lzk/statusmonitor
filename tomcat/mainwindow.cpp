@@ -448,7 +448,7 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
 QString MainWindow::get_Status_string(const PrinterStatus_struct& status)
 {
     QString str_status;
-    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup, status.ErrorCodeID, status.PaperType, status.PaperSize);
+    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup, status.ErrorCodeID, status.PaperType, status.PaperSize, status.trayPaperTrayStatus);
     int ps = status.PrinterStatus;
     if ((IsStatusError(ps) && !IsStatusVirtual(ps) && ps != PS_ERROR_NOT_AVAILABLE && ps != PS_ERROR_NOT_SUPPORT) || ps == PS_TONER_LOW) {
         if(!ei.error || !ei.errorString){
@@ -803,7 +803,10 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
 //        break;
 //	}
     if(IsStatusError(currStatus)){
-        warning_status = 2;
+		if((currStatus == PS_ERROR_TRAY_DETACHED &&  status.ErrorCodeGroup == 0x05 && status.ErrorCodeID == 72) ||(currStatus == PS_ERROR_OUT_OF_PAPER &&  status.ErrorCodeGroup == 0x05 && status.ErrorCodeID == 73))
+			warning_status = 1;
+		else
+          warning_status = 2;
     }else if(IsStatusAbnormal(currStatus) || (currStatus == PS_READY &&  status.ErrorCodeGroup == 0x05 && (status.ErrorCodeID == 72 || status.ErrorCodeID == 73 )))
     {
         warning_status = 1;
@@ -827,7 +830,7 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     //update status string
     text = "<html><head/><body>";
 
-    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize);
+    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize,status.trayPaperTrayStatus);
         if(!ei.error || !ei.errorString){
             text += QString() + "<p>" + get_Status_string(status) + "</p>";
     //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
@@ -862,7 +865,8 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
                                 else if(i == ei.errorString->lines - 1)
                                     extra_string = ei.paperTypeString;
                             }
-                            switch (i) {
+                            switch (i) 
+							{
                             case 0:
                                 text += QString() + "<p>" + ei.errorString->line0 + extra_string + "</p>";
                                 break;
@@ -930,7 +934,7 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
                     }
                 }
                 else
-                {
+                {					
                     text += QString() + "<p>" + ei.errorString->title + "</p>";
             //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + ei.errorString->title + "</p>";
             //        text += "<br/>";
@@ -948,9 +952,18 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
                             else if(i == ei.errorString->lines - 1)
                                 extra_string = ei.paperTypeString;
                         }
+						QString PaperTrayString ="";
                         switch (i) {
                         case 0:
-                            text += QString() + "<p>" + ei.errorString->line0 + extra_string + "</p>";
+                            if((status.ErrorCodeID == 73 && status.ErrorCodeGroup == 5 )||(status.ErrorCodeID == 72 && status.ErrorCodeGroup == 5 )||currStatus == PS_ERROR_OUT_OF_PAPER|| currStatus == PS_ERROR_PAPER_PROBLEM ||currStatus == PS_ERROR_TRAY_DETACHED)
+		                    {
+                                PaperTrayString = QString().sprintf(ei.errorString->line0,ei.paperTrayString);
+                                text += QString() + "<p>" + PaperTrayString + "</p>";
+							}
+							else
+							{
+                                text += QString() + "<p>" + ei.errorString->line0 + extra_string + "</p>";
+							}
                             break;
                         case 1:
                             text += QString() + "<p>" + ei.errorString->line1 + extra_string + "</p>";

@@ -73,9 +73,10 @@ typedef struct ErrorInfo_struct
     const Error_String_struct* errorString;
     char paperSizeString[128];
     char paperTypeString[128];
+	char paperTrayString[128];
 }
 ErrorInfo_struct;
-ErrorInfo_struct getErrorInfo(int group ,int id ,int paperType ,int paperSize);
+ErrorInfo_struct getErrorInfo(int group ,int id ,int paperType ,int paperSize,int paperTray);
 #ifdef __cplusplus
 }
 #endif

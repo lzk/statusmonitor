@@ -251,6 +251,16 @@
 #define IDS_USERS_GUIDE_1       "使用说明书(&G)..."
 //END
 
+//STRINGTABLE
+//BEGIN
+#define IDS_TRAY_UNKNOWN  "进纸盒"
+#define IDS_TRAY_1        "进纸盒1"
+#define IDS_TRAY_2        "进纸盒2"
+#define IDS_TRAY_3        "进纸盒3"
+#define IDS_MPF_TRAY      "多功能进纸器"
+#define IDS_MANUAL_TRAY   "手动进纸盒"	
+//BEGIN
+
 #//ENDif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 

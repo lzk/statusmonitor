@@ -145,7 +145,27 @@ void PaperType2Str(int bPaperType, char* szPaperType)
 
     strcpy(szPaperType, szBuffer);
 }
+void PaperTray2Str(int bPaperTray, char* szPaperTray)
+{
+    static const char* PaperTrayTab[] =
+	{
+		/* 0 */	 IDS_TRAY_UNKNOWN,
+		/* 1 */	 IDS_TRAY_1,
+		/* 2 */	 IDS_TRAY_2,
+		/* 3 */  IDS_TRAY_3,
+		/* 4 */  IDS_MPF_TRAY,
+        /* 5 */  IDS_MANUAL_TRAY
+	};
 
+	#define PaperTrayTabl (PaperTrayTab)
+    int uCountPaperTray = sizeof(PaperTrayTab)/sizeof(PaperTrayTab[0]);
+	
+    const char* szBuffer = (bPaperTray < uCountPaperTray) ?
+		PaperTrayTabl[bPaperTray] :
+        PaperTrayTabl[uCountPaperTray - 1];
+
+      strcpy(szPaperTray, szBuffer);
+}
 #ifdef __cplusplus
 }
 #endif
