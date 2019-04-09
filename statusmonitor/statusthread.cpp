@@ -34,10 +34,6 @@ void StatusThread::set_abort()
     abort = true;
 }
 
-extern int usb_error_printing;
-extern int usb_error_scanning;
-extern int usb_error_usb_locked;
-extern int usb_error_busy;
 void StatusThread::run()
 {
     PRINTER_STATUS printer_status;

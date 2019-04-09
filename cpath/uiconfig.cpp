@@ -73,7 +73,6 @@ extern const char* lock_scan_info_file;
 extern int usb_error_printing;
 extern int usb_error_scanning;
 extern int usb_error_usb_locked;
-extern int usb_error_busy;
 void UIConfig::initConfig()
 {
     //config status server thread
@@ -87,8 +86,7 @@ void UIConfig::initConfig()
     lock_scan_info_file = "/tmp/.lenovo_m10x_used";
     usb_error_printing = Usb_Printing;
     usb_error_scanning = Usb_Scanning;
-    usb_error_busy = Usb_Locked;
-    usb_error_usb_locked = usb_error_busy;
+    usb_error_usb_locked = Usb_Locked;
 
     //config supported printer model
     isDeviceSupported = _isDeviceSupported;

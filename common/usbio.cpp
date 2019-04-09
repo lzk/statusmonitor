@@ -11,7 +11,6 @@ const char* lock_scan_info_file = "/tmp/.scanner_info_lock";
 int usb_error_printing = -100;
 int usb_error_scanning = -101;
 int usb_error_usb_locked = -102;
-int usb_error_busy = -103;
 
 static int _getpidvid(const QString& ,int& pid ,int& vid ,int& interface)
 {
@@ -23,12 +22,6 @@ static int _getpidvid(const QString& ,int& pid ,int& vid ,int& interface)
 
 int (* getpidvid)(const QString& modelname ,int& pid ,int& vid ,int& interface) = _getpidvid;
 
-#include <QMutex>
-#include <QStringList>
-static QMutex mutex;
-//static int locked_address = -1;
-//static int locked_bus = -1;
-static QStringList locked_printers;
 UsbIO::UsbIO()
     :usb(new UsbApi)
     ,interface(0)
@@ -82,7 +75,12 @@ bool UsbIO::is_device_scanning()
     return false;
 }
 
-
+#include <QMutex>
+#include <QStringList>
+static QMutex mutex;
+//static int locked_address = -1;
+//static int locked_bus = -1;
+static QStringList locked_printers;
 int UsbIO::open_with_mode(int port ,int mode)
 {
     if(device_is_open){
@@ -92,9 +90,10 @@ int UsbIO::open_with_mode(int port ,int mode)
     if(port >= 0){
         if(printer_is_printing(printer_name.toLatin1().constData())){
             return usb_error_printing;
-        }else if(is_device_scanning()){
-            return usb_error_scanning;
         }
+    }
+    if(is_device_scanning()){
+        return usb_error_scanning;
     }
     if(mode == 0){
         while (true) {
@@ -135,7 +134,35 @@ int UsbIO::open_with_mode(int port ,int mode)
 
 int UsbIO::open(int port)
 {
+#if 1
     return open_with_mode(port ,0);
+#else
+    if(device_is_open){
+        LOGLOG("device is opened");
+        return -1;
+    }
+    if(port >= 0){
+        if(printer_is_printing(printer_name.toLatin1().constData())){
+            return usb_error_printing;
+        }
+    }
+    if(is_device_scanning()){
+        return usb_error_scanning;
+    }
+    int ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
+    if(ret){
+        LOGLOG("can not find device:vid:0x%04x,pid:0x%04x:serial:%s" ,vid ,pid ,serial);
+        return -1;
+    }
+    ret = usb->open(vid ,pid ,serial ,port);
+    if(ret){
+    }else{
+        device_is_open = true;
+//        locked_address = address;
+//        locked_bus = bus;
+    }
+    return ret;
+#endif
 }
 
 int UsbIO::close(void)

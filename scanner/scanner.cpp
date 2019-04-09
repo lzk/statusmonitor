@@ -38,7 +38,7 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     ret = scannner_api->set_parameters(settings);
     if(ret){
         LOGLOG("scanning...error:set parameters");
-        if(ret > 0)//not -1,not communication error
+//        if(ret > 0)//not -1,not communication error
             exit_scan();
         ret = ScannerApp::STATUS_Error_machine;
         return ret;
@@ -46,7 +46,7 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
 
     ret = scannner_api->start();
     if(ret){
-        if(ret > 0)//not -1,not communication error
+//        if(ret > 0)//not -1,not communication error
             exit_scan();
         ret = ScannerApp::STATUS_Error_machine;
         return ret;
@@ -96,10 +96,10 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
             ret = scannner_api->abort();
     }
 
-    if(ret >= 0)
+//    if(ret >= 0)
         ret = scannner_api->stop();
 
-    if(ret >= 0)
+//    if(ret >= 0)
         exit_scan();
     if(ret < 0)
         ret = ScannerApp::STATUS_Error_machine;

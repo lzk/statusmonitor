@@ -781,17 +781,20 @@ void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
     }
 }
 
+//extern int usb_error_printing;
+extern int usb_error_scanning;
+//extern int usb_error_usb_locked;
 void MainWindow::onStatusCh(PrinterStatus_struct& status)
 {
     bool only_update_status = false;
-    if(status.PrinterStatus == UIConfig::Usb_Locked){
-        return;
-    }else if(status.PrinterStatus == UIConfig::Usb_Printing){
-        only_update_status = true;
-        status.PrinterStatus = UIConfig::Printing;
-    }else if(status.PrinterStatus == UIConfig::Usb_Scanning){
-        only_update_status = true;
-        status.PrinterStatus = UIConfig::ScanScanning;
+    if(status.PrinterStatus == usb_error_scanning){
+            only_update_status = true;
+            status.PrinterStatus = UIConfig::ScanScanning;
+//    }else if(status.PrinterStatus == usb_error_printing){
+//        only_update_status = true;
+//        status.PrinterStatus = UIConfig::Printing;
+//    }else if(status.PrinterStatus == usb_error_usb_locked){
+//        return;
     }
     if(!only_update_status){
         ui->mofenProgressBar->setValue(status.TonelStatusLevelK);

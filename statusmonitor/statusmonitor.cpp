@@ -126,7 +126,7 @@ int StatusMonitor::getDeviceStatus(DeviceIO* device ,Printer_struct* printer ,Pr
 //    if(device->isConnected(printer) || (device->type() == DeviceIO::Type_usb)){
         ret = getStatusFromDevice(device ,printer ,&status);
 //    }
-        printer->status = ret;
+    printer->status = ret;
     if(ret){
         memset(&status ,-1 ,sizeof(status));
     }else{

@@ -62,7 +62,7 @@ void WatcherStatusThread::work(PrinterInfo_struct* printerinfo)
     int result;
 //    LOGLOG("printer %s get device status" ,printerinfo->printer.name);
     result = StatusMonitor::getDeviceStatus(device ,&printerinfo->printer ,&printerinfo->status);
-    printerinfo->printer.status = result;
+
     StatusWatcher* monitor = qobject_cast<StatusWatcher* >(parent());
     if(monitor){
         monitor->set_current_printer_info(printerinfo);

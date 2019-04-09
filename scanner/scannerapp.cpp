@@ -298,10 +298,6 @@ int ScannerApp::trans_process(ScanSettings* settings)
 }
 
 #define Test_Jerry 1
-extern int usb_error_printing;
-extern int usb_error_scanning;
-extern int usb_error_usb_locked;
-extern int usb_error_busy;
 int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret = 0;
@@ -329,7 +325,6 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 
     set_cancel(false);
     settings->received_bytes = 0;
-    usb_error_usb_locked = usb_error_scanning;
 //    ret = scanner->flat_scan(printer ,settings);
     for(int i = 0 ;i < 3 ;i++){
         ret = scanner->flat_scan(printer ,settings);
@@ -340,7 +335,6 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     }
     if(STATUS_Error_lock == ret)
         ret = STATUS_Error_machine;
-    usb_error_usb_locked = usb_error_busy;
 //    exit_scan(settings);
     write_cache_exit();
     delete [] source_buf;
