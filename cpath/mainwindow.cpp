@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     timerBlink = new QTimer(this);
     connect(timerBlink,SIGNAL(timeout()),this,SLOT(blink()));
+    _oldToner = 0;
 
     deviceStatusString = "";
 
@@ -658,28 +659,7 @@ void MainWindow::updateTonerCarStatus(int toner)
             ui->btCar->show();
         }
     }
-    else if(toner < 11)
-    {
-        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Warn.png);");
-        ui->btCar->setEnabled(true);
-        ui->mofenProgressBar->setStyleSheet("QProgressBar{color:black;border:3px groove white;border-radius:9px;background-image:url();background-color:lightgray;} QProgressBar::chunk{background-color:red;border-radius:5px;}");
-
-        if(timerBlink->isActive() == false)
-        {
-            timerBlink->start(1000);
-        }
-    }
-    else if(toner <= 30)
-    {
-        ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png);");
-        ui->btCar->setEnabled(true);
-        ui->mofenProgressBar->setStyleSheet("QProgressBar{color:black;border:3px groove white;border-radius:9px;background-image:url();background-color:lightgray;} QProgressBar::chunk{background-color:yellow;border-radius:5px;}");
-        if(timerBlink->isActive() == false)
-        {
-            timerBlink->start(1000);
-        }
-    }
-    else
+    else if(toner > 30)
     {
         ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png);");
         ui->btCar->setEnabled(true);
@@ -690,6 +670,36 @@ void MainWindow::updateTonerCarStatus(int toner)
             ui->btCar->show();
         }
     }
+    else
+    {
+        if(toner < 11)
+        {
+            ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Warn.png);");
+            ui->btCar->setEnabled(true);
+            ui->mofenProgressBar->setStyleSheet("QProgressBar{color:black;border:3px groove white;border-radius:9px;background-image:url();background-color:lightgray;} QProgressBar::chunk{background-color:red;border-radius:5px;}");
+        }
+        else if(toner <= 30)
+        {
+            ui->btCar->setStyleSheet("border-image: url(:/Images/shopCart_Normal.png);");
+            ui->btCar->setEnabled(true);
+            ui->mofenProgressBar->setStyleSheet("QProgressBar{color:black;border:3px groove white;border-radius:9px;background-image:url();background-color:lightgray;} QProgressBar::chunk{background-color:yellow;border-radius:5px;}");
+        }
+
+//        qDebug()<<"_oldToner:"<<_oldToner<<" toner:"<<toner;
+        if((_oldToner > 30 && toner <= 30)
+                || (_oldToner > 20 && toner <= 20)
+                || (_oldToner > 10 && toner <=10)
+                || (_oldToner > 5 && toner <=5))
+        {
+            if(timerBlink->isActive() == false)
+            {
+                timerBlink->start(1000);
+            }
+        }
+    }
+
+    if(toner>=0)
+        _oldToner = toner;
 
     if(toner<11)
     {
@@ -797,6 +807,8 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
 //        return;
     }
     if(!only_update_status){
+        if(status.TonelStatusLevelK > 100)
+            status.TonelStatusLevelK = 100;
         ui->mofenProgressBar->setValue(status.TonelStatusLevelK);
         updateTonerCarStatus(status.TonelStatusLevelK);
     }
@@ -949,11 +961,11 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
                                     "background-color: red;}");
         enableAllFunction(true);
 
-        if(status >= UIConfig::PolygomotorOnTimeoutError && status <= UIConfig::CTL_PRREQ_NSignalNoCome
-                || status == UIConfig::ScanMotorError
-                || status == UIConfig::SCAN_DRV_CALIB_FAIL
-                || status == UIConfig::ScanDriverCalibrationFail
-                || status == UIConfig::NetWirelessDongleCfgFail)
+        if((status >= UIConfig::PolygomotorOnTimeoutError && status <= UIConfig::CTL_PRREQ_NSignalNoCome)
+                || (status == UIConfig::ScanMotorError)
+                || (status == UIConfig::SCAN_DRV_CALIB_FAIL)
+                || (status == UIConfig::ScanDriverCalibrationFail)
+                || (status == UIConfig::NetWirelessDongleCfgFail))
         {
             ui->label_10->installEventFilter(this);
         }
@@ -1100,8 +1112,8 @@ void MainWindow::on_errorBtn_clicked()
 
 void MainWindow::on_btCar_clicked()
 {
-    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
-    settings.setValue("stopBlink","true");
+    if(timerBlink->isActive())
+        timerBlink->stop();
     if(ui->memberCenterWidget->loginPhone !="")
     {
         QString url = QString("http://ibase.lenovoimage.com/buy_abc2.aspx?id=%0").arg(ui->memberCenterWidget->loginPhone);
@@ -1111,5 +1123,4 @@ void MainWindow::on_btCar_clicked()
     {
         QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/buy_abc2.aspx"));
     }
-
 }

@@ -68,10 +68,6 @@ WlanTitleCell::WlanTitleCell(QWidget *parent, QScrollBar *_scrollBar,  bool wlan
     QValidator *validator1 = new QRegExpValidator(regexp1, this);
     ui->lineEdit_SSID->setValidator(validator1);
 
-    QRegExp regexp2("^[\\x0020-\\x007e]{0,64}$");
-    QValidator *validator2 = new QRegExpValidator(regexp2, this);
-    ui->lineEdit_Password->setValidator(validator2);
-
     ui->combox_encryption->setCurrentIndex(2);
     ui->label_keyid->hide();
     ui->btKey1->hide();
@@ -163,6 +159,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             else
             {
                 deviceMsg = tr("ResStr_Setting_Successfully_");
+                gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
             }
         }
         else
@@ -178,11 +175,11 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
             }
             deviceMsg = tr("ResStr_Setting_Fail");
+            gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
         }
 
         isWitch = false;
         gUInterface->emitEnableCycleAnimation(false);
-        gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
     }
         break;
     default: break;
@@ -603,8 +600,9 @@ void WlanTitleCell::on_combox_encryption_currentIndexChanged(int index)
         ui->btKey2->show();
         ui->btKey3->show();
         ui->btKey4->show();
-
-        QRegExp regexp("^[\\x0020-\\x007e]{5,13}$");
+        ui->lineEdit_Password->setText("");
+        ui->lineEdit_Password->setMaxLength(26);
+        QRegExp regexp("^[\\x0020-\\x007e]{1,26}$");
         QValidator *validator = new QRegExpValidator(regexp, this);
         ui->lineEdit_Password->setValidator(validator);
         ui->lineEdit_Password->setStyleSheet("border:2px groove gray;border-radius:5px;");
@@ -619,7 +617,9 @@ void WlanTitleCell::on_combox_encryption_currentIndexChanged(int index)
         ui->btKey2->hide();
         ui->btKey3->hide();
         ui->btKey4->hide();
-        QRegExp regexp("^[\\x0020-\\x007e]{8,63}$");
+        ui->lineEdit_Password->setText("");
+        ui->lineEdit_Password->setMaxLength(64);
+        QRegExp regexp("^[\\x0020-\\x007e]{1,64}$");
         QValidator *validator = new QRegExpValidator(regexp, this);
         ui->lineEdit_Password->setValidator(validator);
         ui->lineEdit_Password->setStyleSheet("border:2px groove gray;border-radius:5px;");
@@ -781,17 +781,37 @@ void WlanTitleCell::on_checkBox_visiable_toggled(bool checked)
     if(checked)
     {
         ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
-        ui->lineEdit_Password->setMaxLength(64);
-        QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
-        QValidator *validator2 = new QRegExpValidator(regexp2, this);
+        QValidator *validator2;
+        if(ui->combox_encryption->currentIndex() == 1)
+        {
+            ui->lineEdit_Password->setMaxLength(26);
+            QRegExp regexp("^[\\x0020-\\x007e]{1,26}$");
+            validator2 = new QRegExpValidator(regexp, this);
+        }
+        else
+        {
+            ui->lineEdit_Password->setMaxLength(64);
+            QRegExp regexp("^[\\x0020-\\x007e]{1,64}$");
+            validator2 = new QRegExpValidator(regexp, this);
+        }
         ui->lineEdit_Password->setValidator(validator2);
     }
     else
     {
         ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
-        ui->lineEdit_Password->setMaxLength(64);
-        QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
-        QValidator *validator2 = new QRegExpValidator(regexp2, this);
+        QValidator *validator2;
+        if(ui->combox_encryption->currentIndex() == 1)
+        {
+            ui->lineEdit_Password->setMaxLength(26);
+            QRegExp regexp("^[\\x0020-\\x007e]{1,26}$");
+            validator2 = new QRegExpValidator(regexp, this);
+        }
+        else
+        {
+            ui->lineEdit_Password->setMaxLength(64);
+            QRegExp regexp("^[\\x0020-\\x007e]{1,64}$");
+            validator2 = new QRegExpValidator(regexp, this);
+        }
         ui->lineEdit_Password->setValidator(validator2);
     }
 }

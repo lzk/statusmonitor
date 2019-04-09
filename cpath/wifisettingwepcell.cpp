@@ -31,16 +31,6 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
     isConnected = isconnected;
     initStatus();
 
-    QRegExp regexp("^[\\x0020-\\x007e]{5,13}$");
-    QValidator *validator = new QRegExpValidator(regexp, this);
-    ui->lineEdit_Password->setValidator(validator);
-
-    ui->checkBox_visiable->setChecked(isDisplayPW);
-    QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
-    QValidator *validator2 = new QRegExpValidator(regexp2, this);
-    ui->lineEdit_Password->setValidator(validator2);
-    ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
-
     if(NULL != _islogin)
     {
         islogin = _islogin;
@@ -83,23 +73,27 @@ void WiFiSettingWEPCell::on_checkBox_visiable_clicked()
     if(ui->checkBox_visiable->isChecked())
     {
         isDisplayPW = true;
-        QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
+        ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
+        QRegExp regexp2("^[\\x0020-\\x007e]{1,26}$");
         QValidator *validator2 = new QRegExpValidator(regexp2, this);
         ui->lineEdit_Password->setValidator(validator2);
-        ui->lineEdit_Password->setEchoMode(QLineEdit::Normal);
     }
     else
     {
         isDisplayPW = false;
-        QRegExp regexp2("^[\\x0020-\\x007e]{1,64}$");
+        ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
+        QRegExp regexp2("^[\\x0020-\\x007e]{1,26}$");
         QValidator *validator2 = new QRegExpValidator(regexp2, this);
         ui->lineEdit_Password->setValidator(validator2);
-        ui->lineEdit_Password->setEchoMode(QLineEdit::Password);
     }
 }
 
 void WiFiSettingWEPCell::initStatus()
 {
+    QRegExp regexp2("^[\\x0020-\\x007e]{1,26}$");
+    QValidator *validator2 = new QRegExpValidator(regexp2, this);
+    ui->lineEdit_Password->setValidator(validator2);
+
     QFont ft = ui->label_SSID1->font();
     QFontMetrics fm(ft);
     QString ssid1 = fm.elidedText(apInfo.SSID, Qt::ElideRight, ui->label_SSID1->width());
