@@ -202,7 +202,6 @@ void UserLogin::on_bt_getAuthCode_clicked()
 
 void UserLogin::showTimelimit()
 {
-    qDebug()<<acTime;
     if(acTime != 0)
     {
         acTime--;
