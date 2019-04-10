@@ -66,7 +66,12 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
                 settings.endGroup();
                 if(loginName != NULL)
                 {
-                    ui->login_name->setText(QString("%0(%1)").arg(loginName).arg(loginPhone));
+                    QFont ft = ui->login_name->font();
+                    QFontMetrics fm(ft);
+                    QString loginStr = QString("%0(%1)").arg(loginName).arg(loginPhone);
+//                    QString loginStr = "自动获取自动获取自动获取自动获取自动获取自动获取自动获取自动获取自动获取自动获取自动获取";
+                    QString ssid1 = fm.elidedText(loginStr, Qt::ElideRight, ui->login_name->width());
+                    ui->login_name->setText(ssid1);
                 }
                 else
                 {
@@ -129,7 +134,11 @@ void MemberCenterWidget::on_btLogin_clicked()
         settings.endGroup();
         if(userName != NULL)
         {
-            ui->login_name->setText(QString("%0(%1)").arg(userName).arg(loginPhone));
+            QFont ft = ui->login_name->font();
+            QFontMetrics fm(ft);
+            QString loginStr = QString("%0(%1)").arg(userName).arg(loginPhone);
+            QString ssid1 = fm.elidedText(loginStr, Qt::ElideRight, ui->login_name->width());
+            ui->login_name->setText(ssid1);
         }
         else
         {
@@ -227,7 +236,11 @@ void MemberCenterWidget::initUserInfo(QString userInfo)
         {
             ui->le_name->setText(user["realName"].toString());
             ui->le_name->setCursorPosition(0);
-            ui->login_name->setText(QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone));
+            QFont ft = ui->login_name->font();
+            QFontMetrics fm(ft);
+            QString loginStr = QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone);
+            QString ssid1 = fm.elidedText(loginStr, Qt::ElideRight, ui->login_name->width());
+            ui->login_name->setText(ssid1);
         }
         else
         {
@@ -397,7 +410,11 @@ void MemberCenterWidget::replyFinish_set(QNetworkReply* reply)
     QVariantMap result = parser.parse(strJsonText.toUtf8(),&ok).toMap();
     if(result["success"].toBool() == true)
     {
-        ui->login_name->setText(QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone));
+        QFont ft = ui->login_name->font();
+        QFontMetrics fm(ft);
+        QString loginStr = QString("%0(%1)").arg(ui->le_name->text()).arg(loginPhone);
+        QString ssid1 = fm.elidedText(loginStr, Qt::ElideRight, ui->login_name->width());
+        ui->login_name->setText(ssid1);
         ui->stackedWidget->setCurrentIndex(1);
     }
     else
