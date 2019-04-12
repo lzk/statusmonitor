@@ -650,17 +650,11 @@ void Worker::update_scan_progress(Printer_struct* printer ,int progress ,int is_
         emit signal_update_scan_progress(100);
         printer->status = 0;
         current_printer_info.status.PrinterStatus = 0;
-//        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
-//        QVariant value;
-//        value.setValue<PrinterInfo_struct>(current_printer_info);
-//        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+        update_current_printer_status();
     }else if(progress == -3){
         printer->status = 0;
         current_printer_info.status.PrinterStatus = 0;
-//        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
-//        QVariant value;
-//        value.setValue<PrinterInfo_struct>(current_printer_info);
-//        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+        update_current_printer_status();
     }else{
         if(is_jpg_mode){
             progress *= 20;

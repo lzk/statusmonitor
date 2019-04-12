@@ -431,7 +431,7 @@ SCANINFO get_parameters(ScanSettings* scan_settings)
 
 ScannerApi::ScannerApi(DeviceIOManager* _device_manager)
     :device_manager(_device_manager)
-    ,scanner_locked(false)
+//    ,scanner_locked(false)
 {
 
 }
@@ -476,10 +476,10 @@ int ScannerApi::get_cmd_status()
 #include <unistd.h>
 int ScannerApi::lock()
 {
-    if(scanner_locked)
-    {
-        return 0;
-    }
+//    if(scanner_locked)
+//    {
+//        return 0;
+//    }
     if(!device)
         return -1;
     ScanCmd cmd = {CMDID_CMDHEAD, CMDID_LOCKSCANNER};
@@ -504,8 +504,8 @@ int ScannerApi::lock()
         usleep(1000000);
     }
 
-    if(!ret)
-        scanner_locked = true;
+//    if(!ret)
+//        scanner_locked = true;
     return ret;
 }
 
@@ -513,10 +513,10 @@ int ScannerApi::unlock()
 {
     if(!device)
         return -1;
-    if(!scanner_locked)
-    {
-        return 0;
-    }
+//    if(!scanner_locked)
+//    {
+//        return 0;
+//    }
     ScanCmd cmd = {CMDID_CMDHEAD, CMDID_UNLOCKSCANNER};
 
     int ret;
@@ -534,8 +534,8 @@ int ScannerApi::unlock()
     if(ret > -1){
         usleep(50000);
     }
-    if(!ret)
-        scanner_locked = false;
+//    if(!ret)
+//        scanner_locked = false;
     return ret;
 }
 
