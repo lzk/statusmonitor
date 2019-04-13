@@ -14,6 +14,7 @@ Scanner::~Scanner()
     delete scannner_api;
 }
 
+extern int usb_error_scanning;
 int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret;
@@ -22,8 +23,12 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
 
     ret = scannner_api->open(printer);
     if(ret){
-        LOGLOG("scanning...error:open");
-        return ScannerApp::STATUS_Error_App;
+        if(ret == usb_error_scanning)
+            return ScannerApp::STATUS_Error_busy;
+        else{
+            LOGLOG("scanning...error:open");
+            return ScannerApp::STATUS_Error_App;
+        }
     }
     ret = scannner_api->lock();
     if(ret){

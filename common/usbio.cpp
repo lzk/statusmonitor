@@ -55,23 +55,23 @@ bool UsbIO::is_device_scanning()
 //    if(!scanner_locked())
 //        return false;
 
-    int ret = lock(lock_scan_file);
+    int ret = trylock(lock_scan_file);
     if(!ret){
         unlock();
-        return false;
+
+        int bus_NO , device_address;
+        QSettings settings(lock_scan_info_file ,QSettings::NativeFormat);
+        bus_NO = settings.value("Bus_Number" ,0).toInt();
+        device_address = settings.value("Device_Address" ,0).toInt();
+        if(!bus_NO || !device_address)
+            return false;
+    //    ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
+        if(!ret && address == device_address && bus == bus_NO){
+            LOGLOG("usb locked bus:%d ,address:%d" ,bus_NO ,device_address);
+            return true;
+        }
     }
 
-    int bus_NO , device_address;
-    QSettings settings(lock_scan_info_file ,QSettings::NativeFormat);
-    bus_NO = settings.value("Bus_Number" ,0).toInt();
-    device_address = settings.value("Device_Address" ,0).toInt();
-    if(!bus_NO || !device_address)
-        return false;
-//    ret = usb->getDeviceAddress(vid ,pid ,serial ,&address ,&bus);
-    if(!ret && address == device_address && bus == bus_NO){
-        LOGLOG("usb locked bus:%d ,address:%d" ,bus_NO ,device_address);
-        return true;
-    }
     return false;
 }
 
@@ -176,6 +176,7 @@ int UsbIO::close(void)
         locked_printers.removeAll(QString(device_uri));
         mutex.unlock();
     }
+//    unlock();//if scanning,tell sane driver scan end.
     return 0;
 }
 

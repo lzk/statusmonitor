@@ -678,7 +678,7 @@ void Worker::update_current_printer_status()
     watcher->get_currentprinter_info(ps);
     if(ps.printer.status == usb_error_scanning){//sane scanning
         ps.printer.status = 0;
-        ps.status.PrinterStatus == usb_error_scanning;
+        ps.status.PrinterStatus = usb_error_scanning;
     }else
 //    if(current_printer_info.printer.status == usb_error_scanning)//vop scanning
 //        return;
