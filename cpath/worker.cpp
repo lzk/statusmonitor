@@ -17,8 +17,8 @@ Worker::Worker(QObject *parent) :
 {
     watcher = new Watcher(this);
 //    connect(watcher ,SIGNAL(update_printer_status()) ,this ,SLOT(update_printer_status(PrinterInfo_struct)));
-    connect(watcher ,SIGNAL(update_current_printer_status()) ,this ,SLOT(update_current_printer_status()));
-    connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()));
+    connect(watcher ,SIGNAL(update_current_printer_status()) ,this ,SLOT(update_current_printer_status()) ,Qt::DirectConnection);
+    connect(watcher ,SIGNAL(update_printerlist()) ,this ,SLOT(update_printerlist()) ,Qt::DirectConnection);
     watcher->start();
 }
 
@@ -61,7 +61,7 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         update_printerlist();
         break;
 
-    case UIConfig::CMD_GetStatus:{
+    case UIConfig::CMD_GetStatus:
         update_current_printer_status();
 //        if(printer){
 //            PrinterInfo_struct printer_info;
@@ -72,19 +72,19 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
 //            LOGLOG("get current status:0x%02x" ,printer_info.status.PrinterStatus);
 //        }
 //        cmdResult(cmd ,result ,value);
-    }
         break;
     case UIConfig::CMD_Scan:
         if(printer){
 //            if(cmd_status_validate(printer ,cmd)){
                 ScanSettings device_data = data.value<ScanSettings>();
-                const char* imagePath = "/tmp/vop_scan";
-                QDir *path = new QDir;
-                if(!(path->exists(imagePath)))
-                {
-                    path->mkdir(imagePath);
-                }
-                delete path;
+                const char* imagePath = TMP_SCAN_DIR;
+//                const char* imagePath = "/tmp/vop_scan";
+//                QDir *path = new QDir;
+//                if(!(path->exists(imagePath)))
+//                {
+//                    path->mkdir(imagePath);
+//                }
+//                delete path;
                 QDateTime time = QDateTime::currentDateTime();
                 QString str_time = time.toString("yyyy-MM-dd_hh-mm-ss-zzz");
                 QByteArray t_ba = str_time.toLatin1();
@@ -636,28 +636,26 @@ void Worker::cancel()
     scanner->set_cancel(true);
 }
 
+extern int usb_error_scanning;
 void Worker::update_scan_progress(Printer_struct* printer ,int progress ,int is_jpg_mode)
 {
     if(progress == -1){//start
         current_printer_info.printer = *printer;
-        current_printer_info.status.PrinterStatus = UIConfig::Usb_Scanning;
+        printer->status = usb_error_scanning;
+        current_printer_info.status.PrinterStatus = usb_error_scanning;
         QVariant value;
         value.setValue<PrinterInfo_struct>(current_printer_info);
         cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
         emit signal_update_scan_progress(0);
     }else if(progress == -2){
         emit signal_update_scan_progress(100);
+        printer->status = 0;
         current_printer_info.status.PrinterStatus = 0;
-//        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
-//        QVariant value;
-//        value.setValue<PrinterInfo_struct>(current_printer_info);
-//        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+//        update_current_printer_status();
     }else if(progress == -3){
+        printer->status = 0;
         current_printer_info.status.PrinterStatus = 0;
-//        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
-//        QVariant value;
-//        value.setValue<PrinterInfo_struct>(current_printer_info);
-//        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+//        update_current_printer_status();
     }else{
         if(is_jpg_mode){
             progress *= 20;
@@ -677,10 +675,16 @@ static void scan_callback(void* para)
 
 void Worker::update_current_printer_status()
 {
-    if(current_printer_info.status.PrinterStatus == UIConfig::Usb_Scanning)
-        return;
     PrinterInfo_struct ps;
     watcher->get_currentprinter_info(ps);
+    if(ps.printer.status == usb_error_scanning){//sane scanning
+        ps.printer.status = 0;
+        ps.status.PrinterStatus = usb_error_scanning;
+    }else
+//    if(current_printer_info.printer.status == usb_error_scanning)//vop scanning
+//        return;
+    if(current_printer_info.status.PrinterStatus == usb_error_scanning)//vop scanning
+        return;
     QVariant value;
     value.setValue<PrinterInfo_struct>(ps);
     cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
@@ -697,45 +701,46 @@ void Worker::update_printerlist()
 
 bool Worker::cmd_status_validate(Printer_struct* printer ,int cmd)
 {
-    PrinterInfo_struct ps;
-    watcher->get_currentprinter_info(ps);
-    if(strcmp(printer->name ,ps.printer.name))
-        return false;
-    PrinterStatus_struct* status = &ps.status;
-//    int result = StatusMonitor::getDeviceStatus(deviceManager ,printer ,status);
-//    if(result < 0){
+    return true;
+//    PrinterInfo_struct ps;
+//    watcher->get_currentprinter_info(ps);
+//    if(strcmp(printer->name ,ps.printer.name))
 //        return false;
-//    }
-    bool valid = true;
+//    PrinterStatus_struct* status = &ps.status;
+////    int result = StatusMonitor::getDeviceStatus(deviceManager ,printer ,status);
+////    if(result < 0){
+////        return false;
+////    }
+//    bool valid = true;
 
-    switch(status->PrinterStatus){
-    case UIConfig::Printing:
-    case UIConfig::PrintCanceling:
-    case UIConfig::CopyScanning:
-    case UIConfig::CopyPrinting:
-    case UIConfig::CopyCanceling:
-    case UIConfig::ScanScanning:
-    case UIConfig::ScanSending:
-    case UIConfig::ScanCanceling:
-    case UIConfig::ScannerBusy:
-    case UIConfig::CopyScanNextPage:
-    case UIConfig::InitializeJam:
-    case UIConfig::NofeedJam:
-    case UIConfig::JamAtRegistStayOn:
-    case UIConfig::JamAtExitNotReach:
-    case UIConfig::JamAtExitStayOn:
-        valid = false;
-        break;
-    case UIConfig::TonerEnd1:
-    case UIConfig::TonerEnd2:
-    case UIConfig::WasteTonerFull:
-        if(cmd == UIConfig::LS_CMD_COPY)
-            valid = false;
-        break;
-    case UIConfig::TonerNearEnd:
-    default:
-        break;
-    }
-    LOGLOG("cmd_status_validate:%d,%d",valid,status->PrinterStatus);
-    return valid;
+//    switch(status->PrinterStatus){
+//    case UIConfig::Printing:
+//    case UIConfig::PrintCanceling:
+//    case UIConfig::CopyScanning:
+//    case UIConfig::CopyPrinting:
+//    case UIConfig::CopyCanceling:
+//    case UIConfig::ScanScanning:
+//    case UIConfig::ScanSending:
+//    case UIConfig::ScanCanceling:
+//    case UIConfig::ScannerBusy:
+//    case UIConfig::CopyScanNextPage:
+//    case UIConfig::InitializeJam:
+//    case UIConfig::NofeedJam:
+//    case UIConfig::JamAtRegistStayOn:
+//    case UIConfig::JamAtExitNotReach:
+//    case UIConfig::JamAtExitStayOn:
+//        valid = false;
+//        break;
+//    case UIConfig::TonerEnd1:
+//    case UIConfig::TonerEnd2:
+//    case UIConfig::WasteTonerFull:
+//        if(cmd == UIConfig::LS_CMD_COPY)
+//            valid = false;
+//        break;
+//    case UIConfig::TonerNearEnd:
+//    default:
+//        break;
+//    }
+//    LOGLOG("cmd_status_validate:%d,%d",valid,status->PrinterStatus);
+//    return valid;
 }

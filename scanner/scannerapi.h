@@ -35,7 +35,7 @@ public:
 private:
     DeviceIO* device;
     DeviceIOManager* device_manager;
-    bool scanner_locked;
+//    bool scanner_locked;
     int get_cmd_status();
 };
 

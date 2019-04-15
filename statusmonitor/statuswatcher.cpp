@@ -36,6 +36,14 @@ void WatcherStatusThread::run()
         if(monitor){
             QString cp;
             monitor->mutex.lock();
+            if(current_printer.compare(monitor->current_printer)){
+                monitor->mutex.unlock();
+                LOGLOG("current printer has changed to %s ,not %s"
+                       ,monitor->current_printer.toLatin1().constData()
+                       ,current_printer.toLatin1().constData());
+                sleep(6);
+                continue;
+            }
             cp = current_printer;
             monitor->mutex.unlock();
             index = monitor->get_printer_from_current_list(cp ,printerinfo.printer);
@@ -54,13 +62,9 @@ void WatcherStatusThread::work(PrinterInfo_struct* printerinfo)
     int result;
 //    LOGLOG("printer %s get device status" ,printerinfo->printer.name);
     result = StatusMonitor::getDeviceStatus(device ,&printerinfo->printer ,&printerinfo->status);
-    printerinfo->printer.status = result;
+
     StatusWatcher* monitor = qobject_cast<StatusWatcher* >(parent());
     if(monitor){
-        QString cp;
-        monitor->mutex.lock();
-        cp = current_printer;
-        monitor->mutex.unlock();
         monitor->set_current_printer_info(printerinfo);
     }
 }
@@ -172,9 +176,9 @@ void StatusWatcher::set_current_printer(const QString& printer)
     mutex.lock();
     current_printer = printer;
     memset(&current_printer_info.printer ,0 ,sizeof(Printer_struct));
-    memset(&current_printer_info.status ,-1 ,sizeof(PrinterStatus_struct));
+//    memset(&current_printer_info.status ,-1 ,sizeof(PrinterStatus_struct));
     mutex.unlock();
-    update_current_printer_status();
+//    update_current_printer_status();
 
     if(printer.isEmpty()){
         if(statusThread){
@@ -253,10 +257,11 @@ void StatusWatcher::set_current_printer_info(PrinterInfo_struct* pis)
         mutex.unlock();
         return;
     }
-//    current_printer_info = *pis;
-//    mutex.unlock();
-//    update_current_printer_status();
-//    return;
+#if 1
+    current_printer_info = *pis;
+    mutex.unlock();
+    update_current_printer_status();
+#else
     if(printer_compare(&pis->printer ,&current_printer_info.printer)){
 //    if(pis->printer.status != current_printer_info.printer.status){
         current_printer_info = *pis;
@@ -265,7 +270,6 @@ void StatusWatcher::set_current_printer_info(PrinterInfo_struct* pis)
 //        LOGLOG("%s update status" ,pis->printer.name);
         return;
     }
-
     PrinterStatus_struct* status = &pis->status;
     PrinterStatus_struct* p_current_printer_status = &current_printer_info.status;
     if(     (status->PrinterStatus != p_current_printer_status->PrinterStatus)
@@ -289,6 +293,7 @@ void StatusWatcher::set_current_printer_info(PrinterInfo_struct* pis)
     }else{
         mutex.unlock();
     }
+#endif
 }
 
 void StatusWatcher::setPrinters(Printer_struct* ps)

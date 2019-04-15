@@ -1,23 +1,30 @@
 #ifndef TRANS_JPG_H
 #define TRANS_JPG_H
 
-#include <stdio.h>
-#include <jpeglib.h>
+enum{
+    JPG_COLORMODE_color,
+    JPG_COLORMODE_gray,
+    JPG_COLORMODE_bw,
+};
+
+class JPG_Decompress;
+class JPG_Compress;
 class Trans_jpg
 {
 public:
     Trans_jpg();
+    ~Trans_jpg();
+
+    int write_file_open(const char* filename ,int image_width ,int image_height ,int color_mode ,int quality);
+    int write_file_write_lines(char* buffer ,int bufsize ,int lines ,int line_size);
+    int write_file_close();
 
     int read_file_open(const char* filename);
-    int read_file_read_lines(char* read_buffer ,int bufsize ,int lines);
+    int read_file_read_lines(char* buffer ,int bufsize ,int lines);
     int read_file_close();
 
 private:
-    struct jpeg_decompress_struct cinfo;
-    struct jpeg_error_mgr jerr;
-    FILE * infile;		/* source file */
-    JSAMPARRAY buffer;		/* Output row buffer */
-    int row_stride;		/* physical row width in output buffer */
+    JPG_Decompress* jpg_decompress;
+    JPG_Compress* jpg_compress;
 };
-
 #endif // TRANS_JPG_H

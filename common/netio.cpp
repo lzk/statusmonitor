@@ -8,7 +8,10 @@
 QHostAddress get_ip_address(const QString& host)
 {
     QHostAddress hostAddress;
-
+#if 1
+    hostAddress = QHostAddress(host);
+    return hostAddress;
+#else
     QHostInfo info;
     info = QHostInfo::fromName(host);
     if (!info.addresses().isEmpty()) {
@@ -34,6 +37,7 @@ QHostAddress get_ip_address(const QString& host)
 //        qDebug()<<"host name:" << host << "addresses:" <<info.addresses();
     }
     return hostAddress;
+#endif
 }
 
 NetIO::NetIO():
@@ -90,8 +94,11 @@ int NetIO::open(int port)
         LOGLOG("device is opened");
         return -1;
     }
-    if(!tcpSocket)
-        tcpSocket = new QTcpSocket;
+    if(tcpSocket)
+        delete tcpSocket;
+    tcpSocket = new QTcpSocket;
+//    if(!tcpSocket)
+//        tcpSocket = new QTcpSocket;
     tcpSocket->connectToHost(hostAddress, port);
     if (!tcpSocket->waitForConnected(5000)) {
         LOGLOG("tcpsocket error code:%d",tcpSocket->error());
@@ -205,17 +212,21 @@ int NetIO::getDeviceId(char *buffer, int bufsize)
 }
 
 static int _platform_net_get_device_id(const QString& device_uri,char *buffer, int bufsize);
+static int _platform_net_get_device_id(const QHostAddress& host_address,char *buffer, int bufsize);
 int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
 {
-    //some host name can not get device id. change to ipv4 first.
-//    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
-    return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);
+//    return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);
+    return _platform_net_get_device_id(hostAddress ,buffer ,bufsize);
 }
 
 bool NetIO::isConnected()
 {
-    char buffer[1024];
-    return !getDeviceId_without_open(buffer ,sizeof(buffer));
+//    char buffer[1024];
+//    return !getDeviceId_without_open(buffer ,sizeof(buffer));
+    bool is_connected = open(9100) == 0 ?true :false;
+    if(is_connected)
+        close();
+    return is_connected;
 }
 
 const char* NetIO::getDeviceAddress()
@@ -296,9 +307,11 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, i
     return ret;
 }
 #else
-int snmpGetResponse(char* ip ,char* buffer ,int bufsize);
+int snmp_get_deviceid(char* ip ,char* buffer ,int bufsize);
 static int _platform_net_get_device_id(const QString& device_uri,char *buffer, int bufsize)
 {
+    //some host name can not get device id. change to ipv4 first.
+//    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
     QHostAddress host_address = get_ip_address(QUrl(device_uri).host());
     QString address;
     if(host_address.protocol() == QAbstractSocket::IPv6Protocol){
@@ -306,6 +319,16 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, i
     }else{
         address= host_address.toString();
     }
-    return snmpGetResponse(address.toLatin1().data() ,buffer ,bufsize);
+    return snmp_get_deviceid(address.toLatin1().data() ,buffer ,bufsize);
+}
+static int _platform_net_get_device_id(const QHostAddress& host_address,char *buffer, int bufsize)
+{
+    QString address;
+    if(host_address.protocol() == QAbstractSocket::IPv6Protocol){
+        address= QString("udp6:[") + host_address.toString() +"]";
+    }else{
+        address= host_address.toString();
+    }
+    return snmp_get_deviceid(address.toLatin1().data() ,buffer ,bufsize);
 }
 #endif

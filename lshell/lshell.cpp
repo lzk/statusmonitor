@@ -173,12 +173,10 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
 
     if(cmd == _LS_WIFICMD  && sub_cmd == 0xff)
     {
-        LOGLOG("writeNoRead");
         err = writeNoRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct);
     }
     else
     {
-        LOGLOG("writeThenRead");
         err = writeThenRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct
                                                ,buffer ,sizeof(COMM_HEADER)+data_buffer_size * (1 - direct));
     }
@@ -196,7 +194,6 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
         }
     }else
         err = -1;
-    LOGLOG("lshell_cmd:%d",err);
     delete [] buffer;
     return err;
 }

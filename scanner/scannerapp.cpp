@@ -263,9 +263,9 @@ int ScannerApp::trans_process(ScanSettings* settings)
     info->scan_buffer = buffer;
 
 //    int source_size = each_lines * info->source_line_buf_size;
-    char* jerry_buffer = new char[each_source_size * 3];
+    char* jerry_buffer = new char[each_source_size * 3 + 0x10000];
     info->resume_buffer = jerry_buffer;
-    info->resume_buf_size = each_source_size * 3;
+    info->resume_buf_size = each_source_size * 3 + 0x10000;
 
     int target_lines = each_lines * 10 / info->source_lines_per_10_lines;
     int target_size = target_lines * info->target_line_buf_size;
@@ -298,10 +298,6 @@ int ScannerApp::trans_process(ScanSettings* settings)
 }
 
 #define Test_Jerry 1
-extern int usb_error_printing;
-extern int usb_error_scanning;
-extern int usb_error_usb_locked;
-extern int usb_error_busy;
 int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 {
     int ret = 0;
@@ -313,7 +309,7 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     calculate_parameters(settings);
     caculate_image_trans_data(settings);
 #if Test_Jerry
-    ImageTransInfo* info = settings->info;
+//    ImageTransInfo* info = settings->info;
     Calc_Data *pCalc = &settings->calc_data;
     Image_Data_Struct* source = &pCalc->source;
     char* source_buf = new char[SCAN_BUFFER_SIZE];
@@ -329,7 +325,6 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
 
     set_cancel(false);
     settings->received_bytes = 0;
-    usb_error_usb_locked = usb_error_scanning;
 //    ret = scanner->flat_scan(printer ,settings);
     for(int i = 0 ;i < 3 ;i++){
         ret = scanner->flat_scan(printer ,settings);
@@ -340,7 +335,6 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     }
     if(STATUS_Error_lock == ret)
         ret = STATUS_Error_machine;
-    usb_error_usb_locked = usb_error_busy;
 //    exit_scan(settings);
     write_cache_exit();
     delete [] source_buf;

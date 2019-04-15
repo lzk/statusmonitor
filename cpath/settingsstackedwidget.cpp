@@ -1003,8 +1003,8 @@ void SettingsStackedWidget::on_btApply_userconfig_clicked()
             userconfig.SideToSide = ui->lineEdit_LeftMargin->text().toInt();
             userconfig.ImageDensity = ui->lineEdit_ImageDensity->text().toInt();
             userconfig.LowHumidityMode = (isLowHumidity ? 1 : 0);
-            userconfig.PlateControlMode = (isConrtolM ? 0 : 2);
-            userconfig.PrimaryCoolingMode = (isCoolingM ? 1 : 0);
+//            userconfig.PlateControlMode = (isConrtolM ? 0 : 2);
+//            userconfig.PrimaryCoolingMode = (isCoolingM ? 1 : 0);
             QVariant data;
             data.setValue<cmdst_userconfig>(userconfig);
             gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Set_UserConfig,data);

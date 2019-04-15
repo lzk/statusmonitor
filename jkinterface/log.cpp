@@ -83,6 +83,5 @@ void log_init()
 #else
 void log_init()
 {
-
 }
 #endif

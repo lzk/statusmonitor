@@ -176,33 +176,33 @@ void MainWindow::closeEvent(QCloseEvent *e)
     }
     if (pDialog->exec() == QDialog::Accepted)
     {
-        if(ui->tabStackedWidget->getScrollAreaImageStatus())
-        {
-            QDir dir("/tmp/vop_scan");
-            QFileInfoList fileList;
-            QFileInfo curFile;
-            if(dir.exists())
-            {
-                fileList = dir.entryInfoList(QDir::Dirs|QDir::Files
-                                             |QDir::Readable|QDir::Writable
-                                             |QDir::Hidden|QDir::NoDotAndDotDot
-                                             ,QDir::Name);
-                while(fileList.size()>0)
-                {
-                    int infoNum = fileList.size();
-                    for(int i = infoNum-1;i>=0;i--)
-                    {
-                        curFile = fileList[i];
-                        if(curFile.isFile())
-                        {
-                            QFile fileTemp(curFile.filePath());
-                            fileTemp.remove();
-                            fileList.removeAt(i);
-                        }
-                    }
-                }
-            }
-        }
+//        if(ui->tabStackedWidget->getScrollAreaImageStatus())
+//        {
+//            QDir dir("/tmp/vop_scan");
+//            QFileInfoList fileList;
+//            QFileInfo curFile;
+//            if(dir.exists())
+//            {
+//                fileList = dir.entryInfoList(QDir::Dirs|QDir::Files
+//                                             |QDir::Readable|QDir::Writable
+//                                             |QDir::Hidden|QDir::NoDotAndDotDot
+//                                             ,QDir::Name);
+//                while(fileList.size()>0)
+//                {
+//                    int infoNum = fileList.size();
+//                    for(int i = infoNum-1;i>=0;i--)
+//                    {
+//                        curFile = fileList[i];
+//                        if(curFile.isFile())
+//                        {
+//                            QFile fileTemp(curFile.filePath());
+//                            fileTemp.remove();
+//                            fileList.removeAt(i);
+//                        }
+//                    }
+//                }
+//            }
+//        }
         e->accept();
     }
     else
@@ -793,17 +793,20 @@ void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
     }
 }
 
+//extern int usb_error_printing;
+extern int usb_error_scanning;
+//extern int usb_error_usb_locked;
 void MainWindow::onStatusCh(PrinterStatus_struct& status)
 {
     bool only_update_status = false;
-    if(status.PrinterStatus == UIConfig::Usb_Locked){
-        return;
-    }else if(status.PrinterStatus == UIConfig::Usb_Printing){
-        only_update_status = true;
-        status.PrinterStatus = UIConfig::Printing;
-    }else if(status.PrinterStatus == UIConfig::Usb_Scanning){
-        only_update_status = true;
-        status.PrinterStatus = UIConfig::ScanScanning;
+    if(status.PrinterStatus == usb_error_scanning){
+            only_update_status = true;
+            status.PrinterStatus = UIConfig::ScanScanning;
+//    }else if(status.PrinterStatus == usb_error_printing){
+//        only_update_status = true;
+//        status.PrinterStatus = UIConfig::Printing;
+//    }else if(status.PrinterStatus == usb_error_usb_locked){
+//        return;
     }
     if(!only_update_status){
         if(status.TonelStatusLevelK > 100)
@@ -942,6 +945,8 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
+        enableAllFunction(false);
+        ui->tabStackedWidget->set_copy_enabled(true);
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
@@ -1002,6 +1007,8 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         }
         break;
     default:
+        enableAllFunction(false);
+        ui->tabStackedWidget->set_copy_enabled(true);
         break;
     }
 }

@@ -184,7 +184,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             ui->btn_ScanSave->setEnabled(true);
         }
         ui->btn_MoreSetting_Scan->setEnabled(true);
-        ui->btn_Scan->setEnabled(true);
+//        ui->btn_Scan->setEnabled(true);
         ui->btn_ScanCancel->setEnabled(false);
         ui->progressBar_Scan->setValue(0);
     }

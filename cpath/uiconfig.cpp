@@ -1,5 +1,7 @@
 #include "uiconfig.h"
 #include "commonapi.h"
+#include <QDir>
+#include <QFile>
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
@@ -73,7 +75,6 @@ extern const char* lock_scan_info_file;
 extern int usb_error_printing;
 extern int usb_error_scanning;
 extern int usb_error_usb_locked;
-extern int usb_error_busy;
 void UIConfig::initConfig()
 {
     //config status server thread
@@ -87,15 +88,14 @@ void UIConfig::initConfig()
     lock_scan_info_file = "/tmp/.lenovo_m10x_used";
     usb_error_printing = Usb_Printing;
     usb_error_scanning = Usb_Scanning;
-    usb_error_busy = Usb_Locked;
-    usb_error_usb_locked = usb_error_busy;
+    usb_error_usb_locked = Usb_Locked;
 
     //config supported printer model
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo_cpath";
-    app_version = "1.0.0.14";
+    app_version = "1.0.0.16";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -103,12 +103,24 @@ void UIConfig::initConfig()
     LOGLOG("%s" ,str.toLatin1().constData());
     str = get_string_from_shell_cmd("cat /etc/issue");
     LOGLOG("%s\n\n" ,str.toLatin1().constData());
+
+    QDir dir(TMP_SCAN_DIR);
+    QDir *path = &dir;
+    if(path->exists(TMP_SCAN_DIR)){
+        path->remove(TMP_SCAN_DIR);
+    }
+    path->mkdir(TMP_SCAN_DIR);
 }
-#include <QFile>
+
 void UIConfig::exit_app()
 {
 //    QFile::remove(filepath);
 //    QFile::remove(lockfile);
+    QDir dir(TMP_SCAN_DIR);
+    QDir *path = &dir;
+    if(path->exists(TMP_SCAN_DIR)){
+        path->remove(TMP_SCAN_DIR);
+    }
 }
 
 int UIConfig::getModelSerial(Printer_struct* ps)
