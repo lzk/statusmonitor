@@ -171,7 +171,8 @@ int UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
                     case OPCNearEnd                  : st = Status_Ready; break;
                     case OPCEnd                      : st = Status_Error; break;
                     case ManualFeedRequired          : st = Status_Busy ; break;
-                    case DuplexNoFeed                : st = Status_Error; break;
+                    case PaperNotReachDuplexEntrySensor : st = Status_Error; break;
+                    case DuplexTrayNoFeedJam         : st = Status_Error; break;
                     case InitializeJam               : st = Status_Error; break;
                     case NofeedJam                   : st = Status_Error; break;
                     case JamAtRegistStayOn           : st = Status_Error; break;
@@ -286,6 +287,8 @@ QString UIConfig::getErrorMsg(EnumStatus status, EnumMachineJob job, bool isAbcP
                 }
             }
         case ManualFeedRequired: errMsg = tr("ResStr_Waiting_2nd_pages_when_print_manual_duplex_job"); break;
+        case PaperNotReachDuplexEntrySensor: errMsg = tr("ResStr_Paper_Jam_Duplex_Entry_Sensor"); break;
+        case DuplexTrayNoFeedJam: errMsg = tr("ResStr_Paper_Jam_Duplex_Nofeed"); break;
         case InitializeJam: errMsg = tr("ResStr_Paper_Jam__Paper_Remained"); break;
         case NofeedJam: errMsg = tr("ResStr_Paper_Jam__Nofeed"); break;
         case JamAtRegistStayOn: errMsg = tr("ResStr_Paper_Jam__Regist"); break;

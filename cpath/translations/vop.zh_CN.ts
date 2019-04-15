@@ -1517,312 +1517,322 @@
 <context>
     <name>UIConfig</name>
     <message>
-        <location filename="../uiconfig.cpp" line="230"/>
+        <location filename="../uiconfig.cpp" line="231"/>
         <source>ResStr_Printing</source>
         <translation>打印中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="232"/>
+        <location filename="../uiconfig.cpp" line="233"/>
         <source>ResStr_WarmingUp</source>
         <translation>预热中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="233"/>
+        <location filename="../uiconfig.cpp" line="234"/>
         <source>ResStr_Print_Cancelling</source>
         <translation>打印取消中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="234"/>
+        <location filename="../uiconfig.cpp" line="235"/>
         <source>ResStr_Processing</source>
         <translation>处理中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="235"/>
-        <location filename="../uiconfig.cpp" line="246"/>
+        <location filename="../uiconfig.cpp" line="236"/>
+        <location filename="../uiconfig.cpp" line="247"/>
         <source>ResStr_Copying</source>
         <translation>复印中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="238"/>
+        <location filename="../uiconfig.cpp" line="239"/>
         <source>ResStr_Turn_card_over_to_copy_the_reverse_</source>
         <translation>把证件翻过来放在原处，合上盖板，按一下打印机复印键。</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="240"/>
-        <location filename="../uiconfig.cpp" line="242"/>
+        <location filename="../uiconfig.cpp" line="241"/>
+        <location filename="../uiconfig.cpp" line="243"/>
         <source>ResStr_Place_Next_Page</source>
         <translation>请放下一页</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="247"/>
+        <location filename="../uiconfig.cpp" line="248"/>
         <source>ResStr_Copy_Cancelling</source>
         <translation>复印取消中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="248"/>
+        <location filename="../uiconfig.cpp" line="249"/>
         <source>ResStr_ID_Card_Mode</source>
         <translation>身份证复印模式</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="249"/>
         <location filename="../uiconfig.cpp" line="250"/>
+        <location filename="../uiconfig.cpp" line="251"/>
         <source>ResStr_Scanning</source>
         <translation>扫描中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="251"/>
+        <location filename="../uiconfig.cpp" line="252"/>
         <source>ResStr_Scan_Cancelling</source>
         <translation>扫描取消中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="252"/>
+        <location filename="../uiconfig.cpp" line="253"/>
         <source>ResStr_Scanner_Busy</source>
         <translation>扫描仪忙</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="257"/>
-        <location filename="../uiconfig.cpp" line="268"/>
+        <location filename="../uiconfig.cpp" line="258"/>
+        <location filename="../uiconfig.cpp" line="269"/>
         <source>ResStr_Toner_End_ABC_Plus</source>
         <translation>墨粉空
 请更换新的墨粉盒，然后点击高级设置的“复位墨粉盒”按钮。</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="261"/>
-        <location filename="../uiconfig.cpp" line="272"/>
+        <location filename="../uiconfig.cpp" line="262"/>
+        <location filename="../uiconfig.cpp" line="273"/>
         <source>ResStr_Toner_End_ABC</source>
         <translation>墨粉空
 请更换新的鼓粉盒。</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="275"/>
+        <location filename="../uiconfig.cpp" line="276"/>
         <source>ResStr_Toner_Near_End</source>
         <translation>墨粉将空</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="276"/>
+        <location filename="../uiconfig.cpp" line="277"/>
         <source>ResStr_OPC_Near_End</source>
         <translation>OPC寿命将尽</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="281"/>
+        <location filename="../uiconfig.cpp" line="282"/>
         <source>ResStr_OPC_End_ABC_Plus</source>
         <translation>OPC寿命已尽
 请更换新的感光鼓，然后点击高级设置的“复位感光鼓”按钮。</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="285"/>
+        <location filename="../uiconfig.cpp" line="286"/>
         <source>ResStr_OPC_End_ABC</source>
         <translation>OPC寿命已尽
 请更换新的鼓粉盒。</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="288"/>
+        <location filename="../uiconfig.cpp" line="289"/>
         <source>ResStr_Waiting_2nd_pages_when_print_manual_duplex_job</source>
         <translation>手动双面打印中等待第二页</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="289"/>
+        <location filename="../uiconfig.cpp" line="290"/>
+        <source>ResStr_Paper_Jam_Duplex_Entry_Sensor</source>
+        <translation>双面入口处卡纸</translation>
+    </message>
+    <message>
+        <location filename="../uiconfig.cpp" line="291"/>
+        <source>ResStr_Paper_Jam_Duplex_Nofeed</source>
+        <translation>双面单元卡纸</translation>
+    </message>
+    <message>
+        <location filename="../uiconfig.cpp" line="292"/>
         <source>ResStr_Paper_Jam__Paper_Remained</source>
         <translation>内部卡纸</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="290"/>
+        <location filename="../uiconfig.cpp" line="293"/>
         <source>ResStr_Paper_Jam__Nofeed</source>
         <translation>缺纸或进纸异常</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="291"/>
+        <location filename="../uiconfig.cpp" line="294"/>
         <source>ResStr_Paper_Jam__Regist</source>
         <translation>进纸处卡纸</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="292"/>
+        <location filename="../uiconfig.cpp" line="295"/>
         <source>ResStr_Paper_Jam__Exit_NotReach</source>
         <translation>内部卡纸</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="293"/>
+        <location filename="../uiconfig.cpp" line="296"/>
         <source>ResStr_Paper_Jam__Exit</source>
         <translation>出纸处卡纸</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="294"/>
+        <location filename="../uiconfig.cpp" line="297"/>
         <source>ResStr_Cover_Open</source>
         <translation>上盖开启</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="295"/>
+        <location filename="../uiconfig.cpp" line="298"/>
         <source>ResStr_No_Toner_Cartridge</source>
         <translation>没有鼓粉盒</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="296"/>
+        <location filename="../uiconfig.cpp" line="299"/>
         <source>ResStr_Please_Replace_Toner</source>
         <translation>请更换鼓粉盒</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="297"/>
+        <location filename="../uiconfig.cpp" line="300"/>
         <source>ResStr_PDL_Memory_Overflow</source>
         <translation>PDL內存溢出! 按电源键清除此错误。</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="298"/>
+        <location filename="../uiconfig.cpp" line="301"/>
         <source>ResStr_FW_Updating</source>
         <translation>固件升级中</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="299"/>
+        <location filename="../uiconfig.cpp" line="302"/>
         <source>ResStr_Overheat</source>
         <translation>过热</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="301"/>
-        <location filename="../uiconfig.cpp" line="305"/>
-        <location filename="../uiconfig.cpp" line="309"/>
-        <location filename="../uiconfig.cpp" line="313"/>
-        <location filename="../uiconfig.cpp" line="317"/>
-        <location filename="../uiconfig.cpp" line="321"/>
-        <location filename="../uiconfig.cpp" line="325"/>
-        <location filename="../uiconfig.cpp" line="329"/>
-        <location filename="../uiconfig.cpp" line="357"/>
-        <location filename="../uiconfig.cpp" line="361"/>
-        <location filename="../uiconfig.cpp" line="365"/>
-        <location filename="../uiconfig.cpp" line="373"/>
-        <location filename="../uiconfig.cpp" line="377"/>
-        <location filename="../uiconfig.cpp" line="381"/>
+        <location filename="../uiconfig.cpp" line="304"/>
+        <location filename="../uiconfig.cpp" line="308"/>
+        <location filename="../uiconfig.cpp" line="312"/>
+        <location filename="../uiconfig.cpp" line="316"/>
+        <location filename="../uiconfig.cpp" line="320"/>
+        <location filename="../uiconfig.cpp" line="324"/>
+        <location filename="../uiconfig.cpp" line="328"/>
+        <location filename="../uiconfig.cpp" line="332"/>
+        <location filename="../uiconfig.cpp" line="360"/>
+        <location filename="../uiconfig.cpp" line="364"/>
+        <location filename="../uiconfig.cpp" line="368"/>
+        <location filename="../uiconfig.cpp" line="376"/>
+        <location filename="../uiconfig.cpp" line="380"/>
+        <location filename="../uiconfig.cpp" line="384"/>
         <source>ResStr_Turn_off_the_printer__and_turn_it_on_again_Contact_customer_support_if_this_failure_is_repeated_SCxxx</source>
         <translation>请关闭打印机后重新启动。如果错误仍然存在，请联系客户服务中心：
 错误信息：</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="302"/>
+        <location filename="../uiconfig.cpp" line="305"/>
         <source>ResStr_Polygon_Motor_on_timeout_error</source>
         <translation>多面镜马达启动超时</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="306"/>
+        <location filename="../uiconfig.cpp" line="309"/>
         <source>ResStr_Polygon_Motor_off_timeout_error</source>
         <translation>多面镜马达停止超时</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="310"/>
+        <location filename="../uiconfig.cpp" line="313"/>
         <source>ResStr_Polygon_Motor_lock_signal_error</source>
         <translation>未获取多面镜马达稳定运行信号</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="314"/>
+        <location filename="../uiconfig.cpp" line="317"/>
         <source>ResStr_Beam_synchronize_error</source>
         <translation>LD同步信号错误</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="318"/>
+        <location filename="../uiconfig.cpp" line="321"/>
         <source>ResStr_Bias_leak</source>
         <translation>高压电源单元故障</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="322"/>
+        <location filename="../uiconfig.cpp" line="325"/>
         <source>ResStr_plate_action_error</source>
         <translation>底板动作异常</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="326"/>
+        <location filename="../uiconfig.cpp" line="329"/>
         <source>ResStr_Main_Motor_error</source>
         <translation>主马达故障</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="330"/>
+        <location filename="../uiconfig.cpp" line="333"/>
         <source>ResStr_Fan_Motor_error</source>
         <translation>风扇故障</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="333"/>
-        <location filename="../uiconfig.cpp" line="337"/>
-        <location filename="../uiconfig.cpp" line="341"/>
-        <location filename="../uiconfig.cpp" line="345"/>
-        <location filename="../uiconfig.cpp" line="349"/>
-        <location filename="../uiconfig.cpp" line="353"/>
+        <location filename="../uiconfig.cpp" line="336"/>
+        <location filename="../uiconfig.cpp" line="340"/>
+        <location filename="../uiconfig.cpp" line="344"/>
+        <location filename="../uiconfig.cpp" line="348"/>
+        <location filename="../uiconfig.cpp" line="352"/>
+        <location filename="../uiconfig.cpp" line="356"/>
         <source>ResStr_Please_contact_customer_support__SCxxx</source>
         <translation>请联系客户服务中心：
 错误信息：</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="334"/>
+        <location filename="../uiconfig.cpp" line="337"/>
         <source>ResStr_Fuser_thermistor_error</source>
         <translation>定影单元温度传感器故障</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="338"/>
+        <location filename="../uiconfig.cpp" line="341"/>
         <source>ResStr_Fuser_reload_error</source>
         <translation>定影单元升温检测异常</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="342"/>
+        <location filename="../uiconfig.cpp" line="345"/>
         <source>ResStr_High_temperature_soft_check_error</source>
         <translation>定影单元高温软件检测异常</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="346"/>
+        <location filename="../uiconfig.cpp" line="349"/>
         <source>ResStr_High_temperature_hard_check_error</source>
         <translation>定影单元高温硬件检测异常</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="350"/>
+        <location filename="../uiconfig.cpp" line="353"/>
         <source>ResStr_Fuser_full_heater_error</source>
         <translation>定影单元连续点灯故障</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="354"/>
+        <location filename="../uiconfig.cpp" line="357"/>
         <source>ResStr_Fuser_3times_jam_error</source>
         <translation>定影单元连续发生3次卡纸故障</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="358"/>
+        <location filename="../uiconfig.cpp" line="361"/>
         <source>ResStr_Low_voltage_fuser_reload_error</source>
         <translation>低电压状态时启动温度异常</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="362"/>
+        <location filename="../uiconfig.cpp" line="365"/>
         <source>ResStr_Machine_thermistor_error</source>
         <translation>机内温度异常</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="366"/>
+        <location filename="../uiconfig.cpp" line="369"/>
         <source>ResStr_Print_request_signal_doesnt_come</source>
         <translation>PRREQ信号异常</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="369"/>
+        <location filename="../uiconfig.cpp" line="372"/>
         <source>ResStr_USB_write_failed_during_scan_job_cancelling</source>
         <translation>扫描过程中通过USB传输的数据写入失败，扫描任务取消。</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="370"/>
+        <location filename="../uiconfig.cpp" line="373"/>
         <source>ResStr_NET_write_failed_during_scan_job_cancelling</source>
         <translation>扫描过程中通过网络传输的数据写入失败，扫描任务取消。</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="374"/>
+        <location filename="../uiconfig.cpp" line="377"/>
         <source>ResStr_Scanner_not_found_home_position</source>
         <translation>扫描单元未找到初始位置</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="378"/>
+        <location filename="../uiconfig.cpp" line="381"/>
         <source>ResStr_Scan_Calibration_Error</source>
         <translation>扫描单元马达故障</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="382"/>
+        <location filename="../uiconfig.cpp" line="385"/>
         <source>ResStr_Wireless_Dongle_Config_Fail</source>
         <translation>无线模块配置失败</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="385"/>
+        <location filename="../uiconfig.cpp" line="388"/>
         <source>ResStr_DMA_Error_SCxxx</source>
         <translation>请关闭打印机后重新启动：
 错误信息：</translation>
     </message>
     <message>
-        <location filename="../uiconfig.cpp" line="386"/>
+        <location filename="../uiconfig.cpp" line="389"/>
         <source>ResStr_DMA_Error</source>
         <translation>DMA错误</translation>
     </message>
@@ -1830,27 +1840,27 @@
 <context>
     <name>UserLogin</name>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="282"/>
+        <location filename="../membercenter/userlogin.ui" line="283"/>
         <source>ResStr_Verification_Code</source>
         <translation>验证码</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="62"/>
+        <location filename="../membercenter/userlogin.ui" line="63"/>
         <source>ResStr_Login_</source>
         <translation>登录</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="80"/>
+        <location filename="../membercenter/userlogin.ui" line="81"/>
         <source>ResStr_Express_Login_using_mobile_number</source>
         <translation>使用手机号码快速登录</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="164"/>
+        <location filename="../membercenter/userlogin.ui" line="165"/>
         <source>ResStr_Account</source>
         <translation>账户名</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="140"/>
+        <location filename="../membercenter/userlogin.ui" line="141"/>
         <source>ResStr_Msg_4</source>
         <translation>输入手机号</translation>
     </message>
@@ -1866,7 +1876,7 @@
         <translation>验证码发送失败。</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="248"/>
+        <location filename="../membercenter/userlogin.ui" line="249"/>
         <location filename="../membercenter/userlogin.cpp" line="214"/>
         <source>ResStr_Get_Verification_Code</source>
         <translation>获取验证码</translation>
