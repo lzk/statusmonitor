@@ -1,5 +1,7 @@
 #include "uiconfig.h"
 #include "commonapi.h"
+#include <QDir>
+#include <QFile>
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
@@ -93,7 +95,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo_cpath";
-    app_version = "1.0.0.16beta";
+    app_version = "1.0.0.16";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -101,12 +103,24 @@ void UIConfig::initConfig()
     LOGLOG("%s" ,str.toLatin1().constData());
     str = get_string_from_shell_cmd("cat /etc/issue");
     LOGLOG("%s\n\n" ,str.toLatin1().constData());
+
+    QDir dir(TMP_SCAN_DIR);
+    QDir *path = &dir;
+    if(path->exists(TMP_SCAN_DIR)){
+        path->remove(TMP_SCAN_DIR);
+    }
+    path->mkdir(TMP_SCAN_DIR);
 }
-#include <QFile>
+
 void UIConfig::exit_app()
 {
 //    QFile::remove(filepath);
 //    QFile::remove(lockfile);
+    QDir dir(TMP_SCAN_DIR);
+    QDir *path = &dir;
+    if(path->exists(TMP_SCAN_DIR)){
+        path->remove(TMP_SCAN_DIR);
+    }
 }
 
 int UIConfig::getModelSerial(Printer_struct* ps)

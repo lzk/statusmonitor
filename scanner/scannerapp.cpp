@@ -263,9 +263,9 @@ int ScannerApp::trans_process(ScanSettings* settings)
     info->scan_buffer = buffer;
 
 //    int source_size = each_lines * info->source_line_buf_size;
-    char* jerry_buffer = new char[each_source_size * 3];
+    char* jerry_buffer = new char[each_source_size * 3 + 0x10000];
     info->resume_buffer = jerry_buffer;
-    info->resume_buf_size = each_source_size * 3;
+    info->resume_buf_size = each_source_size * 3 + 0x10000;
 
     int target_lines = each_lines * 10 / info->source_lines_per_10_lines;
     int target_size = target_lines * info->target_line_buf_size;
@@ -309,7 +309,7 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
     calculate_parameters(settings);
     caculate_image_trans_data(settings);
 #if Test_Jerry
-    ImageTransInfo* info = settings->info;
+//    ImageTransInfo* info = settings->info;
     Calc_Data *pCalc = &settings->calc_data;
     Image_Data_Struct* source = &pCalc->source;
     char* source_buf = new char[SCAN_BUFFER_SIZE];

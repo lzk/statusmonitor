@@ -95,16 +95,16 @@ int Scanner::flat_scan(Printer_struct* printer ,ScanSettings* settings)
     }
     if(m_cancel){
         if(ret >= 0)
-            ret = scannner_api->abort();
+            scannner_api->abort();
     }
 
     if(ret >= 0)
-        ret = scannner_api->stop();
+        scannner_api->stop();
 
     exit_scan();
     if(ret < 0)
         ret = ScannerApp::STATUS_Error_machine;
-    if(m_cancel){
+    if(m_cancel || (ret == ScannerApp::STATUS_SCANSTOPPED)){
         ret = ScannerApp::STATUS_Cancel;//cancel
     }
     return ret;
