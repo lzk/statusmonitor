@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/finger.gif</file>
+        <file>image/app_icon.png</file>
+    </qresource>
+</RCC>

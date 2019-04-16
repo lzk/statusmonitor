@@ -141,7 +141,7 @@ static int callback_Server(void* para,char* buffer,int bufsize)
             }
         }
         strcpy(buffer ,"resultok");
-
+#if 0
         QVariant value;
         appSettings("record" ,value ,QVariant(false));
         bool record_list = value.toBool();
@@ -162,6 +162,7 @@ static int callback_Server(void* para,char* buffer,int bufsize)
         }else{
             LOGLOG("do not record to file list");
         }
+#endif
     }else if(!cmd.compare("dvid")){
         int index;
         index = str.indexOf("://");

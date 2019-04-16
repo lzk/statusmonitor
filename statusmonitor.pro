@@ -5,6 +5,7 @@ SUBDIRS += \
     tomcat \
     testfinger \
     filtertrans \
+    fingerui \
 #    statusserver \
 #    teststatusserver \
 #    filterstatus
