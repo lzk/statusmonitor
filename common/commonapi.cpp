@@ -67,6 +67,7 @@ bool is_app_running(const char* server_path)
 }
 #endif
 
+#if 0
 #include <QMutex>
 #include <QFile>
 #include <QTextStream>
@@ -99,7 +100,35 @@ QString get_string_from_shell_cmd(const QString& cmd ,int mode)
     }
     return str;
 }
+#else
+#include <stdio.h>
+QString get_string_from_shell_cmd(const QString& cmd ,int mode)
+{
+    QString str;
+    QString _cmd(cmd);
 
+    FILE *fp;
+    char buf[512];
+
+    if((fp = popen(_cmd.toLatin1().constData(), "r")) == NULL) {
+        LOGLOG("command %s error" ,_cmd.toLatin1().constData());
+        return "";
+    }
+
+    if(mode){
+        while(fgets(buf, 512, fp) != NULL) {
+            str += buf;
+        }
+    }else{
+        if((fgets(buf, 512, fp) != NULL)){
+            str += buf;
+        }
+    }
+
+    pclose(fp);
+    return str;
+}
+#endif
 bool printer_is_printing(const QString& printer_name)
 {
     QString str("LANG=en lpstat -l -o ");

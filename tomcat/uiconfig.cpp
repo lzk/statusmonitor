@@ -62,6 +62,13 @@ void UIConfig::initConfig()
     LOGLOG("%s" ,str.toLatin1().constData());
     str = get_string_from_shell_cmd("cat /etc/issue");
     LOGLOG("%s\n\n" ,str.toLatin1().constData());
+    str = get_string_from_shell_cmd("who" ,1);
+    LOGLOG("%s\n\n" ,str.toLatin1().constData());
+    str = get_string_from_shell_cmd("whoami");
+    LOGLOG("%s\n\n" ,str.toLatin1().constData());
+//    str = get_string_from_shell_cmd("echo $DISPLAY");
+//    LOGLOG("%s\n\n" ,str.toLatin1().constData());
+    LOGLOG("%s\n\n" ,getenv("DISPLAY"));
 }
 
 #include <QFile>

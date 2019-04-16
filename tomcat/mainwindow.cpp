@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
   ,about_dialog(NULL)
+  ,bFindOnLinePrinter(false)
+  ,bCheckPrinter(true)
 {
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(3);
