@@ -10,6 +10,18 @@
     <height>225</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>565</width>
+    <height>225</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>565</width>
+    <height>225</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -45,7 +57,15 @@
     <string>确认</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>2</width>
+     <height>2</height>
+    </rect>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2"/>
   </widget>
   <widget class="QWidget" name="widget" native="true">
