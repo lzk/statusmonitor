@@ -151,6 +151,11 @@ void MoreSettingsForCopy::setDefault()
 void MoreSettingsForCopy::showParam(Param_Copy *param)
 {
     QString text;
+
+    //cpath model only support paper type: Plain, Recycled, Thick
+    ui->paperTypeList->removeItem(4);
+    ui->paperTypeList->removeItem(3);
+
     if(_idCardFlag)
     {
         ui->label_1->setDisabled(true);
@@ -279,7 +284,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 
         //设置papetype的出了plain paper,recycled paper其他都不可用
         QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->paperTypeList->model());
-        for(int i=0; i<5; i++)
+        for(int i=0; i< ui->paperTypeList->count(); i++)
         {
             if((i != 0)&&(i != 1) && (model2 != NULL))
             {
