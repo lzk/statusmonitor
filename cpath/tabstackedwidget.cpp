@@ -772,7 +772,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
         paramCopy.scaling = 100;
         paramCopy.docDpi = DocDpi_Copy_DPI300;
         paramCopy.isMultiPage = false;
-        paramCopy.multiMode = TwoInOne;
+        paramCopy.multiMode = IDCardCopyFlag; // This value present sending ID Card Copy command.
 
     }
     else
@@ -842,6 +842,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
     if(ui->cBox_DuplexCopy->isChecked() == true)
     {
         copyPara.duplexCopy = paramCopy.duplexMode + 1;
+        copyPara.nUp = 0; // Reset Nin1 value for duplex mode
     }
     else
     {
