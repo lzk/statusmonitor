@@ -2304,4 +2304,15 @@
 <source>ResStr_Copyright</source>
 <target>Copyright(C)(2019)&#x000D;&#x000A;Lenovo Image(Tianjin)Technology Co., LTD.&#x000D;&#x000A;All rights reserved.</target>
 </phrase>
+
+    <phrase>
+<source>ResStr_Paper_Jam_Duplex_Entry_Sensor</source>
+<target>Paper Jam: duplex entry sensor</target>
+</phrase>
+
+    <phrase>
+<source>ResStr_Paper_Jam_Duplex_Nofeed</source>
+<target>Paper Jam: Duplex Nofeed</target>
+</phrase>
+
 </QPH>

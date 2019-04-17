@@ -10,6 +10,8 @@
 extern bool use_status_thread;
 #define SERVER_PATH "/tmp/lnvvop.domain"
 
+#define TMP_SCAN_DIR "/tmp/vop_scan"
+
 Q_DECLARE_METATYPE(Printer_struct)
 Q_DECLARE_METATYPE(QList<Printer_struct>)
 Q_DECLARE_METATYPE(PrinterInfo_struct)
@@ -90,7 +92,8 @@ public:
         OPCNearEnd                  = 0x86,
         OPCEnd                      = 0xCC,
         ManualFeedRequired          = 0x85,
-        DuplexNoFeed                = 0xBB,
+        PaperNotReachDuplexEntrySensor = 0xBA,
+        DuplexTrayNoFeedJam         = 0xBB,
         InitializeJam               = 0xBC,
         NofeedJam                   = 0xBD,
         JamAtRegistStayOn           = 0xBE,

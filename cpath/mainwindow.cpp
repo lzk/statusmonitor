@@ -176,33 +176,33 @@ void MainWindow::closeEvent(QCloseEvent *e)
     }
     if (pDialog->exec() == QDialog::Accepted)
     {
-        if(ui->tabStackedWidget->getScrollAreaImageStatus())
-        {
-            QDir dir("/tmp/vop_scan");
-            QFileInfoList fileList;
-            QFileInfo curFile;
-            if(dir.exists())
-            {
-                fileList = dir.entryInfoList(QDir::Dirs|QDir::Files
-                                             |QDir::Readable|QDir::Writable
-                                             |QDir::Hidden|QDir::NoDotAndDotDot
-                                             ,QDir::Name);
-                while(fileList.size()>0)
-                {
-                    int infoNum = fileList.size();
-                    for(int i = infoNum-1;i>=0;i--)
-                    {
-                        curFile = fileList[i];
-                        if(curFile.isFile())
-                        {
-                            QFile fileTemp(curFile.filePath());
-                            fileTemp.remove();
-                            fileList.removeAt(i);
-                        }
-                    }
-                }
-            }
-        }
+//        if(ui->tabStackedWidget->getScrollAreaImageStatus())
+//        {
+//            QDir dir("/tmp/vop_scan");
+//            QFileInfoList fileList;
+//            QFileInfo curFile;
+//            if(dir.exists())
+//            {
+//                fileList = dir.entryInfoList(QDir::Dirs|QDir::Files
+//                                             |QDir::Readable|QDir::Writable
+//                                             |QDir::Hidden|QDir::NoDotAndDotDot
+//                                             ,QDir::Name);
+//                while(fileList.size()>0)
+//                {
+//                    int infoNum = fileList.size();
+//                    for(int i = infoNum-1;i>=0;i--)
+//                    {
+//                        curFile = fileList[i];
+//                        if(curFile.isFile())
+//                        {
+//                            QFile fileTemp(curFile.filePath());
+//                            fileTemp.remove();
+//                            fileList.removeAt(i);
+//                        }
+//                    }
+//                }
+//            }
+//        }
         e->accept();
     }
     else
@@ -750,6 +750,8 @@ void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
         case UIConfig::OPCNearEnd                              : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
         case UIConfig::OPCEnd                                  : ui->label_10->setStyleSheet("QLabel{color:Red;}");;    break;
         case UIConfig::ManualFeedRequired                      : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
+        case UIConfig::PaperNotReachDuplexEntrySensor          : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
+        case UIConfig::DuplexTrayNoFeedJam                     : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
         case UIConfig::InitializeJam                           : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
         case UIConfig::NofeedJam                               : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
         case UIConfig::JamAtRegistStayOn                       : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
@@ -758,7 +760,7 @@ void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
         case UIConfig::CoverOpen                               : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
         case UIConfig::NoTonerCartridge                        : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
         case UIConfig::WasteTonerFull                          : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
-        case UIConfig::PDLMemoryOver                          : ui->label_10->setStyleSheet("QLabel{color:Red;}");; break;
+        case UIConfig::PDLMemoryOver                           : ui->label_10->setStyleSheet("QLabel{color:Red;}");; break;
         case UIConfig::FWUpdate                                : ui->label_10->setStyleSheet("QLabel{color:Black;}"); ; break;
         case UIConfig::OverHeat                                : ui->label_10->setStyleSheet("QLabel{color:Orange;}");; break;
         case UIConfig::PolygomotorOnTimeoutError               : ui->label_10->setStyleSheet("QLabel{color:Red;}");   ; break;
@@ -813,7 +815,7 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
         updateTonerCarStatus(status.TonelStatusLevelK);
     }
     //test
-//    status.PrinterStatus = UIConfig::PolygomotorOnTimeoutError;
+//    status.PrinterStatus = UIConfig::DuplexTrayNoFeedJam;
 
     int displayStatus = UIConfig::GetStatusTypeForUI((UIConfig::EnumStatus)status.PrinterStatus);
     QString statusString = UIConfig::getErrorMsg((UIConfig::EnumStatus)status.PrinterStatus,(UIConfig::EnumMachineJob)status.job,0);
@@ -943,6 +945,8 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
                                     "border:0px solid;"
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
+        enableAllFunction(false);
+        ui->tabStackedWidget->set_copy_enabled(true);
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
@@ -1003,6 +1007,8 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         }
         break;
     default:
+        enableAllFunction(false);
+        ui->tabStackedWidget->set_copy_enabled(true);
         break;
     }
 }
