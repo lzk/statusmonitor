@@ -75,7 +75,7 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         break;
     case UIConfig::CMD_Scan:
         if(printer){
-//            if(cmd_status_validate(printer ,cmd)){
+            if(cmd_status_validate(printer ,cmd)){
                 ScanSettings device_data = data.value<ScanSettings>();
                 const char* imagePath = TMP_SCAN_DIR;
 //                const char* imagePath = "/tmp/vop_scan";
@@ -95,7 +95,7 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
                 device_data.callback = scan_callback;
                 result = scanner->scan(printer ,&device_data);
                 value.setValue(device_data);
-//            }
+            }
 
         }
         cmdResult(cmd ,result ,value);
@@ -117,14 +117,14 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         break;
     case UIConfig::LS_CMD_COPY:
         if(printer){
-//            if(cmd_status_validate(printer ,cmd)){
+            if(cmd_status_validate(printer ,cmd)){
                 result = lshell->open(printer);
                 if(!result){
                     copycmdset device_data = data.value<copycmdset>();
                     result = lshell->copy(&device_data);
                     lshell->close();
                     value.setValue(device_data);
-//                }
+                }
             }
         }
         cmdResult(cmd ,result ,value);

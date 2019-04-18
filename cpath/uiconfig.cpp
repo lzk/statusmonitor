@@ -156,7 +156,7 @@ int UIConfig::getModelSerial(Printer_struct* ps)
     return ms;
 }
 
-int UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
+int UIConfig::GetStatusTypeForUI(int status)
 {
     int st = Status_Offline;
 
@@ -259,6 +259,7 @@ QString UIConfig::getErrorMsg(EnumStatus status, EnumMachineJob job, bool isAbcP
         case CopyPrinting: errMsg = tr("ResStr_Copying"); break;
         case CopyCanceling: errMsg = tr("ResStr_Copy_Cancelling"); break;
         case IDCardMode: errMsg = tr("ResStr_ID_Card_Mode"); break;
+        case DuplexCopyMode: errMsg = tr("ResStr_Duplex_Copy_Mode"); break;
         case ScanScanning: errMsg = tr("ResStr_Scanning"); break;
         case ScanSending: errMsg = tr("ResStr_Scanning"); break;
         case ScanCanceling: errMsg = tr("ResStr_Scan_Cancelling"); break;
