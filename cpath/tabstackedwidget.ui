@@ -22,6 +22,9 @@
    <string notr="true">background-image: url();
 background-color: transparent;</string>
   </property>
+  <property name="currentIndex">
+   <number>0</number>
+  </property>
   <widget class="QWidget" name="copyPage">
    <property name="styleSheet">
     <string notr="true">background-image: url(:/Images/PagePrint.tif);</string>
@@ -37,6 +40,9 @@ background-color: transparent;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-image: url();</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
     <widget class="QWidget" name="copyItemPage">
      <widget class="QLabel" name="background_Concentration">
@@ -171,7 +177,7 @@ color:white;
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QLineEdit{

@@ -227,6 +227,7 @@ void MainWindow::on_Scan_clicked()
     ui->Setting->setStyleSheet(unSelectState + "border-top-left-radius:0px;border-bottom-left-radius:0px");
 
     ui->tabStackedWidget->setCurrentIndex(1);
+
 }
 
 void MainWindow::on_Setting_clicked()
@@ -537,12 +538,14 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
             ui->Scan->hide();
             ui->ScanImgBtn->hide();
             ui->tabStackedWidget->setCurrentIndex(2);
+            ui->tabStackedWidget->setEnabledPage(2);
 
             ui->Setting->setGeometry(ui->Copy->geometry());
             ui->SettingImgBtn->setGeometry(ui->CopyImgBtn->geometry());
             ui->Setting->setStyleSheet(selectState + "border-radius:7px;");
 
             ui->tabStackedWidget->setCurrentIndex(2);
+            ui->tabStackedWidget->setEnabledPage(2);
         }
         else
         {

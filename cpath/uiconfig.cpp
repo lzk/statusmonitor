@@ -248,28 +248,28 @@ QString UIConfig::getErrorMsg(EnumStatus status, EnumMachineJob job, bool isAbcP
         case ScanSending: errMsg = tr("ResStr_Scanning"); break;
         case ScanCanceling: errMsg = tr("ResStr_Scan_Cancelling"); break;
         case ScannerBusy: errMsg = tr("ResStr_Scanner_Busy"); break;
-        case TonerEnd1:
-            {
-                if (isAbcPlusModel)
-                {
-                    errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
-                }
-                else
-                {
-                    errMsg = tr("ResStr_Toner_End_ABC"); break;
-                }
-            }
-        case TonerEnd2:
-            {
-                if (isAbcPlusModel)
-                {
-                    errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
-                }
-                else
-                {
-                    errMsg = tr("ResStr_Toner_End_ABC"); break;
-                }
-            }
+        case TonerEnd1: errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
+//            {
+//                if (isAbcPlusModel)
+//                {
+//                    errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
+//                }
+//                else
+//                {
+//                    errMsg = tr("ResStr_Toner_End_ABC"); break;
+//                }
+//            }
+        case TonerEnd2: errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
+//            {
+//                if (isAbcPlusModel)
+//                {
+//                    errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
+//                }
+//                else
+//                {
+//                    errMsg = tr("ResStr_Toner_End_ABC"); break;
+//                }
+//            }
         case TonerNearEnd: errMsg = tr("ResStr_Toner_Near_End"); break;
         case OPCNearEnd: errMsg = tr("ResStr_OPC_Near_End"); break;
         case OPCEnd:
