@@ -18,7 +18,7 @@ enum DocSize_Copy {DocSize_Copy_A4=0, DocSize_Copy_A5, DocSize_Copy_B5, DocSize_
 enum DocDpi_Copy {DocDpi_Copy_DPI300=0, DocDpi_Copy_DPI600};
 enum OutPutSize_Copy {OutPutSize_Copy_letter=0, OutPutSize_Copy_A4, OutPutSize_Copy_A5, OutPutSize_Copy_A6, OutPutSize_Copy_B5, OutPutSize_Copy_B6, OutPutSize_Copy_Executive, OutPutSize_Copy_16K};
 enum MediaType_Copy {MediaType_Copy_Plain=0, MediaType_Copy_Recycled, MediaType_Copy_Thick, MediaType_Copy_Thin, MediaType_Copy_Label};
-enum MultiMode_Copy {OneInOne=0,TwoInOne,FourInOne, NineInOne};
+enum MultiMode_Copy {OneInOne=0,TwoInOne,FourInOne, NineInOne, IDCardCopyFlag};
 enum MultiMode_Copy_ID {A4Mode1=0,A4Mode2,A4Mode3,A5Mode};
 enum Duplex_Copy_Mode {Flip_Long_Edge=0,Flip_Short_Edge};
 

@@ -94,8 +94,11 @@ int NetIO::open(int port)
         LOGLOG("device is opened");
         return -1;
     }
-    if(!tcpSocket)
-        tcpSocket = new QTcpSocket;
+    if(tcpSocket)
+        delete tcpSocket;
+    tcpSocket = new QTcpSocket;
+//    if(!tcpSocket)
+//        tcpSocket = new QTcpSocket;
     tcpSocket->connectToHost(hostAddress, port);
     if (!tcpSocket->waitForConnected(5000)) {
         LOGLOG("tcpsocket error code:%d",tcpSocket->error());

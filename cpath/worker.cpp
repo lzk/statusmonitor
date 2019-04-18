@@ -77,13 +77,14 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         if(printer){
 //            if(cmd_status_validate(printer ,cmd)){
                 ScanSettings device_data = data.value<ScanSettings>();
-                const char* imagePath = "/tmp/vop_scan";
-                QDir *path = new QDir;
-                if(!(path->exists(imagePath)))
-                {
-                    path->mkdir(imagePath);
-                }
-                delete path;
+                const char* imagePath = TMP_SCAN_DIR;
+//                const char* imagePath = "/tmp/vop_scan";
+//                QDir *path = new QDir;
+//                if(!(path->exists(imagePath)))
+//                {
+//                    path->mkdir(imagePath);
+//                }
+//                delete path;
                 QDateTime time = QDateTime::currentDateTime();
                 QString str_time = time.toString("yyyy-MM-dd_hh-mm-ss-zzz");
                 QByteArray t_ba = str_time.toLatin1();
@@ -650,17 +651,11 @@ void Worker::update_scan_progress(Printer_struct* printer ,int progress ,int is_
         emit signal_update_scan_progress(100);
         printer->status = 0;
         current_printer_info.status.PrinterStatus = 0;
-//        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
-//        QVariant value;
-//        value.setValue<PrinterInfo_struct>(current_printer_info);
-//        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+//        update_current_printer_status();
     }else if(progress == -3){
         printer->status = 0;
         current_printer_info.status.PrinterStatus = 0;
-//        StatusMonitor::getDeviceStatus(deviceManager ,printer ,&current_printer_info.status);
-//        QVariant value;
-//        value.setValue<PrinterInfo_struct>(current_printer_info);
-//        cmdResult(UIConfig::CMD_GetStatus ,0 ,value);
+//        update_current_printer_status();
     }else{
         if(is_jpg_mode){
             progress *= 20;
@@ -684,7 +679,7 @@ void Worker::update_current_printer_status()
     watcher->get_currentprinter_info(ps);
     if(ps.printer.status == usb_error_scanning){//sane scanning
         ps.printer.status = 0;
-        ps.status.PrinterStatus == usb_error_scanning;
+        ps.status.PrinterStatus = usb_error_scanning;
     }else
 //    if(current_printer_info.printer.status == usb_error_scanning)//vop scanning
 //        return;

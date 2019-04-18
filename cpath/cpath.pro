@@ -162,7 +162,7 @@ mac{
 #            LIBS += $${PWD}/../libs/linux32/libjpeg.a
 }
         }else{
-            LIBS += $${PWD}/../libs/linux64/libtiff.a
+            LIBS += $${PWD}/../libs/linux64/libtiff.a -lz
 !contains(CONFIG ,static){
 #            LIBS += $${PWD}/../libs/linux64/libjpeg.a
 }

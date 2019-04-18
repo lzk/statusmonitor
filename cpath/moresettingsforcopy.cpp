@@ -71,7 +71,7 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
         ParamForCopy->isMultiPage = false;
         ParamForCopy->multiMode = TwoInOne;
 
-        if(ParamForCopy->outputSize != OutPutSize_Copy_letter && ParamForCopy->outputSize != OutPutSize_Copy_A4 && ParamForCopy->outputSize != OutPutSize_Copy_A5 && ParamForCopy->outputSize != OutPutSize_Copy_B5)
+        if(ParamForCopy->outputSize != OutPutSize_Copy_letter && ParamForCopy->outputSize != OutPutSize_Copy_A4)// && ParamForCopy->outputSize != OutPutSize_Copy_A5 && ParamForCopy->outputSize != OutPutSize_Copy_B5)
         {
             if(country == QLocale::UnitedStates)
             {
@@ -151,6 +151,11 @@ void MoreSettingsForCopy::setDefault()
 void MoreSettingsForCopy::showParam(Param_Copy *param)
 {
     QString text;
+
+    //cpath model only support paper type: Plain, Recycled, Thick
+    ui->paperTypeList->removeItem(4);
+    ui->paperTypeList->removeItem(3);
+
     if(_idCardFlag)
     {
         ui->label_1->setDisabled(true);
@@ -268,7 +273,8 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         QStandardItemModel *model1 = qobject_cast<QStandardItemModel *>(ui->outPutSizeList->model());
         for(int i=0; i<8; i++)
         {
-            if((i!=0) && (i!=1) && (i!=2) && (i!=4) && (model1 != NULL))
+            if((i!=0) && (i!=1) && (model1 != NULL))
+//            if((i!=0) && (i!=1) && (i!=2) && (i!=4) && (model1 != NULL))
             {
                 model1->item(i)->setEnabled(false);
                //此处设置combobox的下拉选项字体显示灰色
@@ -278,7 +284,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 
         //设置papetype的出了plain paper,recycled paper其他都不可用
         QStandardItemModel *model2 = qobject_cast<QStandardItemModel *>(ui->paperTypeList->model());
-        for(int i=0; i<5; i++)
+        for(int i=0; i< ui->paperTypeList->count(); i++)
         {
             if((i != 0)&&(i != 1) && (model2 != NULL))
             {
@@ -297,6 +303,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 
         selectIDCardCopyMode(param->idCardCopyMode);
         ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);
+        param->scaling = getScalingValue(param->outputSize,param->docSize);
         LOGLOG("scaling:%d",param->scaling);
         ui->scaling->setText(text.setNum(param->scaling));
     }

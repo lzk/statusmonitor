@@ -137,7 +137,7 @@ int NtdcmsApi::caculate_parameter(ImageTransInfo* info)
             int brightness = para->brightness * 2 - 100;
             int contranst = para->contrast * 2 - 100;
             int chroma = 0;
-            m_adjuststr.Flag = 16;
+            m_adjuststr.Flag = 4;//16;
             m_adjuststr.ProfilePathI = NULL;//"/tmp/modulename.icm";
             m_adjuststr.ProfilePathO = NULL;//"/tmp/RGB Color Space Profile.icm";
             m_adjuststr.Temperature = 0;

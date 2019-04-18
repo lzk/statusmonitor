@@ -1,5 +1,7 @@
 #include "uiconfig.h"
 #include "commonapi.h"
+#include <QDir>
+#include <QFile>
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
@@ -93,7 +95,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo_cpath";
-    app_version = "1.0.0.15";
+    app_version = "1.0.0.16";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -101,12 +103,24 @@ void UIConfig::initConfig()
     LOGLOG("%s" ,str.toLatin1().constData());
     str = get_string_from_shell_cmd("cat /etc/issue");
     LOGLOG("%s\n\n" ,str.toLatin1().constData());
+
+    QDir dir(TMP_SCAN_DIR);
+    QDir *path = &dir;
+    if(path->exists(TMP_SCAN_DIR)){
+        path->remove(TMP_SCAN_DIR);
+    }
+    path->mkdir(TMP_SCAN_DIR);
 }
-#include <QFile>
+
 void UIConfig::exit_app()
 {
 //    QFile::remove(filepath);
 //    QFile::remove(lockfile);
+    QDir dir(TMP_SCAN_DIR);
+    QDir *path = &dir;
+    if(path->exists(TMP_SCAN_DIR)){
+        path->remove(TMP_SCAN_DIR);
+    }
 }
 
 int UIConfig::getModelSerial(Printer_struct* ps)
@@ -169,7 +183,8 @@ int UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
                     case OPCNearEnd                  : st = Status_Ready; break;
                     case OPCEnd                      : st = Status_Error; break;
                     case ManualFeedRequired          : st = Status_Busy ; break;
-                    case DuplexNoFeed                : st = Status_Error; break;
+                    case PaperNotReachDuplexEntrySensor : st = Status_Error; break;
+                    case DuplexTrayNoFeedJam         : st = Status_Error; break;
                     case InitializeJam               : st = Status_Error; break;
                     case NofeedJam                   : st = Status_Error; break;
                     case JamAtRegistStayOn           : st = Status_Error; break;
@@ -284,6 +299,8 @@ QString UIConfig::getErrorMsg(EnumStatus status, EnumMachineJob job, bool isAbcP
                 }
             }
         case ManualFeedRequired: errMsg = tr("ResStr_Waiting_2nd_pages_when_print_manual_duplex_job"); break;
+        case PaperNotReachDuplexEntrySensor: errMsg = tr("ResStr_Paper_Jam_Duplex_Entry_Sensor"); break;
+        case DuplexTrayNoFeedJam: errMsg = tr("ResStr_Paper_Jam_Duplex_Nofeed"); break;
         case InitializeJam: errMsg = tr("ResStr_Paper_Jam__Paper_Remained"); break;
         case NofeedJam: errMsg = tr("ResStr_Paper_Jam__Nofeed"); break;
         case JamAtRegistStayOn: errMsg = tr("ResStr_Paper_Jam__Regist"); break;
