@@ -133,7 +133,7 @@ All rights reserved.</translation>
     <message>
         <location filename="../membercenter/experiencepro.cpp" line="12"/>
         <source>ResStr_In_order_to_deliver_improved</source>
-        <translation>In order to deliver improved versions of the &quot;Neo Printing&quot; software and better user services, Lenovo would like to gather user data on a regular basis; the data include mobile numbers of registered users, the type of documents printed and the frequency of printing, printer model and related information, mobile equipment location and identifier, computer identifier, etc.</translation>
+        <translation>In order to deliver improved versions of the &quot;Lenovo Print&quot; software and better user services, Lenovo would like to gather user data on a regular basis; the data include mobile numbers of registered users, the type of documents printed and the frequency of printing, printer model and related information, mobile equipment location and identifier, computer identifier, etc.</translation>
     </message>
     <message>
         <location filename="../membercenter/experiencepro.cpp" line="14"/>
@@ -819,7 +819,7 @@ All rights reserved.</translation>
     <message>
         <location filename="../promptdialog.ui" line="128"/>
         <source>ResStr_Do_you_want_to_exit_the_Lenovo_Printer</source>
-        <translation>Do you want to exit the Neo Printing?</translation>
+        <translation>Do you want to exit the Lenovo Print?</translation>
     </message>
     <message>
         <location filename="../promptdialog.cpp" line="9"/>

@@ -133,7 +133,7 @@
     <message>
         <location filename="../membercenter/experiencepro.cpp" line="12"/>
         <source>ResStr_In_order_to_deliver_improved</source>
-        <translation>为了帮助我们持续提供更好版本的“小新打印”和更好的用户服务，Lenovo希望定期收集用户数据，如注册会员手机号、打印文件类型与频率、打印机型号及相关信息、手持设备位置与标识、PC标识等。</translation>
+        <translation>为了帮助我们持续提供更好版本的“联想打印”和更好的用户服务，Lenovo希望定期收集用户数据，如注册会员手机号、打印文件类型与频率、打印机型号及相关信息、手持设备位置与标识、PC标识等。</translation>
     </message>
     <message>
         <location filename="../membercenter/experiencepro.cpp" line="14"/>
@@ -819,7 +819,7 @@
     <message>
         <location filename="../promptdialog.ui" line="128"/>
         <source>ResStr_Do_you_want_to_exit_the_Lenovo_Printer</source>
-        <translation>是否退出小新打印？</translation>
+        <translation>是否退出联想打印？</translation>
     </message>
     <message>
         <location filename="../promptdialog.cpp" line="9"/>

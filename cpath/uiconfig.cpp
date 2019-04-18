@@ -95,7 +95,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo_cpath";
-    app_version = "1.0.0.16";
+    app_version = "1.0.0.17";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -172,7 +172,8 @@ int UIConfig::GetStatusTypeForUI(int status)
                     case CopyScanNextPage            : st = Status_Busy ; break;
                     case CopyPrinting                : st = Status_Busy ; break;
                     case CopyCanceling               : st = Status_Busy ; break;
-                    case IDCardMode                  : st = Status_Busy ; break;
+                    case IDCardMode                  : st = Status_Ready ; break;
+                    case DuplexCopyMode              : st = Status_Ready ; break;
                     case ScanScanning                : st = Status_Busy ; break;
                     case ScanSending                 : st = Status_Busy ; break;
                     case ScanCanceling               : st = Status_Busy ; break;
