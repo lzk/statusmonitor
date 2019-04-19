@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    jklib \
     cpath \
 #    test_cpath
 

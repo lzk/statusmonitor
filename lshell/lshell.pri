@@ -1,5 +1,4 @@
 INCLUDEPATH += $${PWD}
-#LIBS += -L$${OUT_PWD}/../statusmonitor -lstatusmonitor
 
 SOURCES += \
     $${PWD}/lshell.cpp \
@@ -8,3 +7,14 @@ SOURCES += \
 HEADERS += \
     $${PWD}/lshell.h \
     $${PWD}/lshellstruct.h \
+
+equals(TEMPLATE ,"lib"){
+SOURCES += \
+    $${PWD}/lshell.cpp \
+
+}
+
+equals(TEMPLATE ,"app"){
+
+}
+
