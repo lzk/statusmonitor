@@ -1623,12 +1623,12 @@
     <message>
         <location filename="../uiconfig.cpp" line="290"/>
         <source>ResStr_Paper_Jam_Duplex_Entry_Sensor</source>
-        <translation>双面入口处卡纸</translation>
+        <translation>双面单元入口处卡纸</translation>
     </message>
     <message>
         <location filename="../uiconfig.cpp" line="291"/>
         <source>ResStr_Paper_Jam_Duplex_Nofeed</source>
-        <translation>双面单元卡纸</translation>
+        <translation>双面单元不给纸</translation>
     </message>
     <message>
         <location filename="../uiconfig.cpp" line="292"/>
