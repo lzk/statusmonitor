@@ -165,7 +165,7 @@ public:
 
     explicit UIConfig(QObject *parent = 0);
 
-    static void initConfig();
+    static int initConfig();
     static void exit_app();
     static int getModelSerial(Printer_struct* ps);
     static int GetStatusTypeForUI(int status);
