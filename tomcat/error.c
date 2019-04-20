@@ -807,13 +807,13 @@ static const Error_String_struct error_string_table[] =
     ,.lines = 1
     ,.line0 = "请插入彩色硒鼓套件。"
     }
-//    ,{
-//        .string_index = MSG_05021
-//        ,.title = "黑色显影单元丢失或未完全插入打印机。"
-//    ,.mediaInfo = 0
-//    ,.lines = 1
-//    ,.line0 = "请插入黑色显影单元。"
-//    }
+    ,{
+        .string_index = MSG_05021
+        ,.title = "定影器寿命尽"
+    ,.mediaInfo = 0
+    ,.lines = 1
+    ,.line0 = "请与客户支持联系。"
+    }
     ,{
         .string_index = MSG_05022
         ,.title = "ITU寿命尽。"

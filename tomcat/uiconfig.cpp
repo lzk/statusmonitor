@@ -54,7 +54,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "tjgd1zsmui";
-    app_version = "1.0.9";
+    app_version = "1.0.11";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;

@@ -23,7 +23,7 @@ static void callback_getJob(void* para,Job_struct* js)
     char hostname[256];
     gethostname(hostname ,sizeof(hostname));
 //    StatusMonitor* sm = (StatusMonitor*)para;
-    char job_history[256];
+    char job_history[512];
     sprintf(job_history ,"%d,%s,%s,%s,%s,%d,%d,%d"
 //            ,js->id ,js->printer ,hostname,js->user_name  ,js->name
             ,js->id ,js->printer ,hostname,job->username.toUtf8().constData()  ,job->filename.toUtf8().constData()

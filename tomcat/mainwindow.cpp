@@ -448,7 +448,7 @@ void MainWindow::updateToner(int c ,int m ,int y ,int k)
 QString MainWindow::get_Status_string(const PrinterStatus_struct& status)
 {
     QString str_status;
-    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup, status.ErrorCodeID, status.PaperType, status.PaperSize, status.trayPaperTrayStatus);
+    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup, status.ErrorCodeID, status.PaperType, status.PaperSize, status.PaperTray);
     int ps = status.PrinterStatus;
     if ((IsStatusError(ps) && !IsStatusVirtual(ps) && ps != PS_ERROR_NOT_AVAILABLE && ps != PS_ERROR_NOT_SUPPORT) || ps == PS_TONER_LOW) {
         if(!ei.error || !ei.errorString){
@@ -830,7 +830,7 @@ void MainWindow::updateStatus(const PrinterStatus_struct& status)
     //update status string
     text = "<html><head/><body>";
 
-    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize,status.trayPaperTrayStatus);
+    ErrorInfo_struct ei = getErrorInfo(status.ErrorCodeGroup ,status.ErrorCodeID ,status.PaperType ,status.PaperSize,status.PaperTray);
         if(!ei.error || !ei.errorString){
             text += QString() + "<p>" + get_Status_string(status) + "</p>";
     //        text += QString() + "<p><img src=\"" +status_icon + "\"/>&nbsp;&nbsp;&nbsp;&nbsp;" + get_Status_string(status) + "</p>";
