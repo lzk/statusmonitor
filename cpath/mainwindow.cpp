@@ -343,10 +343,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
     }
         break;
     case UIConfig::CMD_SetCurrentPrinter:
-        ui->deviceNameBox->setEnabled(true);
-        ui->deviceNameLabel->setEnabled(true);
-        ui->deviceNameLabel_2->setEnabled(true);
-        ui->deviceNameLabel_2->installEventFilter(this);
+        currentPrinterChanged(current_printer);
         break;
     default:
         break;
@@ -401,7 +398,7 @@ void MainWindow::updatePrinter(const QVariant& data)
 void MainWindow::setcurrentPrinter(const QString& str)
 {
     current_printer = str;
-    qDebug()<<"current printer:"<<current_printer;
+//    qDebug()<<"current printer:"<<current_printer;
     ui->deviceNameBox->setEnabled(false);
     ui->deviceNameLabel->setEnabled(false);
     ui->deviceNameLabel_2->setEnabled(false);
@@ -445,6 +442,26 @@ void MainWindow::setcurrentPrinter(const QString& str)
             if(!isOfflineStart && (!enabledScanCopy))
             {
                 ui->tabStackedWidget->on_btn_PowerSave_clicked();
+            }
+        }
+    }
+}
+
+void MainWindow::currentPrinterChanged(const QString& str)
+{
+    ui->deviceNameBox->setEnabled(true);
+    ui->deviceNameLabel->setEnabled(true);
+    ui->deviceNameLabel_2->setEnabled(true);
+    ui->deviceNameLabel_2->installEventFilter(this);
+    if(str != "")
+    {
+        Printer_struct printer = printerlist.at(ui->deviceNameBox->currentIndex());
+        int modelType = UIConfig::getModelSerial(&printer);
+        if((modelType & UIConfig::Model_W) == UIConfig::Model_W)//W:WIFI
+        {
+            if(!isOfflineStart && (!enabledScanCopy))
+            {//refresh when change to LW machine
+                ui->tabStackedWidget->on_btn_WiFi_clicked();
             }
         }
     }
