@@ -192,6 +192,19 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             exit(1);
             break;
         case 0:
+            str = get_string_from_shell_cmd("who am i" ,1);
+            LOGLOG("who am i:\n%s" ,str.toLatin1().constData());
+            str = get_string_from_shell_cmd("who" ,1);
+            LOGLOG("who:\n%s" ,str.toLatin1().constData());
+            str = get_string_from_shell_cmd("whoami");
+            LOGLOG("whoami:\n%s" ,str.toLatin1().constData());
+            str = getenv("DISPLAY");
+            LOGLOG("dislpay is %s" ,str.toLatin1().constData());
+            if(str.isEmpty()){
+                setenv("DISPLAY" ,":0.0" ,0);
+            }
+            str = getenv("DISPLAY");
+            LOGLOG("now dislpay is %s" ,str.toLatin1().constData());
             execlp("tjgd1zsmui", "tjgd1zsmui" ,"-hide" ,0);
             exit(0);
             break;

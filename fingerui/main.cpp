@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <sys/wait.h>
 
 int app_ret = 0;
 

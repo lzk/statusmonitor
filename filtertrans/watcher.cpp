@@ -2,6 +2,7 @@
 #include "appserver.h"
 #include "appconfig.h"
 #include "commonapi.h"
+#include "tomcat.h"
 extern AppServer* app_server;
 Watcher::Watcher(QObject *parent)
     : QThread(parent)
@@ -36,5 +37,10 @@ void Watcher::timerOut()
         count = 0;
     if((count % 10 == 0) && !is_app_running(SERVER_PATH)){
         server_restart();
+    }
+    if(count % 20 == 0){
+
+        //update job history info
+        Tomcat::update_job_history();
     }
 }
