@@ -7,7 +7,6 @@ UInterface* gUInterface;
 #include "uiconfig.h"
 #include "commonapi.h"
 #include "statusthread.h"
-#include "appserver.h"
 void quit(int)
 {
     LOGLOG("SIGINT quit");
@@ -15,14 +14,12 @@ void quit(int)
         qApp->quit();
 }
 
-AppServer* app_server;
 int main(int argc, char *argv[])
 {
-    if(is_app_running(SERVER_PATH_STM)){
+    if(UIConfig::initConfig()){
         LOGLOG("There has been a same app running!");
         return 0;
     }
-    UIConfig::initConfig();
 
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11
@@ -32,7 +29,6 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/image/app_icon.png"));
     a.setQuitOnLastWindowClosed(false);
 
-    app_server = new AppServer(SERVER_PATH_STM);
 
     QCoreApplication::setOrganizationName("TOEC");
 //    QCoreApplication::setOrganizationDomain("mysoft.com");
@@ -56,7 +52,6 @@ int main(int argc, char *argv[])
     
     int ret = a.exec();
     delete w;
-    delete app_server;
     delete gUInterface;
     UIConfig::exit_app();
     return ret;

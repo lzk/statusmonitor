@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include <sys/wait.h>
-
+#include <signal.h>
 int app_ret = 0;
 
 void quit(int)

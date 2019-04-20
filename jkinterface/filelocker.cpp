@@ -27,13 +27,35 @@ int FileLocker::lock(const char* filename)
 #else
         fd = fp->_fileno;
 #endif
-        ret = flock(fd, LOCK_EX);
+        ret = flock(fd, LOCK_EX);//will block
         if (ret){
             fclose(fp);
             fp = NULL;
         }
 //        LOGLOG("pid %d file %s locked" ,getpid() ,filename);
     }else{
+    }
+    return ret;
+}
+
+int FileLocker::trylock(const char* filename)
+{
+    int ret = -1;
+    fp = fopen(filename, "ab+");
+    chmod(filename ,0666);
+    int fd;
+    if(fp){
+#ifdef JK_OS_MAC
+        fd = fp->_file;
+#else
+        fd = fp->_fileno;
+#endif
+        ret = flock(fd, LOCK_EX | LOCK_NB);
+        if (ret){
+//            LOGLOG("not locked");
+            fclose(fp);
+            fp = NULL;
+        }
     }
     return ret;
 }

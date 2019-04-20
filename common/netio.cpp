@@ -8,7 +8,10 @@
 QHostAddress get_ip_address(const QString& host)
 {
     QHostAddress hostAddress;
-
+#if 1
+    hostAddress = QHostAddress(host);
+    return hostAddress;
+#else
     QHostInfo info;
     info = QHostInfo::fromName(host);
     if (!info.addresses().isEmpty()) {
@@ -34,6 +37,7 @@ QHostAddress get_ip_address(const QString& host)
 //        qDebug()<<"host name:" << host << "addresses:" <<info.addresses();
     }
     return hostAddress;
+#endif
 }
 
 NetIO::NetIO():
@@ -90,8 +94,15 @@ int NetIO::open(int port)
         LOGLOG("device is opened");
         return -1;
     }
-    if(!tcpSocket)
-        tcpSocket = new QTcpSocket;
+    if(hostAddress.toString().startsWith("fe80" ,Qt::CaseInsensitive)){
+        LOGLOG("can not support fe80 address");
+        return -1;
+    }
+    if(tcpSocket)
+        delete tcpSocket;
+    tcpSocket = new QTcpSocket;
+//    if(!tcpSocket)
+//        tcpSocket = new QTcpSocket;
     tcpSocket->connectToHost(hostAddress, port);
     if (!tcpSocket->waitForConnected(5000)) {
         LOGLOG("tcpsocket error code:%d",tcpSocket->error());
@@ -123,8 +134,8 @@ int NetIO::close(void)
 int NetIO::write(char *buffer, int bufsize)
 {
     if(!device_is_open){
-		return -1;
-	}
+        return -1;
+    }
     if(!tcpSocket)
         return -1;
 //    int state = tcpSocket->state();
@@ -142,8 +153,8 @@ int NetIO::write(char *buffer, int bufsize)
 int NetIO::read(char *buffer, int bufsize)
 {
     if(!device_is_open){
-		return -1;
-	}
+        return -1;
+    }
     if(!tcpSocket)
         return -1;
     int bytesAvailable;
@@ -207,6 +218,10 @@ int NetIO::getDeviceId(char *buffer, int bufsize)
 static int _platform_net_get_device_id(const QString& device_uri,char *buffer, int bufsize);
 int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
 {
+    if(hostAddress.toString().startsWith("fe80" ,Qt::CaseInsensitive)){
+//        LOGLOG("can not support fe80 address");
+        return -1;
+    }
     //some host name can not get device id. change to ipv4 first.
 //    return snmpGetDeviceID(resolved_url.toLatin1().constData() ,buffer ,bufsize);
     return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);

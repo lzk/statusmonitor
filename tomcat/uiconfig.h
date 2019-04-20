@@ -36,7 +36,7 @@ class UIConfig : public QObject ,SMConfig{
 public:
     explicit UIConfig(QObject *parent = 0);
 
-    static void initConfig();
+    static int initConfig();
     static void exit_app();
 public:
     enum CmdType{

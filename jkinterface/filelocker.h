@@ -7,10 +7,11 @@ class FileLocker
 {
 public:
     FileLocker();
+    int lock(const char* path);
+    int trylock(const char* path);
+    int unlock();
 
 protected:
-    int lock(const char* path);
-    int unlock();
     FILE* fp;
     char lock_file[256];
 };
