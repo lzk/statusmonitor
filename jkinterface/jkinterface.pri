@@ -1,6 +1,8 @@
-INCLUDEPATH += $${PWD}
 
-INCLUDEPATH += $${PWD}/../libs $${PWD}/../libs/cups-2.2.8
+INCLUDEPATH += \
+            $${PWD} \
+            $$PWD/../libs \
+            $$PWD/../libs/cups-2.2.8
 
 HEADERS += \
     $${PWD}/usbapi_libusb.h \
@@ -12,11 +14,6 @@ HEADERS += \
     $$PWD/jkconfig.h \
     $$PWD/filelocker.h
 
-macx:{
-    DEFINES += JK_OS_MAC
-}
-
-equals(TEMPLATE ,"lib"){
 SOURCES += \
     $${PWD}/usbapi_libusb.cpp \
     $${PWD}/testlibusb.c \
@@ -26,12 +23,7 @@ SOURCES += \
     $$PWD/jkconfig.cpp \
     $$PWD/deviceio.cpp \
     $$PWD/filelocker.cpp
-}
 
-equals(TEMPLATE ,"app"){
-
-LIBS += \
-    -L$${PWD}/../libs -lusb-1.0  -lcups
-
-macx: LIBS += -L/Volumes/work/software/libusb
+macx:{
+    DEFINES += JK_OS_MAC
 }

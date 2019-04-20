@@ -1,6 +1,5 @@
 INCLUDEPATH += $${PWD}
 
-
 HEADERS += \
     $${PWD}/statusmonitor.h \
     $$PWD/statusmanager.h \
@@ -10,7 +9,6 @@ HEADERS += \
     $$PWD/smconfig.h \
     $$PWD/statuswatcher.h
 
-equals(TEMPLATE ,"lib"){
 SOURCES += \
     $${PWD}/statusmonitor.cpp \
     $$PWD/statusmanager.cpp \
@@ -19,8 +17,3 @@ SOURCES += \
     $$PWD/cupsmanager.cpp \
     $$PWD/smconfig.cpp \
     $$PWD/statuswatcher.cpp
-}
-
-equals(TEMPLATE ,"app"){
-
-}
