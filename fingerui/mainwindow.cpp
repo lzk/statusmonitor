@@ -40,7 +40,7 @@ MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
     time_val = QUrlQuery(QUrl(url)).queryItemValue("time_val").toInt();
 #else
     jobid = QUrl(url).queryItemValue("jobid").toInt();
-    time_val = QUrlQuery(QUrl(url)).queryItemValue("time_val").toInt();
+    time_val = QUrl(url).queryItemValue("time_val").toInt();
 #endif
     if(time_val < 10)
         time_val = 30;
