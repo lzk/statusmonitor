@@ -1,6 +1,19 @@
 #include "appconfig.h"
+#include "appserver.h"
+#include "commonapi.h"
+#include <unistd.h>
 
-const QString app_name = QString::fromUtf8("打印机状态监视器");
+//const QString app_name = QString::fromUtf8("打印机状态监视器");
+FileLocker app_file_locker;
+AppServer* app_server;
+
+extern
+int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
+//log file var
+extern const char* log_app_name;
+extern const char* app_version;
+//usb error control var
+extern int usb_error_printing;
 static bool _isDeviceSupported(Printer_struct* ps)
 {
 //    LOGLOG("tomcat found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
@@ -22,24 +35,40 @@ static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
     }
     return (*pid == -1) ?-1 :0;
 }
-extern
-int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
 
 AppConfig::AppConfig(QObject *parent) :
     QObject(parent)
 {
 }
 
-extern const char* log_app_name;
-extern const char* app_version;
-extern int usb_error_printing;
-void AppConfig::initConfig()
+int AppConfig::initConfig()
 {
+    log_app_name = "filtertrans";
+    app_version = "1.0.2";
+    log_init();
+    LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
+    const char* app_locker_file = "/tmp/.tjgd1zsm_locker";
+    if(app_file_locker.trylock(app_locker_file)){
+        LOGLOG("app had been locked!");
+        return -1;
+    }
+    if(is_app_running(SERVER_PATH)){
+        LOGLOG("socket working!");
+        return -2;
+    }
+
+//#ifndef DEBUG_TO_STDERR
+//    //release as deaemon
+//    int result = daemon(0 ,0);
+//    if(!result){
+//        LOGLOG("daemon success!");
+//    }
+//#endif
     //config status server thread
-    status_file = "/tmp/.toecstatus";
-    statusKey = "statusmonitor/status/";
-    printersKey = "statusmonitor/printerlist/";
-    status_lock_file = "/tmp/.locktoecstatus";
+//    status_file = "/tmp/.toecstatus";
+//    status_lock_file = "/tmp/.locktoecstatus";
+//    statusKey = "statusmonitor/status/";
+//    printersKey = "statusmonitor/printerlist/";
 
 //    ui_server_path = SERVER_PATH;
     usb_error_printing = 0x01;
@@ -48,14 +77,15 @@ void AppConfig::initConfig()
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
-    log_app_name = "filtertrans";
-    app_version = "1.0.1";
-    log_init();
+    app_server = new AppServer(SERVER_PATH);
+    return 0;
 }
 
 #include <QFile>
 void AppConfig::exit_app()
 {
-    QFile::remove(status_file);
-    QFile::remove(status_lock_file);
+//    QFile::remove(status_file);
+//    QFile::remove(status_lock_file);
+    delete app_server;
+    app_file_locker.unlock();
 }

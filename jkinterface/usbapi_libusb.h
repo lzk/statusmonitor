@@ -44,7 +44,6 @@ public:
     int getDeviceId(char* ,int);
     int open(int vid ,int pid ,const char* serial ,int interface = 0);
     int close();
-    int getDeviceWithSerial(int vid ,int pid ,const char* serial);
     int write(char* buffer ,int bufsize);
     int read(char* buffer ,int bufsize);
     bool isConnected(int vid, int pid, const char *serial);
@@ -57,13 +56,15 @@ public:
 private:
     int getDeviceWithSerial(struct_device*);
     int config(libusb_device *dev ,libusb_device_handle *udev);
+    int device_open(int vid ,int pid ,const char* serial);
 
 private:
     int g_interface;
-    libusb_device *g_device;
-    libusb_device_handle *g_dev_h;
+//    libusb_device *g_device;
+//    libusb_device_handle *g_dev_h;
     int bulk_in[2];
     int bulk_out[2];
+    struct_device device;
 };
 
 #endif // USBAPI_LIBUSB_H

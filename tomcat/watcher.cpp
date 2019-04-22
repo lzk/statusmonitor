@@ -23,5 +23,5 @@ void Watcher::watcher_job()
     }
 
     //update job history info
-    Tomcat::update_job_history();
+//    Tomcat::update_job_history();
 }

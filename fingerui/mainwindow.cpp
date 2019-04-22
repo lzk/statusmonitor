@@ -7,7 +7,7 @@
 #include <QUrlQuery>
 #endif
 extern int app_ret;
-
+extern int g_jobid;
 MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -40,8 +40,9 @@ MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
     time_val = QUrlQuery(QUrl(url)).queryItemValue("time_val").toInt();
 #else
     jobid = QUrl(url).queryItemValue("jobid").toInt();
-    time_val = QUrlQuery(QUrl(url)).queryItemValue("time_val").toInt();
+    time_val = QUrl(url).queryItemValue("time_val").toInt();
 #endif
+    g_jobid = jobid;
     if(time_val < 10)
         time_val = 30;
 

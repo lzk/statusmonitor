@@ -9,6 +9,8 @@
 #if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
+#include <QSettings>
+#include <signal.h>
 
 #include "tomcat.h"
 #include "filterlib.h"
@@ -43,6 +45,7 @@ void AppServer::restart_server()
 {
     delete thread_server;
 
+    LOGLOG("restart server:%s" ,server_path.toLatin1().constData());
     thread_server = new ServerThread(server_path.toLatin1().constData());
     connect(thread_server ,SIGNAL(client_connect(int)) ,this ,SLOT(client_connect(int)));
     connect(thread_server ,SIGNAL(client_cmd(QString ,void*)) ,this ,SLOT(client_cmd(QString ,void*)));
@@ -83,7 +86,7 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
     if(index > 0)
         printer = printer.left(index);
     LOGLOG("printer is:%s" ,printer.toLatin1().constData());
-#if 0
+#if 1
     if(!cmd.compare("start")){
 
         int time_val;
@@ -117,24 +120,54 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
 
     }else if(!cmd.compare("check")){
 //        int result = app_server->get_finger_result(jobid);
-//        switch(result){
-//        case Checked_Result_Cancel:
-//            strcpy(buffer ,"cancel");
-//            app_server->delete_finger_dialog(jobid);
-//            break;
-//        case Checked_Result_timeout:
-//            strcpy(buffer ,"timeout");
-//            app_server->delete_finger_dialog(jobid);
-//            break;
-//        case Checked_Result_checking:
-//            strcpy(buffer ,"checking");
-//            break;
-//        case Checked_Result_invalidJobid:
-//        default:
-//            strcpy(buffer ,"invalid");
-//            app_server->delete_finger_dialog(jobid);
-//            break;
-//        }
+        int result = Checked_Result_invalidJobid;
+        QSettings settings("/tmp/tjgd1zsmtmp.txt" ,QSettings::NativeFormat);
+        QString str_jobid = QString("%1").arg(jobid);
+        QString value = settings.value(str_jobid).toString();
+        int ui_pid = 0;
+        if(value.isEmpty()){
+            result = Checked_Result_checking;
+        }else{
+            QStringList columns = value.split(",");
+            result = columns.at(0).toInt();
+            switch (result) {
+            case 0:
+                result = Checked_Result_checking;
+                break;
+            case 1:
+                result = Checked_Result_Cancel;
+                break;
+            case 2:
+                result = Checked_Result_timeout;
+                break;
+            default:
+                result = Checked_Result_invalidJobid;
+                break;
+            }
+            ui_pid = columns.at(1).toInt();
+        }
+
+        switch(result){
+        case Checked_Result_Cancel:
+            strcpy(buffer ,"cancel");
+            if(ui_pid)
+                kill(ui_pid ,9);
+            break;
+        case Checked_Result_timeout:
+            strcpy(buffer ,"timeout");
+            if(ui_pid)
+                kill(ui_pid ,9);
+            break;
+        case Checked_Result_checking:
+            strcpy(buffer ,"checking");
+            break;
+        case Checked_Result_invalidJobid:
+        default:
+            strcpy(buffer ,"invalid");
+            if(ui_pid)
+                kill(ui_pid ,9);
+            break;
+        }
 
 
     }else if(!cmd.compare("result")){
@@ -167,7 +200,24 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             LOGLOG("do not record to file list");
         }
     }
+
+    pid_t pid = fork();
+    switch(pid)
+    {
+    case -1:
+        LOGLOG("fork failed");
+        exit(1);
+        break;
+    case 0:
+        execlp("tjgd1zsmui", "tjgd1zsmui" ,"-hide" ,0);
+        exit(0);
+        break;
+    default:
+        break;
+    }
   #else
+
+#if 0
     if(!cmd.compare("stcp")){
         app_server->set_current_printer(printer);
         strcpy(buffer ,"stcpok");
@@ -181,6 +231,7 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
 //        strcpy(buffer ,"didok");
 //        return 0;
     }
+#endif
 
     Trans_Client tc(SERVER_PATH_STM);
     if(tc.writeThenRead(buffer ,bufsize)){
@@ -192,6 +243,19 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             exit(1);
             break;
         case 0:
+//            str = get_string_from_shell_cmd("who am i" ,1);
+//            LOGLOG("who am i:\n%s" ,str.toLatin1().constData());
+//            str = get_string_from_shell_cmd("who" ,1);
+//            LOGLOG("who:\n%s" ,str.toLatin1().constData());
+//            str = get_string_from_shell_cmd("whoami");
+//            LOGLOG("whoami:\n%s" ,str.toLatin1().constData());
+//            str = getenv("DISPLAY");
+//            LOGLOG("dislpay is %s" ,str.toLatin1().constData());
+//            if(str.isEmpty()){
+//                setenv("DISPLAY" ,":0.0" ,0);
+//            }
+//            str = getenv("DISPLAY");
+//            LOGLOG("now dislpay is %s" ,str.toLatin1().constData());
             execlp("tjgd1zsmui", "tjgd1zsmui" ,"-hide" ,0);
             exit(0);
             break;
@@ -244,4 +308,3 @@ void AppServer::client_cmd(const QString & ,void* )
 {
 
 }
-

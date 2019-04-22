@@ -1,10 +1,8 @@
-#include <QCoreApplication>
+#include <QApplication>
 #include "commonapi.h"
-#include "appserver.h"
 #include "appconfig.h"
 #include <signal.h>
 #include "watcher.h"
-#include <unistd.h>
 
 void quit(int)
 {
@@ -12,29 +10,19 @@ void quit(int)
     if(qApp)
         qApp->quit();
 }
-AppServer* app_server;
 
 int main(int argc, char *argv[])
 {
-    AppConfig::initConfig();
-    if(is_app_running(SERVER_PATH)){
+    if(AppConfig::initConfig()){
         LOGLOG("There has been a same app running!");
         return 0;
     }
 
-#ifndef DEBUG_TO_STDERR
-    //release as deaemon
-    int result = daemon(0 ,0);
-    if(!result){
-        LOGLOG("daemon success!");
-    }
-#endif
-
-    QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
 
     signal(SIGINT ,quit);
+    signal(SIGHUP ,quit);
 
-    app_server = new AppServer(SERVER_PATH);
     Watcher* watcher = new Watcher;
     watcher->start();
 //    pid_t pid = fork();
@@ -52,7 +40,7 @@ int main(int argc, char *argv[])
 //    }
     int ret = a.exec();
     delete watcher;
-    delete app_server;
     AppConfig::exit_app();
+    LOGLOG("app exit!");
     return ret;
 }
