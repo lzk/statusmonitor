@@ -95,7 +95,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo_cpath";
-    app_version = "1.0.0.16";
+    app_version = "1.0.0.17";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -156,7 +156,7 @@ int UIConfig::getModelSerial(Printer_struct* ps)
     return ms;
 }
 
-int UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
+int UIConfig::GetStatusTypeForUI(int status)
 {
     int st = Status_Offline;
 
@@ -172,7 +172,8 @@ int UIConfig::GetStatusTypeForUI(UIConfig::EnumStatus status)
                     case CopyScanNextPage            : st = Status_Busy ; break;
                     case CopyPrinting                : st = Status_Busy ; break;
                     case CopyCanceling               : st = Status_Busy ; break;
-                    case IDCardMode                  : st = Status_Busy ; break;
+                    case IDCardMode                  : st = Status_Ready ; break;
+                    case DuplexCopyMode              : st = Status_Ready ; break;
                     case ScanScanning                : st = Status_Busy ; break;
                     case ScanSending                 : st = Status_Busy ; break;
                     case ScanCanceling               : st = Status_Busy ; break;
@@ -259,32 +260,33 @@ QString UIConfig::getErrorMsg(EnumStatus status, EnumMachineJob job, bool isAbcP
         case CopyPrinting: errMsg = tr("ResStr_Copying"); break;
         case CopyCanceling: errMsg = tr("ResStr_Copy_Cancelling"); break;
         case IDCardMode: errMsg = tr("ResStr_ID_Card_Mode"); break;
+        case DuplexCopyMode: errMsg = tr("ResStr_Duplex_Copy_Mode"); break;
         case ScanScanning: errMsg = tr("ResStr_Scanning"); break;
         case ScanSending: errMsg = tr("ResStr_Scanning"); break;
         case ScanCanceling: errMsg = tr("ResStr_Scan_Cancelling"); break;
         case ScannerBusy: errMsg = tr("ResStr_Scanner_Busy"); break;
-        case TonerEnd1:
-            {
-                if (isAbcPlusModel)
-                {
-                    errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
-                }
-                else
-                {
-                    errMsg = tr("ResStr_Toner_End_ABC"); break;
-                }
-            }
-        case TonerEnd2:
-            {
-                if (isAbcPlusModel)
-                {
-                    errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
-                }
-                else
-                {
-                    errMsg = tr("ResStr_Toner_End_ABC"); break;
-                }
-            }
+        case TonerEnd1: errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
+//            {
+//                if (isAbcPlusModel)
+//                {
+//                    errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
+//                }
+//                else
+//                {
+//                    errMsg = tr("ResStr_Toner_End_ABC"); break;
+//                }
+//            }
+        case TonerEnd2: errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
+//            {
+//                if (isAbcPlusModel)
+//                {
+//                    errMsg = tr("ResStr_Toner_End_ABC_Plus"); break;
+//                }
+//                else
+//                {
+//                    errMsg = tr("ResStr_Toner_End_ABC"); break;
+//                }
+//            }
         case TonerNearEnd: errMsg = tr("ResStr_Toner_Near_End"); break;
         case OPCNearEnd: errMsg = tr("ResStr_OPC_Near_End"); break;
         case OPCEnd:

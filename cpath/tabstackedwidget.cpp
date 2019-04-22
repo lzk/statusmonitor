@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <tiffio.h>
 #include "commonapi.h"
+#include "statuspaser.h"
 
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
@@ -83,6 +84,21 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
 {
     switch(cmd)
     {
+    case UIConfig::CMD_GetStatus:
+    {
+        if(result){
+            ui->btn_Copy->setEnabled(false);
+            ui->btn_Scan->setEnabled(false);
+            ui->settingStackedWidget->setEnabled(false);
+        }else{
+            PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
+            PrinterStatus_struct& status = printerInfo.status;
+            ui->btn_Copy->setEnabled(StatusPaser::is_enable_copy(status.PrinterStatus));
+            ui->btn_Scan->setEnabled(StatusPaser::is_enable_scan(status.PrinterStatus));
+            ui->settingStackedWidget->setEnabled(StatusPaser::is_enable_setting(status.PrinterStatus));
+        }
+        break;
+    }
     case UIConfig::LS_CMD_COPY:
     {
         qDebug()<<"LS_CMD_COPY"<<result;

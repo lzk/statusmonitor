@@ -82,6 +82,7 @@ public:
         CopyPrinting                = 0x62,
         CopyCanceling               = 0x63,
         IDCardMode                  = 0x64,
+        DuplexCopyMode              = 0x65,
         ScanScanning                = 0x6A,
         ScanSending                 = 0x6B,
         ScanCanceling               = 0x6C,
@@ -167,7 +168,7 @@ public:
     static void initConfig();
     static void exit_app();
     static int getModelSerial(Printer_struct* ps);
-    static int GetStatusTypeForUI(EnumStatus status);
+    static int GetStatusTypeForUI(int status);
     static QString getErrorMsg(EnumStatus status,EnumMachineJob job,bool isAbcPlusModel);
 public:
     enum CmdType{

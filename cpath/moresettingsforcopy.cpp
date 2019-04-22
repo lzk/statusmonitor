@@ -750,9 +750,18 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
             }
            switch (_multiMode)
            {
-               case TwoInOne: ui->label_20->setStyleSheet("#label_20 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
-               case FourInOne: ui->label_21->setStyleSheet("#label_21 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
-               case NineInOne: ui->label_22->setStyleSheet("#label_22 {background-color: rgb(157, 157, 157);border-radius:8px;}"); break;
+               case TwoInOne:
+                     ui->label_20->setStyleSheet("#label_20 {background-color: rgb(157, 157, 157);border-radius:8px;}");
+                     on_bt2in1_clicked();
+                     break;
+               case FourInOne:
+                     ui->label_21->setStyleSheet("#label_21 {background-color: rgb(157, 157, 157);border-radius:8px;}");
+                     on_bt4in1_clicked();
+                     break;
+               case NineInOne:
+                     ui->label_22->setStyleSheet("#label_22 {background-color: rgb(157, 157, 157);border-radius:8px;}");
+                     on_bt9in1_clicked();
+                     break;
                default:break;
            }
 
@@ -909,6 +918,13 @@ void MoreSettingsForCopy::on_btNInOne_clicked(bool checked)
     if(checked)
     {
         ui->btNInOne->setStyleSheet("#btNInOne {border-image: url(:/Images/CheckBox_Open.png);}");
+        switch (_multiMode)
+        {
+            case TwoInOne:  on_bt2in1_clicked();break;
+            case FourInOne: on_bt4in1_clicked(); break;
+            case NineInOne: on_bt9in1_clicked(); break;
+            default:break;
+        }
     }
     else
     {
