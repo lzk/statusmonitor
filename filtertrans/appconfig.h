@@ -3,8 +3,8 @@
 
 #ifndef SERVER_PATH
 #ifdef LOONGSON
-#define SERVER_PATH "/var/run/cups/tjgd1zsm.domain"
-//#define SERVER_PATH "/var/spool/cups/tmp/tjgd1zsm.domain"
+//#define SERVER_PATH "/var/run/cups/tjgd1zsm.domain"
+#define SERVER_PATH "/var/spool/cups/tmp/tjgd1zsm.domain"
 #else
 #define SERVER_PATH "/tmp/tjgd1zsm.domain"
 #endif
@@ -20,7 +20,7 @@ class AppConfig : public QObject ,SMConfig{
 public:
     explicit AppConfig(QObject *parent = 0);
 
-    static void initConfig();
+    static int initConfig();
     static void exit_app();
 };
 #endif // APCONFIG_H

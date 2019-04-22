@@ -49,28 +49,6 @@ UIConfig::UIConfig(QObject *parent) :
 
 int UIConfig::initConfig()
 {
-    const char* app_locker_file = "/tmp/.tomcat_locker";
-    if(app_file_locker.trylock(app_locker_file)){
-        LOGLOG("app had been locked!");
-        return -1;
-    }
-    if(is_app_running(SERVER_PATH_STM)){
-        LOGLOG("socket working!");
-        return -2;
-    }
-    //config status server thread
-//    status_file = "/tmp/.toecstatus";
-//    status_lock_file = "/tmp/.locktoecstatus";
-//    statusKey = "statusmonitor/status/";
-//    printersKey = "statusmonitor/printerlist/";
-
-//    ui_server_path = SERVER_PATH;
-    usb_error_printing = 0x01;
-
-    //config tomcat supported printer model
-    isDeviceSupported = _isDeviceSupported;
-    getpidvid = _getpidvid;
-
     log_app_name = "tjgd1zsmui";
     app_version = "1.0.9";
     log_init();
@@ -86,7 +64,30 @@ int UIConfig::initConfig()
 //    LOGLOG("%s\n\n" ,str.toLatin1().constData());
 //    str = get_string_from_shell_cmd("echo $DISPLAY");
 //    LOGLOG("%s\n\n" ,str.toLatin1().constData());
-    LOGLOG("%s\n\n" ,getenv("DISPLAY"));
+//    LOGLOG("%s\n\n" ,getenv("DISPLAY"));
+
+    const char* app_locker_file = "/tmp/.tjgd1zsmui_locker";
+    if(app_file_locker.trylock(app_locker_file)){
+        LOGLOG("app had been locked!");
+        return -1;
+    }
+    if(is_app_running(SERVER_PATH_STM)){
+        LOGLOG("socket working!");
+        return -2;
+    }
+
+    //config status server thread
+//    status_file = "/tmp/.toecstatus";
+//    status_lock_file = "/tmp/.locktoecstatus";
+//    statusKey = "statusmonitor/status/";
+//    printersKey = "statusmonitor/printerlist/";
+
+//    ui_server_path = SERVER_PATH;
+    usb_error_printing = 0x01;
+
+    //config tomcat supported printer model
+    isDeviceSupported = _isDeviceSupported;
+    getpidvid = _getpidvid;
 
     app_server = new AppServer(SERVER_PATH_STM);
     return 0;

@@ -1,4 +1,4 @@
-QT -= gui
+#QT -= gui
 
 CONFIG += c++11
 #CONFIG += c++11 console

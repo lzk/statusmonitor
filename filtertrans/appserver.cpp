@@ -43,6 +43,7 @@ void AppServer::restart_server()
 {
     delete thread_server;
 
+    LOGLOG("restart server:%s" ,server_path.toLatin1().constData());
     thread_server = new ServerThread(server_path.toLatin1().constData());
     connect(thread_server ,SIGNAL(client_connect(int)) ,this ,SLOT(client_connect(int)));
     connect(thread_server ,SIGNAL(client_cmd(QString ,void*)) ,this ,SLOT(client_cmd(QString ,void*)));
