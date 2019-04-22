@@ -98,7 +98,9 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             time_val = 30;
         sprintf(buffer ,"startok:%d", time_val);
 
-        cmd += QString("&time_val = %1").arg(time_val);
+        QString tmp_cmd(str);
+        tmp_cmd += QString("&time_val=%1").arg(time_val);
+        LOGLOG("tjgd1zfmui cmd : %s" ,tmp_cmd.toLatin1().constData());
         pid_t pid = fork();
         switch(pid)
         {
@@ -107,7 +109,7 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             exit(1);
             break;
         case 0:{
-            execlp("tjgd1zfmui", "tjgd1zfmui" ,cmd.toLatin1().constData() ,0);
+            execlp("tjgd1zfmui", "tjgd1zfmui" ,tmp_cmd.toLatin1().constData() ,0);
 //            QString _cmd("tjgd1zfmui ");
 //            _cmd += cmd;
 //            system(_cmd.toLatin1().constData());
@@ -118,16 +120,39 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             break;
         }
 
+        //start tjgd1zsmui
+        const char* app_locker_file = "/tmp/.tjgd1zsmui_locker";
+        FileLocker app_file_locker;
+        if(!app_file_locker.trylock(app_locker_file)){
+            app_file_locker.unlock();
+            LOGLOG("tjgd1zsmui not locked!");
+            pid_t pid = fork();
+            switch(pid)
+            {
+            case -1:
+                LOGLOG("fork failed");
+                exit(1);
+                break;
+            case 0:
+                execlp("tjgd1zsmui", "tjgd1zsmui" ,"-hide" ,0);
+                exit(0);
+                break;
+            default:
+                break;
+            }
+        }
+
     }else if(!cmd.compare("check")){
 //        int result = app_server->get_finger_result(jobid);
         int result = Checked_Result_invalidJobid;
-        QSettings settings("/tmp/tjgd1zsmtmp.txt" ,QSettings::NativeFormat);
+        QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
         QString str_jobid = QString("%1").arg(jobid);
         QString value = settings.value(str_jobid).toString();
         int ui_pid = 0;
         if(value.isEmpty()){
             result = Checked_Result_checking;
         }else{
+//            LOGLOG("tjgd1zfmui result %d: %s" ,jobid ,value.toLatin1().constData());
             QStringList columns = value.split(",");
             result = columns.at(0).toInt();
             switch (result) {
@@ -150,13 +175,17 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
         switch(result){
         case Checked_Result_Cancel:
             strcpy(buffer ,"cancel");
-            if(ui_pid)
+            if(ui_pid){
                 kill(ui_pid ,9);
+                LOGLOG("kill %d" ,ui_pid);
+            }
             break;
         case Checked_Result_timeout:
             strcpy(buffer ,"timeout");
-            if(ui_pid)
+            if(ui_pid){
                 kill(ui_pid ,9);
+                LOGLOG("kill %d" ,ui_pid);
+            }
             break;
         case Checked_Result_checking:
             strcpy(buffer ,"checking");
@@ -164,13 +193,49 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
         case Checked_Result_invalidJobid:
         default:
             strcpy(buffer ,"invalid");
-            if(ui_pid)
+            if(ui_pid){
                 kill(ui_pid ,9);
+                LOGLOG("kill %d" ,ui_pid);
+            }
             break;
         }
 
 
     }else if(!cmd.compare("result")){
+        int result = Checked_Result_invalidJobid;
+        QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
+        QString str_jobid = QString("%1").arg(jobid);
+        QString str_value = settings.value(str_jobid).toString();
+        int ui_pid = 0;
+        if(str_value.isEmpty()){
+            result = Checked_Result_checking;
+        }else{
+//            LOGLOG("tjgd1zfmui result %d: %s" ,jobid ,value.toLatin1().constData());
+            QStringList columns = str_value.split(",");
+            result = columns.at(0).toInt();
+            switch (result) {
+            case 0:
+                result = Checked_Result_checking;
+                break;
+            case 1:
+                result = Checked_Result_Cancel;
+                break;
+            case 2:
+                result = Checked_Result_timeout;
+                break;
+            default:
+                result = Checked_Result_invalidJobid;
+                break;
+            }
+            ui_pid = columns.at(1).toInt();
+        }
+
+        if(ui_pid){
+            kill(ui_pid ,9);
+            LOGLOG("kill %d" ,ui_pid);
+        }
+
+
         int finger_checked_result;
 #if QT_VERSION > 0x050000
         finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("status").toInt();
@@ -201,20 +266,6 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
         }
     }
 
-    pid_t pid = fork();
-    switch(pid)
-    {
-    case -1:
-        LOGLOG("fork failed");
-        exit(1);
-        break;
-    case 0:
-        execlp("tjgd1zsmui", "tjgd1zsmui" ,"-hide" ,0);
-        exit(0);
-        break;
-    default:
-        break;
-    }
   #else
 
 #if 0

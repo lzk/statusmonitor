@@ -57,13 +57,13 @@ int AppConfig::initConfig()
         return -2;
     }
 
-//#ifndef DEBUG_TO_STDERR
-//    //release as deaemon
-//    int result = daemon(0 ,0);
-//    if(!result){
-//        LOGLOG("daemon success!");
-//    }
-//#endif
+#ifndef DEBUG_TO_STDERR
+    //release as deaemon
+    int result = daemon(0 ,0);
+    if(!result){
+        LOGLOG("daemon success!");
+    }
+#endif
     //config status server thread
 //    status_file = "/tmp/.toecstatus";
 //    status_lock_file = "/tmp/.locktoecstatus";
