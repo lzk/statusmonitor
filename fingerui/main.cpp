@@ -4,8 +4,70 @@
 #include <signal.h>
 #include <unistd.h>
 #include <QSettings>
+#include <QMessageBox>
+#include "../toec/filterlib.h"
 int g_jobid = 0;
-int app_ret = 0;
+MainWindow* ww;
+
+void quit(int);
+void result_quit(int);
+void handler_result(int result);
+void update_result(int jobid ,int result)
+{
+    QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
+    QString value = QString("%1,%2").arg(result).arg(getpid());
+    settings.setValue(QString("%1").arg(jobid) ,value);
+
+    handler_result(result);
+    if(result != Checked_Result_checking)
+        quit(0);
+}
+
+QString get_result(int jobid)
+{
+    QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
+    QString str_jobid = QString("%1").arg(jobid);
+    QString value = settings.value(str_jobid).toString();
+    return value;
+}
+
+void handler_result(int result)
+{
+    int finger_checked_result;
+    finger_checked_result = result;
+
+    if(finger_checked_result != Checked_Result_Disable){
+
+        if(finger_checked_result == Checked_Result_DevBusy)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("设备忙，当前打印作业将被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
+        else if(finger_checked_result == Checked_Result_Fail)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证失败，打印作业将被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
+        else if(finger_checked_result == Checked_Result_NoFinger)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("设备用户列表为空，无法进行指纹验证，当前打印作业将被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
+        else if(finger_checked_result == Checked_Result_timeout || finger_checked_result == Checked_Result_Cancel|| finger_checked_result == Checked_Result_invalidJobid)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证被用户取消，打印作业也将被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
+    }
+}
 
 void quit(int)
 {
@@ -13,12 +75,33 @@ void quit(int)
         qApp->quit();
 }
 
+void result_quit(int)
+{
+    int result = Checked_Result_invalidJobid;
+    int jobid = g_jobid;
+
+    QString value = get_result(jobid);
+    if(!value.isEmpty()){
+        QStringList columns = value.split(",");
+        result = columns.at(0).toInt();
+    }
+//    update_result(jobid ,result);
+
+    ww->hide();
+    handler_result(result);
+    quit(0);
+
+}
+
 int main(int argc, char *argv[])
 {
     signal(SIGINT ,quit);
+    signal(34 ,result_quit);
 
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/image/app_icon.png"));
+    a.setQuitOnLastWindowClosed(false);
+
 //    QCoreApplication::setOrganizationName("TOEC");
 ////    QCoreApplication::setOrganizationDomain("mysoft.com");
 //    QCoreApplication::setApplicationName("FingerUi");
@@ -34,14 +117,9 @@ int main(int argc, char *argv[])
     else
         str = arguments[1];
     MainWindow w(str);
+    ww = &w;
     w.show();
 
-    QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
-    QString value = QString("%1,%2").arg(app_ret).arg(getpid());
-    settings.setValue(QString("%1").arg(g_jobid) ,value);
-
     a.exec();
-    value = QString("%1,%2").arg(app_ret).arg(getpid());
-    settings.setValue(QString("%1").arg(g_jobid) ,value);
     return 0;
 }

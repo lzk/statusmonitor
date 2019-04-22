@@ -6,8 +6,10 @@
 #if QT_VERSION > 0x050000
 #include <QUrlQuery>
 #endif
-extern int app_ret;
+#include "../toec/filterlib.h"
+
 extern int g_jobid;
+void update_result(int jobid ,int result);
 MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -46,8 +48,9 @@ MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
     if(time_val < 10)
         time_val = 30;
 
+    update_result(g_jobid ,Checked_Result_checking);
 //    setWindowFlags(Qt::FramelessWindowHint);
-    this->setWindowTitle(QString("指纹认证-") + printer_name + QString("-%1").arg(g_jobid));
+    this->setWindowTitle(QString("指纹认证-") + printer_name + QString("-%1").arg(jobid));
 
     ui->label_timeval->setText(QString("%1").arg(time_val));
     ui->label->setText(QString("您的打印工作需要进行指纹认证，请按下您的手指。如果在%1秒内未检测到正确指纹，则打印工作取消。您也可以直接点击“取消”按键取消当前打印。")
@@ -73,13 +76,15 @@ void MainWindow::timeout()
         time_val --;
         ui->label_timeval->setText(QString("%1").arg(time_val));
     }else{
+        hide();
+        update_result(jobid ,Checked_Result_timeout);
         close();
-        app_ret = 2;
     }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    app_ret = 1;
+    hide();
+    update_result(jobid ,Checked_Result_Cancel);
     QMainWindow::closeEvent(event);
 }
