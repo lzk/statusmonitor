@@ -47,21 +47,21 @@ int parsePrinterStatus(PRINTER_STATUS* pStatus ,PrinterStatus_struct* ps)
     case 0xfe:
 //        LOGLOG("paper tray status: out of page");
         ps->trayPaperTrayStatus = 2 ;break;
-    case 1:
-        ps->trayPaperTrayStatus = 1 ;break;
-    case 2:
-        ps->trayPaperTrayStatus = 2 ;break;
-    case 3:
-        ps->trayPaperTrayStatus = 3 ;break;
-    case 4:
-        ps->trayPaperTrayStatus = 4 ;break;
-    case 5:
-        ps->trayPaperTrayStatus = 5 ;break;
-    case 0:
     default:
 //        LOGLOG("paper tray status: ready");
         ps->trayPaperTrayStatus = 0 ;break;
     }
+    if((pStatus->PaperTrayStatus & 0x01) && !(pStatus->PaperTrayStatus & 0x02) && !(pStatus->PaperTrayStatus & 0x04))
+           ps->PaperTray = 1;
+      else if((!pStatus->PaperTrayStatus & 0x01) && (pStatus->PaperTrayStatus & 0x02) && !(pStatus->PaperTrayStatus & 0x04))
+          ps->PaperTray = 2;
+      else if((pStatus->PaperTrayStatus & 0x01) && (pStatus->PaperTrayStatus & 0x02) && !(pStatus->PaperTrayStatus & 0x04))
+          ps->PaperTray = 3;
+      else if(!(pStatus->PaperTrayStatus & 0x01) && !(pStatus->PaperTrayStatus & 0x02) && (pStatus->PaperTrayStatus & 0x04))
+          ps->PaperTray = 4;
+      else if((pStatus->PaperTrayStatus & 0x01) && !(pStatus->PaperTrayStatus & 0x02) && (pStatus->PaperTrayStatus & 0x04))
+          ps->PaperTray = 5;
+
 //    switch(pStatus->job){
 //    case 0:            LOGLOG("executing job: unknow job");            break;
 //    case 1:            LOGLOG("executing job: print job");            break;

@@ -19,6 +19,7 @@ struct PrinterStatus_struct
     int PaperType;
     int NonDellTonerMode;
     int LowTonerAlert;
+    int PaperTray;
 }
     PrinterStatus_struct;
 

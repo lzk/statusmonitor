@@ -33,6 +33,7 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
 
 
     ui->buttonBox->removeButton(ui->buttonBox->button(QDialogButtonBox::Ok));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("取消");
 
     ui->label_gif->setPixmap(QPixmap(":/image/finger.gif"));
 //    movie = new QMovie(":/image/finger.gif");
