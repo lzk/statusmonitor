@@ -244,7 +244,7 @@ void AppServer::new_finger_dialog(int id ,const QString& s)
     dialog = new CheckFingerDialog(s);
     connect(dialog ,SIGNAL(cancel_job(int)) ,this ,SLOT(cancel(int)));
     connect(dialog ,SIGNAL(job_timeout(int)) ,this ,SLOT(timeout(int)));
-    dialog->setWindowFlags(dialog->windowFlags() | Qt::WindowStaysOnTopHint);
+//    dialog->setWindowFlags(dialog->windowFlags() | Qt::WindowStaysOnTopHint);
     dialog->show();
 //    dialog->raise();
 

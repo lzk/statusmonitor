@@ -7,7 +7,7 @@
 
 const QString app_name = QString::fromUtf8("打印机状态监视器");
 FileLocker app_file_locker;
-AppServer* app_server;
+//AppServer* app_server;
 
 extern
 int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
@@ -50,7 +50,7 @@ UIConfig::UIConfig(QObject *parent) :
 int UIConfig::initConfig()
 {
     log_app_name = "tjgd1zsmui";
-    app_version = "1.0.12beta";
+    app_version = "1.0.12";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -71,10 +71,10 @@ int UIConfig::initConfig()
         LOGLOG("app had been locked!");
         return -1;
     }
-    if(is_app_running(SERVER_PATH_STM)){
-        LOGLOG("socket working!");
-        return -2;
-    }
+//    if(is_app_running(SERVER_PATH_STM)){
+//        LOGLOG("socket working!");
+//        return -2;
+//    }
 
     //config status server thread
 //    status_file = "/tmp/.toecstatus";
@@ -89,7 +89,7 @@ int UIConfig::initConfig()
     isDeviceSupported = _isDeviceSupported;
     getpidvid = _getpidvid;
 
-    app_server = new AppServer(SERVER_PATH_STM);
+//    app_server = new AppServer(SERVER_PATH_STM);
     return 0;
 }
 
@@ -98,5 +98,5 @@ void UIConfig::exit_app()
 //    QFile::remove(status_file);
 //    QFile::remove(status_lock_file);
     app_file_locker.unlock();
-    delete app_server;
+//    delete app_server;
 }

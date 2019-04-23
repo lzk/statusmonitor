@@ -17,6 +17,8 @@ MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+
     ui->label_gif->setPixmap(QPixmap(":/image/finger.gif"));
 //    movie = new QMovie(":/image/finger.gif");
 //    ui->label_gif->setMovie(movie);

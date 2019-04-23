@@ -95,10 +95,8 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             exit(1);
             break;
         case 0:{
-            execlp("tjgd1zfmui", "tjgd1zfmui" ,tmp_cmd.toLatin1().constData() ,0);
-//            QString _cmd("tjgd1zfmui ");
-//            _cmd += cmd;
-//            system(_cmd.toLatin1().constData());
+            execl("/usr/share/tjgd1z/tjgd1zfmui", "tjgd1zfmui" ,tmp_cmd.toLatin1().constData() ,0);
+//            execlp("tjgd1zfmui", "tjgd1zfmui" ,tmp_cmd.toLatin1().constData() ,0);
             exit(0);
             break;
         }

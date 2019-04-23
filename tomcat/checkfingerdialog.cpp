@@ -27,6 +27,8 @@ CheckFingerDialog::CheckFingerDialog(const QString& _job_info ,QWidget *parent) 
 
     timer.setInterval(1000);
     ui->setupUi(this);
+    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+
     ui->label_timeval->setText(QString("%1").arg(time_val));
     ui->label->setText(QString("您的打印工作需要进行指纹认证，请按下您的手指。如果在%1秒内未检测到正确指纹，则打印工作取消。您也可以直接点击“取消”按键取消当前打印。")
                        .arg(time_val));
