@@ -49,21 +49,21 @@ public:
     bool isConnected(int vid, int pid, const char *serial);
     int getDeviceAddress(int vid, int pid, const char *serial ,int* address ,int* bus = 0);
 
-    int write_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
-    int read_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
+    int write_bulk(char* buffer ,int bufsize);
+    int read_bulk(char* buffer ,int bufsize);
 
     static int iterateDevices(usbDeviceHandler handler ,void* handlerData);
 private:
     int getDeviceWithSerial(struct_device*);
-    int config(libusb_device *dev ,libusb_device_handle *udev);
+    int config(libusb_device *dev ,libusb_device_handle *udev ,int interface = 0);
     int device_open(int vid ,int pid ,const char* serial);
 
 private:
     int g_interface;
 //    libusb_device *g_device;
 //    libusb_device_handle *g_dev_h;
-    int bulk_in[2];
-    int bulk_out[2];
+    int bulk_in;
+    int bulk_out;
     struct_device device;
 };
 

@@ -89,10 +89,10 @@ int UIConfig::initConfig()
         LOGLOG("app had been locked!");
         return -1;
     }
-    if(is_app_running(SERVER_PATH)){
-        LOGLOG("socket working!");
-        return -2;
-    }
+//    if(is_app_running(SERVER_PATH)){
+//        LOGLOG("socket working!");
+//        return -2;
+//    }
     //config status server thread
 //    status_file = "/tmp/.lntstatus";
 //    status_lock_file = "/tmp/.locklntstatus";

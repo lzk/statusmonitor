@@ -148,7 +148,7 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
     return ret;
 }
 
-int UsbApi::config(libusb_device *dev ,libusb_device_handle *udev)
+int UsbApi::config(libusb_device *dev ,libusb_device_handle *udev ,int interface)
 {
     int result;
 
@@ -190,6 +190,27 @@ int UsbApi::config(libusb_device *dev ,libusb_device_handle *udev)
     }
     result = libusb_set_configuration (udev, config0->bConfigurationValue);
 
+    if(interface < config0->bNumInterfaces){
+        const struct libusb_interface_descriptor* p_inter;
+        int num;
+        int type,direction;
+        p_inter = &config0->interface[interface].altsetting[0];
+        num = p_inter->bNumEndpoints;
+        for(int i = 0 ;i < num ;i++){
+            type = p_inter->endpoint[i].bmAttributes & LIBUSB_TRANSFER_TYPE_MASK;
+            if(type == LIBUSB_TRANSFER_TYPE_BULK) {
+                direction = p_inter->endpoint[i].bEndpointAddress & LIBUSB_ENDPOINT_DIR_MASK;
+                if(direction == LIBUSB_ENDPOINT_IN)
+                    bulk_in = p_inter->endpoint[i].bEndpointAddress;
+                else
+                    bulk_out = p_inter->endpoint[i].bEndpointAddress;
+            }
+        }
+
+    }else{
+        result = 1;
+    }
+#if 0
     const struct libusb_interface_descriptor* p_inter;
     int num;
     int type,direction;
@@ -210,6 +231,7 @@ int UsbApi::config(libusb_device *dev ,libusb_device_handle *udev)
             }
         }
     }
+#endif
     libusb_free_config_descriptor (config0);
 
     if (result < 0)
@@ -353,7 +375,7 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
     if(interface < 0)
         return ret;
     libusb_reset_device(device.udev);
-    ret = config(device.dev ,device.udev);
+    ret = config(device.dev ,device.udev ,g_interface);
     if(ret){
         LOGLOG("libusb can not config");
         libusb_close(device.udev);
@@ -491,13 +513,11 @@ int UsbApi::getDeviceAddress(int vid, int pid, const char *serial ,int* address 
     return ret;
 }
 
-int UsbApi::write_bulk(char* buffer ,int bufsize ,unsigned int interface)
+int UsbApi::write_bulk(char* buffer ,int bufsize)
 {
-    if(interface > 1)
-        return -1;
     int ret;
     int actual_length;
-    ret = libusb_bulk_transfer(device.udev ,bulk_out[interface] , (unsigned char *) buffer, bufsize, &actual_length, 5000);
+    ret = libusb_bulk_transfer(device.udev ,bulk_out , (unsigned char *) buffer, bufsize, &actual_length, 5000);
     if(ret < 0){
         LOGLOG("libusb bulk write error:%d" ,ret);
         return ret;
@@ -505,13 +525,11 @@ int UsbApi::write_bulk(char* buffer ,int bufsize ,unsigned int interface)
         return actual_length;
 }
 
-int UsbApi::read_bulk(char* buffer ,int bufsize ,unsigned int interface)
+int UsbApi::read_bulk(char* buffer ,int bufsize)
 {
-    if(interface > 1)
-        return -1;
     int ret;
     int actual_length;
-    ret = libusb_bulk_transfer(device.udev ,bulk_in[interface] , (unsigned char *) buffer, bufsize, &actual_length, 30000);
+    ret = libusb_bulk_transfer(device.udev ,bulk_in , (unsigned char *) buffer, bufsize, &actual_length, 30000);
     if(ret < 0){
         LOGLOG("libusb bulk read error:%d" ,ret);
         return ret;

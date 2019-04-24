@@ -76,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+    ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
 //    errorStatus(false);
     disconnect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
     ui->deviceNameBox->clear();
@@ -915,6 +916,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
 
         if(isOfflineStart)
         {
@@ -938,6 +940,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
         if(isOfflineStart)
         {
             isOfflineStart = false;
@@ -955,6 +958,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
         ui->mofenProgressBar->setValue(0);
         updateTonerCarStatus(-1);
         emit signalCloseAnimationDlg();
@@ -970,6 +974,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
         if(isOfflineStart)
         {
             isOfflineStart = false;
@@ -1007,6 +1012,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         }
 
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Red.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Red.png);");
         if(isOfflineStart)
         {
             isOfflineStart = false;

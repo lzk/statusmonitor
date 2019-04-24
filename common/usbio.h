@@ -16,8 +16,8 @@ public:
     virtual int write(char *buffer, int bufsize);
     virtual int read(char *buffer, int bufsize);
     virtual int getDeviceId_without_open(char* ,int);
-    virtual int write_bulk(char *buffer, int bufsize ,unsigned int interface = 0);
-    virtual int read_bulk(char *buffer, int bufsize ,unsigned int interface = 0);
+    virtual int write_bulk(char *buffer, int bufsize);
+    virtual int read_bulk(char *buffer, int bufsize);
 
     virtual int resolve(Printer_struct* printer);
 protected:

@@ -242,12 +242,12 @@ const char* NetIO::getDeviceAddress()
     return hostAddress.toString().toLatin1().constData();
 }
 
-int NetIO::write_bulk(char *buffer, int bufsize ,unsigned int)
+int NetIO::write_bulk(char *buffer, int bufsize)
 {
     return write(buffer ,bufsize);
 }
 
-int NetIO::read_bulk(char *buffer, int bufsize ,unsigned int)
+int NetIO::read_bulk(char *buffer, int bufsize)
 {
     return read(buffer ,bufsize);
 }
