@@ -75,8 +75,9 @@ void quit(int)
         qApp->quit();
 }
 
-void result_quit(int)
+void result_quit(int signal)
 {
+#if 0
     int result = Checked_Result_invalidJobid;
     int jobid = g_jobid;
 
@@ -86,7 +87,9 @@ void result_quit(int)
         result = columns.at(0).toInt();
     }
 //    update_result(jobid ,result);
-
+#else
+    int result = signal - 34;
+#endif
     ww->hide();
     handler_result(result);
     quit(0);
@@ -97,6 +100,14 @@ int main(int argc, char *argv[])
 {
     signal(SIGINT ,quit);
     signal(34 ,result_quit);
+    signal(35 ,result_quit);
+    signal(36 ,result_quit);
+    signal(37 ,result_quit);
+    signal(38 ,result_quit);
+    signal(39 ,result_quit);
+    signal(40 ,result_quit);
+    signal(41 ,result_quit);
+    signal(42 ,result_quit);
 
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/image/app_icon.png"));

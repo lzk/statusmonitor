@@ -143,11 +143,11 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
         switch(result){
         case Checked_Result_Cancel:
             strcpy(buffer ,"cancel");
-            app_server->delete_finger_dialog(ui_pid);
+//            app_server->delete_finger_dialog(ui_pid);
             break;
         case Checked_Result_timeout:
             strcpy(buffer ,"timeout");
-            app_server->delete_finger_dialog(ui_pid);
+//            app_server->delete_finger_dialog(ui_pid);
             break;
         case Checked_Result_checking:
             strcpy(buffer ,"checking");
@@ -155,7 +155,7 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
         case Checked_Result_invalidJobid:
         default:
             strcpy(buffer ,"invalid");
-            app_server->delete_finger_dialog(ui_pid);
+//            app_server->delete_finger_dialog(ui_pid);
             break;
         }
 
@@ -203,7 +203,11 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             ui_pid = columns.at(1).toInt();
             str_value = QString("%1,%2").arg(finger_checked_result).arg(ui_pid);
             settings.setValue(QString("%1").arg(jobid) ,str_value);
-            app_server->delete_finger_dialog(ui_pid);
+//            app_server->delete_finger_dialog(ui_pid);
+            if(ui_pid){
+                kill(ui_pid ,34 + finger_checked_result);
+                LOGLOG("kill %d %d" ,ui_pid ,34 + finger_checked_result);
+            }
         }
     }
 

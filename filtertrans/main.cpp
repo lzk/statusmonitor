@@ -3,6 +3,7 @@
 #include "appconfig.h"
 #include <signal.h>
 #include "watcher.h"
+#include <QTextCodec>
 
 void quit(int)
 {
@@ -19,6 +20,10 @@ int main(int argc, char *argv[])
     }
 
     QApplication a(argc, argv);
+#if QT_VERSION < 0x050000
+        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
+        QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));
+#endif
 
     signal(SIGINT ,quit);
     signal(SIGHUP ,quit);
