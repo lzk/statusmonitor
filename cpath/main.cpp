@@ -5,7 +5,6 @@
 UInterface* gUInterface;
 #include <sys/wait.h>
 #include "uiconfig.h"
-//#include "serverthread.h"
 #include "commonapi.h"
 //#include "statusthread.h"
 #include <qtranslator.h>
@@ -69,15 +68,10 @@ void quit(int)
 
 int main(int argc, char *argv[])
 {
-    UIConfig::initConfig();
-    if(is_app_running(SERVER_PATH)){
+    if(UIConfig::initConfig()){
         LOGLOG("There has been a same app running!");
         return 0;
     }
-
-
-//    ServerThread* thread_server = new ServerThread(SERVER_PATH);
-//    thread_server->start();
 
     signal(SIGINT ,quit);
 #ifdef Q_WS_X11

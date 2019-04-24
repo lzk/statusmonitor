@@ -1,7 +1,26 @@
 #include "uiconfig.h"
 #include "commonapi.h"
-#include <QDir>
+#include "filelocker.h"
+//#include "appserver.h"
 #include <QFile>
+#include <QDir>
+
+//const QString app_name = QString::fromUtf8("打印机状态监视器");
+FileLocker app_file_locker;
+//AppServer* app_server;
+
+extern
+int (* getpidvid)(const QString& makeAndModel ,int& pid ,int& vid ,int& interface);
+//log file var
+extern const char* log_app_name;
+extern const char* app_version;
+//usb error control var
+extern int usb_error_printing;
+extern int usb_error_scanning;
+extern int usb_error_usb_locked;
+//scan control var
+extern const char* lock_scan_file;
+extern const char* lock_scan_info_file;
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
@@ -57,26 +76,23 @@ static int _getpidvid(const QString& makeAndModel ,int& pid ,int& vid ,int& inte
     }
     return (pid == -1) ?-1 :0;
 }
-extern
-int (* getpidvid)(const QString& modelname ,int& pid ,int& vid ,int& interface);
 
 UIConfig::UIConfig(QObject *parent) :
     QObject(parent)
 {
 }
 
-//log file var
-extern const char* log_app_name;
-extern const char* app_version;
-//scan control var
-extern const char* lock_scan_file;
-extern const char* lock_scan_info_file;
-//usb error control var
-extern int usb_error_printing;
-extern int usb_error_scanning;
-extern int usb_error_usb_locked;
-void UIConfig::initConfig()
+int UIConfig::initConfig()
 {
+    const char* app_locker_file = "/tmp/.cpath_locker";
+    if(app_file_locker.trylock(app_locker_file)){
+        LOGLOG("app had been locked!");
+        return -1;
+    }
+//    if(is_app_running(SERVER_PATH)){
+//        LOGLOG("socket working!");
+//        return -2;
+//    }
     //config status server thread
 //    status_file = "/tmp/.lntstatus";
 //    status_lock_file = "/tmp/.locklntstatus";
@@ -95,7 +111,7 @@ void UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo_cpath";
-    app_version = "1.0.0.17";
+    app_version = "1.0.0.17beta";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -110,12 +126,17 @@ void UIConfig::initConfig()
         path->remove(TMP_SCAN_DIR);
     }
     path->mkdir(TMP_SCAN_DIR);
+
+//    app_server = new AppServer(SERVER_PATH_STM);
+    return 0;
 }
 
 void UIConfig::exit_app()
 {
 //    QFile::remove(filepath);
 //    QFile::remove(lockfile);
+    app_file_locker.unlock();
+ //   delete app_server;
     QDir dir(TMP_SCAN_DIR);
     QDir *path = &dir;
     if(path->exists(TMP_SCAN_DIR)){
