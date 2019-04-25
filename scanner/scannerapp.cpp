@@ -349,6 +349,8 @@ int ScannerApp::scan(Printer_struct* printer ,ScanSettings* settings)
         if(settings->callback)
             settings->callback(settings);
     }
+    remove(jpg_file_name);
+    remove(raw_file_name);
     return ret;
 }
 

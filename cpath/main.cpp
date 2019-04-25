@@ -104,6 +104,7 @@ int main(int argc, char *argv[])
     QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml" ,QSettings::NativeFormat);
     qDebug()<<settings.fileName();
 
+
     QSplashScreen *splash = new QSplashScreen;
     QString lan = QLocale::system().name();
     if(lan == "en_US")
@@ -117,13 +118,12 @@ int main(int argc, char *argv[])
        splash->setPixmap(QPixmap(":/Images/Startup.tif"));
     }
 
-    splash->show();
+    splash->setEnabled(false);
 
     MainWindow w;
-
     w.setGeometry(splash->geometry());
-
     w.setWindowIcon(QIcon(":/Images/printer.ico"));
+    splash->show();
 
 //    QTranslator trans1;
 //    trans1.load("qt_" + QLocale::system().name() ,":/translations");
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
         a.processEvents();
     }
 
-    if(!arguments.contains("-hide"))
+//    if(!arguments.contains("-hide"))
         w.show();
     splash->finish(&w);
     delete splash;

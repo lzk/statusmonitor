@@ -1,23 +1,10 @@
-INCLUDEPATH += $${PWD}
 
-INCLUDEPATH += ../libs ../libs/cups-2.2.8
+QT += core network
 
-LIBS += -L$${PWD}/../libs -lusb-1.0  -lcups
-mac{
-    LIBS += -lnetsnmp
-}else{
-    unix{
-        contains(QT_ARCH, i386) {
-            LIBS += $${PWD}/../libs/linux32/libnetsnmp.a
-        }else{
-            LIBS += $${PWD}/../libs/linux64/libnetsnmp.a
-        }
-    }
-}
-
-macx: LIBS += -L/Volumes/work/software/libusb
-
-QT       += core network
+INCLUDEPATH += \
+            $${PWD} \
+            $$PWD/../libs \
+            $$PWD/../libs/cups-2.2.8
 
 HEADERS += \
     $$PWD/serverthread.h \
@@ -34,14 +21,11 @@ SOURCES += \
     $$PWD/devicemanager.cpp \
     $$PWD/snmpapi.cpp
 
-
 mac{
-
     SOURCES += \
     $$PWD/macapi.cpp
 
 }else{
-
     SOURCES += \
     $$PWD/linuxapi.cpp
 

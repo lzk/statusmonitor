@@ -22,6 +22,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+include("../jklib/jklib.pri")
 include("../cpath/cpath.pri")
 
 SOURCES += \
@@ -147,25 +148,29 @@ contains(CONFIG ,static){
 }
 }
 
-INCLUDEPATH += $${PWD}/../libs/libtiff
-#LIBS +=  -lz
+INCLUDEPATH += \
+            $${PWD}/../libs/libtiff
+
 mac{
-            LIBS += $${PWD}/../libs/mac/libtiff.a -lz
-!contains(CONFIG ,static){
-#            LIBS += $${PWD}/../libs/mac/libjpeg.a
-}
+    LIBS += \
+            $${PWD}/../libs/mac/libtiff.a \
+            -lz \
+
 }else{
     unix{
         contains(QT_ARCH, i386) {
-            LIBS += $${PWD}/../libs/linux32/libtiff.a
-!contains(CONFIG ,static){
-#            LIBS += $${PWD}/../libs/linux32/libjpeg.a
-}
+            LIBS += \
+                $${PWD}/../libs/linux32/libtiff.a
+
         }else{
-            LIBS += $${PWD}/../libs/linux64/libtiff.a -lz
-!contains(CONFIG ,static){
-#            LIBS += $${PWD}/../libs/linux64/libjpeg.a
-}
+            LIBS += \
+                $${PWD}/../libs/linux64/libtiff.a \
+                -lz \
         }
     }
+}
+
+!contains(CONFIG ,static){
+LIBS += \
+    -ljpeg
 }

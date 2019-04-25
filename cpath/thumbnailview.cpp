@@ -140,8 +140,8 @@ void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,Q
     QPixmap fixPixmap = pixmap.scaled(new_size.width(),new_size.height(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
     image = fixPixmap.toImage();
 
-    qDebug()<<"new"<<new_size;
-    qDebug()<<image.size();
+//    qDebug()<<"new"<<new_size;
+//    qDebug()<<image.size();
 
     emit image_send(obj ,image ,flag ,weight);
 }
@@ -150,7 +150,7 @@ ThumbnailView::ThumbnailView(QWidget *parent) :
     QListWidget(parent)
 {
     image_handler = new ImageHandler(this);
-    setSpacing(5);
+    setSpacing(6);
     setViewMode(QListView::IconMode);
     setFlow(QListView::LeftToRight);
 //    setEditTriggers(QAbstractItemView::DoubleClicked);
@@ -159,6 +159,9 @@ ThumbnailView::ThumbnailView(QWidget *parent) :
 //    setDragEnabled(false);
     setMovement(QListView::Static);
 //    setMaximumHeight(300);
+    setStyleSheet(
+                  "selection-background-color:transparent;"
+              );
 }
 
 ThumbnailView::~ThumbnailView()
@@ -170,7 +173,7 @@ void ThumbnailView::add_image_item(const QString& origin_image_path ,QSize iamge
 {
     QListWidgetItem* item = new QListWidgetItem();
     insertItem(0 ,item);
-    item->setSizeHint(QSize(width() / 3 - 15 ,height() - 10));
+    item->setSizeHint(QSize((width() - 50) / 3 ,height() - 10));
     item->setData(Qt::UserRole ,origin_image_path);
     item->setData(Qt::UserRole + 1 ,iamge_size);
     ThumbnailImage* widget = new ThumbnailImage(item ,image_handler);
