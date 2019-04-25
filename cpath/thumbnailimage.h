@@ -46,6 +46,7 @@ private slots:
     void image_update(QObject* obj ,const QImage& image);
     void listWidget_itemSelectionChanged();
     void timerSingleClick();
+    void doubleClickEvent();
 };
 
 #endif // THUMBNAILIMAGE_H

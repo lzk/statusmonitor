@@ -14,6 +14,27 @@ INCLUDEPATH += \
             $${PWD}/../lshell \
             $${PWD}/../scanner \
 
+#CONFIG(debug ,debug|release){
+LIBS += \
+     -L $${OUT_PWD}/../jklib -ljklib \
+
+#}else{
+#LIBS += \
+#    $${OUT_PWD}/../jklib/libjklib.a \
+
+#}
+
+LIBS += \
+    -L$${PWD}/../libs \
+    -lusb-1.0 \
+    -lcups \
+    -llnthr8zcl \
+
+!contains(CONFIG ,static){
+LIBS += \
+    -ljpeg
+}
+
 mac{
 
     DEFINES += JK_OS_MAC
@@ -37,18 +58,4 @@ LIBS += \
 
         }
     }
-}
-
-LIBS += \
-    $${OUT_PWD}/../jklib/libjklib.a \
-    -L$${PWD}/../libs \
-    -lusb-1.0 \
-    -lcups \
-    -llnthr8zcl \
-    -ljpeg
-
-!contains(CONFIG ,static){
-    #            LIBS += $${PWD}/../libs/mac/libjpeg.a
-    #            LIBS += $${PWD}/../libs/linux32/libjpeg.a
-    #            LIBS += $${PWD}/../libs/linux64/libjpeg.a
 }

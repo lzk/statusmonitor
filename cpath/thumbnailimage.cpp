@@ -96,7 +96,7 @@ void ThumbnailImage::image_ask()
 
 void ThumbnailImage::image_update(QObject *obj, const QImage &_image)
 {
-    qDebug()<<"ThumbnailImage::image_update";
+//    qDebug()<<"ThumbnailImage::image_update";
     if(obj == this){
         image = _image;
         update();
@@ -153,15 +153,31 @@ bool ThumbnailImage::eventFilter(QObject * obj, QEvent * event)
                 return true;
             }
         }
+//    }else if(event->type() == QEvent::MouseButtonDblClick){
+
+//        QMouseEvent* me = static_cast<QMouseEvent*>(event);
+//        if(Qt::LeftButton == me->button()){
+//            doubleClickEvent();
+//            return true;
+//        }
     }
     return QWidget::eventFilter(obj,event);
 }
 
-void ThumbnailImage::mouseDoubleClickEvent(QMouseEvent *)
+void ThumbnailImage::mouseDoubleClickEvent(QMouseEvent *e)
+{
+    if(Qt::LeftButton == e->button()){
+        doubleClickEvent();
+    }
+}
+
+void ThumbnailImage::doubleClickEvent()
 {
     pTimerSingleClick->stop();
-    item->setSelected(!item->isSelected());
     if(item){
+        item->setSelected(true);
+//        item->setSelected(!item->isSelected());
+        timerSingleClick();
         ImagePreviewDialog dialog(item ,image_handler);
         int ret = dialog.exec();
         int angle = ret % 4;

@@ -170,4 +170,7 @@ mac{
     }
 }
 
-LIBS += -ljpeg
+!contains(CONFIG ,static){
+LIBS += \
+    -ljpeg
+}

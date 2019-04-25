@@ -121,16 +121,14 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
 //        LOGLOG("found usb device with serial:%s" ,devserialNumber);
     }
 
-    if(pData_device->deviceInfo.serial[0] != NULL){
+    ret = 1;
+    if(pData_device->deviceInfo.serial[0] != 0){
         get_serial(dev ,devserialNumber);
         if(!strcmp(pData_device->deviceInfo.serial ,devserialNumber)){
  //           LOGLOG("get device success via serial");
             pData_device->dev = dev;
             pData_device->udev = udev;
             ret = 0;
-            return ret;//do not close the found dev
-        }else{
-            ret = 1;
         }
     }else{
         if(pData_device->deviceInfo.vid == desc.idVendor
@@ -139,11 +137,9 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
             pData_device->dev = dev;
             pData_device->udev = udev;
             ret = 0;
-        }else{
-            ret = 1;
         }
     }
-    if(udev)
+    if(ret && udev)
         libusb_close(udev);
     return ret;
 }
@@ -346,6 +342,7 @@ int UsbApi::device_open(int vid ,int pid ,const char* serial)
     }else if(serial && strcmp(deviceInfo->serial ,serial)){
         same_device = false;
     }
+    same_device = false;
     if(!same_device){
         deviceInfo->vid = vid;
         deviceInfo->pid = pid;
@@ -359,9 +356,10 @@ int UsbApi::device_open(int vid ,int pid ,const char* serial)
         }
     }
 
-    ret = libusb_open (device.dev, &device.udev);
-    if(ret < 0)
-        return -1;
+//    device.udev = NULL;
+//    ret = libusb_open (device.dev, &device.udev);
+//    if(ret < 0)
+//        return -1;
     return 0;
 }
 

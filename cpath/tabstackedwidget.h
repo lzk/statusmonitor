@@ -130,6 +130,7 @@ private:
 
     QTimer *timerClick;
 
+    bool scanning;
 //signals:
 //    void cycleStartFromTab();
 //    void cycleStopFromTab();
