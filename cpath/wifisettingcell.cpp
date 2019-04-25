@@ -293,11 +293,13 @@ void WiFiSettingCell::cmdResult(int cmd,int result ,QVariant data)
             apInfo.APStatus.clear();
             apInfo.APStatus = tr("ResStr_Connected");
             deviceMsg = tr("ResStr_Setting_Successfully_");
+            ui->btConnect->setDisabled(true);
             emit connectSuc(this, true);
         }
         else
         {
             deviceMsg = tr("ResStr_Setting_Fail");
+            ui->btConnect->setEnabled(true);
             emit connectSuc(this, false);
         }
         gUInterface->setDeviceMsgFrmUI(deviceMsg,result);

@@ -17,6 +17,9 @@
    <string notr="true">background-image: url();
 background-color: transparent;</string>
   </property>
+  <property name="currentIndex">
+   <number>0</number>
+  </property>
   <widget class="QWidget" name="page1">
    <property name="styleSheet">
     <string notr="true">border-image:: url();
@@ -318,7 +321,7 @@ QPushButton{
      <rect>
       <x>20</x>
       <y>96</y>
-      <width>196</width>
+      <width>198</width>
       <height>29</height>
      </rect>
     </property>
@@ -720,7 +723,7 @@ QCheckBox::indicator::checked {
      <rect>
       <x>7</x>
       <y>124</y>
-      <width>209</width>
+      <width>211</width>
       <height>29</height>
      </rect>
     </property>

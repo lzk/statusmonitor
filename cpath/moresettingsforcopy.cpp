@@ -739,6 +739,8 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
             ui->label_32->setEnabled(true);
 
             ui->scaling->setDisabled(true);
+            ui->btReduce->setDisabled(true);
+            ui->btAdd->setDisabled(true);
             ui->label_1->setDisabled(true);
             ui->label->setDisabled(true);
 
@@ -773,6 +775,8 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
             ui->label_30->setEnabled(true);
 
             ui->scaling->setDisabled(true);
+            ui->btReduce->setDisabled(true);
+            ui->btAdd->setDisabled(true);
             ui->label_1->setDisabled(true);
             ui->label->setDisabled(true);
 
@@ -789,6 +793,8 @@ void MoreSettingsForCopy::on_isNinOne_toggled(bool checked)
         ui->label_31->setDisabled(true);
         ui->label_32->setDisabled(true);
         ui->scaling->setEnabled(true);
+        ui->btReduce->setEnabled(true);
+        ui->btAdd->setEnabled(true);
         ui->label_1->setEnabled(true);
         ui->label->setEnabled(true);
         ui->bt4in1->setEnabled(true);
