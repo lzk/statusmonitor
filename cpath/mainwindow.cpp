@@ -716,16 +716,16 @@ void MainWindow::updateTonerCarStatus(int toner)
 
 void MainWindow::enableAllFunction(bool enabled)
 {
-    if(enabledScanCopy)
-    {
-        ui->tabStackedWidget->set_setting_enabled(enabled);
-        ui->tabStackedWidget->set_scan_enabled(enabled);//Added for default enable scan button by gavin 2016-04-14
-        ui->tabStackedWidget->set_copy_enabled(enabled);
-    }
-    else
-    {
-        ui->tabStackedWidget->set_setting_enabled(enabled);
-    }
+//    if(enabledScanCopy)
+//    {
+//        ui->tabStackedWidget->set_setting_enabled(enabled);
+//        ui->tabStackedWidget->set_scan_enabled(enabled);//Added for default enable scan button by gavin 2016-04-14
+//        ui->tabStackedWidget->set_copy_enabled(enabled);
+//    }
+//    else
+//    {
+//        ui->tabStackedWidget->set_setting_enabled(enabled);
+//    }
 }
 
 void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
@@ -949,7 +949,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
                                     "border-radius:5px;"
                                     "background-color: rgb(53, 177, 20);}");
         enableAllFunction(false);
-        ui->tabStackedWidget->set_copy_enabled(true);
+//        ui->tabStackedWidget->set_copy_enabled(true);
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
@@ -1011,7 +1011,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         break;
     default:
         enableAllFunction(false);
-        ui->tabStackedWidget->set_copy_enabled(true);
+//        ui->tabStackedWidget->set_copy_enabled(true);
         break;
     }
 }

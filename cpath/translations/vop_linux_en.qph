@@ -1610,7 +1610,7 @@
 
     <phrase>
 <source>ResStr_Tag1</source>
-<target>Lenovo  Neo</target>
+<target>Lenovo Print</target>
 </phrase>
 
 
@@ -1652,7 +1652,7 @@
 
     <phrase>
 <source>ResStr_Do_you_want_to_exit_the_Lenovo_Printer</source>
-<target>Do you want to exit the Neo Printing?</target>
+<target>Do you want to exit the Lenovo Print?</target>
 </phrase>
 
 
@@ -1958,7 +1958,7 @@
 
     <phrase>
 <source>ResStr_In_order_to_deliver_improved</source>
-<target>In order to deliver improved versions of the "Neo Printing" software and better user services, Lenovo would like to gather user data on a regular basis; the data include mobile numbers of registered users, the type of documents printed and the frequency of printing, printer model and related information, mobile equipment location and identifier, computer identifier, etc.</target>
+<target>In order to deliver improved versions of the "Lenovo Print" software and better user services, Lenovo would like to gather user data on a regular basis; the data include mobile numbers of registered users, the type of documents printed and the frequency of printing, printer model and related information, mobile equipment location and identifier, computer identifier, etc.</target>
 </phrase>
 
 
