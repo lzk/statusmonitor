@@ -36,10 +36,10 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     ui->copyNum->setText(tr("1"));
 
     //init Density,default is level2;
-    value_Density = 2;
+    value_Density = 3;
     ui->mark0_Density->setStyleSheet("background-color: rgb(53, 177, 20);");
     ui->mark1_Density->setStyleSheet("background-color: rgb(53, 177, 20);");
-    ui->mark2_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
+    ui->mark2_Density->setStyleSheet("background-color: rgb(53, 177, 20);");
     ui->mark3_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
     ui->mark4_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
 
@@ -248,10 +248,10 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
         ui->copyNum->setText(tr("1"));
 
         //init Density,default is level2;
-        value_Density = 2;
+        value_Density = 3;
         ui->mark0_Density->setStyleSheet("background-color: rgb(53, 177, 20);");
         ui->mark1_Density->setStyleSheet("background-color: rgb(53, 177, 20);");
-        ui->mark2_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
+        ui->mark2_Density->setStyleSheet("background-color: rgb(53, 177, 20);");
         ui->mark3_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
         ui->mark4_Density->setStyleSheet("background-color: rgb(154, 238, 117);");
 
