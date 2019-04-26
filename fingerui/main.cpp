@@ -59,6 +59,13 @@ void handler_result(int result)
             msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
             msg.exec ();
         }
+        else if(finger_checked_result == Checked_Result_Abort_Print)
+        {
+            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("当前打印作业被取消！"));
+            msg.setStandardButtons (QMessageBox::Ok);
+            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+            msg.exec ();
+        }
         else if(finger_checked_result == Checked_Result_timeout || finger_checked_result == Checked_Result_Cancel|| finger_checked_result == Checked_Result_invalidJobid)
         {
             QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证被用户取消，打印作业也将被取消！"));
@@ -99,15 +106,9 @@ void result_quit(int signal)
 int main(int argc, char *argv[])
 {
     signal(SIGINT ,quit);
-    signal(34 ,result_quit);
-    signal(35 ,result_quit);
-    signal(36 ,result_quit);
-    signal(37 ,result_quit);
-    signal(38 ,result_quit);
-    signal(39 ,result_quit);
-    signal(40 ,result_quit);
-    signal(41 ,result_quit);
-    signal(42 ,result_quit);
+    for(int i = 0 ;i < Checked_Result_max ;i ++){
+        signal(34 + i ,result_quit);
+    }
 
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/image/app_icon.png"));

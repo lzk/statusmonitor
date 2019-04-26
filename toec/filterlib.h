@@ -15,12 +15,16 @@ enum{
     Checked_Result_checking,
     Checked_Result_NoFinger,
     Checked_Result_DevBusy,
+    Checked_Result_Abort_Print,
+
+    Checked_Result_max
 };
 
 int checkFinger(int jobid ,const char* username ,const char* filename);
 
 int get_device_id_via_filter(const char* printer_name ,const char* printer_uri);
 
+void finger_abort(int id);
 //typedef struct
 //{
 //    char printer[512];

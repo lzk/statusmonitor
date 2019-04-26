@@ -10,6 +10,9 @@
 #include <QFile>
 #include <QSettings>
 
+
+bool print_cancel =false;
+int job_id_cancel = -1;
 const char* ui_server_path = SERVER_PATH;
 FingerManager::FingerManager()
 {
@@ -57,6 +60,7 @@ void callback_getJob(void* para,Job_struct* js)
     LOGLOG("callback_getJob: start check finger");
     LOGLOG("callback_getJob:server_path=%s",ui_server_path);
     LOGLOG("callback_getJob user name:%s ,file name:%s" ,sm->username ,sm->filename);
+    LOGLOG("callback_getJob printer:%s" ,js->printer);
 
     Trans_Client tc(ui_server_path);//(sm->server_path);
     char buffer[256];
@@ -83,6 +87,13 @@ void callback_getJob(void* para,Job_struct* js)
 
     int isFingerEnable  = sm->mFinger.finger_isEnabled(device_uri);//? 1:0;//finger_isEnabled() ?1 :0;
     LOGLOG("callback_getJob: check finge gate open %d", isFingerEnable);
+    if(job_id_cancel == js->id && print_cancel)
+    {
+        LOGLOG("gavin: print job cancel ...");
+        print_cancel = false;
+        job_id_cancel = -1;
+        return;
+    }
 
     int printerResult = 1;
     sm->chenk_end = false;
@@ -92,6 +103,9 @@ void callback_getJob(void* para,Job_struct* js)
 
 
         LOGLOG("gavin: show Dlg...");
+        QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
+        QString value = QString("%1,%2").arg(Checked_Result_checking).arg(0);
+        settings.setValue(QString("%1").arg(js->id) ,value);
 
         int invalid_times = 0;
         sprintf(buffer ,"start://%s?jobid=%d" ,js->printer ,js->id);
@@ -101,6 +115,20 @@ void callback_getJob(void* para,Job_struct* js)
             LOGLOG("gavin: show Dlg...OK");
             sscanf(buffer,"startok:%d",&(sm->m_timeout));
             LOGLOG("libtoec: start check finger job , timeout=%d", sm->m_timeout);
+            if(job_id_cancel == js->id && print_cancel)
+            {
+                print_cancel = false;
+                job_id_cancel = -1;
+                LOGLOG("gavin: print job cancel 2 ...");
+                sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, Checked_Result_Abort_Print
+                        ,sm->username ,sm->filename);
+                tc.writeThenRead(buffer ,sizeof(buffer));
+                if(!strcmp(buffer ,"resultok"))
+                {
+                    LOGLOG("gavin: show Dlg...close ok");
+                }
+                return;
+            }
             int ret;
             ret = pthread_create(&check_thread, NULL, checkFingerThread, (void *)sm);
             pthread_detach(check_thread);
@@ -117,6 +145,28 @@ void callback_getJob(void* para,Job_struct* js)
             struct timeval tpstart, tpend;/*for test time*/
             gettimeofday(&tpstart, 0);
             while(1){
+
+                LOGLOG("gavin: job_id_cancel = %d, js->id=%d, print_cancel=%d...",job_id_cancel, js->id, print_cancel? 1:0);
+                if(job_id_cancel == js->id && print_cancel)
+                {
+                    print_cancel = false;
+                    job_id_cancel = -1;
+                    LOGLOG("gavin: print job cancel 3 ...");
+                    pthread_cancel(check_thread);
+                    usleep(200000);
+                    sm->mFinger.finger_cancel(sm->m_device_uri);
+                    sm->check_result = Checked_Result_Abort_Print;
+
+                    sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                            ,sm->username ,sm->filename);
+                    tc.writeThenRead(buffer ,sizeof(buffer));
+                    if(!strcmp(buffer ,"resultok"))
+                    {
+                        LOGLOG("gavin: show Dlg...close ok");
+                    }
+                    break;
+                }
+
                 gettimeofday(&tpend, 0);
                 float timeuse = 1000000 * (tpend.tv_sec - tpstart.tv_sec) + tpend.tv_usec - tpstart.tv_usec;
                 timeuse /= 1000000;
@@ -246,6 +296,18 @@ void callback_getJob(void* para,Job_struct* js)
 
             while(1)
             {
+                if(job_id_cancel == js->id && print_cancel)
+                {
+                    print_cancel = false;
+                    job_id_cancel = -1;
+                    LOGLOG("gavin: print job cancel 4 ...");
+                    pthread_cancel(check_thread);
+                    usleep(200000);
+                    sm->mFinger.finger_cancel(sm->m_device_uri);
+                    sm->check_result = Checked_Result_Abort_Print;
+
+                    break;
+                }
                 gettimeofday(&tpend, 0);
                 float timeuse = 1000000 * (tpend.tv_sec - tpstart.tv_sec) + tpend.tv_usec - tpstart.tv_usec;
                 timeuse /= 1000000;
