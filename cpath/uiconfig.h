@@ -137,6 +137,9 @@ public:
         ,Usb_Locked
         ,Usb_Printing
         ,Usb_Scanning
+        ,Show_duplex_automation
+        ,Show_ID_Card_automation
+        ,Show_Nin1_automation
     }EnumStatus;
 
     typedef enum

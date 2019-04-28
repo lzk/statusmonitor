@@ -151,26 +151,26 @@ contains(CONFIG ,static){
 INCLUDEPATH += \
             $${PWD}/../libs/libtiff
 
-mac{
-    LIBS += \
-            $${PWD}/../libs/mac/libtiff.a \
-            -lz \
-
-}else{
-    unix{
-        contains(QT_ARCH, i386) {
-            LIBS += \
-                $${PWD}/../libs/linux32/libtiff.a
-
-        }else{
-            LIBS += \
-                $${PWD}/../libs/linux64/libtiff.a \
-                -lz \
-        }
-    }
-}
-
 !contains(CONFIG ,static){
 LIBS += \
     -ljpeg
+
+    mac{
+        LIBS += \
+                $${PWD}/../libs/mac/libtiff.a \
+                -lz \
+
+    }else{
+        unix{
+            contains(QT_ARCH, i386) {
+                LIBS += \
+                    $${PWD}/../libs/linux32/libtiff.a
+
+            }else{
+                LIBS += \
+                    $${PWD}/../libs/linux64/libtiff.a \
+                    -lz \
+            }
+        }
+    }
 }

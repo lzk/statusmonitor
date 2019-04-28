@@ -696,6 +696,7 @@ void Worker::update_printerlist()
     QVariant value;
     watcher->get_printer_list(printer_list);
     value.setValue(printer_list);
+    usleep(1000 * 1000);//last 1 second for refresh button -_-
     cmdResult(UIConfig::CMD_GetPrinters ,0 ,value);
 }
 

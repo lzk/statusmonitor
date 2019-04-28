@@ -25,6 +25,7 @@ enum Duplex_Copy_Mode {Flip_Long_Edge=0,Flip_Short_Edge};
 struct Prompt {
     bool isIDCard;
     bool isMultible;
+    int isDuplex;
 };
 
 struct Param_Copy {

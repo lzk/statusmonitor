@@ -263,6 +263,7 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
     {
         paramCopy.promptInfo.isIDCard = true;
         paramCopy.promptInfo.isMultible = true;
+        paramCopy.promptInfo.isDuplex = 1;
     }
     else
     {
@@ -769,6 +770,24 @@ void TabStackedWidget::setEnabledWifi(bool enabled)
 void TabStackedWidget::on_btn_Copy_clicked()
 {
     qDebug()<<"start copy";
+    if(paramCopy.promptInfo.isDuplex == 1){//duplex checked to show automation
+        LOGLOG("show duplex automation");
+        bool enNextShow = true;
+//            QString videoTypeStr = "01_JAM";
+//            QString languageStr = "SimplifiedChinese";
+        AnimationDlg *aDialog = new AnimationDlg(this, UIConfig::Show_duplex_automation, &enNextShow);
+        aDialog->setMaximumSize(400,650);
+        aDialog->setMinimumSize(400,650);
+        aDialog->setAttribute(Qt::WA_DeleteOnClose);
+        if (aDialog->exec() == QDialog::Rejected)
+        {
+            return;
+        }
+        if(enNextShow == false)
+        {
+            paramCopy.promptInfo.isDuplex = 0;
+        }
+    }
     if (ui->cBox_IsIDCard->isChecked() == true)
     {
         if (paramCopy.promptInfo.isIDCard == true)
@@ -776,7 +795,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
             bool enNextShow = true;
 //            QString videoTypeStr = "01_JAM";
 //            QString languageStr = "SimplifiedChinese";
-            AnimationDlg *aDialog = new AnimationDlg(this, 1, &enNextShow);
+            AnimationDlg *aDialog = new AnimationDlg(this, UIConfig::Show_ID_Card_automation, &enNextShow);
             aDialog->setMaximumSize(400,650);
             aDialog->setMinimumSize(400,650);
             aDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -804,7 +823,7 @@ void TabStackedWidget::on_btn_Copy_clicked()
             bool enNextShow = true;
 //            QString videoTypeStr = "06_Nin1Copy";
 //            QString languageStr = "SimplifiedChinese";
-            AnimationDlg *aDialog = new AnimationDlg(this, 2, &enNextShow);
+            AnimationDlg *aDialog = new AnimationDlg(this, UIConfig::Show_Nin1_automation, &enNextShow);
             aDialog->setMaximumSize(400,650);
             aDialog->setMinimumSize(400,650);
             aDialog->setAttribute(Qt::WA_DeleteOnClose);
