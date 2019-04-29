@@ -24,7 +24,7 @@ static void callback_getJob(void* para,Job_struct* js)
     gethostname(hostname ,sizeof(hostname));
 //    StatusMonitor* sm = (StatusMonitor*)para;
     char job_history[512];
-    sprintf(job_history ,"%d,%s,%s,%s,%s,%d,%d,%d"
+    sprintf(job_history ,"%d/%s/%s/%s/%s/%d/%d/%d"
 //            ,js->id ,js->printer ,hostname,js->user_name  ,js->name
             ,js->id ,js->printer ,hostname,job->username.toUtf8().constData()  ,job->filename.toUtf8().constData()
              ,(js->copies < 1) ?1 :js->copies
@@ -78,7 +78,7 @@ int Tomcat::get_job_history(Jobs_struct* pJobs)
         key = QString(job_key) + jobs.at(index) +"/";
         state = settings.value(key + "state").toInt();
         pJobs->job_list << settings.value(key + "main").toString()
-                           +QString(",%1,%2,%3")
+                           +QString("/%1/%2/%3")
                            .arg(settings.value(key + "pages").toInt())
                            .arg(settings.value(key + "state").toInt())
                            .arg(settings.value(key + "time").toInt());

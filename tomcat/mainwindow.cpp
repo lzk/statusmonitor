@@ -1178,7 +1178,7 @@ void MainWindow::updateJobHistory(const QVariant& data)
     base = 0;
     for(int i = 0 ;i < job_history.length() ;i++){
         QString str = job_history.at(i);
-        QStringList columns = str.split(",");
+        QStringList columns = str.split("/");
         if(columns.length() < 11)
             break;
 //        qDebug()<<"columns:"<<columns;
