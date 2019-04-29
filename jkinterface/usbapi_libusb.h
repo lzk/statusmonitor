@@ -42,12 +42,12 @@ public:
     int init();
     int exit();
     int getDeviceId(char* ,int);
-    int open(int vid ,int pid ,const char* serial ,int interface = 0);
+    int open(int vid ,int pid ,const char* serial);
     int close();
     int write(char* buffer ,int bufsize);
     int read(char* buffer ,int bufsize);
-    bool isConnected(int vid, int pid, const char *serial);
-    int getDeviceAddress(int vid, int pid, const char *serial ,int* address ,int* bus = 0);
+    int getDeviceAddress(int* address ,int* bus = 0);
+    int config(int interface);
 
     int write_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
     int read_bulk(char* buffer ,int bufsize ,unsigned int interface = 0);
@@ -55,15 +55,14 @@ public:
     static int iterateDevices(usbDeviceHandler handler ,void* handlerData);
 private:
     int getDeviceWithSerial(struct_device*);
-    int config(libusb_device *dev ,libusb_device_handle *udev);
-    int device_open(int vid ,int pid ,const char* serial);
+    int config(libusb_device *dev ,libusb_device_handle *udev ,int interface = 0);
 
 private:
     int g_interface;
 //    libusb_device *g_device;
 //    libusb_device_handle *g_dev_h;
-    int bulk_in[2];
-    int bulk_out[2];
+    int bulk_in;
+    int bulk_out;
     struct_device device;
 };
 
