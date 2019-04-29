@@ -352,18 +352,21 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
     g_interface = interface;
     if(interface < 0)
         return ret;
-    libusb_reset_device(device.udev);
+    //libusb_reset_device(device.udev);//changed by gavin 20190429
     ret = config(device.dev ,device.udev);
     if(ret){
         LOGLOG("libusb can not config");
         libusb_close(device.udev);
         return ret;
     }
-    ret = claimInterface(device.udev ,g_interface);
-    if(ret){
-        LOGLOG("libusb can not claim interface:%d" ,g_interface);
-        libusb_close(device.udev);
-        return ret;
+    if(g_interface > 0)//changed by gavin 20190429
+    {
+        ret = claimInterface(device.udev ,g_interface);
+        if(ret){
+            LOGLOG("libusb can not claim interface:%d" ,g_interface);
+            libusb_close(device.udev);
+            return ret;
+        }
     }
 //    LOGLOG("libusb open success ,bulkin address:0x%02x" ,bulk_in);
     return ret;
@@ -371,7 +374,8 @@ int UsbApi::open(int vid, int pid, const char *serial ,int interface)
 
 int UsbApi::close()
 {
-    if(g_interface >= 0)
+    //if(g_interface >= 0)
+    if(g_interface > 0) //changed by gavin 20190429
         releaseInterface(device.udev ,g_interface);
 
     libusb_close(device.udev);

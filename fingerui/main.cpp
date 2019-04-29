@@ -59,13 +59,13 @@ void handler_result(int result)
             msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
             msg.exec ();
         }
-        else if(finger_checked_result == Checked_Result_Abort_Print)
-        {
-            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("当前打印作业被取消！"));
-            msg.setStandardButtons (QMessageBox::Ok);
-            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
-            msg.exec ();
-        }
+//        else if(finger_checked_result == Checked_Result_Abort_Print)
+//        {
+//            QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("当前打印作业被取消！"));
+//            msg.setStandardButtons (QMessageBox::Ok);
+//            msg.setButtonText (QMessageBox::Ok,QString::fromUtf8("确定"));
+//            msg.exec ();
+//        }
         else if(finger_checked_result == Checked_Result_timeout || finger_checked_result == Checked_Result_Cancel|| finger_checked_result == Checked_Result_invalidJobid)
         {
             QMessageBox msg(QMessageBox::Warning,QString::fromUtf8("警告"),QString::fromUtf8("指纹验证被用户取消，打印作业也将被取消！"));
