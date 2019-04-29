@@ -1551,12 +1551,12 @@
 
     <phrase>
 <source>ResStr_Paper_Jam_Duplex_Entry_Sensor</source>
-<target>双面入口处卡纸</target>
+<target>双面单元入口处卡纸</target>
 </phrase>
 
     <phrase>
 <source>ResStr_Paper_Jam_Duplex_Nofeed</source>
-<target>双面单元卡纸</target>
+<target>双面单元不给纸</target>
 </phrase>
 
 </QPH>
