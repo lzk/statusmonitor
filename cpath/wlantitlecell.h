@@ -66,6 +66,7 @@ public:
 //    BusyRefreshLabel *cycle;
     APInfo *currentAp;
     void emptyWifiList();
+    void setWifiEnabled(bool enabled);
 
 public slots:
     void updateAP();

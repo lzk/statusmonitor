@@ -18,6 +18,7 @@ public:
     ~WiFiSettingCell();
     APInfo getAPInfo();
     void tryConnect(APInfo);
+    void setWifiEnabled(bool enabled);
 
 signals:
     void SizeChanged(QSize , QSize );

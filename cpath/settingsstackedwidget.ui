@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>StackedWidget</string>
   </property>
+  <property name="currentIndex">
+   <number>3</number>
+  </property>
   <widget class="QWidget" name="WiFi">
    <widget class="QLabel" name="background_WiFi2">
     <property name="geometry">
@@ -936,13 +939,17 @@ QRadioButton::indicator::checked {
 	border-image:url(:/Images/Btn_Green.png);
 	color: rgb(255, 255, 255);
 }
-QPushButton:hover{
+QPushButton::hover{
 	border-image:url(:/Images/Btn_Green.png);
 	color:brack;
 }
 QPushButton:pressed{
-border-image:url(:/Images/Btn_Green_Pressed.png);
-color: rgb(255, 255, 255);
+	border-image:url(:/Images/Btn_Green_Pressed.png);
+	color:white;
+}
+QPushButton::disabled{
+border-image: url(:/Images/Btn_Scan_Disabled.png) ;
+color:white;
 }</string>
     </property>
     <property name="text">
@@ -973,13 +980,17 @@ color: rgb(255, 255, 255);
 	border-image:url(:/Images/Btn_Green.png);
 	color: rgb(255, 255, 255);
 }
-QPushButton:hover{
+QPushButton::hover{
 	border-image:url(:/Images/Btn_Green.png);
 	color:brack;
 }
 QPushButton:pressed{
-border-image:url(:/Images/Btn_Green_Pressed.png);
-color: rgb(255, 255, 255);
+	border-image:url(:/Images/Btn_Green_Pressed.png);
+	color:white;
+}
+QPushButton::disabled{
+border-image: url(:/Images/Btn_Scan_Disabled.png) ;
+color:white;
 }</string>
     </property>
     <property name="text">
