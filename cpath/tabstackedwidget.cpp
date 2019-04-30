@@ -718,7 +718,13 @@ void TabStackedWidget::setEnabledCopyScan(bool enabled)
         ui->settingPage->setStyleSheet("#settingPage{background-image: url(:/Images/PagePrint.tif);}");
     }
 }
-
+void TabStackedWidget::setTitelCellEnabled(bool enabled)
+{
+    if(enabled)
+        ui->settingStackedWidget->titelCell->setWifiEnabled(true);
+    else
+        ui->settingStackedWidget->titelCell->setWifiEnabled(false);
+}
 void TabStackedWidget::setEnabledWifi(bool enabled)
 {
     ui->settingStackedWidget->setWifiEnabled(enabled);

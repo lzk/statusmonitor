@@ -38,6 +38,8 @@ public slots:
 
     void setDefault_Scan();
 
+    void setTitelCellEnabled(bool enabled);
+
 
 private slots:
     void on_cBox_IsIDCard_clicked(bool checked);

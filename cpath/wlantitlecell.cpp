@@ -57,6 +57,7 @@ WlanTitleCell::WlanTitleCell(QWidget *parent, QScrollBar *_scrollBar,  bool wlan
     wifiWepCell = new WiFiSettingWEPCell();
     wifiCell = new WiFiSettingCell();
 
+
 //    device->emit_cmd_plus(CMD_WIFI_refresh_plus);
 
 //    cycle = new BusyRefreshLabel(parent);
@@ -524,7 +525,26 @@ void WlanTitleCell::onTimeout()
     }
 
 }
+void WlanTitleCell::setWifiEnabled(bool enabled)
+{
+    if(enabled)
+    {
+        ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+        ui->label_wifiIcon->setStyleSheet("border-image: url(:/Images/Wireless_Active.png);");
+        ui->btFlesh->setStyleSheet("border-image: url(:/Images/Status_RefreshEnable.tif);");
+        wifiCell->setWifiEnabled(true);
+        wifiWepCell->setWifiEnabled(true);
 
+    }
+    else
+    {
+        ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Disable.png);");
+        ui->label_wifiIcon->setStyleSheet("border-image: url(:/Images/Wireless.png);");
+        ui->btFlesh->setStyleSheet("border-image: url(:/Images/Status_RefreshDisable.tif);");
+        wifiCell->setWifiEnabled(false);
+        wifiWepCell->setWifiEnabled(false);
+    }
+}
 void WlanTitleCell::emptyWifiList()
 {
     while(!(apList.isEmpty()))
@@ -543,6 +563,7 @@ void WlanTitleCell::emptyWifiList()
        widget->setLayout(&pageLayout);
    }
    aList.clear();
+   setWifiEnabled(false);
 }
 
 void WlanTitleCell::on_btFlesh_clicked()
@@ -565,6 +586,7 @@ void WlanTitleCell::on_btFlesh_clicked()
        widget->setLayout(&pageLayout);
    }
    aList.clear();
+   setWifiEnabled(true);
 
    LOGLOG("cycleStartFromWT");
 #ifndef DEBUG

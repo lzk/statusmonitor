@@ -18,7 +18,7 @@
 background-color: transparent;</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>1</number>
   </property>
   <widget class="QWidget" name="page1">
    <property name="styleSheet">
@@ -450,7 +450,10 @@ QPushButton:pressed{
 	border-image:url(:/Images/Btn_Green_Pressed.png);
 	color: rgb(255, 255, 255);
 }
-</string>
+QPushButton::disabled{
+border-image: url(:/Images/Btn_Scan_Disabled.png) ;
+color:white;
+}</string>
     </property>
     <property name="text">
      <string>ResStr_Connect</string>

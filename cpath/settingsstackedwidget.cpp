@@ -510,6 +510,7 @@ void SettingsStackedWidget::setWifiEnabled(bool enabled)
         ui->background_PowerSave2->setGeometry(ui->background_TCPIPV62->geometry().x(),ui->background_TCPIPV62->geometry().y() + 40,ui->background_TCPIPV62->geometry().width(),ui->background_TCPIPV62->height());
         ui->background_UserConfig2->setGeometry(ui->background_TCPIPV62->geometry().x(),ui->background_TCPIPV62->geometry().y() + 80,ui->background_TCPIPV62->geometry().width(),ui->background_TCPIPV62->height());
         ui->background_Password2->setGeometry(ui->background_TCPIPV62->geometry().x(),ui->background_TCPIPV62->geometry().y() + 120,ui->background_TCPIPV62->geometry().width(),ui->background_TCPIPV62->height());
+        titelCell->setWifiEnabled(true);
     }
     else
     {
@@ -519,6 +520,7 @@ void SettingsStackedWidget::setWifiEnabled(bool enabled)
         ui->background_PowerSave2->setGeometry(ui->background_WiFi2->geometry());
         ui->background_UserConfig2->setGeometry(ui->background_SoftAP2->geometry());
         ui->background_Password2->setGeometry(ui->background_TCPIPV42->geometry());
+        titelCell->setWifiEnabled(false);
     }
 
 }
