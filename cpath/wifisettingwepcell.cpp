@@ -143,6 +143,7 @@ void WiFiSettingWEPCell::initStatus()
         ui->label_StatusIcon->setStyleSheet("QLabel{border-image: url(:/Images/Signal_Connect.png);}");
         ui->label_line1->setStyleSheet("QLabel{border:1px solid  rgb(105, 185, 18);}");
         ui->label_line2->setStyleSheet("QLabel{border:1px solid  rgb(105, 185, 18);}");
+        ui->btConnect->setDisabled(true);
         apInfo.APStatus.clear();
         apInfo.APStatus = tr("ResStr_Connected");
     }
@@ -229,6 +230,7 @@ void WiFiSettingWEPCell::changeStatus()
     ui->label_StatusIcon->setStyleSheet("QLabel{border-image: url(:/Images/Signal_Enable.png);}");
     ui->label_line1->setStyleSheet("QLabel{border:1px solid  rgb(181, 181, 181);}");
     ui->label_line2->setStyleSheet("QLabel{border:1px solid  rgb(181, 181, 181);}");
+    ui->btConnect->setEnabled(true);
 }
 
 APInfo WiFiSettingWEPCell::getAPInfo()
@@ -294,6 +296,7 @@ void WiFiSettingWEPCell::cmdResult(int cmd,int result ,QVariant data)
             emit connectSuc(this, true);
 
             deviceMsg = tr("ResStr_Setting_Successfully_");
+            ui->btConnect->setDisabled(true);
         }
         else
         {
@@ -303,5 +306,16 @@ void WiFiSettingWEPCell::cmdResult(int cmd,int result ,QVariant data)
 
         gUInterface->setDeviceMsgFrmUI(deviceMsg,result);
         disconnect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
+    }
+}
+void WiFiSettingWEPCell::setWifiEnabled(bool enabled)
+{
+    if(enabled)
+    {
+        ui->label_StatusIcon->setStyleSheet("QLabel{border-image: url(:/Images/Signal_Connect.png);}");
+    }
+    else
+    {
+       ui->label_StatusIcon->setStyleSheet("QLabel{border-image: url(:/Images/Signal_Connect_Disable.png);}");
     }
 }

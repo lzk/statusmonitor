@@ -14,7 +14,7 @@
    <string>StackedWidget</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="page0">
    <widget class="QLabel" name="label_APStatus">
@@ -110,6 +110,9 @@ QPushButton{
     <property name="styleSheet">
      <string notr="true">QLabel{
 	border-image: url(:/Images/Signal_Enable.png);
+}
+QLabel::disable{
+	border-image: url(:/Images/Signal_Connect_Disable.png);
 }</string>
     </property>
     <property name="text">
@@ -262,7 +265,10 @@ QPushButton:pressed{
 	border-image:url(:/Images/Btn_Green_Pressed.png);
 	color: rgb(255, 255, 255);
 }
-</string>
+QPushButton::disabled{
+border-image: url(:/Images/Btn_Scan_Disabled.png) ;
+color:white;
+}</string>
     </property>
     <property name="text">
      <string>ResStr_Connect</string>

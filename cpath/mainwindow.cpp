@@ -744,6 +744,10 @@ void MainWindow::enableAllFunction(bool enabled)
 //    {
 //        ui->tabStackedWidget->set_setting_enabled(enabled);
 //    }
+    if(enabled)
+        ui->tabStackedWidget->setTitelCellEnabled(true);
+    else
+        ui->tabStackedWidget->setTitelCellEnabled(false);
 }
 
 void MainWindow::set_Message_Background_Color(UIConfig::EnumStatus s)
@@ -961,6 +965,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
         ui->mofenProgressBar->setValue(0);
         updateTonerCarStatus(-1);
+
         emit signalCloseAnimationDlg();
         break;
     case UIConfig::Status_Busy:

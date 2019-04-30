@@ -28,6 +28,9 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
    <widget class="QWidget" name="userInfo">
     <property name="styleSheet">
      <string notr="true"/>
@@ -1500,6 +1503,25 @@ background-color: rgb(235, 235, 235);</string>
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>740</x>
+       <y>60</y>
+       <width>27</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/Images/LED_Gray.png);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
     <zorder>inbox_bg</zorder>
     <zorder>about_bg</zorder>
     <zorder>exper_bg</zorder>
@@ -1531,6 +1553,7 @@ background-color: rgb(235, 235, 235);</string>
     <zorder>inbox_arrow</zorder>
     <zorder>btloginImg2</zorder>
     <zorder>btProduct</zorder>
+    <zorder>pushButton_2</zorder>
    </widget>
   </widget>
  </widget>
