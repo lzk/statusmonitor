@@ -50,10 +50,8 @@ int FileLocker::trylock(const char* filename)
 #else
         fd = fp->_fileno;
 #endif
-        if (flock(fd, LOCK_EX | LOCK_NB)){
-//            LOGLOG("locked");
-            ret = 0;//locked
-        }else{
+        ret = flock(fd, LOCK_EX | LOCK_NB);
+        if (ret){
 //            LOGLOG("not locked");
             fclose(fp);
             fp = NULL;

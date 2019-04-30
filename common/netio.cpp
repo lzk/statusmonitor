@@ -94,6 +94,10 @@ int NetIO::open(int port)
         LOGLOG("device is opened");
         return -1;
     }
+    if(hostAddress.toString().startsWith("fe80" ,Qt::CaseInsensitive)){
+        LOGLOG("can not support fe80 address");
+        return -1;
+    }
     if(tcpSocket)
         delete tcpSocket;
     tcpSocket = new QTcpSocket;
@@ -215,18 +219,22 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, i
 static int _platform_net_get_device_id(const QHostAddress& host_address,char *buffer, int bufsize);
 int NetIO::getDeviceId_without_open(char *buffer, int bufsize)
 {
+    if(hostAddress.toString().startsWith("fe80" ,Qt::CaseInsensitive)){
+//        LOGLOG("can not support fe80 address");
+        return -1;
+    }
 //    return _platform_net_get_device_id(resolved_url ,buffer ,bufsize);
     return _platform_net_get_device_id(hostAddress ,buffer ,bufsize);
 }
 
 bool NetIO::isConnected()
 {
-//    char buffer[1024];
-//    return !getDeviceId_without_open(buffer ,sizeof(buffer));
-    bool is_connected = open(9100) == 0 ?true :false;
-    if(is_connected)
-        close();
-    return is_connected;
+    char buffer[1024];
+    return !getDeviceId_without_open(buffer ,sizeof(buffer));
+//    bool is_connected = open(9100) == 0 ?true :false;
+//    if(is_connected)
+//        close();
+//    return is_connected;
 }
 
 const char* NetIO::getDeviceAddress()
@@ -234,12 +242,12 @@ const char* NetIO::getDeviceAddress()
     return hostAddress.toString().toLatin1().constData();
 }
 
-int NetIO::write_bulk(char *buffer, int bufsize ,unsigned int)
+int NetIO::write_bulk(char *buffer, int bufsize)
 {
     return write(buffer ,bufsize);
 }
 
-int NetIO::read_bulk(char *buffer, int bufsize ,unsigned int)
+int NetIO::read_bulk(char *buffer, int bufsize)
 {
     return read(buffer ,bufsize);
 }

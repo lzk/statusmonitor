@@ -1,11 +1,5 @@
 INCLUDEPATH += $${PWD}
 
-include("../jkinterface/jkinterface.pri")
-include("../statusmonitor/statusmonitor.pri")
-include(../common/common.pri)
-include(../lshell/lshell.pri)
-include(../scanner/scanner.pri)
-
 SOURCES += \
     $${PWD}/worker.cpp \
     $${PWD}/uinterface.cpp \

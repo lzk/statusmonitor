@@ -10,11 +10,8 @@
     <height>95</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
+  <property name="autoFillBackground">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="topMargin">

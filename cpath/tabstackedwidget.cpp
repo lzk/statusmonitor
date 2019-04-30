@@ -27,6 +27,7 @@
 TabStackedWidget::TabStackedWidget(QWidget *parent) :
     QStackedWidget(parent),
     ui(new Ui::TabStackedWidget)
+  ,scanning(false)
 {
     ui->setupUi(this);
 
@@ -94,7 +95,10 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             PrinterInfo_struct printerInfo = data.value<PrinterInfo_struct>();
             PrinterStatus_struct& status = printerInfo.status;
             ui->btn_Copy->setEnabled(StatusPaser::is_enable_copy(status.PrinterStatus));
-            ui->btn_Scan->setEnabled(StatusPaser::is_enable_scan(status.PrinterStatus));
+            if(scanning)
+                ui->btn_Scan->setEnabled(false);
+            else
+                ui->btn_Scan->setEnabled(StatusPaser::is_enable_scan(status.PrinterStatus));
             ui->settingStackedWidget->setEnabled(StatusPaser::is_enable_setting(status.PrinterStatus));
         }
         break;
@@ -203,6 +207,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
 //        ui->btn_Scan->setEnabled(true);
         ui->btn_ScanCancel->setEnabled(false);
         ui->progressBar_Scan->setValue(0);
+        scanning = false;
     }
         break;
     default:
@@ -546,6 +551,7 @@ void TabStackedWidget::on_btn_Scan_clicked()
     ui->btn_Scan->setEnabled(false);
     ui->btn_ScanCancel->setEnabled(true);
 
+    scanning = true;
 }
 
 void TabStackedWidget::on_btn_MoreSetting_Scan_clicked()

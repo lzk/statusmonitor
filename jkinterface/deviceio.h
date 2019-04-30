@@ -19,8 +19,8 @@ public:
     virtual int write(char *buffer, int bufsize) = 0;
     virtual int read(char *buffer, int bufsize) = 0;
     virtual int getDeviceId_without_open(char* ,int) = 0;
-    virtual int write_bulk(char *buffer, int bufsize ,unsigned int interface=0) = 0;
-    virtual int read_bulk(char *buffer, int bufsize ,unsigned int interface=0) = 0;
+    virtual int write_bulk(char *buffer, int bufsize) = 0;
+    virtual int read_bulk(char *buffer, int bufsize) = 0;
 
     virtual int open(Printer_struct* printer ,int port);
     virtual int resolve(Printer_struct* printer);

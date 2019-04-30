@@ -76,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+    ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
 //    errorStatus(false);
     disconnect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
     ui->deviceNameBox->clear();
@@ -343,10 +344,7 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
     }
         break;
     case UIConfig::CMD_SetCurrentPrinter:
-        ui->deviceNameBox->setEnabled(true);
-        ui->deviceNameLabel->setEnabled(true);
-        ui->deviceNameLabel_2->setEnabled(true);
-        ui->deviceNameLabel_2->installEventFilter(this);
+        currentPrinterChanged(current_printer);
         break;
     default:
         break;
@@ -401,7 +399,7 @@ void MainWindow::updatePrinter(const QVariant& data)
 void MainWindow::setcurrentPrinter(const QString& str)
 {
     current_printer = str;
-    qDebug()<<"current printer:"<<current_printer;
+//    qDebug()<<"current printer:"<<current_printer;
     ui->deviceNameBox->setEnabled(false);
     ui->deviceNameLabel->setEnabled(false);
     ui->deviceNameLabel_2->setEnabled(false);
@@ -445,6 +443,26 @@ void MainWindow::setcurrentPrinter(const QString& str)
             if(!isOfflineStart && (!enabledScanCopy))
             {
                 ui->tabStackedWidget->on_btn_PowerSave_clicked();
+            }
+        }
+    }
+}
+
+void MainWindow::currentPrinterChanged(const QString& str)
+{
+    ui->deviceNameBox->setEnabled(true);
+    ui->deviceNameLabel->setEnabled(true);
+    ui->deviceNameLabel_2->setEnabled(true);
+    ui->deviceNameLabel_2->installEventFilter(this);
+    if(str != "")
+    {
+        Printer_struct printer = printerlist.at(ui->deviceNameBox->currentIndex());
+        int modelType = UIConfig::getModelSerial(&printer);
+        if((modelType & UIConfig::Model_W) == UIConfig::Model_W)//W:WIFI
+        {
+            if(!isOfflineStart && (!enabledScanCopy))
+            {//refresh when change to LW machine
+                ui->tabStackedWidget->on_btn_WiFi_clicked();
             }
         }
     }
@@ -902,6 +920,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
 
         if(isOfflineStart)
         {
@@ -925,6 +944,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
         if(isOfflineStart)
         {
             isOfflineStart = false;
@@ -942,6 +962,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Gray.png);");
         ui->mofenProgressBar->setValue(0);
         updateTonerCarStatus(-1);
 
@@ -958,6 +979,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         ui->errorBtn->hide();
         ui->label_10->removeEventFilter(this);
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Green.png);");
         if(isOfflineStart)
         {
             isOfflineStart = false;
@@ -995,6 +1017,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         }
 
         ui->pushButton->setStyleSheet("border-image: url(:/Images/LED_Red.png);");
+        ui->pushButton_2->setStyleSheet("border-image: url(:/Images/LED_Red.png);");
         if(isOfflineStart)
         {
             isOfflineStart = false;

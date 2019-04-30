@@ -1,15 +1,4 @@
 INCLUDEPATH += $${PWD}
-#LIBS += -L$${OUT_PWD}/../statusmonitor -lstatusmonitor
-
-SOURCES += \
-    $${PWD}/statusmonitor.cpp \
-    $$PWD/statusmanager.cpp \
-    $$PWD/statusthread.cpp \
-    $$PWD/status.cpp \
-    $$PWD/cupsmanager.cpp \
-    $$PWD/smconfig.cpp \
-    $$PWD/statuswatcher.cpp
-
 
 HEADERS += \
     $${PWD}/statusmonitor.h \
@@ -19,3 +8,12 @@ HEADERS += \
     $$PWD/cupsmanager.h \
     $$PWD/smconfig.h \
     $$PWD/statuswatcher.h
+
+SOURCES += \
+    $${PWD}/statusmonitor.cpp \
+    $$PWD/statusmanager.cpp \
+    $$PWD/statusthread.cpp \
+    $$PWD/status.cpp \
+    $$PWD/cupsmanager.cpp \
+    $$PWD/smconfig.cpp \
+    $$PWD/statuswatcher.cpp
