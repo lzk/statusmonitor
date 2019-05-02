@@ -133,6 +133,7 @@ private:
     QTimer *timerClick;
 
     bool scanning;
+    UIConfig::EnumMachineJob  m_oldJob;
 //signals:
 //    void cycleStartFromTab();
 //    void cycleStopFromTab();

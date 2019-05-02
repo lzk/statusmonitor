@@ -9,20 +9,45 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../membercenter/about.cpp" line="9"/>
-        <source>ResStr_Lenovo_Printer</source>
-        <translation>联想打印</translation>
-    </message>
-    <message>
         <location filename="../membercenter/about.ui" line="72"/>
         <source>ResStr_Copyright</source>
         <translation>版权所有(C)(2019)
 联想图像(天津)科技有限公司。
 保留所有权利。</translation>
     </message>
+    <message>
+        <location filename="../membercenter/about.cpp" line="9"/>
+        <source>ResStr_Lenovo_Printer</source>
+        <translation>联想打印</translation>
+    </message>
 </context>
 <context>
     <name>AnimationDlg</name>
+    <message>
+        <location filename="../animationdlg.ui" line="83"/>
+        <source>ResStr_Cancel</source>
+        <translation>取  消</translation>
+    </message>
+    <message>
+        <location filename="../animationdlg.ui" line="123"/>
+        <source>ResStr_Prompt_Box_will_not_pop_up_next_time</source>
+        <translation>下次不再弹出该提示框</translation>
+    </message>
+    <message>
+        <location filename="../animationdlg.ui" line="141"/>
+        <source>ResStr_Prompt1</source>
+        <translation>温馨提示：</translation>
+    </message>
+    <message>
+        <location filename="../animationdlg.ui" line="190"/>
+        <source>ResStr_Prompt2</source>
+        <translation>如果1分钟之内不进行操作，任务将会自动取消。</translation>
+    </message>
+    <message>
+        <location filename="../animationdlg.ui" line="229"/>
+        <source>ResStr_OK</source>
+        <translation>确  定</translation>
+    </message>
     <message>
         <location filename="../animationdlg.cpp" line="68"/>
         <source>ResStr_ID_Card_Copy</source>
@@ -58,39 +83,9 @@
         <source>Did not find the video!</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../animationdlg.ui" line="83"/>
-        <source>ResStr_Cancel</source>
-        <translation>取  消</translation>
-    </message>
-    <message>
-        <location filename="../animationdlg.ui" line="123"/>
-        <source>ResStr_Prompt_Box_will_not_pop_up_next_time</source>
-        <translation>下次不再弹出该提示框</translation>
-    </message>
-    <message>
-        <location filename="../animationdlg.ui" line="141"/>
-        <source>ResStr_Prompt1</source>
-        <translation>温馨提示：</translation>
-    </message>
-    <message>
-        <location filename="../animationdlg.ui" line="190"/>
-        <source>ResStr_Prompt2</source>
-        <translation>如果1分钟之内不进行操作，任务将会自动取消。</translation>
-    </message>
-    <message>
-        <location filename="../animationdlg.ui" line="229"/>
-        <source>ResStr_OK</source>
-        <translation>确  定</translation>
-    </message>
 </context>
 <context>
     <name>AuthenticationDlg</name>
-    <message>
-        <location filename="../authenticationdlg.cpp" line="72"/>
-        <source>ResStr_Authentication_error__please_enter_the_password_again_</source>
-        <translation>认证错误，请重新输入密码。</translation>
-    </message>
     <message>
         <location filename="../authenticationdlg.ui" line="55"/>
         <location filename="../authenticationdlg.cpp" line="39"/>
@@ -106,6 +101,11 @@
         <location filename="../authenticationdlg.ui" line="159"/>
         <source>ResStr_Login</source>
         <translation>登  录</translation>
+    </message>
+    <message>
+        <location filename="../authenticationdlg.cpp" line="72"/>
+        <source>ResStr_Authentication_error__please_enter_the_password_again_</source>
+        <translation>认证错误，请重新输入密码。</translation>
     </message>
 </context>
 <context>
@@ -197,10 +197,6 @@
 <context>
     <name>ImagePreviewDialog</name>
     <message>
-        <source>ResStr_Print_Preview</source>
-        <translation type="obsolete">打印预览</translation>
-    </message>
-    <message>
         <location filename="../imagepreviewdialog.ui" line="26"/>
         <source>ResStr_Preview</source>
         <translation>预览</translation>
@@ -222,6 +218,12 @@
         <location filename="../mainwindow.ui" line="374"/>
         <source>ResStr_Toner</source>
         <translation>墨粉</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="401"/>
+        <location filename="../mainwindow.cpp" line="956"/>
+        <source>ResStr_Offline</source>
+        <translation>离线</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="501"/>
@@ -249,20 +251,15 @@
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="175"/>
-        <source>ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_</source>
-        <translation>应用关闭后，扫描图片将会被删除，是否关闭，请确认？</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="71"/>
-        <location filename="../mainwindow.cpp" line="910"/>
-        <source>ResStr_Ready</source>
-        <translation>待机</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="21"/>
         <source>ResStr_Lenovo_Printer</source>
         <translation>联想打印</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="71"/>
+        <location filename="../mainwindow.cpp" line="914"/>
+        <source>ResStr_Ready</source>
+        <translation>待机</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="121"/>
@@ -270,23 +267,22 @@
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="934"/>
+        <location filename="../mainwindow.cpp" line="175"/>
+        <source>ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_</source>
+        <translation>应用关闭后，扫描图片将会被删除，是否关闭，请确认？</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="938"/>
         <source>ResStr_Sleep</source>
         <translation>休眠</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="401"/>
-        <location filename="../mainwindow.cpp" line="952"/>
-        <source>ResStr_Offline</source>
-        <translation>离线</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="967"/>
+        <location filename="../mainwindow.cpp" line="972"/>
         <source>ResStr_Busy</source>
         <translation>工作中</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="986"/>
+        <location filename="../mainwindow.cpp" line="991"/>
         <source>ResStr_Error</source>
         <translation>错误</translation>
     </message>
@@ -294,106 +290,106 @@
 <context>
     <name>MemberCenterWidget</name>
     <message>
-        <location filename="../membercenterwidget.ui" line="54"/>
-        <location filename="../membercenterwidget.ui" line="1227"/>
-        <source>ResStr_Change_Account_Information</source>
-        <translation>修改账户信息</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="79"/>
-        <source>ResStr_Full_name</source>
-        <translation>姓名</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="107"/>
-        <source>ResStr_Birthday</source>
-        <translation>生日</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="135"/>
-        <source>ResStr_Sex</source>
-        <translation>性别</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="163"/>
-        <source>ResStr_Email</source>
-        <translation>邮箱</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="191"/>
-        <source>ResStr_Address</source>
-        <translation>地址</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="363"/>
-        <source>ResStr_Year</source>
-        <translation>年</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="384"/>
-        <source>ResStr_Month</source>
-        <translation>月</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="406"/>
-        <source>ResStr_Day</source>
-        <translation>日</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="505"/>
-        <source>ResStr_OK</source>
-        <translation>确  定</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="545"/>
-        <source>ResStr_Cancel</source>
-        <translation>取  消</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="871"/>
-        <source>ResStr_Return</source>
-        <translation>返回</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="893"/>
-        <source>ResStr_User_Experience</source>
-        <translation>用户体验改善计划</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="1311"/>
-        <source>ResStr_Product_Support</source>
-        <translation>产品与支持</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="1336"/>
-        <source>ResStr_About</source>
-        <translation>关于</translation>
-    </message>
-    <message>
-        <location filename="../membercenterwidget.ui" line="1007"/>
-        <location filename="../membercenterwidget.cpp" line="124"/>
-        <source>ResStr_Login_</source>
-        <translation>登录</translation>
-    </message>
-    <message>
         <location filename="../membercenterwidget.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="580"/>
+        <location filename="../membercenterwidget.ui" line="57"/>
+        <location filename="../membercenterwidget.ui" line="1230"/>
+        <source>ResStr_Change_Account_Information</source>
+        <translation>修改账户信息</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="82"/>
+        <source>ResStr_Full_name</source>
+        <translation>姓名</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="110"/>
+        <source>ResStr_Birthday</source>
+        <translation>生日</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="138"/>
+        <source>ResStr_Sex</source>
+        <translation>性别</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="166"/>
+        <source>ResStr_Email</source>
+        <translation>邮箱</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="194"/>
+        <source>ResStr_Address</source>
+        <translation>地址</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="366"/>
+        <source>ResStr_Year</source>
+        <translation>年</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="387"/>
+        <source>ResStr_Month</source>
+        <translation>月</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="409"/>
+        <source>ResStr_Day</source>
+        <translation>日</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="508"/>
+        <source>ResStr_OK</source>
+        <translation>确  定</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="548"/>
+        <source>ResStr_Cancel</source>
+        <translation>取  消</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="583"/>
         <source>ResStr_Women</source>
         <translation>女</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="615"/>
+        <location filename="../membercenterwidget.ui" line="618"/>
         <source>ResStr_Man</source>
         <translation>男</translation>
     </message>
     <message>
-        <location filename="../membercenterwidget.ui" line="1187"/>
+        <location filename="../membercenterwidget.ui" line="874"/>
+        <source>ResStr_Return</source>
+        <translation>返回</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="896"/>
+        <source>ResStr_User_Experience</source>
+        <translation>用户体验改善计划</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="1010"/>
+        <location filename="../membercenterwidget.cpp" line="124"/>
+        <source>ResStr_Login_</source>
+        <translation>登录</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="1190"/>
         <source>ResStr_Member_Center</source>
         <translation>会员中心</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="1314"/>
+        <source>ResStr_Product_Support</source>
+        <translation>产品与支持</translation>
+    </message>
+    <message>
+        <location filename="../membercenterwidget.ui" line="1339"/>
+        <source>ResStr_About</source>
+        <translation>关于</translation>
     </message>
     <message>
         <location filename="../membercenterwidget.cpp" line="571"/>
@@ -408,6 +404,12 @@
 </context>
 <context>
     <name>MoreSettingsForCopy</name>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="32"/>
+        <location filename="../moresettingsforcopy.ui" line="897"/>
+        <source>ResStr_More_Settings</source>
+        <translation>更多设置</translation>
+    </message>
     <message>
         <location filename="../moresettingsforcopy.ui" line="61"/>
         <location filename="../moresettingsforcopy.ui" line="396"/>
@@ -520,47 +522,6 @@
         <translation>确  定</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1469"/>
-        <source>ResStr_A4Mode_1</source>
-        <translation>A4模式1</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforcopy.ui" line="1494"/>
-        <source>ResStr_A4Mode_2</source>
-        <translation>A4模式2</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforcopy.ui" line="1519"/>
-        <source>ResStr_A4Mode_3</source>
-        <translation>A4模式3</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforcopy.ui" line="1544"/>
-        <source>ResStr_A5Mode</source>
-        <translation>A5模式</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforcopy.ui" line="1569"/>
-        <source>ResStr_Credentials_Duplex_Copy_Mode</source>
-        <translation>身份证复印模式</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforcopy.ui" line="1677"/>
-        <source>ResStr_Flip_on_long_edge</source>
-        <translation>长边翻页</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforcopy.ui" line="1682"/>
-        <source>ResStr_Flip_on_short_edge</source>
-        <translation>短边翻页</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforcopy.ui" line="32"/>
-        <location filename="../moresettingsforcopy.ui" line="897"/>
-        <source>ResStr_More_Settings</source>
-        <translation>更多设置</translation>
-    </message>
-    <message>
         <location filename="../moresettingsforcopy.ui" line="922"/>
         <source>ResStr_4_in_1</source>
         <translation>4合1</translation>
@@ -592,6 +553,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../moresettingsforcopy.ui" line="1067"/>
+        <source>ResStr_A6</source>
+        <translation>A6</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1077"/>
+        <source>ResStr_B6</source>
+        <translation>B6</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1087"/>
+        <source>ResStr_16K</source>
+        <translation>16K</translation>
+    </message>
+    <message>
         <location filename="../moresettingsforcopy.ui" line="1107"/>
         <source>ResStr_N_in_1</source>
         <translation>N合1</translation>
@@ -605,6 +581,31 @@
         <location filename="../moresettingsforcopy.ui" line="1196"/>
         <source>ResStr_Photo</source>
         <translation>照片</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1469"/>
+        <source>ResStr_A4Mode_1</source>
+        <translation>A4模式1</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1494"/>
+        <source>ResStr_A4Mode_2</source>
+        <translation>A4模式2</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1519"/>
+        <source>ResStr_A4Mode_3</source>
+        <translation>A4模式3</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1544"/>
+        <source>ResStr_A5Mode</source>
+        <translation>A5模式</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforcopy.ui" line="1569"/>
+        <source>ResStr_Credentials_Duplex_Copy_Mode</source>
+        <translation>身份证复印模式</translation>
     </message>
     <message>
         <location filename="../moresettingsforcopy.ui" line="1594"/>
@@ -637,23 +638,24 @@
         <translation>标签</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1067"/>
-        <source>ResStr_A6</source>
-        <translation>A6</translation>
+        <location filename="../moresettingsforcopy.ui" line="1677"/>
+        <source>ResStr_Flip_on_long_edge</source>
+        <translation>长边翻页</translation>
     </message>
     <message>
-        <location filename="../moresettingsforcopy.ui" line="1077"/>
-        <source>ResStr_B6</source>
-        <translation>B6</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforcopy.ui" line="1087"/>
-        <source>ResStr_16K</source>
-        <translation>16K</translation>
+        <location filename="../moresettingsforcopy.ui" line="1682"/>
+        <source>ResStr_Flip_on_short_edge</source>
+        <translation>短边翻页</translation>
     </message>
 </context>
 <context>
     <name>MoreSettingsForScan</name>
+    <message>
+        <location filename="../moresettingsforscan.ui" line="26"/>
+        <location filename="../moresettingsforscan.ui" line="1215"/>
+        <source>ResStr_More_Settings</source>
+        <translation>更多设置</translation>
+    </message>
     <message>
         <location filename="../moresettingsforscan.ui" line="59"/>
         <source>ResStr_A4_210_297mm_</source>
@@ -711,34 +713,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="851"/>
-        <source>ResStr_Scan_Type</source>
-        <translation>扫描类型</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforscan.ui" line="908"/>
-        <source>ResStr_Photo_2</source>
-        <translation>图片</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforscan.ui" line="950"/>
-        <source>ResStr_Text_and_Graph</source>
-        <translation>图文</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforscan.ui" line="992"/>
-        <source>ResStr_Text</source>
-        <translation>文本</translation>
-    </message>
-    <message>
         <location filename="../moresettingsforscan.ui" line="246"/>
         <source>ResStr_Document_Type</source>
         <translation>文档类型</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforscan.ui" line="1109"/>
-        <source>ResStr_DPI</source>
-        <translation>分辨率</translation>
     </message>
     <message>
         <location filename="../moresettingsforscan.ui" line="310"/>
@@ -754,11 +731,6 @@
         <location filename="../moresettingsforscan.ui" line="354"/>
         <source>ResStr_Brightness</source>
         <translation>亮度</translation>
-    </message>
-    <message>
-        <location filename="../moresettingsforscan.ui" line="1131"/>
-        <source>ResStr_Color_Mode</source>
-        <translation>色彩模式</translation>
     </message>
     <message>
         <location filename="../moresettingsforscan.ui" line="531"/>
@@ -788,9 +760,24 @@
         <translation>有效值输入范围为0到100，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="1089"/>
-        <source>ResStr_Scan_Speed</source>
-        <translation>快速</translation>
+        <location filename="../moresettingsforscan.ui" line="851"/>
+        <source>ResStr_Scan_Type</source>
+        <translation>扫描类型</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforscan.ui" line="908"/>
+        <source>ResStr_Photo_2</source>
+        <translation>图片</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforscan.ui" line="950"/>
+        <source>ResStr_Text_and_Graph</source>
+        <translation>图文</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforscan.ui" line="992"/>
+        <source>ResStr_Text</source>
+        <translation>文本</translation>
     </message>
     <message>
         <location filename="../moresettingsforscan.ui" line="1047"/>
@@ -798,10 +785,19 @@
         <translation>高品质</translation>
     </message>
     <message>
-        <location filename="../moresettingsforscan.ui" line="26"/>
-        <location filename="../moresettingsforscan.ui" line="1215"/>
-        <source>ResStr_More_Settings</source>
-        <translation>更多设置</translation>
+        <location filename="../moresettingsforscan.ui" line="1089"/>
+        <source>ResStr_Scan_Speed</source>
+        <translation>快速</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforscan.ui" line="1109"/>
+        <source>ResStr_DPI</source>
+        <translation>分辨率</translation>
+    </message>
+    <message>
+        <location filename="../moresettingsforscan.ui" line="1131"/>
+        <source>ResStr_Color_Mode</source>
+        <translation>色彩模式</translation>
     </message>
 </context>
 <context>
@@ -838,10 +834,9 @@
 <context>
     <name>SettingForIPv6</name>
     <message>
-        <location filename="../settingforipv6.ui" line="117"/>
-        <location filename="../settingforipv6.cpp" line="114"/>
-        <source>ResStr_The_entered_IP_address__is_wrong__please_confirm_and_enter_again_</source>
-        <translation>IP地址输入有误，请确认后再次输入。</translation>
+        <location filename="../settingforipv6.ui" line="26"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingforipv6.ui" line="50"/>
@@ -850,14 +845,15 @@
         <translation>网关输入有误，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingforipv6.ui" line="26"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settingforipv6.ui" line="95"/>
         <source>ResStr_Apply</source>
         <translation>应  用</translation>
+    </message>
+    <message>
+        <location filename="../settingforipv6.ui" line="117"/>
+        <location filename="../settingforipv6.cpp" line="114"/>
+        <source>ResStr_The_entered_IP_address__is_wrong__please_confirm_and_enter_again_</source>
+        <translation>IP地址输入有误，请确认后再次输入。</translation>
     </message>
     <message>
         <location filename="../settingforipv6.ui" line="142"/>
@@ -919,15 +915,15 @@
         <translation>管理员权限认证</translation>
     </message>
     <message>
-        <location filename="../settingforipv6.cpp" line="344"/>
-        <source>ResStr_Msg_1</source>
-        <translation>设定成功，机器重启后生效。</translation>
-    </message>
-    <message>
         <location filename="../settingforipv6.cpp" line="186"/>
         <location filename="../settingforipv6.cpp" line="349"/>
         <source>ResStr_Setting_Fail</source>
         <translation>设定失败</translation>
+    </message>
+    <message>
+        <location filename="../settingforipv6.cpp" line="344"/>
+        <source>ResStr_Msg_1</source>
+        <translation>设定成功，机器重启后生效。</translation>
     </message>
 </context>
 <context>
@@ -947,227 +943,227 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="145"/>
-        <location filename="../settingsstackedwidget.ui" line="370"/>
-        <location filename="../settingsstackedwidget.ui" line="1281"/>
-        <location filename="../settingsstackedwidget.ui" line="1569"/>
-        <location filename="../settingsstackedwidget.ui" line="2369"/>
+        <location filename="../settingsstackedwidget.ui" line="148"/>
+        <location filename="../settingsstackedwidget.ui" line="373"/>
+        <location filename="../settingsstackedwidget.ui" line="1292"/>
+        <location filename="../settingsstackedwidget.ui" line="1580"/>
+        <location filename="../settingsstackedwidget.ui" line="2380"/>
         <source>ResStr_Apply</source>
         <translation>应  用</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="227"/>
+        <location filename="../settingsstackedwidget.ui" line="230"/>
         <source>ResStr_SSID</source>
         <translation>网络标识</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="249"/>
+        <location filename="../settingsstackedwidget.ui" line="252"/>
         <source>ResStr_Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="270"/>
+        <location filename="../settingsstackedwidget.ui" line="273"/>
         <source>ResStr_Open</source>
         <translation>开启</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="291"/>
+        <location filename="../settingsstackedwidget.ui" line="294"/>
         <source>ResStr_Password</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="388"/>
+        <location filename="../settingsstackedwidget.ui" line="391"/>
         <source>ResStr_IP_Type</source>
         <translation>获取方式</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="406"/>
+        <location filename="../settingsstackedwidget.ui" line="409"/>
         <source>ResStr_IP_Address</source>
         <translation>IP 地址</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="427"/>
+        <location filename="../settingsstackedwidget.ui" line="430"/>
         <source>ResStr_Gateway</source>
         <translation>网    关</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="448"/>
+        <location filename="../settingsstackedwidget.ui" line="451"/>
         <source>ResStr_Submask</source>
         <translation>子网掩码</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="473"/>
+        <location filename="../settingsstackedwidget.ui" line="476"/>
         <source>ResStr_The_entered_IP_address__is_wrong__please_confirm_and_enter_again_</source>
         <translation>IP地址输入有误，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="515"/>
+        <location filename="../settingsstackedwidget.ui" line="518"/>
         <source>ResStr_DHCP</source>
         <translation>自动获取</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="550"/>
+        <location filename="../settingsstackedwidget.ui" line="553"/>
         <source>ResStr_Static</source>
         <translation>固定</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="572"/>
+        <location filename="../settingsstackedwidget.ui" line="575"/>
         <source>ResStr_The_entered_Gateway_is_wrong__please_confirm_and_enter_again_</source>
         <translation>网关输入有误，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="636"/>
-        <source>ResStr_The_subnet_mask_input_error__please_input_again_after_confirmation</source>
-        <translation>子网掩码输入有误，请确认后再次输入。</translation>
-    </message>
-    <message>
-        <location filename="../settingsstackedwidget.ui" line="608"/>
-        <location filename="../settingsstackedwidget.ui" line="672"/>
-        <location filename="../settingsstackedwidget.ui" line="711"/>
-        <location filename="../settingsstackedwidget.ui" line="854"/>
+        <location filename="../settingsstackedwidget.ui" line="611"/>
+        <location filename="../settingsstackedwidget.ui" line="675"/>
+        <location filename="../settingsstackedwidget.ui" line="714"/>
+        <location filename="../settingsstackedwidget.ui" line="857"/>
         <source>0.0.0.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="735"/>
+        <location filename="../settingsstackedwidget.ui" line="639"/>
+        <source>ResStr_The_subnet_mask_input_error__please_input_again_after_confirmation</source>
+        <translation>子网掩码输入有误，请确认后再次输入。</translation>
+    </message>
+    <message>
+        <location filename="../settingsstackedwidget.ui" line="738"/>
         <source>ResStr_Dns_Type</source>
         <translation>DNS获取方式</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="771"/>
+        <location filename="../settingsstackedwidget.ui" line="774"/>
         <source>ResStr_Manual_DNS</source>
         <translation>手动</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="806"/>
+        <location filename="../settingsstackedwidget.ui" line="809"/>
         <source>ResStr_Auto_DNS</source>
         <translation>自动</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="824"/>
+        <location filename="../settingsstackedwidget.ui" line="827"/>
         <source>ResStr_DNS</source>
         <translation>域名服务器</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="882"/>
+        <location filename="../settingsstackedwidget.ui" line="885"/>
         <source>ResStr_The_entered_DNS_is_wrong__please_confirm_and_enter_again_</source>
         <translation>域名输入有误，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="949"/>
-        <location filename="../settingsstackedwidget.cpp" line="975"/>
+        <location filename="../settingsstackedwidget.ui" line="956"/>
+        <location filename="../settingsstackedwidget.cpp" line="977"/>
         <source>ResStr_Setting</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="986"/>
+        <location filename="../settingsstackedwidget.ui" line="997"/>
         <source>ResStr_Device_Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1044"/>
+        <location filename="../settingsstackedwidget.ui" line="1055"/>
         <source>ResStr_1_30_Minute</source>
         <translation>（1-30分钟）</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1076"/>
+        <location filename="../settingsstackedwidget.ui" line="1087"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1116"/>
+        <location filename="../settingsstackedwidget.ui" line="1127"/>
         <source>-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1137"/>
+        <location filename="../settingsstackedwidget.ui" line="1148"/>
         <source>ResStr_The_valid_range_is_1_30__please_confirm_and_enter_again_</source>
         <translation>有效值输入范围为1到30，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1164"/>
+        <location filename="../settingsstackedwidget.ui" line="1175"/>
         <source>ResStr_Power_Save_Time</source>
         <translation>进入休眠时间</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1223"/>
-        <location filename="../settingsstackedwidget.ui" line="1836"/>
-        <location filename="../settingsstackedwidget.ui" line="1898"/>
-        <location filename="../settingsstackedwidget.ui" line="1952"/>
+        <location filename="../settingsstackedwidget.ui" line="1234"/>
+        <location filename="../settingsstackedwidget.ui" line="1847"/>
+        <location filename="../settingsstackedwidget.ui" line="1909"/>
+        <location filename="../settingsstackedwidget.ui" line="1963"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1330"/>
-        <location filename="../settingsstackedwidget.ui" line="1390"/>
-        <location filename="../settingsstackedwidget.ui" line="1646"/>
+        <location filename="../settingsstackedwidget.ui" line="1341"/>
+        <location filename="../settingsstackedwidget.ui" line="1401"/>
+        <location filename="../settingsstackedwidget.ui" line="1657"/>
         <source>—</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1348"/>
+        <location filename="../settingsstackedwidget.ui" line="1359"/>
         <source>ResStr_Low_Hunidity_Mode</source>
         <translation>低湿度模式</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1417"/>
-        <location filename="../settingsstackedwidget.ui" line="1755"/>
-        <location filename="../settingsstackedwidget.ui" line="2007"/>
+        <location filename="../settingsstackedwidget.ui" line="1428"/>
+        <location filename="../settingsstackedwidget.ui" line="1766"/>
+        <location filename="../settingsstackedwidget.ui" line="2018"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1523"/>
+        <location filename="../settingsstackedwidget.ui" line="1534"/>
         <source>ResStr_Leading_Edge_Registration</source>
         <translation>顶端偏移量（毫米）</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1607"/>
+        <location filename="../settingsstackedwidget.ui" line="1618"/>
         <source>ResStr_Fuser_Error_Remove</source>
         <translation>解除定影单元错误</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1725"/>
+        <location filename="../settingsstackedwidget.ui" line="1736"/>
         <source>ResStr_Image_Density</source>
         <translation>画像浓度</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1857"/>
+        <location filename="../settingsstackedwidget.ui" line="1868"/>
         <source>ResStr_Side_to_side_Registration</source>
         <translation>左端偏移量（毫米）</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="1974"/>
+        <location filename="../settingsstackedwidget.ui" line="1985"/>
         <source>ResStr_The_valid_range_is_from__2_to_2__please_confirm_and_enter_again_</source>
         <translation>有效值输入范围为-2到2，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="2051"/>
+        <location filename="../settingsstackedwidget.ui" line="2062"/>
         <source>ResStr_Reset_OPC</source>
         <translation>复位感光鼓</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="2089"/>
+        <location filename="../settingsstackedwidget.ui" line="2100"/>
         <source>ResStr_Reset_Toner_Cartridge</source>
         <translation>复位墨粉盒</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="2111"/>
+        <location filename="../settingsstackedwidget.ui" line="2122"/>
         <source>ResStr_The_valid_range_is_from__6_to_6__please_confirm_and_enter_again_</source>
         <translation>有效值输入范围为-6到6，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="2139"/>
+        <location filename="../settingsstackedwidget.ui" line="2150"/>
         <source>ResStr_The_valid_range_is_from__3_to_3__please_confirm_and_enter_again_</source>
         <translation>有效值输入范围为-3到3，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="2265"/>
+        <location filename="../settingsstackedwidget.ui" line="2276"/>
         <source>ResStr_New_Password</source>
         <translation>新密码</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.ui" line="2305"/>
+        <location filename="../settingsstackedwidget.ui" line="2316"/>
         <source>ResStr_Confirm_Password</source>
         <translation>确认密码</translation>
     </message>
@@ -1186,14 +1182,14 @@
         <location filename="../settingsstackedwidget.cpp" line="272"/>
         <location filename="../settingsstackedwidget.cpp" line="294"/>
         <location filename="../settingsstackedwidget.cpp" line="306"/>
-        <location filename="../settingsstackedwidget.cpp" line="784"/>
-        <location filename="../settingsstackedwidget.cpp" line="843"/>
-        <location filename="../settingsstackedwidget.cpp" line="1016"/>
-        <location filename="../settingsstackedwidget.cpp" line="1046"/>
-        <location filename="../settingsstackedwidget.cpp" line="1168"/>
-        <location filename="../settingsstackedwidget.cpp" line="1191"/>
-        <location filename="../settingsstackedwidget.cpp" line="1247"/>
-        <location filename="../settingsstackedwidget.cpp" line="1316"/>
+        <location filename="../settingsstackedwidget.cpp" line="786"/>
+        <location filename="../settingsstackedwidget.cpp" line="845"/>
+        <location filename="../settingsstackedwidget.cpp" line="1018"/>
+        <location filename="../settingsstackedwidget.cpp" line="1048"/>
+        <location filename="../settingsstackedwidget.cpp" line="1170"/>
+        <location filename="../settingsstackedwidget.cpp" line="1193"/>
+        <location filename="../settingsstackedwidget.cpp" line="1249"/>
+        <location filename="../settingsstackedwidget.cpp" line="1318"/>
         <source>ResStr_Setting_Fail</source>
         <translation>设定失败</translation>
     </message>
@@ -1222,59 +1218,59 @@
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="743"/>
+        <location filename="../settingsstackedwidget.cpp" line="745"/>
         <source>ResStr_Msg_9</source>
         <translation>网络名称必须是1到32个字符，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="744"/>
-        <location filename="../settingsstackedwidget.cpp" line="752"/>
-        <location filename="../settingsstackedwidget.cpp" line="1281"/>
-        <location filename="../settingsstackedwidget.cpp" line="1289"/>
+        <location filename="../settingsstackedwidget.cpp" line="746"/>
+        <location filename="../settingsstackedwidget.cpp" line="754"/>
+        <location filename="../settingsstackedwidget.cpp" line="1283"/>
+        <location filename="../settingsstackedwidget.cpp" line="1291"/>
         <source>ResStr_Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="751"/>
+        <location filename="../settingsstackedwidget.cpp" line="753"/>
         <source>ResStr_Msg_3</source>
         <translation>密码必须是8到63个ASCII字符或者64个十六进制字符，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="982"/>
+        <location filename="../settingsstackedwidget.cpp" line="766"/>
+        <location filename="../settingsstackedwidget.cpp" line="833"/>
+        <location filename="../settingsstackedwidget.cpp" line="998"/>
+        <location filename="../settingsstackedwidget.cpp" line="1033"/>
+        <location filename="../settingsstackedwidget.cpp" line="1160"/>
+        <location filename="../settingsstackedwidget.cpp" line="1183"/>
+        <location filename="../settingsstackedwidget.cpp" line="1239"/>
+        <location filename="../settingsstackedwidget.cpp" line="1303"/>
+        <source>ResStr_Identity_Authentication</source>
+        <translation>管理员权限认证</translation>
+    </message>
+    <message>
+        <location filename="../settingsstackedwidget.cpp" line="984"/>
         <source>ResStr_Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1149"/>
+        <location filename="../settingsstackedwidget.cpp" line="1151"/>
         <source>ResStr_This_operation_will_reset_the_drum</source>
         <translation>本操作将会重置感光鼓状态，请确认更换新的感光鼓后再执行本操作。是否继续？</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1228"/>
+        <location filename="../settingsstackedwidget.cpp" line="1230"/>
         <source>ResStr_This_operation_will_reset_the_toner</source>
         <translation>本操作将会重置墨粉余量为100%，请确认更换新的墨粉盒后再执行本操作。是否继续？</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1280"/>
+        <location filename="../settingsstackedwidget.cpp" line="1282"/>
         <source>ResStr_The_new_password_can_not_be_empty_</source>
         <translation>新密码不能为空。</translation>
     </message>
     <message>
-        <location filename="../settingsstackedwidget.cpp" line="1288"/>
+        <location filename="../settingsstackedwidget.cpp" line="1290"/>
         <source>ResStr_The_passwords_you_entered__are_different__please_try_again_</source>
         <translation>输入密码不一致，请重新输入。</translation>
-    </message>
-    <message>
-        <location filename="../settingsstackedwidget.cpp" line="764"/>
-        <location filename="../settingsstackedwidget.cpp" line="831"/>
-        <location filename="../settingsstackedwidget.cpp" line="996"/>
-        <location filename="../settingsstackedwidget.cpp" line="1031"/>
-        <location filename="../settingsstackedwidget.cpp" line="1158"/>
-        <location filename="../settingsstackedwidget.cpp" line="1181"/>
-        <location filename="../settingsstackedwidget.cpp" line="1237"/>
-        <location filename="../settingsstackedwidget.cpp" line="1301"/>
-        <source>ResStr_Identity_Authentication</source>
-        <translation>管理员权限认证</translation>
     </message>
 </context>
 <context>
@@ -1285,16 +1281,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../tabstackedwidget.ui" line="124"/>
+        <location filename="../tabstackedwidget.cpp" line="295"/>
+        <location filename="../tabstackedwidget.cpp" line="508"/>
+        <location filename="../tabstackedwidget.cpp" line="528"/>
+        <location filename="../tabstackedwidget.cpp" line="903"/>
+        <source>ResStr_ExtraAdd_Copy</source>
+        <translation>复印</translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.ui" line="162"/>
+        <location filename="../tabstackedwidget.ui" line="798"/>
+        <source>ResStr_More_Settings</source>
+        <translation>更多设置</translation>
+    </message>
+    <message>
         <location filename="../tabstackedwidget.ui" line="191"/>
         <location filename="../tabstackedwidget.cpp" line="38"/>
         <location filename="../tabstackedwidget.cpp" line="278"/>
         <source>1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tabstackedwidget.ui" line="269"/>
-        <location filename="../tabstackedwidget.ui" line="343"/>
-        <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1304,16 +1309,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="162"/>
-        <location filename="../tabstackedwidget.ui" line="798"/>
-        <source>ResStr_More_Settings</source>
-        <translation>更多设置</translation>
+        <location filename="../tabstackedwidget.ui" line="269"/>
+        <location filename="../tabstackedwidget.ui" line="343"/>
+        <source>+</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="509"/>
-        <location filename="../tabstackedwidget.cpp" line="498"/>
-        <source>ResStr_ID_Card_Copy</source>
-        <translation>身份证复印</translation>
+        <location filename="../tabstackedwidget.ui" line="441"/>
+        <source>ResStr_Density</source>
+        <translation>浓度</translation>
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="462"/>
@@ -1321,18 +1325,10 @@
         <translation>复印份数</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.ui" line="124"/>
-        <location filename="../tabstackedwidget.cpp" line="295"/>
-        <location filename="../tabstackedwidget.cpp" line="508"/>
-        <location filename="../tabstackedwidget.cpp" line="528"/>
-        <location filename="../tabstackedwidget.cpp" line="897"/>
-        <source>ResStr_ExtraAdd_Copy</source>
-        <translation>复印</translation>
-    </message>
-    <message>
-        <location filename="../tabstackedwidget.ui" line="441"/>
-        <source>ResStr_Density</source>
-        <translation>浓度</translation>
+        <location filename="../tabstackedwidget.ui" line="509"/>
+        <location filename="../tabstackedwidget.cpp" line="498"/>
+        <source>ResStr_ID_Card_Copy</source>
+        <translation>身份证复印</translation>
     </message>
     <message>
         <location filename="../tabstackedwidget.ui" line="573"/>
@@ -1413,15 +1409,14 @@
         <translation>打印机IPv6地址</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="975"/>
-        <source>PDF(*pdf)</source>
-        <translation type="unfinished"></translation>
+        <location filename="../tabstackedwidget.cpp" line="112"/>
+        <source>ResStr_Copy_Fail</source>
+        <translation>复印失败</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="1101"/>
-        <location filename="../tabstackedwidget.cpp" line="1110"/>
-        <source>ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_</source>
-        <translation>有效值输入范围为1到99，请确认后再次输入。</translation>
+        <location filename="../tabstackedwidget.cpp" line="115"/>
+        <source>ResStr_Unsupported</source>
+        <translation>功能不支持</translation>
     </message>
     <message>
         <location filename="../tabstackedwidget.cpp" line="116"/>
@@ -1431,15 +1426,10 @@
         <location filename="../tabstackedwidget.cpp" line="171"/>
         <location filename="../tabstackedwidget.cpp" line="180"/>
         <location filename="../tabstackedwidget.cpp" line="199"/>
-        <location filename="../tabstackedwidget.cpp" line="1102"/>
-        <location filename="../tabstackedwidget.cpp" line="1111"/>
+        <location filename="../tabstackedwidget.cpp" line="1108"/>
+        <location filename="../tabstackedwidget.cpp" line="1117"/>
         <source>ResStr_Error</source>
         <translation>错误</translation>
-    </message>
-    <message>
-        <location filename="../tabstackedwidget.cpp" line="115"/>
-        <source>ResStr_Unsupported</source>
-        <translation>功能不支持</translation>
     </message>
     <message>
         <location filename="../tabstackedwidget.cpp" line="124"/>
@@ -1455,15 +1445,6 @@
         <translation>机器故障，操作无法进行。</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="112"/>
-        <source>ResStr_Copy_Fail</source>
-        <translation>复印失败</translation>
-    </message>
-    <message>
-        <source>ResStr_can_not_be_carried_out_due_to_software_has_error__please_try__again_after_reinstall_the_Driver_and_Virtual_Operation_Panel_</source>
-        <translation type="obsolete">软件出现问题，操作无法进行，请重新安装驱动和虚拟操作面板软件后再试。</translation>
-    </message>
-    <message>
         <location filename="../tabstackedwidget.cpp" line="166"/>
         <source>ResStr_Scan_Fail</source>
         <translation>扫描失败</translation>
@@ -1471,35 +1452,46 @@
     <message>
         <location filename="../tabstackedwidget.cpp" line="179"/>
         <location filename="../tabstackedwidget.cpp" line="541"/>
-        <location filename="../tabstackedwidget.cpp" line="951"/>
+        <location filename="../tabstackedwidget.cpp" line="957"/>
         <source>ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_</source>
         <translation>该操作所需内存或者磁盘空间不足，请重新选择文件或释放内存后再试。</translation>
     </message>
     <message>
         <location filename="../tabstackedwidget.cpp" line="542"/>
-        <location filename="../tabstackedwidget.cpp" line="952"/>
+        <location filename="../tabstackedwidget.cpp" line="958"/>
         <source>ResStr_Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="959"/>
+        <location filename="../tabstackedwidget.cpp" line="965"/>
         <source>TIF(*.tiff);;PDF(*pdf);;JPG(*jpg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="962"/>
+        <location filename="../tabstackedwidget.cpp" line="968"/>
         <source>TIF(*.tiff);;PDF(*pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="970"/>
+        <location filename="../tabstackedwidget.cpp" line="976"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tabstackedwidget.cpp" line="990"/>
+        <location filename="../tabstackedwidget.cpp" line="981"/>
+        <source>PDF(*pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="996"/>
         <source>TIF(*.tiff)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabstackedwidget.cpp" line="1107"/>
+        <location filename="../tabstackedwidget.cpp" line="1116"/>
+        <source>ResStr_The_valid_range_is_1_99__please_confirm_and_enter_again_</source>
+        <translation>有效值输入范围为1到99，请确认后再次输入。</translation>
     </message>
 </context>
 <context>
@@ -1591,11 +1583,6 @@
         <source>ResStr_Toner_End_ABC_Plus</source>
         <translation>墨粉空
 请更换新的墨粉盒，然后点击高级设置的“复位墨粉盒”按钮。</translation>
-    </message>
-    <message>
-        <source>ResStr_Toner_End_ABC</source>
-        <translation type="vanished">墨粉空
-请更换新的鼓粉盒。</translation>
     </message>
     <message>
         <location filename="../uiconfig.cpp" line="311"/>
@@ -1844,11 +1831,6 @@
 <context>
     <name>UserLogin</name>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="283"/>
-        <source>ResStr_Verification_Code</source>
-        <translation>验证码</translation>
-    </message>
-    <message>
         <location filename="../membercenter/userlogin.ui" line="63"/>
         <source>ResStr_Login_</source>
         <translation>登录</translation>
@@ -1859,25 +1841,14 @@
         <translation>使用手机号码快速登录</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.ui" line="165"/>
-        <source>ResStr_Account</source>
-        <translation>账户名</translation>
-    </message>
-    <message>
         <location filename="../membercenter/userlogin.ui" line="141"/>
         <source>ResStr_Msg_4</source>
         <translation>输入手机号</translation>
     </message>
     <message>
-        <location filename="../membercenter/userlogin.cpp" line="107"/>
-        <location filename="../membercenter/userlogin.cpp" line="113"/>
-        <source>ResStr_Msg_8</source>
-        <translation>验证码错误，请确认后再次输入。</translation>
-    </message>
-    <message>
-        <location filename="../membercenter/userlogin.cpp" line="242"/>
-        <source>ResStr_Msg_6</source>
-        <translation>验证码发送失败。</translation>
+        <location filename="../membercenter/userlogin.ui" line="165"/>
+        <source>ResStr_Account</source>
+        <translation>账户名</translation>
     </message>
     <message>
         <location filename="../membercenter/userlogin.ui" line="249"/>
@@ -1886,9 +1857,25 @@
         <translation>获取验证码</translation>
     </message>
     <message>
+        <location filename="../membercenter/userlogin.ui" line="283"/>
+        <source>ResStr_Verification_Code</source>
+        <translation>验证码</translation>
+    </message>
+    <message>
+        <location filename="../membercenter/userlogin.cpp" line="107"/>
+        <location filename="../membercenter/userlogin.cpp" line="113"/>
+        <source>ResStr_Msg_8</source>
+        <translation>验证码错误，请确认后再次输入。</translation>
+    </message>
+    <message>
         <location filename="../membercenter/userlogin.cpp" line="232"/>
         <source>ResStr_Msg_5</source>
         <translation>验证码发送成功。</translation>
+    </message>
+    <message>
+        <location filename="../membercenter/userlogin.cpp" line="242"/>
+        <source>ResStr_Msg_6</source>
+        <translation>验证码发送失败。</translation>
     </message>
 </context>
 <context>
@@ -1900,10 +1887,22 @@
     </message>
     <message>
         <location filename="../wifisettingcell.ui" line="98"/>
-        <location filename="../wifisettingcell.ui" line="245"/>
+        <location filename="../wifisettingcell.ui" line="249"/>
         <location filename="../wifisettingcell.cpp" line="34"/>
         <source>SWQA</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../wifisettingcell.ui" line="116"/>
+        <location filename="../wifisettingcell.ui" line="377"/>
+        <location filename="../wifisettingcell.cpp" line="125"/>
+        <location filename="../wifisettingcell.cpp" line="126"/>
+        <location filename="../wifisettingcell.cpp" line="131"/>
+        <location filename="../wifisettingcell.cpp" line="290"/>
+        <location filename="../wifisettingcell.cpp" line="291"/>
+        <location filename="../wifisettingcell.cpp" line="296"/>
+        <source>ResStr_Connected</source>
+        <translation>已连接</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.ui" line="163"/>
@@ -1911,87 +1910,75 @@
         <translation>取  消</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.ui" line="204"/>
+        <location filename="../wifisettingcell.ui" line="208"/>
         <source>ResStr_Connect</source>
         <translation>连  接</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.ui" line="283"/>
+        <location filename="../wifisettingcell.ui" line="287"/>
         <source>ResStr_Display_Password</source>
         <translation>显示密码</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.ui" line="326"/>
+        <location filename="../wifisettingcell.ui" line="330"/>
         <source>ResStr_Password</source>
         <translation>密码</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.cpp" line="22"/>
         <location filename="../wifisettingcell.cpp" line="35"/>
-        <location filename="../wifisettingcell.cpp" line="174"/>
+        <location filename="../wifisettingcell.cpp" line="175"/>
         <source>ResStr_No_Security</source>
         <translation>无安全</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.ui" line="116"/>
-        <location filename="../wifisettingcell.ui" line="373"/>
-        <location filename="../wifisettingcell.cpp" line="125"/>
-        <location filename="../wifisettingcell.cpp" line="126"/>
-        <location filename="../wifisettingcell.cpp" line="131"/>
-        <location filename="../wifisettingcell.cpp" line="288"/>
-        <location filename="../wifisettingcell.cpp" line="289"/>
-        <location filename="../wifisettingcell.cpp" line="294"/>
-        <source>ResStr_Connected</source>
-        <translation>已连接</translation>
-    </message>
-    <message>
-        <location filename="../wifisettingcell.cpp" line="140"/>
-        <source>ResStr_Msg_3</source>
-        <translation>密码必须是8到63个ASCII字符或者64个十六进制字符，请确认后再次输入。</translation>
-    </message>
-    <message>
-        <location filename="../wifisettingcell.cpp" line="152"/>
-        <source>ResStr_Identity_Authentication</source>
-        <translation>管理员权限认证</translation>
-    </message>
-    <message>
         <location filename="../wifisettingcell.cpp" line="24"/>
-        <location filename="../wifisettingcell.cpp" line="176"/>
+        <location filename="../wifisettingcell.cpp" line="177"/>
         <source>ResStr_Protected_by_WEP</source>
         <translation>通过 WEP 进行保护</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.cpp" line="26"/>
-        <location filename="../wifisettingcell.cpp" line="178"/>
+        <location filename="../wifisettingcell.cpp" line="179"/>
         <source>ResStr_Protected_by_WPA2</source>
         <translation>通过 WPA2 进行保护</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.cpp" line="28"/>
-        <location filename="../wifisettingcell.cpp" line="180"/>
+        <location filename="../wifisettingcell.cpp" line="181"/>
         <source>ResStr_Protected_by_Mixed_Mode_PSK</source>
         <translation>通过混合模式 PSK 进行保护</translation>
     </message>
     <message>
         <location filename="../wifisettingcell.cpp" line="141"/>
+        <source>ResStr_Msg_3</source>
+        <translation>密码必须是8到63个ASCII字符或者64个十六进制字符，请确认后再次输入。</translation>
+    </message>
+    <message>
+        <location filename="../wifisettingcell.cpp" line="142"/>
         <source>ResStr_Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="185"/>
+        <location filename="../wifisettingcell.cpp" line="153"/>
+        <source>ResStr_Identity_Authentication</source>
+        <translation>管理员权限认证</translation>
+    </message>
+    <message>
+        <location filename="../wifisettingcell.cpp" line="163"/>
+        <location filename="../wifisettingcell.cpp" line="303"/>
+        <source>ResStr_Setting_Fail</source>
+        <translation>设定失败</translation>
+    </message>
+    <message>
+        <location filename="../wifisettingcell.cpp" line="186"/>
         <source>Protected by </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingcell.cpp" line="295"/>
+        <location filename="../wifisettingcell.cpp" line="297"/>
         <source>ResStr_Setting_Successfully_</source>
         <translation>设定成功</translation>
-    </message>
-    <message>
-        <location filename="../wifisettingcell.cpp" line="162"/>
-        <location filename="../wifisettingcell.cpp" line="301"/>
-        <source>ResStr_Setting_Fail</source>
-        <translation>设定失败</translation>
     </message>
 </context>
 <context>
@@ -2002,74 +1989,74 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../wifisettingwepcell.ui" line="35"/>
+        <location filename="../wifisettingwepcell.ui" line="234"/>
+        <location filename="../wifisettingwepcell.cpp" line="141"/>
+        <location filename="../wifisettingwepcell.cpp" line="142"/>
+        <location filename="../wifisettingwepcell.cpp" line="148"/>
+        <location filename="../wifisettingwepcell.cpp" line="289"/>
+        <location filename="../wifisettingwepcell.cpp" line="290"/>
+        <location filename="../wifisettingwepcell.cpp" line="295"/>
+        <source>ResStr_Connected</source>
+        <translation>已连接</translation>
+    </message>
+    <message>
         <location filename="../wifisettingwepcell.ui" line="98"/>
-        <location filename="../wifisettingwepcell.ui" line="356"/>
+        <location filename="../wifisettingwepcell.ui" line="362"/>
         <source>SWQA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="168"/>
+        <location filename="../wifisettingwepcell.ui" line="171"/>
         <source>key3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="189"/>
+        <location filename="../wifisettingwepcell.ui" line="192"/>
         <source>ResStr_Password</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="210"/>
+        <location filename="../wifisettingwepcell.ui" line="213"/>
         <source>WEP KeyID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="268"/>
+        <location filename="../wifisettingwepcell.ui" line="274"/>
         <source>ResStr_Connect</source>
         <translation>连  接</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="335"/>
+        <location filename="../wifisettingwepcell.ui" line="341"/>
         <source>key2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="401"/>
+        <location filename="../wifisettingwepcell.ui" line="407"/>
         <source>key4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="439"/>
+        <location filename="../wifisettingwepcell.ui" line="445"/>
         <source>ResStr_Display_Password</source>
         <translation>显示密码</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="484"/>
+        <location filename="../wifisettingwepcell.ui" line="490"/>
         <source>key1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.ui" line="545"/>
+        <location filename="../wifisettingwepcell.ui" line="551"/>
         <source>ResStr_Cancel</source>
         <translation>取  消</translation>
     </message>
     <message>
         <location filename="../wifisettingwepcell.cpp" line="19"/>
         <location filename="../wifisettingwepcell.cpp" line="25"/>
-        <location filename="../wifisettingwepcell.cpp" line="217"/>
+        <location filename="../wifisettingwepcell.cpp" line="218"/>
         <source>ResStr_Protected_by_WEP</source>
         <translation>通过 WEP 进行保护</translation>
-    </message>
-    <message>
-        <location filename="../wifisettingwepcell.ui" line="35"/>
-        <location filename="../wifisettingwepcell.ui" line="231"/>
-        <location filename="../wifisettingwepcell.cpp" line="141"/>
-        <location filename="../wifisettingwepcell.cpp" line="142"/>
-        <location filename="../wifisettingwepcell.cpp" line="147"/>
-        <location filename="../wifisettingwepcell.cpp" line="287"/>
-        <location filename="../wifisettingwepcell.cpp" line="288"/>
-        <location filename="../wifisettingwepcell.cpp" line="293"/>
-        <source>ResStr_Connected</source>
-        <translation>已连接</translation>
     </message>
     <message>
         <location filename="../wifisettingwepcell.cpp" line="24"/>
@@ -2077,48 +2064,48 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="181"/>
+        <location filename="../wifisettingwepcell.cpp" line="182"/>
         <source>ResStr_Msg_2</source>
         <translation>密码必须是5/13个ASCII字符或者10/26个十六进制字符，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="182"/>
+        <location filename="../wifisettingwepcell.cpp" line="183"/>
         <source>ResStr_Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="193"/>
+        <location filename="../wifisettingwepcell.cpp" line="194"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>管理员权限认证</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="203"/>
-        <location filename="../wifisettingwepcell.cpp" line="300"/>
+        <location filename="../wifisettingwepcell.cpp" line="204"/>
+        <location filename="../wifisettingwepcell.cpp" line="303"/>
         <source>ResStr_Setting_Fail</source>
         <translation>设定失败</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="215"/>
+        <location filename="../wifisettingwepcell.cpp" line="216"/>
         <source>ResStr_No_Security</source>
         <translation>无安全</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="219"/>
+        <location filename="../wifisettingwepcell.cpp" line="220"/>
         <source>ResStr_Protected_by_WPA2</source>
         <translation>通过 WPA2 进行保护</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="221"/>
+        <location filename="../wifisettingwepcell.cpp" line="222"/>
         <source>ResStr_Protected_by_Mixed_Mode_PSK</source>
         <translation>通过混合模式 PSK 进行保护</translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="225"/>
+        <location filename="../wifisettingwepcell.cpp" line="226"/>
         <source>Protected by </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wifisettingwepcell.cpp" line="296"/>
+        <location filename="../wifisettingwepcell.cpp" line="298"/>
         <source>ResStr_Setting_Successfully_</source>
         <translation>设定成功</translation>
     </message>
@@ -2142,7 +2129,7 @@
     </message>
     <message>
         <location filename="../wlantitlecell.ui" line="182"/>
-        <location filename="../wlantitlecell.ui" line="601"/>
+        <location filename="../wlantitlecell.ui" line="604"/>
         <source>WLAN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2177,114 +2164,110 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="456"/>
+        <location filename="../wlantitlecell.ui" line="459"/>
         <source>ResStr_Connect</source>
         <translation>连  接</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="505"/>
+        <location filename="../wlantitlecell.ui" line="508"/>
         <source>ResStr_No_Security</source>
         <translation>无安全</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="510"/>
+        <location filename="../wlantitlecell.ui" line="513"/>
         <source>ResStr_WEP</source>
         <translation>WEP</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="515"/>
+        <location filename="../wlantitlecell.ui" line="518"/>
         <source>ResStr_WPA2_PSK_AES</source>
         <translation>WPA2-PSK-AES</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="520"/>
+        <location filename="../wlantitlecell.ui" line="523"/>
         <source>ResStr_Mixed_Mode_PSK</source>
         <translation>混合模式 PSK</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="580"/>
+        <location filename="../wlantitlecell.ui" line="583"/>
         <source>key1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="635"/>
+        <location filename="../wlantitlecell.ui" line="638"/>
         <source>ResStr_Cancel</source>
         <translation>取  消</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="653"/>
+        <location filename="../wlantitlecell.ui" line="656"/>
         <source>WEP KeyID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="697"/>
+        <location filename="../wlantitlecell.ui" line="700"/>
         <source>ResStr_Display_Password</source>
         <translation>显示密码</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="754"/>
+        <location filename="../wlantitlecell.ui" line="757"/>
         <source>ResStr_Password</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.ui" line="835"/>
+        <location filename="../wlantitlecell.ui" line="838"/>
         <source>key2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="149"/>
-        <location filename="../wlantitlecell.cpp" line="152"/>
+        <location filename="../wlantitlecell.cpp" line="150"/>
+        <location filename="../wlantitlecell.cpp" line="153"/>
         <source>ResStr_Msg_1</source>
         <translation>设定成功，机器重启后生效。</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="153"/>
+        <location filename="../wlantitlecell.cpp" line="154"/>
         <source>ResStr_Prompt</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="161"/>
+        <location filename="../wlantitlecell.cpp" line="162"/>
         <source>ResStr_Setting_Successfully_</source>
         <translation>设定成功</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="177"/>
-        <location filename="../wlantitlecell.cpp" line="235"/>
-        <location filename="../wlantitlecell.cpp" line="311"/>
-        <location filename="../wlantitlecell.cpp" line="741"/>
+        <location filename="../wlantitlecell.cpp" line="178"/>
+        <location filename="../wlantitlecell.cpp" line="236"/>
+        <location filename="../wlantitlecell.cpp" line="312"/>
+        <location filename="../wlantitlecell.cpp" line="763"/>
         <source>ResStr_Setting_Fail</source>
         <translation>设定失败</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="199"/>
-        <location filename="../wlantitlecell.cpp" line="276"/>
-        <location filename="../wlantitlecell.cpp" line="719"/>
+        <location filename="../wlantitlecell.cpp" line="200"/>
+        <location filename="../wlantitlecell.cpp" line="277"/>
+        <location filename="../wlantitlecell.cpp" line="741"/>
         <source>ResStr_Identity_Authentication</source>
         <translation>管理员权限认证</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="664"/>
+        <location filename="../wlantitlecell.cpp" line="686"/>
         <source>ResStr_Msg_9</source>
         <translation>网络名称必须是1到32个字符，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="697"/>
-        <source>ResStr_Msg_2</source>
-        <translation>密码必须是5/13个ASCII字符或者10/26个十六进制字符，请确认后再次输入。</translation>
-    </message>
-    <message>
-        <location filename="../wlantitlecell.cpp" line="665"/>
-        <location filename="../wlantitlecell.cpp" line="698"/>
-        <location filename="../wlantitlecell.cpp" line="707"/>
+        <location filename="../wlantitlecell.cpp" line="687"/>
+        <location filename="../wlantitlecell.cpp" line="720"/>
+        <location filename="../wlantitlecell.cpp" line="729"/>
         <source>ResStr_Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <source>ResStr_Prompt1</source>
-        <translation type="obsolete">温馨提示：</translation>
+        <location filename="../wlantitlecell.cpp" line="719"/>
+        <source>ResStr_Msg_2</source>
+        <translation>密码必须是5/13个ASCII字符或者10/26个十六进制字符，请确认后再次输入。</translation>
     </message>
     <message>
-        <location filename="../wlantitlecell.cpp" line="706"/>
+        <location filename="../wlantitlecell.cpp" line="728"/>
         <source>ResStr_Msg_3</source>
         <translation>密码必须是8到63个ASCII字符或者64个十六进制字符，请确认后再次输入。</translation>
     </message>
