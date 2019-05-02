@@ -110,7 +110,16 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
         if(result != 0)
         {
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Copy_Fail"),result);
-            if(result == LShell::ERR_Printer_busy)
+            if(result == LShell::ERR_Do_not_support)
+            {
+                SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_Unsupported"),2);
+                busyWarning->setWindowTitle(tr("ResStr_Error"));
+
+                busyWarning->setWindowFlags(busyWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+                busyWarning->exec();
+            }
+            else if(result == LShell::ERR_Printer_busy)
             {
                 SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_The_machine_is_busy__please_try_later_"),2);
                 busyWarning->setWindowTitle(tr("ResStr_Error"));

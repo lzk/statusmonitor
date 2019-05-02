@@ -45,7 +45,7 @@
   <widget class="QLabel" name="label_25">
    <property name="geometry">
     <rect>
-     <x>500</x>
+     <x>510</x>
      <y>310</y>
      <width>31</width>
      <height>19</height>
@@ -351,7 +351,7 @@ background: transparent;
   <widget class="QPushButton" name="btID">
    <property name="geometry">
     <rect>
-     <x>456</x>
+     <x>466</x>
      <y>307</y>
      <width>40</width>
      <height>23</height>
@@ -380,7 +380,7 @@ background: transparent;
   <widget class="QLabel" name="label_26">
    <property name="geometry">
     <rect>
-     <x>500</x>
+     <x>510</x>
      <y>340</y>
      <width>31</width>
      <height>20</height>
@@ -641,7 +641,7 @@ background: transparent;
   <widget class="QPushButton" name="btNInOne">
    <property name="geometry">
     <rect>
-     <x>456</x>
+     <x>466</x>
      <y>339</y>
      <width>40</width>
      <height>23</height>
@@ -928,7 +928,7 @@ color:white;
   <widget class="QLabel" name="label_27">
    <property name="geometry">
     <rect>
-     <x>426</x>
+     <x>436</x>
      <y>308</y>
      <width>29</width>
      <height>20</height>
@@ -987,9 +987,9 @@ background: transparent;
   <widget class="QLabel" name="label_23">
    <property name="geometry">
     <rect>
-     <x>373</x>
+     <x>365</x>
      <y>309</y>
-     <width>48</width>
+     <width>78</width>
      <height>19</height>
     </rect>
    </property>
@@ -1091,9 +1091,9 @@ background: transparent;
   <widget class="QLabel" name="label_24">
    <property name="geometry">
     <rect>
-     <x>372</x>
+     <x>365</x>
      <y>341</y>
-     <width>48</width>
+     <width>78</width>
      <height>20</height>
     </rect>
    </property>
@@ -1200,7 +1200,7 @@ QRadioButton::indicator::checked {
   <widget class="QLabel" name="label_28">
    <property name="geometry">
     <rect>
-     <x>426</x>
+     <x>436</x>
      <y>340</y>
      <width>29</width>
      <height>20</height>
@@ -1686,7 +1686,7 @@ QRadioButton::indicator::checked {
   <widget class="QLabel" name="label_29">
    <property name="geometry">
     <rect>
-     <x>426</x>
+     <x>436</x>
      <y>373</y>
      <width>29</width>
      <height>20</height>
@@ -1708,7 +1708,7 @@ QRadioButton::indicator::checked {
   <widget class="QLabel" name="label_33">
    <property name="geometry">
     <rect>
-     <x>500</x>
+     <x>510</x>
      <y>373</y>
      <width>31</width>
      <height>20</height>
@@ -1730,9 +1730,9 @@ QRadioButton::indicator::checked {
   <widget class="QLabel" name="label_34">
    <property name="geometry">
     <rect>
-     <x>372</x>
+     <x>365</x>
      <y>373</y>
-     <width>48</width>
+     <width>78</width>
      <height>20</height>
     </rect>
    </property>
@@ -1755,7 +1755,7 @@ QRadioButton::indicator::checked {
    </property>
    <property name="geometry">
     <rect>
-     <x>456</x>
+     <x>466</x>
      <y>372</y>
      <width>40</width>
      <height>23</height>
