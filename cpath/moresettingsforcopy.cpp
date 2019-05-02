@@ -140,6 +140,7 @@ void MoreSettingsForCopy::setDefault()
 
     defaultParamForCopy->promptInfo.isIDCard = true;
     defaultParamForCopy->promptInfo.isMultible = true;
+    defaultParamForCopy->promptInfo.isDuplex = 0;
 
     defaultParamForCopy->idCardCopyMode = A4Mode1;
     defaultParamForCopy->duplexMode = Flip_Long_Edge;
@@ -223,6 +224,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
+
         selectIDCardCopyMode(param->idCardCopyMode);
 
         ui->scaling->setText(text.setNum(param->scaling));
@@ -230,6 +232,8 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 
     }else if (_duplexCopyFlag)
     {
+        ui->btn_duplex->setEnabled(true);
+        ui->btn_duplex->setChecked(param->promptInfo.isDuplex == 1);
 
         if(param->docType == DocType_Copy_Photo)
         {
@@ -309,6 +313,8 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
     }
     else
     {
+        ui->btn_duplex->setEnabled(false);
+//        ui->btn_duplex->setChecked(param->promptInfo.isDuplex == 1);
         if(param->docType == DocType_Copy_Photo)
         {
             ui->btPicture->setChecked(true);
@@ -387,6 +393,7 @@ void MoreSettingsForCopy::on_btOK_clicked()
     ParamForCopy->promptInfo.isIDCard = ui->btID->isChecked();
     qDebug()<<"ParamForCopy->promptInfo.isIDCard"<<ParamForCopy->promptInfo.isIDCard;
     ParamForCopy->promptInfo.isMultible = ui->btNInOne->isChecked();
+    ParamForCopy->promptInfo.isDuplex = ui->btn_duplex->isEnabled() ?ui->btn_duplex->isChecked() ?1 :0 :-1;
 
     ParamForCopy->idCardCopyMode = _idCardCopyMode;
     ParamForCopy->duplexMode = ui->duplexCopyModeList->currentIndex();

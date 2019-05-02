@@ -3,9 +3,8 @@
 
 #include "usbapi_libusb.h"
 #include "deviceio.h"
-#include "filelocker.h"
 #include <QString>
-class UsbIO :public DeviceIO ,public FileLocker
+class UsbIO :public DeviceIO
 {
 public:
     UsbIO();
@@ -28,7 +27,6 @@ protected:
     virtual const char* getDeviceAddress();
 
 private:
-    bool is_device_scanning();
     int open_with_mode(int port ,int mode);
 private:
     UsbApi* usb;

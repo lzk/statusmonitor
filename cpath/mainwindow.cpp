@@ -299,6 +299,10 @@ void MainWindow::on_refreshBtn_clicked()
     ui->statusCycle->startAnimation(20);
     gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
 //    statusCycle->startAnimation(20);
+    ui->deviceNameBox->setEnabled(false);
+    ui->deviceNameLabel->setEnabled(false);
+    ui->deviceNameLabel_2->setEnabled(false);
+    ui->deviceNameLabel_2->removeEventFilter(this);
 }
 
 void MainWindow::cmdResult(int cmd,int result ,QVariant data)
@@ -327,6 +331,11 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         ui->statusCycle->stopAnimation();
         ui->statusCycle->hide();
         ui->refreshBtn->show();
+
+        ui->deviceNameBox->setEnabled(true);
+        ui->deviceNameLabel->setEnabled(true);
+        ui->deviceNameLabel_2->setEnabled(true);
+        ui->deviceNameLabel_2->installEventFilter(this);
 #endif
     }
         break;

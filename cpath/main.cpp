@@ -117,13 +117,12 @@ int main(int argc, char *argv[])
     {
        splash->setPixmap(QPixmap(":/Images/Startup.tif"));
     }
-
     splash->setEnabled(false);
+    splash->show();
 
     MainWindow w;
     w.setGeometry(splash->geometry());
     w.setWindowIcon(QIcon(":/Images/printer.ico"));
-    splash->show();
 
 //    QTranslator trans1;
 //    trans1.load("qt_" + QLocale::system().name() ,":/translations");

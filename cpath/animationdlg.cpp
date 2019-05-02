@@ -6,6 +6,7 @@
 #define _NofeedJam "03"
 #define _IDCardScan "05"
 #define _Nin1Copy   "06"
+#define _DuplexScan "05"
 
 AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     QDialog(parent),
@@ -63,13 +64,19 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     QString flag;
     switch(status)
     {
-    case 1:
+    case UIConfig::Show_duplex_automation:
+        flag = _DuplexScan;
+        this->setWindowTitle(tr("ResStr_Duplex_Copy"));
+        label->setGeometry(12, 10, 371, 391);
+        ui->bt_pause_play->setGeometry(QRect(170, 514, 44, 44));
+        break;
+    case UIConfig::Show_ID_Card_automation:
         flag = _IDCardScan;
         this->setWindowTitle(tr("ResStr_ID_Card_Copy"));
         label->setGeometry(12, 10, 371, 391);
         ui->bt_pause_play->setGeometry(QRect(170, 514, 44, 44));
         break;
-    case 2:
+    case UIConfig::Show_Nin1_automation:
         flag = _Nin1Copy;
         this->setWindowTitle(tr("ResStr_N_in_1_Copy"));
         label->setGeometry(12, 10, 371, 391);
