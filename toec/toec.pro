@@ -37,7 +37,7 @@ SOURCES += \
     FingerCommon.cpp \
     finger.cpp \
     FingCmd.cpp \
-    filterlib.cpp \
+    filterlib.cpp
 #    $$PWD/filterstatusthread.cpp \
 
 
@@ -48,7 +48,7 @@ HEADERS += \
     finger.h \
     FingCmd.h \
     datadefine.h \
-    common.h \
+    common.h
 #    $$PWD/filterstatusthread.h \
 
 

@@ -6,8 +6,8 @@
 #include "commonapi.h"
 #include <unistd.h>
 
-const char* lock_scan_file = "/tmp/.scanner_lock";
-const char* lock_scan_info_file = "/tmp/.scanner_info_lock";
+const char* lock_scan_file = "/tmp/.tjgd_lock";
+const char* lock_scan_info_file = "/tmp/.tjgd_info_lock";
 int usb_error_printing = -100;
 int usb_error_scanning = -101;
 int usb_error_usb_locked = -102;
@@ -26,19 +26,36 @@ int (* getpidvid)(const QString& modelname ,int* pid ,int* vid) = _getpidvid;
 
 #include "filelocker.h"
 #include <QSettings>
+FileLocker fl;
 bool get_locked_sane_scanner(int& address ,int& bus)
 {
     address = 0;
     bus = 0;
-    FileLocker fl;
-    int ret = fl.trylock(lock_scan_file);
-    if(!ret){
-        fl.unlock();
+//    FileLocker fl;
+//    int ret = fl.trylock(lock_scan_file);
+//    if(!ret){
+       // fl.unlock();
 
         QSettings settings(lock_scan_info_file ,QSettings::NativeFormat);
         bus = settings.value("Bus_Number" ,0).toInt();
         address = settings.value("Device_Address" ,0).toInt();
         if(bus && address)
+//             fl.unlock();
+            return true;
+//    }
+//    fl.unlock();
+    return false;
+}
+
+bool get_locked_device(QString& uri)
+{
+    uri.clear();
+//    FileLocker fl;
+    int ret = fl.trylock(lock_scan_file);
+    if(ret){
+        QSettings settings(lock_scan_info_file ,QSettings::NativeFormat);
+        uri = settings.value("Device_Uri").toString();
+        if(!uri.isEmpty())
             return true;
     }
 
@@ -90,6 +107,12 @@ int UsbIO::open_with_mode(int port ,int mode)
             return usb_error_printing;
         }
     }
+    QString locked_uri;
+    if(get_locked_device(locked_uri)){
+        if(!locked_uri.compare(this->device_uri)){
+            return usb_error_busy;
+        }
+    }
 #if LOCK_USB
     if(mode == 0){
         while (true) {
@@ -107,28 +130,29 @@ int UsbIO::open_with_mode(int port ,int mode)
 //        if(locked_printers.contains(device_uri)){//lock same device uri
             mutex.unlock();
             LOGLOG("usb device:%s locked" ,printer_name.toLatin1().constData());
+            fl.unlock();
             return usb_error_usb_locked;
         }
     }
     mutex.unlock();
 #endif
-    int sane_locked_address ,sane_locked_bus;
-    if(get_locked_sane_scanner(sane_locked_address ,sane_locked_bus)){
-        if(address == sane_locked_address && bus == sane_locked_bus){
-            LOGLOG("usb locked bus:%d ,address:%d" ,bus ,address);
-            return usb_error_scanning;
-        }
-    }
+//    int sane_locked_address ,sane_locked_bus;
+//    if(get_locked_sane_scanner(sane_locked_address ,sane_locked_bus)){
+//        if(address == sane_locked_address && bus == sane_locked_bus){
+//            LOGLOG("usb locked bus:%d ,address:%d" ,bus ,address);
+//            return usb_error_scanning;
+//        }
+//    }
     usb->init();
     int ret = usb->open(vid ,pid ,serial);
     if(!ret){
         usb->getDeviceAddress(&address ,&bus);
-        if(address == sane_locked_address && bus == sane_locked_bus){
-            LOGLOG("usb locked by sane bus:%d ,address:%d" ,bus ,address);
-            usb->close();
-            usb->exit();
-            return usb_error_scanning;
-        }
+//        if(address == sane_locked_address && bus == sane_locked_bus){
+//            LOGLOG("usb locked by sane bus:%d ,address:%d" ,bus ,address);
+//            usb->close();
+//            usb->exit();
+//            return usb_error_scanning;
+//        }
         if(port >= 0){
             ret = usb->config(port);
             if(ret){
@@ -146,6 +170,8 @@ int UsbIO::open_with_mode(int port ,int mode)
         locked_printers << QString(device_uri);
         mutex.unlock();
 #endif
+    }else{
+        fl.unlock();
     }
     return ret;
 }
@@ -166,7 +192,9 @@ int UsbIO::close(void)
         locked_printers.removeAll(QString(device_uri));
         mutex.unlock();
 #endif
+
     }
+    fl.unlock();
     return 0;
 }
 
@@ -193,9 +221,10 @@ int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
     }
     return usb->getDeviceId(buffer ,bufsize);
 }
-#if 1
+#if 0
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
+    //return -1;//for debug
     int ret = open_with_mode(1 ,-1);//will change to -1
     if(!ret){
         char cmd[12];
@@ -252,7 +281,9 @@ int UsbIO::getDeviceId(char *buffer, int bufsize)
 #else
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
-    int ret = open_with_mode(-1 ,0);//will change to -1
+    //return -1;//for debug
+
+    int ret = open_with_mode(0 ,0);//will change to -1
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();

@@ -83,10 +83,16 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
     cmd_status = 0;
 }
 
+extern int usb_error_printing;
+extern int usb_error_busy;
 void Worker::update_current_printer_status()
 {
     PrinterInfo_struct ps;
     watcher->get_currentprinter_info(ps);
+    if(ps.printer.status == usb_error_printing)
+        ps.status.PrinterStatus = ps.printer.status;
+    if(ps.printer.status == usb_error_busy)
+        ps.status.PrinterStatus = ps.printer.status;
     QVariant value;
     value.setValue<PrinterInfo_struct>(ps);
     cmdResult(UIConfig::CMD_GetStatus ,0 ,value);

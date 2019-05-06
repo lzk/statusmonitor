@@ -185,7 +185,7 @@ typedef struct {
 	BYTE	TonerCapacity[4];
 
 	BYTE	PaperType;
-#ifdef _LENOVO_
+#ifdef _LEN_OVO_
 	BYTE	bReserved[2];
 	BYTE	ExecutingJob;
 	//BYTE	bReserved2[24];

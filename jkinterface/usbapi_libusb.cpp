@@ -327,7 +327,7 @@ int UsbApi::open(int vid, int pid, const char *serial)
         deviceInfo->pid = pid;
         if(serial)
             strcpy(deviceInfo->serial ,serial);
-        LOGLOG("libusb try to find device:0x%04x,0x%04x,%s" ,vid ,pid ,deviceInfo->serial);
+//        LOGLOG("libusb try to find device:0x%04x,0x%04x,%s" ,vid ,pid ,deviceInfo->serial);
         ret = getDeviceWithSerial(&device);
         if(ret){
             LOGLOG("libusb can not get device");
@@ -354,22 +354,18 @@ int UsbApi::config(int interface)
         libusb_close(device.udev);
         return ret;
     }
-    if(g_interface > 0)//changed by gavin 20190429
-    {
-        ret = claimInterface(device.udev ,g_interface);
-        if(ret){
-            LOGLOG("libusb can not claim interface:%d" ,g_interface);
-            libusb_close(device.udev);
-            return ret;
-        }
+    ret = claimInterface(device.udev ,g_interface);
+    if(ret){
+        LOGLOG("libusb can not claim interface:%d" ,g_interface);
+        libusb_close(device.udev);
+        return ret;
     }
     return ret;
 }
 
 int UsbApi::close()
 {
-    //if(g_interface >= 0)
-    if(g_interface > 0) //changed by gavin 20190429
+    if(g_interface >= 0)
         releaseInterface(device.udev ,g_interface);
 
     libusb_close(device.udev);

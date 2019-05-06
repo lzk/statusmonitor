@@ -79,8 +79,8 @@ void MainWindow::timeout()
         ui->label_timeval->setText(QString("%1").arg(time_val));
     }else{
         hide();
-        update_result(jobid ,Checked_Result_timeout);
-        close();
+        //update_result(jobid ,Checked_Result_timeout);
+        //close();
     }
 }
 

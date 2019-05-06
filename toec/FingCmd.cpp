@@ -9,6 +9,8 @@
 #endif
 #include <sys/time.h>
 
+#define SUPPOR_INTERFACE_1 0
+
 
 FingCmd::FingCmd()
 {
@@ -1482,17 +1484,18 @@ int FingCmd::GetFingerStatusForPrint()
     if(devicemanager.getDeviceType(mPrinter.deviceUri) == DeviceIO::Type_usb)
     {
         LOGLOG("####FM: GetFingerStatusForPrint U");
-
+#if SUPPOR_INTERFACE_1
         nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
-//        int trytime = 0;
-//        do
-//        {
-//            nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
-//            LOGLOG("####FM: GetFingerStatusForPrint U try %d times", trytime);
-//            trytime++;
+#else
+        int trytime = 0;
+        do
+        {
+            nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_FUNC_T), NULL, &length, &result, cbRead);
+            LOGLOG("####FM: GetFingerStatusForPrint U try %d times", trytime);
+            trytime++;
 
-//        }while(trytime <=3 && nResult == _SW_USB_DATA_FORMAT_ERROR);
-
+        }while(trytime <=3 && nResult == _SW_USB_DATA_FORMAT_ERROR);
+#endif
     }
     else
     {
@@ -1604,9 +1607,12 @@ bool FingCmd::CancelPrint()
     fgCmd.code = *(unsigned int*)&cmd[0];
     if(m_pDeviceIO->type() == DeviceIO::Type_usb)
     {
+#if SUPPOR_INTERFACE_1
         nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_CANCEL_T), NULL, &length, &result, cbRead);
 
-        //    nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_CANCEL_T), NULL, &length, &result, cbRead);
+#else
+        nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_CANCEL_T), NULL, &length, &result, cbRead);
+#endif
     }
     else
     {
@@ -1779,8 +1785,12 @@ int FingCmd::IsPrint(char* userName, short* pIndex, int mTimeout)
 
     if(devicemanager.getDeviceType(mPrinter.deviceUri) == DeviceIO::Type_usb)
     {
+#if SUPPOR_INTERFACE_1
         nResult = WriteDataViaUSB((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
-        //nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
+
+#else
+        nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd, sizeof(FG_DISC_T), NULL, &length, &result, cbRead);
+#endif
         usbType = true;
     }
     else
@@ -1804,7 +1814,7 @@ int FingCmd::IsPrint(char* userName, short* pIndex, int mTimeout)
             gettimeofday(&tpend, 0);
             float timeuse = 1000000 * (tpend.tv_sec - tpstart.tv_sec) + tpend.tv_usec - tpstart.tv_usec;
             timeuse /= 1000000;
-            if(timeuse -mTimeout > 0 )
+            if(timeuse -mTimeout > 12 )
             {
 
                 CancelPrint();
@@ -1818,8 +1828,12 @@ int FingCmd::IsPrint(char* userName, short* pIndex, int mTimeout)
 
             if(usbType)
             {
+#if SUPPOR_INTERFACE_1
                 nResult = WriteDataViaUSB((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
-                //nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
+
+#else
+                nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd1, sizeof(FG_STATUS_T), NULL, &length, &result, cbRead);
+#endif
             }
             else
             {
@@ -1852,9 +1866,11 @@ int FingCmd::IsPrint(char* userName, short* pIndex, int mTimeout)
 
                     if(usbType)
                     {
+#if SUPPOR_INTERFACE_1
                         nResult = WriteDataViaUSB((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
-                        //nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
-
+#else
+                        nResult = WriteDataViaUSBwithCUPS((unsigned char*)&fgCmd2, sizeof(FG_GETRESULT_T), pData, &length, &result, cbRead);
+#endif
                     }
                     else
                     {

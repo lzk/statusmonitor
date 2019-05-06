@@ -39,6 +39,10 @@ void* checkFingerThread(void *para)
               LOGLOG("libtoec: print busy")
               sm->check_result = Checked_Result_DevBusy;
          }
+         else if(ret == 9)
+         {
+             sm->check_result = Checked_Result_timeout;
+         }
          else
          {
             sm->check_result = Checked_Result_Fail;
@@ -170,12 +174,12 @@ void callback_getJob(void* para,Job_struct* js)
                 gettimeofday(&tpend, 0);
                 float timeuse = 1000000 * (tpend.tv_sec - tpstart.tv_sec) + tpend.tv_usec - tpstart.tv_usec;
                 timeuse /= 1000000;
-                if((timeuse -(sm->m_timeout+1)) > 0)
+                if((timeuse -(sm->m_timeout+10)) > 0)
                 {
                     pthread_cancel(check_thread);
                     usleep(200000);
                     sm->mFinger.finger_cancel(sm->m_device_uri);
-                    sm->check_result = Checked_Result_Cancel;
+                    sm->check_result = Checked_Result_timeout;
                     break;
 
                 }
@@ -207,10 +211,7 @@ void callback_getJob(void* para,Job_struct* js)
                 }
                 else if(!strcmp(buffer ,"timeout"))
                 {
-                    pthread_cancel(check_thread);
 
-                    usleep(200000);
-                    sm->mFinger.finger_cancel(sm->m_device_uri);
                     LOGLOG("gavin: show Dlg...timeout");
     //                        while(1)
     //                        {
@@ -219,13 +220,52 @@ void callback_getJob(void* para,Job_struct* js)
     //                                break;
     //                            usleep(10000);
     //                        }
-                    sm->check_result = Checked_Result_timeout;
-                    sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
-                            ,sm->username ,sm->filename);
-                    tc.writeThenRead(buffer ,sizeof(buffer));
-                    if(!strcmp(buffer ,"resultok"))
+
+                    struct timeval timeout_start;
+                    gettimeofday(&timeout_start, 0);
+                    while(1)
                     {
-                        LOGLOG("gavin: show Dlg...close ok");
+                        if(sm->chenk_end)
+                        {
+                            LOGLOG("gavin: show Dlg...close");
+                            // while(1)
+                            {
+                                sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                                        ,sm->username ,sm->filename);
+                                tc.writeThenRead(buffer ,sizeof(buffer));
+                                if(!strcmp(buffer ,"resultok"))
+                                {
+                                    LOGLOG("gavin: show Dlg...close ok");
+                                }
+                            }
+                            break;
+                        }
+                        gettimeofday(&tpend, 0);
+                        float timeuse = 1000000 * (tpend.tv_sec - timeout_start.tv_sec) + tpend.tv_usec - timeout_start.tv_usec;
+                        timeuse /= 1000000;
+                        if((timeuse -10) > 0)
+                        {
+                            break;
+
+                        }
+                        usleep(200000);
+
+                    }
+                    if(!sm->chenk_end)
+                    {
+                        pthread_cancel(check_thread);
+
+                        usleep(200000);
+                        sm->mFinger.finger_cancel(sm->m_device_uri);
+                        sm->check_result = Checked_Result_timeout;
+                        sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                                ,sm->username ,sm->filename);
+                        tc.writeThenRead(buffer ,sizeof(buffer));
+                        if(!strcmp(buffer ,"resultok"))
+                        {
+                            LOGLOG("gavin: show Dlg...close ok");
+                        }
+
                     }
                     break;
                 }

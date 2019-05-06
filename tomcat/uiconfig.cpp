@@ -16,12 +16,12 @@ extern const char* log_app_name;
 extern const char* app_version;
 //usb error control var
 extern int usb_error_printing;
+extern int usb_error_busy;
 
 static bool _isDeviceSupported(Printer_struct* ps)
 {
 //    LOGLOG("tomcat found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
-//    if(!QString(ps->makeAndModel).startsWith("Lenovo M101DW"))
-//    if(!QString(ps->makeAndModel).startsWith("Lenovo M7208W"))
+
     if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
         return false;
     return true;
@@ -35,9 +35,7 @@ static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
     *pid = -1;
     if(makeAndModel.startsWith("toec/OEP3300CDN")){
         *pid = 0x002c;
-    }else if(makeAndModel.startsWith("lenovo/M7268W")){
-        *vid = 0x17ef;
-        *pid = 0x563a;
+
     }
     return (*pid == -1) ?-1 :0;
 }
@@ -50,7 +48,7 @@ UIConfig::UIConfig(QObject *parent) :
 int UIConfig::initConfig()
 {
     log_app_name = "tjgd1zsmui";
-    app_version = "1.0.14";
+    app_version = "1.0.16";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -83,7 +81,8 @@ int UIConfig::initConfig()
 //    printersKey = "statusmonitor/printerlist/";
 
 //    ui_server_path = SERVER_PATH;
-    usb_error_printing = 0x01;
+    usb_error_printing = 0x01;//PS_PRINTING
+    usb_error_busy = 0x08;//PS_BUSY
 
     //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;
