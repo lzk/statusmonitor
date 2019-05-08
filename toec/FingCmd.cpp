@@ -1816,7 +1816,8 @@ int FingCmd::IsPrint(char* userName, short* pIndex, int mTimeout)
             timeuse /= 1000000;
             if(timeuse -mTimeout > 12 )
             {
-
+                LOGLOG("####FM:IsPrint():  timeout cancel....");
+                usleep(200000);
                 CancelPrint();
                 break;
             }

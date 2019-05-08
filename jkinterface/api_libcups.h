@@ -53,7 +53,7 @@ const char* cups_get_default_printer();
 int cups_get_job(CALLBACK_getJob callback,void* para,const char* printer = 0 ,const char* which = 0 ,const char* users = 0);
 int cups_get_device_uri(const char* printer ,char* device_uri);
 int cups_get_printers(CALLBACK_getPrinters callback ,void* para);
-int snmpGetDeviceID(const char* device_uri ,char* buffer ,int bufsize);
+//int snmpGetDeviceID(const char* device_uri ,char* buffer ,int bufsize);
 int cups_resolve_uri(const char* device_uri ,char* buffer ,int bufsize);
 int cups_usb_getDeviceID(char* data ,int datalen);
 #endif // API_LIBCUPS_H

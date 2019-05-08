@@ -364,6 +364,7 @@ int cups_get_job(CALLBACK_getJob callback,void* para,const char* printer ,const 
     return cups_get_job_with_request(callback ,para ,request);
 }
 
+#if 0
 /*
  * 'timeout_cb()' - Handle HTTP timeouts.
  */
@@ -376,14 +377,6 @@ timeout_cb(http_t *http,		/* I - Connection to server (unused) */
   (void)user_data;
 
   return 1;//(!job_canceled);
-}
-
-int cups_resolve_uri(const char* device_uri ,char* buffer ,int bufsize)
-{
-    const char* resolved_uri;
-    resolved_uri = _httpResolveURI(device_uri, buffer,
-                              bufsize, _HTTP_RESOLVE_DEFAULT, NULL, NULL);
-    return resolved_uri != NULL ?0 :-1;
 }
 
 #include "backend/backend-private.h"
@@ -454,6 +447,15 @@ int snmpGetDeviceID(const char* device_uri ,char* buffer ,int bufsize)
     httpClose(http);
     return ret;
 }
+#endif
+int cups_resolve_uri(const char* device_uri ,char* buffer ,int bufsize)
+{
+    const char* resolved_uri;
+    resolved_uri = _httpResolveURI(device_uri, buffer,
+                              bufsize, _HTTP_RESOLVE_DEFAULT, NULL, NULL);
+    return resolved_uri != NULL ?0 :-1;
+}
+
 
 int get_device_model(const char* printer ,char* model)
 {

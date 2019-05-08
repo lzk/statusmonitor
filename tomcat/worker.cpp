@@ -91,7 +91,7 @@ void Worker::update_current_printer_status()
     watcher->get_currentprinter_info(ps);
     if(ps.printer.status == usb_error_printing)
         ps.status.PrinterStatus = ps.printer.status;
-    if(ps.printer.status == usb_error_busy)
+    else if(ps.printer.status == usb_error_busy)
         ps.status.PrinterStatus = ps.printer.status;
     QVariant value;
     value.setValue<PrinterInfo_struct>(ps);

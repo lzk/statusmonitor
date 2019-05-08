@@ -34,6 +34,7 @@ void* checkFingerThread(void *para)
 
      }else{
          LOGLOG("libtoec: start check finger  Fail");
+
          if(ret == 4)
          {
               LOGLOG("libtoec: print busy")
@@ -41,11 +42,14 @@ void* checkFingerThread(void *para)
          }
          else if(ret == 9)
          {
+             LOGLOG("libtoec: print timeout")
+             sm->mFinger.finger_cancel(sm->m_device_uri);
              sm->check_result = Checked_Result_timeout;
          }
          else
          {
-            sm->check_result = Checked_Result_Fail;
+             LOGLOG("libtoec: print other error")
+             sm->check_result = Checked_Result_Fail;
          }
      }
      sm->chenk_end = true;
@@ -150,7 +154,7 @@ void callback_getJob(void* para,Job_struct* js)
             gettimeofday(&tpstart, 0);
             while(1){
 
-                LOGLOG("gavin: job_id_cancel = %d, js->id=%d, print_cancel=%d...",job_id_cancel, js->id, print_cancel? 1:0);
+                //LOGLOG("gavin: job_id_cancel = %d, js->id=%d, print_cancel=%d...",job_id_cancel, js->id, print_cancel? 1:0);
                 if(job_id_cancel == js->id && print_cancel)
                 {
                     print_cancel = false;
@@ -166,7 +170,7 @@ void callback_getJob(void* para,Job_struct* js)
                     tc.writeThenRead(buffer ,sizeof(buffer));
                     if(!strcmp(buffer ,"resultok"))
                     {
-                        LOGLOG("gavin: show Dlg...close ok");
+                        LOGLOG("gavin: show Dlg(job cancel)...close ok");
                     }
                     break;
                 }
@@ -178,8 +182,17 @@ void callback_getJob(void* para,Job_struct* js)
                 {
                     pthread_cancel(check_thread);
                     usleep(200000);
+                    LOGLOG("gavin: print cancel 4 ...");
+
                     sm->mFinger.finger_cancel(sm->m_device_uri);
                     sm->check_result = Checked_Result_timeout;
+                    sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
+                            ,sm->username ,sm->filename);
+                    tc.writeThenRead(buffer ,sizeof(buffer));
+                    if(!strcmp(buffer ,"resultok"))
+                    {
+                        LOGLOG("gavin: show Dlg(timeout cancel)...close ok");
+                    }
                     break;
 
                 }
@@ -190,6 +203,7 @@ void callback_getJob(void* para,Job_struct* js)
                 {
                     pthread_cancel(check_thread);
                     usleep(200000);
+                    LOGLOG("gavin: print cancel 5 ...");
                     sm->mFinger.finger_cancel(sm->m_device_uri);
                     LOGLOG("gavin: show Dlg...cancel");
     //                         while(1)
@@ -205,7 +219,7 @@ void callback_getJob(void* para,Job_struct* js)
                     tc.writeThenRead(buffer ,sizeof(buffer));
                     if(!strcmp(buffer ,"resultok"))
                     {
-                        LOGLOG("gavin: show Dlg...close ok");
+                        LOGLOG("gavin: show Dlg(cancel)...close ok");
                     }
                     break;
                 }
@@ -235,7 +249,7 @@ void callback_getJob(void* para,Job_struct* js)
                                 tc.writeThenRead(buffer ,sizeof(buffer));
                                 if(!strcmp(buffer ,"resultok"))
                                 {
-                                    LOGLOG("gavin: show Dlg...close ok");
+                                    LOGLOG("gavin: show Dlg(timeout10fix)...close ok");
                                 }
                             }
                             break;
@@ -256,6 +270,7 @@ void callback_getJob(void* para,Job_struct* js)
                         pthread_cancel(check_thread);
 
                         usleep(200000);
+                        LOGLOG("gavin: print cancel 6 ...");
                         sm->mFinger.finger_cancel(sm->m_device_uri);
                         sm->check_result = Checked_Result_timeout;
                         sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
@@ -263,7 +278,7 @@ void callback_getJob(void* para,Job_struct* js)
                         tc.writeThenRead(buffer ,sizeof(buffer));
                         if(!strcmp(buffer ,"resultok"))
                         {
-                            LOGLOG("gavin: show Dlg...close ok");
+                            LOGLOG("gavin: show Dlg(timeout)...close ok");
                         }
 
                     }
@@ -284,6 +299,7 @@ void callback_getJob(void* para,Job_struct* js)
 
                         pthread_cancel(check_thread);
                         usleep(200000);
+                        LOGLOG("gavin: print cancel 7 ...");
                         sm->mFinger.finger_cancel(sm->m_device_uri);
                         sm->check_result = Checked_Result_Cancel;
                         sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id, sm->check_result
@@ -355,6 +371,7 @@ void callback_getJob(void* para,Job_struct* js)
                 {
                     pthread_cancel(check_thread);
                     usleep(200000);
+                    LOGLOG("gavin: print cancel 8 ...");
                     sm->mFinger.finger_cancel(sm->m_device_uri);
                     sm->check_result = Checked_Result_Cancel;
                     break;

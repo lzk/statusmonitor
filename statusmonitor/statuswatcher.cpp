@@ -253,10 +253,12 @@ void StatusWatcher::set_current_printer_info(PrinterInfo_struct* pis)
         mutex.unlock();
         return;
     }
-//    current_printer_info = *pis;
-//    mutex.unlock();
-//    update_current_printer_status();
-//    return;
+#if 1
+    current_printer_info = *pis;
+    mutex.unlock();
+    update_current_printer_status();
+    return;
+#else
     if(printer_compare(&pis->printer ,&current_printer_info.printer)){
 //    if(pis->printer.status != current_printer_info.printer.status){
         current_printer_info = *pis;
@@ -289,6 +291,7 @@ void StatusWatcher::set_current_printer_info(PrinterInfo_struct* pis)
     }else{
         mutex.unlock();
     }
+#endif
 }
 
 void StatusWatcher::setPrinters(Printer_struct* ps)
