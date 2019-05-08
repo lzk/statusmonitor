@@ -288,7 +288,7 @@ static int _platform_net_get_device_id(const QString& device_uri,char *buffer, i
     }
 
     if(!udpSocket.waitForReadyRead(5000)){
-        LOGLOG("udp no data to read!");
+//        LOGLOG("udp no data to read!");
         return -1;
     }
     QByteArray ba;

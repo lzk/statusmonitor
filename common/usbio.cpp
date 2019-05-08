@@ -110,6 +110,7 @@ int UsbIO::open_with_mode(int port ,int mode)
     QString locked_uri;
     if(get_locked_device(locked_uri)){
         if(!locked_uri.compare(this->device_uri)){
+            fl.unlock();
             return usb_error_busy;
         }
     }
@@ -161,6 +162,7 @@ int UsbIO::open_with_mode(int port ,int mode)
             }
         }
     }else{
+        ret = -1;
         usb->exit();
     }
     if(!ret){

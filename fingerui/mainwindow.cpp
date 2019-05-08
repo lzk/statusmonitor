@@ -16,6 +16,7 @@ MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
   job_info(_job_info)
 {
     ui->setupUi(this);
+    ui->mainToolBar->hide();
 
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 

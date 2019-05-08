@@ -38,11 +38,13 @@ int FileLocker::lock(const char* filename)
     return ret;
 }
 
+static int aaa = 0;
 int FileLocker::trylock(const char* filename)
 {
     int ret = -1;
     fp = fopen(filename, "ab+");
     chmod(filename ,0666);
+    strcpy(lock_file ,filename);
     int fd;
     if(fp){
 #ifdef JK_OS_MAC
@@ -55,6 +57,8 @@ int FileLocker::trylock(const char* filename)
 //            LOGLOG("not locked");
             fclose(fp);
             fp = NULL;
+        }else{
+            LOGLOG("%s locked %d" ,filename ,++aaa);
         }
     }
     return ret;
@@ -77,6 +81,7 @@ int FileLocker::unlock()
             LOGLOG("unlock fail,remove it!");
             remove(lock_file);
         }
+        LOGLOG("%s unlocked %d" ,lock_file ,aaa);
     }
     return 0;
 }

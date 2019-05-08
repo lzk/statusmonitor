@@ -90,9 +90,9 @@ void Worker::update_current_printer_status()
     PrinterInfo_struct ps;
     watcher->get_currentprinter_info(ps);
     if(ps.printer.status == usb_error_printing)
-        ps.status.PrinterStatus = ps.printer.status;
+        ps.status.PrinterStatus =  0x01;//PS_PRINTING;
     else if(ps.printer.status == usb_error_busy)
-        ps.status.PrinterStatus = ps.printer.status;
+        ps.status.PrinterStatus = 0x08;//PS_BUSY;
     QVariant value;
     value.setValue<PrinterInfo_struct>(ps);
     cmdResult(UIConfig::CMD_GetStatus ,0 ,value);

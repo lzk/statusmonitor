@@ -48,7 +48,7 @@ UIConfig::UIConfig(QObject *parent) :
 int UIConfig::initConfig()
 {
     log_app_name = "tjgd1zsmui";
-    app_version = "1.0.17";
+    app_version = "1.0.18";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
@@ -81,8 +81,8 @@ int UIConfig::initConfig()
 //    printersKey = "statusmonitor/printerlist/";
 
 //    ui_server_path = SERVER_PATH;
-    usb_error_printing = 0x01;//PS_PRINTING
-    usb_error_busy = 0x08;//PS_BUSY
+//    usb_error_printing = 0x01;//PS_PRINTING
+//    usb_error_busy = 0x08;//PS_BUSY
 
     //config tomcat supported printer model
     isDeviceSupported = _isDeviceSupported;

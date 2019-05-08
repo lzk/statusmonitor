@@ -121,7 +121,7 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
 //        LOGLOG("found usb device with serial:%s" ,devserialNumber);
     }
 
-    ret = 1;
+    ret = -1;
     if(pData_device->deviceInfo.serial[0] != 0){
         get_serial(dev ,devserialNumber);
         if(!strcmp(pData_device->deviceInfo.serial ,devserialNumber)){
@@ -203,8 +203,6 @@ int UsbApi::config(libusb_device *dev ,libusb_device_handle *udev ,int interface
             }
         }
 
-    }else{
-        result = 1;
     }
     libusb_free_config_descriptor (config0);
 
@@ -330,7 +328,7 @@ int UsbApi::open(int vid, int pid, const char *serial)
 //        LOGLOG("libusb try to find device:0x%04x,0x%04x,%s" ,vid ,pid ,deviceInfo->serial);
         ret = getDeviceWithSerial(&device);
         if(ret){
-            LOGLOG("libusb can not get device");
+//            LOGLOG("libusb can not get device");
             return ret;
         }
     }
