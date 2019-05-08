@@ -1533,7 +1533,6 @@ background-color: rgb(235, 235, 235);</string>
     <zorder>line4</zorder>
     <zorder>login_name</zorder>
     <zorder>login_img</zorder>
-    <zorder>btExpe</zorder>
     <zorder>titleLabel</zorder>
     <zorder>line1</zorder>
     <zorder>changeMsg</zorder>
@@ -1554,6 +1553,7 @@ background-color: rgb(235, 235, 235);</string>
     <zorder>btloginImg2</zorder>
     <zorder>btProduct</zorder>
     <zorder>pushButton_2</zorder>
+    <zorder>btExpe</zorder>
    </widget>
   </widget>
  </widget>
