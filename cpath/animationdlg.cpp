@@ -87,14 +87,14 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
         this->setWindowTitle(tr("ResStr_Out_of_Paper"));
         label->setGeometry(12, 10, 421, 480);
         ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
-        hideLabel();
+        hideLabel(true);
         break;
     case UIConfig::JamAtRegistStayOn:          //PSTATUS_JamAtExitNotReach
         flag = _JamInSide;
         this->setWindowTitle(tr("ResStr_Jam_front"));
         label->setGeometry(12, 10, 421, 480);
         ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
-        hideLabel();
+        hideLabel(false);
         break;
     case UIConfig::InitializeJam:          //PSTATUS_InitializeJam
     case UIConfig::JamAtExitNotReach:          //PSTATUS_JamAtRegistStayOn
@@ -102,14 +102,14 @@ AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
         this->setWindowTitle(tr("ResStr_Jam_whole"));
         label->setGeometry(12, 10, 421, 480);
         ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
-        hideLabel();
+        hideLabel(false);
         break;
     case UIConfig::JamAtExitStayOn:          //PSTATUS_JamAtExitStayOn
         flag = _JamAtExit;
         this->setWindowTitle(tr("ResStr_Jam_back"));
         label->setGeometry(12, 10, 421, 480);
         ui->bt_pause_play->setGeometry(QRect(203, 490, 44, 44));
-        hideLabel();
+        hideLabel(false);
         break;
     default:
         flag = _JamInSide;
@@ -160,13 +160,18 @@ void AnimationDlg::getFinished()
     on_bt_pause_play_clicked();
 }
 
-void AnimationDlg::hideLabel()
+void AnimationDlg::hideLabel(bool isHidePlayButton)
 {
     ui->label_msg1->hide();
     ui->label_msg2->hide();
     ui->btOK->hide();
     ui->btCancel->hide();
     ui->radioButton->hide();
+    if(isHidePlayButton)
+        ui->bt_pause_play->hide();
+    else
+        ui->bt_pause_play->show();
+
 }
 
 void AnimationDlg::on_bt_pause_play_clicked()

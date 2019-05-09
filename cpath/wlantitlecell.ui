@@ -18,7 +18,7 @@
 background-color: transparent;</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="page1">
    <property name="styleSheet">
@@ -838,6 +838,7 @@ QRadioButton::indicator::checked {
      <string>key2</string>
     </property>
    </widget>
+   <zorder>label_bg2</zorder>
    <zorder>btKey3</zorder>
    <zorder>label_Encryption</zorder>
    <zorder>btWLANON2</zorder>
@@ -846,7 +847,6 @@ QRadioButton::indicator::checked {
    <zorder>layoutWidget</zorder>
    <zorder>btKey4</zorder>
    <zorder>btConnect</zorder>
-   <zorder>label_bg2</zorder>
    <zorder>label_line_8</zorder>
    <zorder>btKey1</zorder>
    <zorder>label_Wlan2</zorder>
