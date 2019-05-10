@@ -6,7 +6,7 @@
 #define _NofeedJam "03"
 #define _IDCardScan "05"
 #define _Nin1Copy   "06"
-#define _DuplexScan "05"
+#define _DuplexScan "07"
 
 AnimationDlg::AnimationDlg(QWidget *parent, int status, bool *enNext) :
     QDialog(parent),

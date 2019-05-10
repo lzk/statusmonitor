@@ -140,6 +140,7 @@ static int _getUsbDeviceWithSerail(libusb_device* dev ,void* pData)
         }
     }
     if(ret && udev)
+//    if(udev)
         libusb_close(udev);
     return ret;
 }
@@ -186,7 +187,7 @@ int UsbApi::config(libusb_device *dev ,libusb_device_handle *udev ,int interface
     }
     result = libusb_set_configuration (udev, config0->bConfigurationValue);
 
-    if(interface < config0->bNumInterfaces){
+    if(interface >=0 && interface < config0->bNumInterfaces){
         const struct libusb_interface_descriptor* p_inter;
         int num;
         int type,direction;

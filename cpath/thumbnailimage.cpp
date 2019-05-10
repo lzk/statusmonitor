@@ -175,6 +175,7 @@ void ThumbnailImage::doubleClickEvent()
 {
     pTimerSingleClick->stop();
     if(item){
+        item->setSelected(false);
         item->setSelected(true);
 //        item->setSelected(!item->isSelected());
         timerSingleClick();

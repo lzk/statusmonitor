@@ -175,6 +175,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
         pDialog->setDialogMsg(tr("ResStr_The_scanned_images_will_be_deleted_after_closing_the_VOP__Are_you_sure_to_close_the_VOP_"));
         pDialog->setDialogMsgAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     }
+    pDialog->setWindowFlags(pDialog->windowFlags() | Qt::WindowStaysOnTopHint);
     if (pDialog->exec() == QDialog::Accepted)
     {
 //        if(ui->tabStackedWidget->getScrollAreaImageStatus())
@@ -210,6 +211,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
     {
         e->ignore();
     }
+    delete pDialog;
 }
 
 void MainWindow::on_Copy_clicked()
@@ -347,7 +349,8 @@ void MainWindow::cmdResult(int cmd,int result ,QVariant data)
         }else{//get status fail
             LOGLOG("get printer status fail!");
             updateStatusPanel(UIConfig::Status_Offline,UIConfig::Offline);
-            ui->label_10->setText("");
+            deviceStatusString = "";
+            ui->label_10->setText(deviceStatusString);
         }
 #endif
     }
@@ -549,8 +552,9 @@ void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
         ui->tabStackedWidget->setDefault_Copy(true);
         ui->tabStackedWidget->setDefault_Scan();
 
+        deviceStatusString = "";
+        ui->label_10->setText(deviceStatusString);
         updateStatusPanel(UIConfig::Status_Offline,UIConfig::Offline);
-        ui->label_10->setText("");
         current_printer = printers.at(index);
         setcurrentPrinter(printers.at(index));
 #endif

@@ -1683,89 +1683,76 @@ QRadioButton::indicator::checked {
     </property>
    </item>
   </widget>
-  <widget class="QLabel" name="label_29">
-   <property name="geometry">
-    <rect>
-     <x>436</x>
-     <y>373</y>
-     <width>29</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>ResStr_Off</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_33">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>373</y>
-     <width>31</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>ResStr_On</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_34">
+  <widget class="QWidget" name="widget_duplexcopy" native="true">
    <property name="geometry">
     <rect>
      <x>365</x>
      <y>373</y>
-     <width>78</width>
-     <height>20</height>
+     <width>185</width>
+     <height>25</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>ResStr_Duplex_Copy</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_duplex">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>466</x>
-     <y>372</y>
-     <width>40</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">:!enabled{
+   <widget class="QLabel" name="label_34">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>2</y>
+      <width>78</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_Duplex_Copy</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_29">
+    <property name="geometry">
+     <rect>
+      <x>71</x>
+      <y>2</y>
+      <width>29</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_Off</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_duplex">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>101</x>
+      <y>0</y>
+      <width>40</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">:!enabled{
 border-image: url(:/Images/CheckBox_Disable.png);
 }
 :enabled:checked{
@@ -1775,16 +1762,39 @@ border-image: url(:/Images/CheckBox_Open.png);
 border-image: url(:/Images/CheckBox_Close.png);
 }
 </string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_33">
+    <property name="geometry">
+     <rect>
+      <x>146</x>
+      <y>2</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ResStr_On</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
   </widget>
   <zorder>label_25</zorder>
   <zorder>docSizeList</zorder>
@@ -1840,10 +1850,7 @@ border-image: url(:/Images/CheckBox_Close.png);
   <zorder>Label_DuplexMode</zorder>
   <zorder>paperTypeList</zorder>
   <zorder>duplexCopyModeList</zorder>
-  <zorder>label_29</zorder>
-  <zorder>label_33</zorder>
-  <zorder>label_34</zorder>
-  <zorder>btn_duplex</zorder>
+  <zorder>widget_duplexcopy</zorder>
  </widget>
  <tabstops>
   <tabstop>scaling</tabstop>

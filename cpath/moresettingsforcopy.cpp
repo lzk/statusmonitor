@@ -8,7 +8,7 @@
 #define MIN_SCALING 25
 #define MAX_SCALING 400
 
-MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bool idCardFlag, Param_Copy *pParam) :
+MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bool idCardFlag, Param_Copy *pParam ,int mode) :
     QDialog(parent),
     ui(new Ui::MoreSettingsForCopy)
 {
@@ -35,6 +35,16 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     ui->label_tip->hide();
     ui->scaling->setValidator(new QIntValidator(0,10000,this));
     ui->scaling->installEventFilter(this);
+
+    switch (mode) {
+    case 1://hide duplex
+        ui->widget_duplexcopy->hide();
+        break;
+    case 0://nomal
+    default:
+        ui->widget_duplexcopy->show();
+        break;
+    }
 
     int country = QLocale::system().country();
     if(_idCardFlag)
@@ -140,7 +150,7 @@ void MoreSettingsForCopy::setDefault()
 
     defaultParamForCopy->promptInfo.isIDCard = true;
     defaultParamForCopy->promptInfo.isMultible = true;
-    defaultParamForCopy->promptInfo.isDuplex = 0;
+    defaultParamForCopy->promptInfo.isDuplex = 1;
 
     defaultParamForCopy->idCardCopyMode = A4Mode1;
     defaultParamForCopy->duplexMode = Flip_Long_Edge;
@@ -393,7 +403,8 @@ void MoreSettingsForCopy::on_btOK_clicked()
     ParamForCopy->promptInfo.isIDCard = ui->btID->isChecked();
     qDebug()<<"ParamForCopy->promptInfo.isIDCard"<<ParamForCopy->promptInfo.isIDCard;
     ParamForCopy->promptInfo.isMultible = ui->btNInOne->isChecked();
-    ParamForCopy->promptInfo.isDuplex = ui->btn_duplex->isEnabled() ?ui->btn_duplex->isChecked() ?1 :0 :-1;
+//    ParamForCopy->promptInfo.isDuplex = ui->btn_duplex->isEnabled() ?ui->btn_duplex->isChecked() ?1 :0 :-1;
+    ParamForCopy->promptInfo.isDuplex = ui->btn_duplex->isChecked() ?1 :0;
 
     ParamForCopy->idCardCopyMode = _idCardCopyMode;
     ParamForCopy->duplexMode = ui->duplexCopyModeList->currentIndex();

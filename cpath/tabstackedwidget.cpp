@@ -268,11 +268,11 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
     paramCopy.multiMode = (MultiMode_Copy)p->nUp;
     paramCopy.idCardCopyMode = A4Mode1;
     paramCopy.duplexMode = Flip_Long_Edge;
+    paramCopy.promptInfo.isDuplex = 1;
     if(isExceptTips == false)
     {
         paramCopy.promptInfo.isIDCard = true;
         paramCopy.promptInfo.isMultible = true;
-        paramCopy.promptInfo.isDuplex = 1;
     }
     else
     {
@@ -595,7 +595,11 @@ void TabStackedWidget::slots_scan_image_size(float size, int unit)//Added by gav
 
 void TabStackedWidget::on_btn_MoreSetting_Copy_clicked()
 {
-    MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),&paramCopy);
+    int mode = 0;
+    if(!ui->icon_DuplexCopy->isVisible()){
+        mode = 1;
+    }
+    MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),&paramCopy ,mode);
     moreSettingsForCopy->exec();
 }
 
@@ -785,24 +789,27 @@ void TabStackedWidget::setEnabledWifi(bool enabled)
 void TabStackedWidget::on_btn_Copy_clicked()
 {
     qDebug()<<"start copy";
-    if(paramCopy.promptInfo.isDuplex == 1){//duplex checked to show automation
-        LOGLOG("show duplex automation");
-        bool enNextShow = true;
-//            QString videoTypeStr = "01_JAM";
-//            QString languageStr = "SimplifiedChinese";
-        AnimationDlg *aDialog = new AnimationDlg(this, UIConfig::Show_duplex_automation, &enNextShow);
-        aDialog->setMaximumSize(400,650);
-        aDialog->setMinimumSize(400,650);
-        aDialog->setAttribute(Qt::WA_DeleteOnClose);
-        if (aDialog->exec() == QDialog::Rejected)
-        {
-            return;
+    if (ui->cBox_DuplexCopy->isChecked() == true)
+    {
+        if(paramCopy.promptInfo.isDuplex == 1){//duplex checked to show automation
+            LOGLOG("show duplex automation");
+            bool enNextShow = true;
+    //            QString videoTypeStr = "01_JAM";
+    //            QString languageStr = "SimplifiedChinese";
+            AnimationDlg *aDialog = new AnimationDlg(this, UIConfig::Show_duplex_automation, &enNextShow);
+            aDialog->setMaximumSize(400,650);
+            aDialog->setMinimumSize(400,650);
+            aDialog->setAttribute(Qt::WA_DeleteOnClose);
+            if (aDialog->exec() == QDialog::Rejected)
+            {
+                return;
+            }
+            if(enNextShow == false)
+            {
+                paramCopy.promptInfo.isDuplex = 0;
+            }
         }
-        if(enNextShow == false)
-        {
-            paramCopy.promptInfo.isDuplex = 0;
-        }
-    }
+    }else
     if (ui->cBox_IsIDCard->isChecked() == true)
     {
         if (paramCopy.promptInfo.isIDCard == true)
