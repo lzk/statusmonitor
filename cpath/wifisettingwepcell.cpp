@@ -294,7 +294,6 @@ void WiFiSettingWEPCell::cmdResult(int cmd,int result ,QVariant data)
             apInfo.APStatus.clear();
             apInfo.APStatus = tr("ResStr_Connected");
             emit connectSuc(this, true);
-
             deviceMsg = tr("ResStr_Setting_Successfully_");
             ui->btConnect->setDisabled(true);
         }

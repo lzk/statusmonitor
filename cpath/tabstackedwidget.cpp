@@ -79,6 +79,8 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
 //    connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStartFromWT()),this,SLOT(startCycleEmit()));
 //    connect(ui->settingStackedWidget->titelCell,SIGNAL(cycleStopFromWT()),this,SLOT(stopCycleEmit()));
     connect(gUInterface,SIGNAL(signal_update_scan_progress(int)),this,SLOT(updateScanProcess(int)));
+
+    m_oldJob = UIConfig::UnknowJob;
 }
 
 void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
@@ -100,6 +102,25 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             else
                 ui->btn_Scan->setEnabled(StatusPaser::is_enable_scan(status.PrinterStatus));
             ui->settingStackedWidget->setEnabled(StatusPaser::is_enable_setting(status.PrinterStatus));
+
+            //bms8160
+            UIConfig::EnumMachineJob job = (UIConfig::EnumMachineJob)status.job;
+            if ( m_oldJob == UIConfig::IDCardCopyJob && m_oldJob != job )
+            {
+                ui->cBox_IsIDCard->setChecked(false);
+                ui->cBox_IsIDCard->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+                ui->icon_IDCardCopy->setStyleSheet("border-image: url(:/Images/IDCardCopyIconDisable.png);");
+                ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));
+            }
+            if (m_oldJob == UIConfig::NormalCopyJob && m_oldJob != job)
+            {
+                ui->cBox_DuplexCopy->setChecked(false);
+                ui->cBox_DuplexCopy->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+                ui->icon_DuplexCopy->setStyleSheet("border-image: url(:/Images/DulplexCopyIconDisable.tif);");
+                ui->btn_Copy->setText(tr("ResStr_ExtraAdd_Copy"));
+            }
+
+            m_oldJob = job;
         }
         break;
     }

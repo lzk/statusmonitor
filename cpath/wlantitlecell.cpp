@@ -169,6 +169,8 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
             {
                 ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
                 ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+
+
             }
             else
             {
@@ -182,7 +184,7 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
         isWitch = false;
         gUInterface->emitEnableCycleAnimation(false);
     }
-        break;
+        break;    
     default: break;
     }
 
@@ -355,6 +357,7 @@ void WlanTitleCell::addCell(QString ssid, EncrypType type, APInfo info, bool isC
         tmpWepCell = new WiFiSettingWEPCell(widget, &tmpinfo, islogin, isConnected);
         aList.append(tmpWepCell->getAPInfo());
         apList.append(tmpWepCell);
+
         pageLayout.addWidget(apList.last());
         widget->setLayout(&pageLayout);
 

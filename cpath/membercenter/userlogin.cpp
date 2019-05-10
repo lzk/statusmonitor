@@ -186,18 +186,26 @@ void UserLogin::on_bt_getAuthCode_clicked()
     QByteArray post_data = str.toAscii();
 #endif
     qDebug()<<post_data;
+    if(str.length() == 11)
+    {
+        QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+        connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_send(QNetworkReply*)));
 
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-    connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_send(QNetworkReply*)));
+        QNetworkRequest req;
 
-    QNetworkRequest req;
+        req.setUrl(url);
 
-    req.setUrl(url);
+        req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
+        req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
 
-    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded; charset=UTF-8");
-    req.setHeader(QNetworkRequest::ContentLengthHeader,post_data.length());
+        manager->post(req,post_data);
+    }
+    else
+    {
+        ui->labMsg->setText(tr("ResStr_Msg_7"));
+    }
 
-    manager->post(req,post_data);
+
 }
 
 void UserLogin::showTimelimit()

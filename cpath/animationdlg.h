@@ -37,7 +37,7 @@ private slots:
 
     void on_radioButton_toggled(bool checked);
 
-    void hideLabel();
+    void hideLabel(bool isHidePlayButton);
 
 //    void on_btCancel_clicked();
 
