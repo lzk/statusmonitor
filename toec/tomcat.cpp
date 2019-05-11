@@ -40,6 +40,7 @@ static void callback_getJob(void* para,Job_struct* js)
     settings.setValue(key + "pages" ,js->pages_completed);
     settings.setValue(key + "state" ,(js->state == JOBSTATE_COMPLETED) ?1 :0);//JOBSTATE_COMPLETED?
     settings.setValue(key + "time" ,js->timet);
+    settings.sync();
     mutex.unlock();
 }
 
@@ -100,6 +101,7 @@ static void callback_updatJobList(void* para,Job_struct* js)
     settings.setValue(key + "pages" ,js->pages_completed);
     settings.setValue(key + "state" ,(js->state == JOBSTATE_COMPLETED) ?1 :0);//JOBSTATE_COMPLETED?
     settings.setValue(key + "time" ,js->timet);
+    settings.sync();
     mutex.unlock();
 }
 

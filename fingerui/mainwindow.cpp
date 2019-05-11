@@ -9,7 +9,9 @@
 #include "../toec/filterlib.h"
 
 extern int g_jobid;
-void update_result(int jobid ,int result);
+void update_status(int jobid ,int status);
+void update_result(int jobid ,int status);
+void timeout_task(int);
 MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -17,6 +19,7 @@ MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
 {
     ui->setupUi(this);
     ui->mainToolBar->hide();
+    ui->statusBar->hide();
 
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 
@@ -51,7 +54,6 @@ MainWindow::MainWindow(const QString& _job_info ,QWidget *parent) :
     if(time_val < 10)
         time_val = 30;
 
-    update_result(g_jobid ,Checked_Result_checking);
 //    setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowTitle(QString("指纹认证-") + printer_name + QString("-%1").arg(jobid));
 
@@ -75,19 +77,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::timeout()
 {
-    if(time_val){
-        time_val --;
+    time_val --;
+    if(time_val > 0){
         ui->label_timeval->setText(QString("%1").arg(time_val));
-    }else{
+    }else if(!time_val){
         hide();
-        //update_result(jobid ,Checked_Result_timeout);
-        //close();
+        update_status(jobid ,Checked_Result_timeout);
+    }else if(time_val <= -15){
+        update_result(jobid ,Checked_Result_timeout);
     }
+    timeout_task(jobid);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     hide();
-    update_result(jobid ,Checked_Result_Cancel);
-    QMainWindow::closeEvent(event);
+    update_status(jobid ,Checked_Result_Cancel);
+    event->ignore();
+//    QMainWindow::closeEvent(event);
 }

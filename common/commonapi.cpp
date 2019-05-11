@@ -8,6 +8,7 @@ bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultVal
     QSettings settings("/usr/share/tjgd1z/sm.conf" ,QSettings::NativeFormat);
     if(set){
         settings.setValue(key ,value);
+        settings.sync();
         LOGLOG("set key %s value:%s" ,key.toLatin1().constData() ,settings.value(key ,defaultValue).toString().toLatin1().constData());
     }else{
         value = settings.value(key ,defaultValue);

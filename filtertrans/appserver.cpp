@@ -13,11 +13,25 @@
 
 #include "tomcat.h"
 #include "filterlib.h"
-QString get_result(int jobid)
+
+void update_result(int jobid ,int result)
 {
     QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
-    QString str_jobid = QString("%1").arg(jobid);
-    QString value = settings.value(str_jobid).toString();
+    settings.beginGroup(QString("%1").arg(jobid));
+    settings.setValue("result" ,QString("%1").arg(result));
+    settings.endGroup();
+    settings.sync();
+}
+
+int get_status(int jobid)
+{
+    bool ok;
+    QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
+    settings.beginGroup(QString("%1").arg(jobid));
+    int value = settings.value("status").toInt(&ok);
+    settings.endGroup();
+    if(!ok)
+        value = Checked_Result_checking;
     return value;
 }
 
@@ -71,7 +85,7 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
     if(index > 0)
         printer = printer.left(index);
 //    LOGLOG("printer is:%s" ,printer.toLatin1().constData());
-#if 1
+
     if(!cmd.compare("start")){
         LOGLOG("jobid:%d start check finger" ,jobid);
 
@@ -106,27 +120,13 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
 
 
     }else if(!cmd.compare("check")){
-//        int result = app_server->get_finger_result(jobid);
-        int result = Checked_Result_invalidJobid;
-        QString value = get_result(jobid);
-        int ui_pid = 0;
-        if(value.isEmpty()){
-            result = Checked_Result_checking;
-        }else{
-//            LOGLOG("tjgd1zfmui result %d: %s" ,jobid ,value.toLatin1().constData());
-            QStringList columns = value.split(",");
-            result = columns.at(0).toInt();
-            ui_pid = columns.at(1).toInt();
-        }
-
-        switch(result){
+        int status = get_status(jobid);
+        switch(status){
         case Checked_Result_Cancel:
             strcpy(buffer ,"cancel");
-//            app_server->delete_finger_dialog(ui_pid);
             break;
         case Checked_Result_timeout:
             strcpy(buffer ,"timeout");
-//            app_server->delete_finger_dialog(ui_pid);
             break;
         case Checked_Result_checking:
             strcpy(buffer ,"checking");
@@ -134,21 +134,20 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
         case Checked_Result_invalidJobid:
         default:
             strcpy(buffer ,"invalid");
-//            app_server->delete_finger_dialog(ui_pid);
             break;
         }
 
 
     }else if(!cmd.compare("result")){
 
-        int finger_checked_result;
+        int result;
 #if QT_VERSION > 0x050000
-        finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("status").toInt();
+        result = QUrlQuery(QUrl(url)).queryItemValue("status").toInt();
 #else
-        finger_checked_result = QUrl(url).queryItemValue("status").toInt();
+        result = QUrl(url).queryItemValue("status").toInt();
 #endif
         strcpy(buffer ,"resultok");
-        LOGLOG("jobid:%d check finger result:%d" ,jobid ,finger_checked_result);
+        LOGLOG("jobid:%d check finger result:%d" ,jobid ,result);
 
         QVariant value;
         appSettings("record" ,value ,QVariant(false));
@@ -157,8 +156,8 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             LOGLOG("record to file list");
             Job_history job;
             job.id = jobid;
-            job.is_finger_enable = (finger_checked_result != Checked_Result_Disable) ?1 :0;
-            job.is_finger_checked = (finger_checked_result == Checked_Result_OK) ?1 :0;
+            job.is_finger_enable = (result != Checked_Result_Disable) ?1 :0;
+            job.is_finger_checked = (result == Checked_Result_OK) ?1 :0;
 #if QT_VERSION > 0x050000
         job.username = QUrlQuery(QUrl(url)).queryItemValue("username");
         job.filename = QUrlQuery(QUrl(url)).queryItemValue("filename");
@@ -171,90 +170,9 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             LOGLOG("do not record to file list");
         }
 
-        QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
-        QString str_jobid = QString("%1").arg(jobid);
-        QString str_value = settings.value(str_jobid).toString();
-        int ui_pid = 0;
-        if(str_value.isEmpty()){
-        }else{
-//            LOGLOG("tjgd1zfmui result %d: %s" ,jobid ,value.toLatin1().constData());
-            QStringList columns = str_value.split(",");
-            ui_pid = columns.at(1).toInt();
-            str_value = QString("%1,%2").arg(finger_checked_result).arg(ui_pid);
-            settings.setValue(QString("%1").arg(jobid) ,str_value);
-//            app_server->delete_finger_dialog(ui_pid);
-            if(ui_pid){
-                kill(ui_pid ,34 + finger_checked_result);
-                LOGLOG("kill %d %d" ,ui_pid ,34 + finger_checked_result);
-            }
-        }
+        update_result(jobid ,result);
     }
 
-  #else
-
-    Trans_Client tc(SERVER_PATH_STM);
-    if(tc.writeThenRead(buffer ,bufsize)){
-        pid_t pid = fork();
-        switch(pid)
-        {
-        case -1:
-            LOGLOG("fork failed");
-            exit(1);
-            break;
-        case 0:
-//            str = get_string_from_shell_cmd("who am i" ,1);
-//            LOGLOG("who am i:\n%s" ,str.toLatin1().constData());
-//            str = get_string_from_shell_cmd("who" ,1);
-//            LOGLOG("who:\n%s" ,str.toLatin1().constData());
-//            str = get_string_from_shell_cmd("whoami");
-//            LOGLOG("whoami:\n%s" ,str.toLatin1().constData());
-//            str = getenv("DISPLAY");
-//            LOGLOG("dislpay is %s" ,str.toLatin1().constData());
-//            if(str.isEmpty()){
-//                setenv("DISPLAY" ,":0.0" ,0);
-//            }
-//            str = getenv("DISPLAY");
-//            LOGLOG("now dislpay is %s" ,str.toLatin1().constData());
-            execlp("tjgd1zsmui", "tjgd1zsmui" ,"-hide" ,0);
-            exit(0);
-            break;
-        default:
-            sleep(1);
-            tc.writeThenRead(buffer ,bufsize);
-            break;
-        }
-    }
-    if(!cmd.compare("result")){
-        int finger_checked_result;
-    #if QT_VERSION > 0x050000
-        finger_checked_result = QUrlQuery(QUrl(url)).queryItemValue("status").toInt();
-    #else
-        finger_checked_result = QUrl(url).queryItemValue("status").toInt();
-    #endif
-        strcpy(buffer ,"resultok");
-
-        QVariant value;
-        appSettings("record" ,value ,QVariant(false));
-        bool record_list = value.toBool();
-        if(record_list){
-            LOGLOG("record to file list");
-            Job_history job;
-            job.id = jobid;
-            job.is_finger_enable = (finger_checked_result != Checked_Result_Disable) ?1 :0;
-            job.is_finger_checked = (finger_checked_result == Checked_Result_OK) ?1 :0;
-    #if QT_VERSION > 0x050000
-        job.username = QUrlQuery(QUrl(url)).queryItemValue("username");
-        job.filename = QUrlQuery(QUrl(url)).queryItemValue("filename");
-    #else
-        job.username = QUrl(url).queryItemValue("username");
-        job.filename = QUrl(url).queryItemValue("filename");
-    #endif
-            Tomcat::save_job_history(&job);
-        }else{
-            LOGLOG("do not record to file list");
-        }
-    }
-#endif
     //start tjgd1zsmui
     const char* app_locker_file = "/tmp/.tjgd1zsmui_locker";
     FileLocker app_file_locker;

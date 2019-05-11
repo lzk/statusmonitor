@@ -26,7 +26,7 @@ int (* getpidvid)(const QString& modelname ,int* pid ,int* vid) = _getpidvid;
 
 #include "filelocker.h"
 #include <QSettings>
-FileLocker fl;
+//FileLocker fl;
 bool get_locked_sane_scanner(int& address ,int& bus)
 {
     address = 0;
@@ -50,7 +50,7 @@ bool get_locked_sane_scanner(int& address ,int& bus)
 bool get_locked_device(QString& uri)
 {
     uri.clear();
-//    FileLocker fl;
+    FileLocker fl;
     int ret = fl.trylock(lock_scan_file);
     if(ret){
         QSettings settings(lock_scan_info_file ,QSettings::NativeFormat);
@@ -67,6 +67,7 @@ UsbIO::UsbIO()
     ,interface(0)
     ,vid(-1)
     ,pid(-1)
+    ,address(-1)
 {
     memset(this->serial ,0 ,sizeof(this->serial));
 //    usb->init();
@@ -107,13 +108,13 @@ int UsbIO::open_with_mode(int port ,int mode)
             return usb_error_printing;
         }
     }
-    QString locked_uri;
-    if(get_locked_device(locked_uri)){
-        if(!locked_uri.compare(this->device_uri)){
-            fl.unlock();
-            return usb_error_busy;
-        }
-    }
+//    QString locked_uri;
+//    if(get_locked_device(locked_uri)){
+//        if(!locked_uri.compare(this->device_uri)){
+////            fl.unlock();
+//            return usb_error_busy;
+//        }
+//    }
 #if LOCK_USB
     if(mode == 0){
         while (true) {
@@ -131,7 +132,7 @@ int UsbIO::open_with_mode(int port ,int mode)
 //        if(locked_printers.contains(device_uri)){//lock same device uri
             mutex.unlock();
             LOGLOG("usb device:%s locked" ,printer_name.toLatin1().constData());
-            fl.unlock();
+//            fl.unlock();
             return usb_error_usb_locked;
         }
     }
@@ -173,7 +174,7 @@ int UsbIO::open_with_mode(int port ,int mode)
         mutex.unlock();
 #endif
     }else{
-        fl.unlock();
+//        fl.unlock();
     }
     return ret;
 }
@@ -196,7 +197,7 @@ int UsbIO::close(void)
 #endif
 
     }
-    fl.unlock();
+//    fl.unlock();
     return 0;
 }
 
@@ -283,13 +284,25 @@ int UsbIO::getDeviceId(char *buffer, int bufsize)
 #else
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
-    //return -1;//for debug
-
-    int ret = open_with_mode(0 ,0);//will change to -1
+    int ret;
+    QString locked_uri;
+    FileLocker fl;
+    ret = fl.trylock(lock_scan_file);
+    if(ret){
+        QSettings settings(lock_scan_info_file ,QSettings::NativeFormat);
+        locked_uri = settings.value("Device_Uri").toString();
+        LOGLOG("finger manager locked uri:%s" ,locked_uri.toLatin1().constData());
+    }
+    if(!locked_uri.compare(this->device_uri)){
+        fl.unlock();
+        return usb_error_busy;
+    }
+    ret = open_with_mode(0 ,0);//will change to -1
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
     }
+    fl.unlock();
     return ret;
 }
 #endif
@@ -334,23 +347,54 @@ int UsbIO::resolveUrl(const char* url)
 
 bool UsbIO::isConnected()
 {
-    int ret = open_with_mode(-1 ,0);
+    int ret;
+    QString locked_uri;
+    FileLocker fl;
+    ret = fl.trylock(lock_scan_file);
+    if(ret){
+        QSettings settings(lock_scan_info_file ,QSettings::NativeFormat);
+        locked_uri = settings.value("Device_Uri").toString();
+//        LOGLOG("finger manager locked uri:%s" ,locked_uri.toLatin1().constData());
+    }
+    if(!locked_uri.compare(this->device_uri)){
+        fl.unlock();
+        return true;
+    }
+    ret = open_with_mode(-1 ,0);
     if(!ret){
         close();
     }
+    fl.unlock();
     return !ret;
 }
 
 const char* UsbIO::getDeviceAddress()
 {
-    int ret = open_with_mode(-1 ,0);
+    int ret;
+    QString locked_uri;
+    FileLocker fl;
+    ret = fl.trylock(lock_scan_file);
+    if(ret){
+        QSettings settings(lock_scan_info_file ,QSettings::NativeFormat);
+        locked_uri = settings.value("Device_Uri").toString();
+//        LOGLOG("finger manager locked uri:%s" ,locked_uri.toLatin1().constData());
+    }
+    if(!locked_uri.compare(this->device_uri)){
+        fl.unlock();
+        if(address >= 0)
+            return QString().sprintf("USB%03d" ,address).toLatin1().constData();
+        return "";
+    }
+    ret = open_with_mode(-1 ,0);
     if(!ret){
         ret = usb->getDeviceAddress(&address);
         close();
     }else{
         address = -1;
+        fl.unlock();
         return "";
     }
+    fl.unlock();
     return QString().sprintf("USB%03d" ,address).toLatin1().constData();
 }
 

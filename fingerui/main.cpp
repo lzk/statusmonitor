@@ -9,27 +9,35 @@
 int g_jobid = 0;
 MainWindow* ww;
 
-void quit(int);
-void result_quit(int);
-void handler_result(int result);
+void update_status(int jobid ,int status)
+{
+    QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
+    settings.beginGroup(QString("%1").arg(jobid));
+    settings.setValue("status" ,QString("%1").arg(status));
+    settings.endGroup();
+    settings.sync();
+}
 void update_result(int jobid ,int result)
 {
     QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
-    QString value = QString("%1,%2").arg(result).arg(getpid());
-    settings.setValue(QString("%1").arg(jobid) ,value);
-
-    handler_result(result);
-    if(result != Checked_Result_checking)
-        quit(0);
+    settings.beginGroup(QString("%1").arg(jobid));
+    settings.setValue("result" ,QString("%1").arg(result));
+    settings.endGroup();
+    settings.sync();
 }
 
-QString get_result(int jobid)
+int get_result(int jobid)
 {
+    bool ok;
     QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
-    QString str_jobid = QString("%1").arg(jobid);
-    QString value = settings.value(str_jobid).toString();
+    settings.beginGroup(QString("%1").arg(jobid));
+    int value = settings.value("result").toInt(&ok);
+    settings.endGroup();
+    if(!ok)
+        value = Checked_Result_checking;
     return value;
 }
+
 
 void handler_result(int result)
 {
@@ -89,33 +97,22 @@ void quit(int)
         qApp->quit();
 }
 
-void result_quit(int signal)
+void timeout_task(int jobid)
 {
-#if 0
-    int result = Checked_Result_invalidJobid;
-    int jobid = g_jobid;
+    int result = get_result(jobid);
+    if(result == Checked_Result_checking){
 
-    QString value = get_result(jobid);
-    if(!value.isEmpty()){
-        QStringList columns = value.split(",");
-        result = columns.at(0).toInt();
+    }else{
+        if(!ww->isHidden())
+            ww->hide();
+        handler_result(result);
+        quit(0);
     }
-//    update_result(jobid ,result);
-#else
-    int result = signal - 34;
-#endif
-    ww->hide();
-    handler_result(result);
-    quit(0);
-
 }
 
 int main(int argc, char *argv[])
 {
     signal(SIGINT ,quit);
-    for(int i = 0 ;i < Checked_Result_max ;i ++){
-        signal(34 + i ,result_quit);
-    }
 
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/image/app_icon.png"));

@@ -114,6 +114,7 @@ void callback_getJob(void* para,Job_struct* js)
         QSettings settings("/tmp/.tjgd1zsmtmp.conf" ,QSettings::NativeFormat);
         QString value = QString("%1,%2").arg(Checked_Result_checking).arg(0);
         settings.setValue(QString("%1").arg(js->id) ,value);
+        settings.sync();
 
         int invalid_times = 0;
         sprintf(buffer ,"start://%s?jobid=%d" ,js->printer ,js->id);
