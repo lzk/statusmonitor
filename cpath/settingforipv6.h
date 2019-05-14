@@ -39,6 +39,8 @@ private slots:
 
     void showInfo(net_ipv6_st info);
 
+    int is_valid_ipv6(const char *ipv6);
+
 private:
     Ui::SettingForIPv6 *ui;
     bool *islogin;

@@ -2,8 +2,7 @@
 #include "ui_settingforipv6.h"
 #include "authenticationdlg.h"
 #include "settingwarming.h"
-#include "qhostaddress.h"
-#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #define RETRYTIMES 3;
 
@@ -101,6 +100,15 @@ void SettingForIPv6::on_checkBox_isManualAddress_toggled(bool checked)
                                             color: rgb(255, 255, 255);}");
     }
 }
+int SettingForIPv6::is_valid_ipv6(const char *ipv6)
+{
+   struct in6_addr addr6;
+   if(ipv6 == NULL)
+        return 0;
+   if(inet_pton(AF_INET6, ipv6, (void *)&addr6) == 1)
+        return 1;
+   return 0;
+}
 
 void SettingForIPv6::on_btApply_clicked()
 {
@@ -108,12 +116,8 @@ void SettingForIPv6::on_btApply_clicked()
     if(ui->checkBox_isManualAddress->isChecked() == true)
     {
         //check data is correct
-        QHostAddress ip;
-        QRegExp reg_ipv6("^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
-        QRegExp reg_ipv6Compress("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
-
         QRegExp reg_address("^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}(:[0-9a-fA-F]{1,4}){0,5}$");
-        if(!reg_ipv6.exactMatch(ui->lineEdit_address->text())||!reg_ipv6Compress.exactMatch(ui->lineEdit_address->text()) )
+        if(!is_valid_ipv6(ui->lineEdit_address->text().toLatin1().data()) || ui->lineEdit_address->text().left(4) == "fe80")
         {
             ui->lineEdit_address->setFocus();
             ui->lineEdit_address->setText("");
@@ -126,7 +130,7 @@ void SettingForIPv6::on_btApply_clicked()
             return;
         }
         QRegExp reg_gateAddress("^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}(:[0-9a-fA-F]{1,4}){0,5}$");
-        if(!reg_gateAddress.exactMatch(ui->lineEdit_GateAddress->text()) )
+        if(!is_valid_ipv6(ui->lineEdit_GateAddress->text().toLatin1().data()) || ui->lineEdit_GateAddress->text().left(4) == "fe80")
         {
             ui->lineEdit_GateAddress->setFocus();
             ui->lineEdit_GateAddress->setText("");
@@ -138,7 +142,7 @@ void SettingForIPv6::on_btApply_clicked()
 
             return;
         }
-        if(ui->lineEdit_SubMask->text().toInt(0,10) > 128 || ui->lineEdit_SubMask->text() == "")
+        if(ui->lineEdit_SubMask->text().toInt(0,10) > 127 || ui->lineEdit_SubMask->text() == "")
         {
             ui->lineEdit_SubMask->setFocus();
             ui->lineEdit_SubMask->setText("");
