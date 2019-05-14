@@ -68,7 +68,7 @@ class MoreSettingsForCopy : public QDialog
     Q_OBJECT
 
 public:
-    explicit MoreSettingsForCopy(QWidget *parent = 0,bool duplexCopyFlag = false, bool idCardFlay = false,Param_Copy *pParam = NULL);
+    explicit MoreSettingsForCopy(QWidget *parent = 0,bool duplexCopyFlag = false, bool idCardFlay = false,Param_Copy *pParam = NULL ,int mode = 0);
     ~MoreSettingsForCopy();
 
 private:

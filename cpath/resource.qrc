@@ -196,5 +196,7 @@
         <file>Images/moreSettings_Copy.png</file>
         <file>Images/moreSettings_Copy_1.png</file>
         <file>Images/LogoForAbout_new.png</file>
+        <file>Images/Video/English/07_duplex_copy_en.gif</file>
+        <file>Images/Video/SimplifiedChinese/07_duplex_copy_zh.gif</file>
     </qresource>
 </RCC>
