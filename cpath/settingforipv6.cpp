@@ -2,6 +2,8 @@
 #include "ui_settingforipv6.h"
 #include "authenticationdlg.h"
 #include "settingwarming.h"
+#include "qhostaddress.h"
+#include <netinet/in.h>
 
 #define RETRYTIMES 3;
 
@@ -106,8 +108,12 @@ void SettingForIPv6::on_btApply_clicked()
     if(ui->checkBox_isManualAddress->isChecked() == true)
     {
         //check data is correct
+        QHostAddress ip;
+        QRegExp reg_ipv6("^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
+        QRegExp reg_ipv6Compress("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
+
         QRegExp reg_address("^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}(:[0-9a-fA-F]{1,4}){0,5}$");
-        if(!reg_address.exactMatch(ui->lineEdit_address->text()))
+        if(!reg_ipv6.exactMatch(ui->lineEdit_address->text())||!reg_ipv6Compress.exactMatch(ui->lineEdit_address->text()) )
         {
             ui->lineEdit_address->setFocus();
             ui->lineEdit_address->setText("");
@@ -120,7 +126,7 @@ void SettingForIPv6::on_btApply_clicked()
             return;
         }
         QRegExp reg_gateAddress("^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}(:[0-9a-fA-F]{1,4}){0,5}$");
-        if(!reg_gateAddress.exactMatch(ui->lineEdit_GateAddress->text()))
+        if(!reg_gateAddress.exactMatch(ui->lineEdit_GateAddress->text()) )
         {
             ui->lineEdit_GateAddress->setFocus();
             ui->lineEdit_GateAddress->setText("");
@@ -132,7 +138,7 @@ void SettingForIPv6::on_btApply_clicked()
 
             return;
         }
-        if(ui->lineEdit_SubMask->text().toInt(0,10) >= 128 || ui->lineEdit_SubMask->text() == "")
+        if(ui->lineEdit_SubMask->text().toInt(0,10) > 128 || ui->lineEdit_SubMask->text() == "")
         {
             ui->lineEdit_SubMask->setFocus();
             ui->lineEdit_SubMask->setText("");

@@ -128,6 +128,12 @@ void WlanTitleCell::cmdResult(int cmd,int result ,QVariant data)
                 is_wifi_now_on = true;
             }
         }
+        else
+        {
+            isWlanOn = false;
+            ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+            ui->btWLANON2->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+        }
         gUInterface->emitEnableCycleAnimation(false);
 
         break;
@@ -532,7 +538,14 @@ void WlanTitleCell::setWifiEnabled(bool enabled)
 {
     if(enabled)
     {
-        ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+        if(isWlanOn)
+        {
+            ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Open.png);");
+        }
+        else
+        {
+            ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Close.png);");
+        }
         ui->label_wifiIcon->setStyleSheet("border-image: url(:/Images/Wireless_Active.png);");
         ui->btFlesh->setStyleSheet("border-image: url(:/Images/Status_RefreshEnable.tif);");
         wifiCell->setWifiEnabled(true);
@@ -541,7 +554,14 @@ void WlanTitleCell::setWifiEnabled(bool enabled)
     }
     else
     {
-        ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Disable.png);");
+        if(isWlanOn)
+        {
+             ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Disable.png);");
+        }
+        else
+        {
+            ui->btWLANON1->setStyleSheet("border-image: url(:/Images/CheckBox_Disable1.png);");
+        }
         ui->label_wifiIcon->setStyleSheet("border-image: url(:/Images/Wireless.png);");
         ui->btFlesh->setStyleSheet("border-image: url(:/Images/Status_RefreshDisable.tif);");
         wifiCell->setWifiEnabled(false);
@@ -695,17 +715,6 @@ void WlanTitleCell::on_btConnect_clicked()
     }
 
 //判断输入密码格式是否正确
-    int len = ui->lineEdit_Password->text().length();
-    int defLen = 0;
-    switch(ui->combox_encryption->currentIndex())
-    {
-    case 0: defLen = 0; break;
-    case 1: defLen = 5; break;
-    case 2: defLen = 8; break;
-    case 3: defLen = 8; break;
-    default: defLen = 0; break;
-    }
-
     APInfo tmpInfo;
     tmpInfo.SSID = ui->lineEdit_SSID->text();
 //    tmpInfo.encryType = EncrypType(ui->combox_encryption->currentIndex());
@@ -717,23 +726,82 @@ void WlanTitleCell::on_btConnect_clicked()
     tmpInfo.Password = ui->lineEdit_Password->text();
     tmpInfo.wepKeyID = currentAp->wepKeyID;
 
-    if(len < defLen && defLen == 5)
+    QRegExp reg_Exp("[a-fA-F0-9]{4}");
+    int len = ui->lineEdit_Password->text().length();
+    QString password = ui->lineEdit_Password->text();
+    char *cPassword = password.toLatin1().data();
+    bool bValidetePassWord = true;
+    if (ui->combox_encryption->currentIndex() == 1)
     {
-        SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_2"));
-        warming->setWindowTitle(tr("ResStr_Warning"));
-        warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
-                                & ~Qt::WindowMinimizeButtonHint);
-        warming->exec();
-        return;
+        switch(len)
+        {
+        case 5:
+        case 13:
+             break;
+        case 10:
+        case 26:
+//            foreach (char ch, password )
+            for(int i = 0;i <len;i++)
+            {
+                if(isdigit(cPassword[i]) ||(cPassword[i] >='a' && cPassword[i] <='f') || (cPassword[i] >='A' && cPassword[i] <='F'))
+                {
+                    continue;
+                }
+                else
+                {
+                    bValidetePassWord = false;
+                    break;
+                }
+            }
+            break;
+        default:
+            bValidetePassWord = false; break;
+        }
+        if(!bValidetePassWord)
+        {
+            SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_2"));
+            warming->setWindowTitle(tr("ResStr_Warning"));
+            warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+            warming->exec();
+            return;
+        }
     }
-    else if(len < defLen && defLen == 8)
+    else
     {
-        SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_3"));
-        msgWarm->setWindowTitle(tr("ResStr_Warning"));
-        msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
-                                & ~Qt::WindowMinimizeButtonHint );
-        msgWarm->exec();
-        return;
+        if(len == 64)
+        {
+            for(int i = 0;i <len;i++)
+            {
+                if(isdigit(cPassword[i]) ||(cPassword[i] >='a' && cPassword[i] <='f') || (cPassword[i] >='A' && cPassword[i] <='F'))
+                {
+                    continue;
+                }
+                else
+                {
+                    bValidetePassWord = false;
+                    break;
+                }
+            }
+            if(!bValidetePassWord)
+            {
+                SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_3"));
+                msgWarm->setWindowTitle(tr("ResStr_Warning"));
+                msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                        & ~Qt::WindowMinimizeButtonHint );
+                msgWarm->exec();
+                return;
+            }
+        }
+        else if(len < 8 || len > 64)
+        {
+            SettingWarming *msgWarm = new SettingWarming(this, tr("ResStr_Msg_3"));
+            msgWarm->setWindowTitle(tr("ResStr_Warning"));
+            msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint );
+            msgWarm->exec();
+            return;
+        }
     }
 
     if(!(*islogin ))

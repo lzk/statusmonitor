@@ -186,7 +186,7 @@ void UserLogin::on_bt_getAuthCode_clicked()
     QByteArray post_data = str.toAscii();
 #endif
     qDebug()<<post_data;
-    if(str.length() == 11)
+    if(strPhoneNumber.length() == 11)
     {
         QNetworkAccessManager *manager = new QNetworkAccessManager(this);
         connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(replyFinish_send(QNetworkReply*)));
