@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
 #ifdef Q_WS_X11
     qputenv("LIBOVERLAY_SCROLLBAR", 0);
 #endif
+    qputenv("QT_X11_NO_MITSHM", "1");
     QApplication a(argc, argv);
 //    a.setWindowIcon(QIcon(":/image/app_icon.png"));
 //    a.setStyle(new MyProxyStyle);

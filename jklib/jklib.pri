@@ -55,6 +55,7 @@ LIBS += \
                 LIBS += \
                     -L$${PWD}/../libs/linux64 \
                     $${PWD}/../libs/linux64/libnetsnmp.a \
+#                    -lnetsnmp
 
         }
     }
