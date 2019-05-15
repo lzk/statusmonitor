@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include "commonapi.h"
 #include "statuspaser.h"
+#include "filterlib.h"
 #define TEST 0
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -1176,6 +1177,9 @@ void MainWindow::updateJobHistory(const QVariant& data)
 //    ui->tableWidget_jobs->setHorizontalHeaderItem(9, item);
 
     base = 0;
+    int result;
+    QString str_is_enable;
+    QString str_is_checked;
     for(int i = 0 ;i < job_history.length() ;i++){
         QString str = job_history.at(i);
         QStringList columns = str.split("/");
@@ -1197,10 +1201,18 @@ void MainWindow::updateJobHistory(const QVariant& data)
         QDateTime datetime;
         datetime.setTime_t(QString(columns.at(JobHistoryIndex_time)).toLong());
         item = new QTableWidgetItem(tr("%1").arg(datetime.toString()));
+        result = columns.at(JobHistoryIndex_result).toInt();
+        if(result == Checked_Result_noFingerModule){
+            str_is_enable = "-";
+            str_is_checked = "-";
+        }else{
+            str_is_enable = result != Checked_Result_Disable?"是":"否";
+            str_is_checked = result == Checked_Result_OK?"是":"否";
+        }
         ui->tableWidget_jobs->setItem(i ,base+6,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_isFingerEnable)==QString("1")?"是":"否"));
+        item = new QTableWidgetItem(tr("%1").arg(str_is_enable));
         ui->tableWidget_jobs->setItem(i ,base+7,item);
-        item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_isFingerChecked)==QString("1")?"是":"否"));
+        item = new QTableWidgetItem(tr("%1").arg(str_is_checked));
         ui->tableWidget_jobs->setItem(i ,base+8,item);
         item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_isJobCompleted)==QString("1")?"完成":"未完成"));
         ui->tableWidget_jobs->setItem(i ,base+9,item);

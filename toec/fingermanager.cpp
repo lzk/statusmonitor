@@ -73,6 +73,16 @@ void callback_getJob(void* para,Job_struct* js)
     Trans_Client tc(ui_server_path);//(sm->server_path);
     char buffer[256];
 
+    if(!sm->use_finger_checking){
+        sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",js->printer ,js->id,Checked_Result_noFingerModule
+                ,sm->username ,sm->filename);
+        tc.writeThenRead(buffer ,sizeof(buffer));
+        if(!strcmp(buffer ,"resultok")){
+            LOGLOG("gavin: result ok");
+           // break;
+        }
+        return;
+    }
 //    bool record_list = false;
 //    sprintf(buffer ,"record://%s?jobid=%d" ,js->printer ,js->id);
 //    tc.writeThenRead(buffer ,sizeof(buffer));
@@ -508,13 +518,14 @@ void callback_getJob(void* para,Job_struct* js)
 #endif
 }
 
-int FingerManager::checkFinger(const char* server_path ,int jobid ,const char* username ,const char* filename)
+int FingerManager::checkFinger(const char* server_path ,int jobid ,const char* username ,const char* filename ,int use_finger_checking)
 {
     LOGLOG("libtoec: start check finger job id:%d" ,jobid);
     LOGLOG("filterlib checkfinger user name:%s ,filename:%s" ,username ,filename);
     this->job_id = jobid;
     strcpy(this->username ,username);
     strcpy(this->filename ,filename);
+    this->use_finger_checking = use_finger_checking;
 //    this->username  = username;
 //    this->filename  = filename;
     this->server_path = server_path;

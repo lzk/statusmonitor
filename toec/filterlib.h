@@ -16,11 +16,12 @@ enum{
     Checked_Result_NoFinger,
     Checked_Result_DevBusy,
     Checked_Result_Abort_Print,
+    Checked_Result_noFingerModule,
 
     Checked_Result_max
 };
 
-int checkFinger(int jobid ,const char* username ,const char* filename);
+int checkFinger(int jobid ,const char* username ,const char* filename ,int use_finger_checking);
 
 int get_device_id_via_filter(const char* printer_name ,const char* printer_uri);
 

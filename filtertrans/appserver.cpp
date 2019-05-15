@@ -156,8 +156,9 @@ static int callback_Server(void* para ,char* buffer,int bufsize)
             LOGLOG("record to file list");
             Job_history job;
             job.id = jobid;
-            job.is_finger_enable = (result != Checked_Result_Disable) ?1 :0;
-            job.is_finger_checked = (result == Checked_Result_OK) ?1 :0;
+            job.result = result;
+//            job.is_finger_enable = (result != Checked_Result_Disable) ?1 :0;
+//            job.is_finger_checked = (result == Checked_Result_OK) ?1 :0;
 #if QT_VERSION > 0x050000
         job.username = QUrlQuery(QUrl(url)).queryItemValue("username");
         job.filename = QUrlQuery(QUrl(url)).queryItemValue("filename");

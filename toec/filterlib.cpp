@@ -11,10 +11,10 @@ extern bool print_cancel;
 extern int job_id_cancel;
 extern const char* ui_server_path;
 
-int checkFinger(int jobid ,const char* username ,const char* filename)
+int checkFinger(int jobid ,const char* username ,const char* filename ,int use_finger_checking)
 {
     FingerManager fm;
-    return fm.checkFinger(SERVER_PATH ,jobid ,username ,filename);
+    return fm.checkFinger(SERVER_PATH ,jobid ,username ,filename ,use_finger_checking);
 }
 
 int get_device_id_via_filter(const char* printer_name ,const char* printer_uri)

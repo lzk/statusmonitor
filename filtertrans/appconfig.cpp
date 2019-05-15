@@ -7,33 +7,33 @@
 FileLocker app_file_locker;
 AppServer* app_server;
 
-extern
-int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
+//extern
+//int (* getpidvid)(const QString& modelname ,int* pid ,int* vid);
 //log file var
 extern const char* log_app_name;
 extern const char* app_version;
 //usb error control var
 extern int usb_error_printing;
-static bool _isDeviceSupported(Printer_struct* ps)
-{
-//    LOGLOG("tomcat found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
+//static bool _isDeviceSupported(Printer_struct* ps)
+//{
+////    LOGLOG("tomcat found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
 
-    if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
-        return false;
-    return true;
-}
+//    if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
+//        return false;
+//    return true;
+//}
 
-static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
-{
-    if(!pid || !vid)
-        return -1;
-    *vid = 0x0efd;
-    *pid = -1;
-    if(makeAndModel.startsWith("toec/OEP3300CDN")){
-        *pid = 0x002c;
-    }
-    return (*pid == -1) ?-1 :0;
-}
+//static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
+//{
+//    if(!pid || !vid)
+//        return -1;
+//    *vid = 0x0efd;
+//    *pid = -1;
+//    if(makeAndModel.startsWith("toec/OEP3300CDN")){
+//        *pid = 0x002c;
+//    }
+//    return (*pid == -1) ?-1 :0;
+//}
 
 AppConfig::AppConfig(QObject *parent) :
     QObject(parent)
@@ -73,8 +73,8 @@ int AppConfig::initConfig()
     usb_error_printing = 0x01;
 
     //config tomcat supported printer model
-    isDeviceSupported = _isDeviceSupported;
-    getpidvid = _getpidvid;
+//    isDeviceSupported = _isDeviceSupported;
+//    getpidvid = _getpidvid;
 
     app_server = new AppServer(SERVER_PATH);
     return 0;

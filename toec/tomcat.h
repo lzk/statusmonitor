@@ -5,8 +5,9 @@
 typedef
 struct{
     int id;
-    int is_finger_enable;
-    int is_finger_checked;
+//    int is_finger_enable;
+//    int is_finger_checked;
+    int result;
     QString username;
     QString filename;
 }
@@ -19,8 +20,9 @@ enum{
     JobHistoryIndex_username,
     JobHistoryIndex_filename,
     JobHistoryIndex_copies,
-    JobHistoryIndex_isFingerEnable,
-    JobHistoryIndex_isFingerChecked,
+    JobHistoryIndex_result,
+//    JobHistoryIndex_isFingerEnable,
+//    JobHistoryIndex_isFingerChecked,
     JobHistoryIndex_pages,
     JobHistoryIndex_isJobCompleted,
     JobHistoryIndex_time,

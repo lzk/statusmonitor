@@ -22,9 +22,13 @@ static bool _isDeviceSupported(Printer_struct* ps)
 {
 //    LOGLOG("tomcat found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
 
-    if(!QString(ps->makeAndModel).startsWith("OEP3300CDN"))
-        return false;
-    return true;
+    if(QString(ps->makeAndModel).startsWith("OEP3300CDN"))
+        return true;
+    else if(QString(ps->makeAndModel).startsWith("OEP3310CDN"))
+        return true;
+    else if(QString(ps->makeAndModel).startsWith("OEP3315CDN"))
+        return true;
+    return false;
 }
 
 static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
@@ -35,7 +39,10 @@ static int _getpidvid(const QString& makeAndModel ,int* pid ,int* vid)
     *pid = -1;
     if(makeAndModel.startsWith("toec/OEP3300CDN")){
         *pid = 0x002c;
-
+    }else if(makeAndModel.startsWith("toec/OEP3310CDN")){
+        *pid = 0x0051;
+    }else if(makeAndModel.startsWith("toec/OEP3315CDN")){
+        *pid = 0x0052;
     }
     return (*pid == -1) ?-1 :0;
 }
@@ -48,7 +55,7 @@ UIConfig::UIConfig(QObject *parent) :
 int UIConfig::initConfig()
 {
     log_app_name = "tjgd1zsmui";
-    app_version = "1.0.19beta";
+    app_version = "1.0.19";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;

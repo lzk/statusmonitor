@@ -24,11 +24,13 @@ static void callback_getJob(void* para,Job_struct* js)
     gethostname(hostname ,sizeof(hostname));
 //    StatusMonitor* sm = (StatusMonitor*)para;
     char job_history[512];
-    sprintf(job_history ,"%d/%s/%s/%s/%s/%d/%d/%d"
+
+    sprintf(job_history ,"%d/%s/%s/%s/%s/%d/%d"
 //            ,js->id ,js->printer ,hostname,js->user_name  ,js->name
             ,js->id ,js->printer ,hostname,job->username.toUtf8().constData()  ,job->filename.toUtf8().constData()
              ,(js->copies < 1) ?1 :js->copies
-            ,job->is_finger_enable,job->is_finger_checked//是，成功
+             ,job->result
+//            ,job->is_finger_enable,job->is_finger_checked//是，成功
             );
 //    sprintf(job_history ,"echo %s >> %s" ,job_history ,job_history_file_name);
 //    system(job_history);
