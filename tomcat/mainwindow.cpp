@@ -1183,7 +1183,7 @@ void MainWindow::updateJobHistory(const QVariant& data)
     for(int i = 0 ;i < job_history.length() ;i++){
         QString str = job_history.at(i);
         QStringList columns = str.split("/");
-        if(columns.length() < 11)
+        if(columns.length() < 10)
             break;
 //        qDebug()<<"columns:"<<columns;
         item = new QTableWidgetItem(tr("%1").arg(columns.at(JobHistoryIndex_printername)));
