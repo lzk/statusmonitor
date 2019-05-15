@@ -628,6 +628,11 @@ void TabStackedWidget::on_btn_MoreSetting_Copy_clicked()
     int mode = 0;
     if(!ui->icon_DuplexCopy->isVisible()){
         mode = 1;
+        this->setStyleSheet("#MoreSettingsForCopy {background-image: url(:/Images/moreSettings_Copy_2.png);}");
+    }
+    else
+    {
+        this->setStyleSheet("#MoreSettingsForCopy {background-image: url(:/Images/moreSettings_Copy_1.png);}");
     }
     MoreSettingsForCopy *moreSettingsForCopy = new MoreSettingsForCopy(this,ui->cBox_DuplexCopy->isChecked(),ui->cBox_IsIDCard->isChecked(),&paramCopy ,mode);
     moreSettingsForCopy->exec();
