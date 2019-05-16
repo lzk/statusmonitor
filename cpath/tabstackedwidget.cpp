@@ -213,15 +213,6 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
 //                                    & ~Qt::WindowMinimizeButtonHint);
 //                errorWarning->exec();
 //            }
-            else if(result == ScannerApp::STATUS_Error_machine)
-            {
-                SettingWarming *errorWarning = new SettingWarming(this, tr("ResStr_Unsupported"));
-                errorWarning->setWindowTitle(tr("ResStr_Error"));
-
-                errorWarning->setWindowFlags(errorWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
-                                    & ~Qt::WindowMinimizeButtonHint);
-                errorWarning->exec();
-            }
             else
 //                if(result == ScannerApp::STATUS_Error_machine)
             {
