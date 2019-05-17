@@ -81,8 +81,7 @@ void UserLogin::loginAction(QString strPhoneNumber,QString strVerifyCode)
         {
             m_loginSuccess = true;
 
- //           QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
-            QSettings settings("/Users/ally/Desktop/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
+            QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
             settings.setValue("loginPhone",strPhoneNumber);
             settings.setValue("password",strVerifyCode);
 
