@@ -27,6 +27,8 @@ static bool _isDeviceSupported(Printer_struct* ps)
 //    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
     if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
         return false;
+    if(QString(ps->deviceUri).toLower().startsWith("socket://[fe80"))
+        return false;
     return true;
 }
 
@@ -93,6 +95,11 @@ int UIConfig::initConfig()
 //        LOGLOG("socket working!");
 //        return -2;
 //    }
+
+#ifndef DEBUG_TO_STDERR
+    g_config_file =  "/usr/share/lnthrvop/config/lnthrvop.xml";
+#endif
+
     //config status server thread
 //    status_file = "/tmp/.lntstatus";
 //    status_lock_file = "/tmp/.locklntstatus";

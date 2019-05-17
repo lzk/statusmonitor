@@ -53,7 +53,7 @@ void ImageHandler::image_save(const QString& path ,int angle)
         QTransform transform;
         transform.rotate(90 * angle);
         QImage(path).transformed(transform).save(path);
-        qDebug()<<"path:"<<path;
+//        qDebug()<<"path:"<<path;
 #if !DEBUG_VIEW
         QImage(get_preview_file_name(path)).transformed(transform).save(get_preview_file_name(path));
 
@@ -64,7 +64,7 @@ void ImageHandler::image_save(const QString& path ,int angle)
 
 void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,QSize size ,int weight ,int angle)
 {
-    qDebug()<<"image_answer_then_send"<<":SizeW:"<<size.width()<<":SizeH:"<<size.height()<<" weight:"<<weight<<" angle:"<<angle;
+//    qDebug()<<"image_answer_then_send"<<":SizeW:"<<size.width()<<":SizeH:"<<size.height()<<" weight:"<<weight<<" angle:"<<angle;
     QImage image;
     //get source image
     QString image_path = item->data(Qt::UserRole).toString();
@@ -85,7 +85,7 @@ void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,Q
         if(angle % 2){
             prev_size = QSize(prev_size.height(),prev_size.width());
             image_size = QSize(image_size.height() ,image_size.width());
-            qDebug()<<prev_size<<"prev_size "<<image_size;
+//            qDebug()<<prev_size<<"prev_size "<<image_size;
         }
     }
     //get scale new size
@@ -94,42 +94,29 @@ void ImageHandler::image_answer_then_send(QObject* obj ,QListWidgetItem* item ,Q
     rate1 = size.width() * 1.0 / prev_size.width();
     rate2 = size.height() * 1.0 / prev_size.height();
 
-    bool rate_fit;
     QSize new_size;
+//    qDebug()<<"prev_size:"<<prev_size<<" image_size:"<<image_size;
 
-    qDebug("before weight:%d" ,weight);
     int flag = !!weight;
     rate = rate1 > rate2 ?rate2 :rate1;
     QSize fit_size = rate * prev_size;//fit size
-    do{
-        rate_fit = true;
-        new_size = fit_size * (1 + (0.1 * weight));
-        if(weight > 0){
-            if((fit_size - image_size).isValid()){
-                new_size = image_size;
-            }else if((fit_size * (1.1 + (0.1 * weight)) - image_size).isValid()){
-                flag = 2;//max
-                weight --;
-                rate_fit = false;
-            }
-        }else if(weight < 0){
-            if((fit_size * (0.9 + (0.1 * weight)) - 0.333333 * size).isEmpty()){
-                flag = -2;//min
-                weight ++;
-                rate_fit = false;
-            }
-        }else{
-            if((fit_size - image_size).isValid()){
-                new_size = image_size;
-            }
-        }
-    }while(!rate_fit);
-    if(flag == -2){
-        weight--;
-    }else if(flag == 2){
-        weight++;
+    new_size = fit_size * (1 + (0.1 * weight));
+
+    if((new_size - image_size).isValid()){
+        new_size = image_size;
+        flag += 2;//max
     }
-    qDebug("after weight:%d" ,weight);
+
+//    if((fit_size - image_size).isValid()){
+//        new_size = image_size;
+//    }
+//    if((fit_size * (1.1 + (0.1 * weight)) - image_size).isValid()){
+//        flag += 2;//max
+//    }
+    if((fit_size * (0.9 + (0.1 * weight)) - 0.333333 * size).isEmpty()){
+        flag += 4;//min
+    }
+
     //scale image
 //    QLabel label;
 //    label.setScaledContents(true);

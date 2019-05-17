@@ -2,10 +2,11 @@
 #include "log.h"
 #include "trans.h"
 extern const char* log_file;
+const char* g_config_file = "/tmp/lnthrvop.txt";
 bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultValue ,bool set)
 {
     bool result = true;
-    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml" ,QSettings::NativeFormat);
+    QSettings settings(g_config_file ,QSettings::NativeFormat);
     if(set){
         settings.setValue(key ,value);
         LOGLOG("set key %s value:%s" ,key.toLatin1().constData() ,settings.value(key ,defaultValue).toString().toLatin1().constData());

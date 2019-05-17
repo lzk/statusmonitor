@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 
 //    QCoreApplication::setOrganizationName("Lenovo");
 //    QCoreApplication::setApplicationName("VOP");
-    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml" ,QSettings::NativeFormat);
+    QSettings settings(g_config_file ,QSettings::NativeFormat);
     qDebug()<<settings.fileName();
 
 

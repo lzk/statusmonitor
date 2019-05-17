@@ -12,6 +12,7 @@
 #include "log.h"
 #include "settingwarming.h"
 
+extern const char* g_config_file;
 MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MemberCenterWidget)
@@ -34,7 +35,7 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
 //    int country = QLocale::China;
     if(country == QLocale::China)
     {
-        QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
+        QSettings settings(g_config_file,QSettings::NativeFormat);
 
         QString CRM = settings.value("CRMTips").toString();
         qDebug()<<"CRM"<<CRM;
@@ -106,7 +107,7 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
 
 MemberCenterWidget::~MemberCenterWidget()
 {
-    QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
+    QSettings settings(g_config_file,QSettings::NativeFormat);
     if(loginPhone != NULL)
     {
         settings.beginGroup(loginPhone);
@@ -127,7 +128,7 @@ void MemberCenterWidget::on_btLogin_clicked()
     if(login->isLogin())
     {
 //        loginPhone = login->getPhone();
-        QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
+        QSettings settings(g_config_file ,QSettings::NativeFormat);
         loginPhone = settings.value("loginPhone").toString();
         settings.beginGroup(loginPhone);
         QString userName = settings.value("loginName").toString();

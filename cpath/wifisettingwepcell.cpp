@@ -39,6 +39,7 @@ WiFiSettingWEPCell::WiFiSettingWEPCell(QWidget *parent, APInfo *info, bool *_isl
     {
         islogin = &m_isLogin;
     }
+    connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 }
 
 WiFiSettingWEPCell::~WiFiSettingWEPCell()
@@ -270,11 +271,11 @@ void WiFiSettingWEPCell::tryConnect(APInfo ap)
 //            wifi_para.channel = 0;
 
     wifi_para.wifiEnable = 1;
-    connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
+//    connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
 
     QVariant value;
     value.setValue<cmdst_wifi_get>(wifi_para);
-    gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
+//    gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
 
     emit doingConnect(this);
 }
@@ -283,6 +284,25 @@ void WiFiSettingWEPCell::cmdResult(int cmd,int result ,QVariant data)
 {
     if(UIConfig::LS_CMD_WIFI_apply == cmd)
     {
+        cmdst_wifi_get wifi_para = data.value<cmdst_wifi_get>();
+        if(apInfo.SSID.compare(wifi_para.ssid)){
+            switch(apInfo.encryType)
+            {
+            case NO_Securty:
+                apInfo.APStatus = tr("ResStr_No_Security"); break;
+            case WPA_PSK_TKIP:
+                apInfo.APStatus = tr("ResStr_Protected_by_WEP"); break;
+            case WPA2_PSK_AES:
+                apInfo.APStatus = tr("ResStr_Protected_by_WPA2"); break;
+            case Mixed_Mode_PSK:
+                apInfo.APStatus = tr("ResStr_Protected_by_Mixed_Mode_PSK"); break;
+            default:    break;
+            }
+            ui->label_APStatus->setText(apInfo.APStatus);
+            ui->label_APStatus_2->setText(apInfo.APStatus);
+            ui->btConnect->setEnabled(true);
+            return;
+        }
         QString deviceMsg = "";
         if(!result)
         {
