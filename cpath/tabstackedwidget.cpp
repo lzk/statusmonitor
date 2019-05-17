@@ -348,7 +348,27 @@ TabStackedWidget::~TabStackedWidget()
 {
     delete ui;
 }
+void TabStackedWidget::initWiFi_clicked()
+{
+    ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless_Active.png)");
+    ui->img_SoftAP->setStyleSheet("border-image: url(:/Images/SoftAP.png)");
+    ui->img_TCPIPV4->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_TCPIPV6->setStyleSheet("border-image: url(:/Images/TCPIP.png)");
+    ui->img_PowerSave->setStyleSheet("border-image: url(:/Images/PowerSave.png)");
+    ui->img_UserConfig->setStyleSheet("border-image: url(:/Images/UserConfig.png)");
+    ui->img_Password->setStyleSheet("border-image: url(:/Images/Password.png)");
 
+    ui->btn_WiFi->setStyleSheet(selectState+selectHover+selectPressed);
+    ui->btn_SoftAP->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV4->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_TCPIPV6->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_PowerSave->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_UserConfig->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+    ui->btn_Password->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
+
+    ui->settingStackedWidget->changeStackIndex(0);
+    ui->settingStackedWidget->setCurrentIndex(0);
+}
 void TabStackedWidget::on_btn_WiFi_clicked()
 {
     ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless_Active.png)");
@@ -368,8 +388,11 @@ void TabStackedWidget::on_btn_WiFi_clicked()
     ui->btn_Password->setStyleSheet(unSelectState+unSelectHover+unSelectPressed);
 
     //neil add for settings page 2016-01-29
-    ui->settingStackedWidget->changeStackIndex(0);
-    ui->settingStackedWidget->setCurrentIndex(0);
+    if(ui->settingStackedWidget->currentIndex() > 0)
+    {
+        ui->settingStackedWidget->changeStackIndex(0);
+        ui->settingStackedWidget->setCurrentIndex(0);
+    }
 }
 
 void TabStackedWidget::on_btn_SoftAP_clicked()
