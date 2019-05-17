@@ -30,12 +30,12 @@ ImagePreviewDialog::ImagePreviewDialog(QListWidgetItem* _item ,ImageHandler* han
 
 void ImagePreviewDialog::image_update(QObject *obj, const QImage &_image ,int flag ,int _weight)
 {
-    qDebug()<<"ImagePreviewDialog::image_update";
     if(obj == this){
         image = _image;
         QLabel* label = new QLabel;
         label->setPixmap(QPixmap::fromImage(image));
         label->resize(image.size());
+        qDebug()<<"preview image size :"<<image.size();
         if((ui->scrollArea->size() - image.size()).isValid()){
             ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
             ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -56,35 +56,51 @@ void ImagePreviewDialog::image_update(QObject *obj, const QImage &_image ,int fl
 
         weight = _weight;
 
-        switch(flag){
-        case 0:
+        if(flag & 1){
+            ui->fit->setEnabled(true);
+        }else{
             ui->fit->setEnabled(false);
-            ui->zoom_in->setEnabled(true);
-            ui->zoom_out->setEnabled(true);
-            break;
-        case 1:
-            ui->fit->setEnabled(true);
-            ui->zoom_in->setEnabled(true);
-            ui->zoom_out->setEnabled(true);
-            break;
-        case 2:
-            ui->fit->setEnabled(true);
-            ui->zoom_in->setEnabled(false);
-            ui->zoom_out->setEnabled(true);
-            break;
-        case -2:
-            ui->fit->setEnabled(true);
-            ui->zoom_in->setEnabled(true);
-            ui->zoom_out->setEnabled(false);
-            break;
-        case -1:
-        default:
-            ui->fit->setEnabled(false);
-            ui->zoom_in->setEnabled(false);
-            ui->zoom_out->setEnabled(false);
-            ui->turn->setEnabled(false);
-            break;
         }
+        if(flag & 2){
+            ui->zoom_in->setEnabled(false);
+        }else{
+            ui->zoom_in->setEnabled(true);
+        }
+        if(flag & 4){
+            ui->zoom_out->setEnabled(false);
+        }else{
+            ui->zoom_out->setEnabled(true);
+        }
+
+//        switch(flag){
+//        case 0:
+//            ui->fit->setEnabled(false);
+//            ui->zoom_in->setEnabled(true);
+//            ui->zoom_out->setEnabled(true);
+//            break;
+//        case 1:
+//            ui->fit->setEnabled(true);
+//            ui->zoom_in->setEnabled(true);
+//            ui->zoom_out->setEnabled(true);
+//            break;
+//        case 2:
+//            ui->fit->setEnabled(true);
+//            ui->zoom_in->setEnabled(false);
+//            ui->zoom_out->setEnabled(true);
+//            break;
+//        case -2:
+//            ui->fit->setEnabled(true);
+//            ui->zoom_in->setEnabled(true);
+//            ui->zoom_out->setEnabled(false);
+//            break;
+//        case -1:
+//        default:
+//            ui->fit->setEnabled(false);
+//            ui->zoom_in->setEnabled(false);
+//            ui->zoom_out->setEnabled(false);
+//            ui->turn->setEnabled(false);
+//            break;
+//        }
     }
 }
 

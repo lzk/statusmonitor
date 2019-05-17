@@ -12,7 +12,8 @@
 #include <qsettings.h>
 #include "membercenter/experiencepro.h"
 #include "unistd.h"
-
+#include <QVariant>
+extern const char* g_config_file;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -54,7 +55,9 @@ MainWindow::MainWindow(QWidget *parent) :
 #ifndef DEBUG
     gUInterface->setCmd(UIConfig::CMD_GetPrinters,QString());
     isOfflineStart = true;
-    isShowMaintain = true;
+    QSettings settings(g_config_file ,QSettings::NativeFormat);
+    isShowMaintain = settings.value("auto_show_service_url" ,QVariant(true)).toBool();
+//    isShowMaintain = true;
     enabledScanCopy = true;
     enableTroubleshootingPage(true);
     isStartCopy = false;
@@ -1037,6 +1040,8 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
         if(isShowMaintain)
         {
             isShowMaintain = false;
+            QSettings settings(g_config_file ,QSettings::NativeFormat);
+            settings.setValue("auto_show_service_url" ,QVariant(false));
             if(status >= UIConfig::PolygomotorOnTimeoutError && status <= UIConfig::CTL_PRREQ_NSignalNoCome
                     || status == UIConfig::ScanMotorError
                     || status == UIConfig::SCAN_DRV_CALIB_FAIL

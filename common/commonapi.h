@@ -6,7 +6,7 @@
 #include "devicemanager.h"
 #include "usbio.h"
 #include "netio.h"
-
+extern const char* g_config_file;
 bool appSettings(const QString& key ,QVariant& value ,const QVariant& defaultValue ,bool set = false);
 
 bool is_app_running(const char* server_path);

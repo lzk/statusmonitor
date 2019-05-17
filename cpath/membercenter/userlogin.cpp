@@ -4,7 +4,7 @@
 #include "qurl.h"
 #include "jsonparser/parser.h"
 #include "qeventloop.h"
-
+extern const char* g_config_file;
 UserLogin::UserLogin(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UserLogin)
@@ -80,8 +80,7 @@ void UserLogin::loginAction(QString strPhoneNumber,QString strVerifyCode)
         if(result["success"].toBool())
         {
             m_loginSuccess = true;
-
-            QSettings settings("/usr/share/lnthrvop/config/lnthrvop.xml",QSettings::NativeFormat);
+            QSettings settings(g_config_file,QSettings::NativeFormat);
             settings.setValue("loginPhone",strPhoneNumber);
             settings.setValue("password",strVerifyCode);
 
