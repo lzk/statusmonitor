@@ -53,6 +53,7 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
         }
 
         loginPhone = settings.value("loginPhone").toString();
+        m_bCRM = settings.value("enableCRM").toBool();
         if(loginPhone != NULL)
         {
             QString password = settings.value("password").toString();

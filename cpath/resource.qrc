@@ -170,20 +170,12 @@
         <file>Images/DulplexCopyIconDisable.tif</file>
         <file>Images/DulplexCopyIconEnable.tif</file>
         <file>Images/Video/English/01_JamInside1_en.gif</file>
-        <file>Images/Video/English/01_JamInside2_en.gif</file>
-        <file>Images/Video/English/01_JamInside3_en.gif</file>
         <file>Images/Video/English/02_JamAtExitStayOn1_en.gif</file>
-        <file>Images/Video/English/02_JamAtExitStayOn2_en.gif</file>
-        <file>Images/Video/English/02_JamAtExitStayOn3_en.gif</file>
         <file>Images/Video/English/03_NofeedJam1_en.gif</file>
         <file>Images/Video/English/05_IDCardCopy1_en.gif</file>
         <file>Images/Video/English/06_NIn1Copy1_en.gif</file>
         <file>Images/Video/SimplifiedChinese/01_JamInside1_zh.gif</file>
-        <file>Images/Video/SimplifiedChinese/01_JamInside2_zh.gif</file>
-        <file>Images/Video/SimplifiedChinese/01_JamInside3_zh.gif</file>
         <file>Images/Video/SimplifiedChinese/02_JamAtExitStayOn1_zh.gif</file>
-        <file>Images/Video/SimplifiedChinese/02_JamAtExitStayOn2_zh.gif</file>
-        <file>Images/Video/SimplifiedChinese/02_JamAtExitStayOn3_zh.gif</file>
         <file>Images/Video/SimplifiedChinese/03_NofeedJam1_zh.gif</file>
         <file>Images/Video/SimplifiedChinese/05_IDCardCopy1_zh.gif</file>
         <file>Images/Video/SimplifiedChinese/06_NIn1Copy1_zh.gif</file>
@@ -198,5 +190,8 @@
         <file>Images/LogoForAbout_new.png</file>
         <file>Images/Video/English/07_duplex_copy_en.gif</file>
         <file>Images/Video/SimplifiedChinese/07_duplex_copy_zh.gif</file>
+        <file>Images/moreSettings_Copy_2.png</file>
+        <file>Images/Video/English/04_PaperNotReachDuplexEntrySensor_en.gif</file>
+        <file>Images/Video/SimplifiedChinese/04_PaperNotReachDuplexEntrySensor_zh.gif</file>
     </qresource>
 </RCC>

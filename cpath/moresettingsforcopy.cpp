@@ -39,10 +39,14 @@ MoreSettingsForCopy::MoreSettingsForCopy(QWidget *parent,bool duplexCopyFlag, bo
     switch (mode) {
     case 1://hide duplex
         ui->widget_duplexcopy->hide();
+        ui->Label_DuplexMode->hide();
+        ui->duplexCopyModeList->hide();
         break;
     case 0://nomal
     default:
         ui->widget_duplexcopy->show();
+        ui->Label_DuplexMode->show();
+        ui->duplexCopyModeList->show();
         break;
     }
 
@@ -323,7 +327,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
     }
     else
     {
-        ui->btn_duplex->setEnabled(false);
+//        ui->btn_duplex->setEnabled(false);
 //        ui->btn_duplex->setChecked(param->promptInfo.isDuplex == 1);
         if(param->docType == DocType_Copy_Photo)
         {

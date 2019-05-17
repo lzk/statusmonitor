@@ -102,9 +102,6 @@ int main(int argc, char *argv[])
 
 //    QCoreApplication::setOrganizationName("Lenovo");
 //    QCoreApplication::setApplicationName("VOP");
-    QSettings settings(g_config_file ,QSettings::NativeFormat);
-    qDebug()<<settings.fileName();
-
 
     QSplashScreen *splash = new QSplashScreen;
     QString lan = QLocale::system().name();

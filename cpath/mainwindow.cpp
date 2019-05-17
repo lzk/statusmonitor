@@ -245,7 +245,7 @@ void MainWindow::on_Setting_clicked()
     ui->tabStackedWidget->setCurrentIndex(2);
     if(enabledWiFi)
     {
-        ui->tabStackedWidget->on_btn_WiFi_clicked();
+        ui->tabStackedWidget->initWiFi_clicked();
     }
     else
     {
@@ -285,7 +285,7 @@ void MainWindow::on_SettingImgBtn_clicked()
     ui->tabStackedWidget->setCurrentIndex(2);
     if(enabledWiFi)
     {
-        ui->tabStackedWidget->on_btn_WiFi_clicked();
+        ui->tabStackedWidget->initWiFi_clicked();
     }
     else
     {
@@ -448,7 +448,7 @@ void MainWindow::setcurrentPrinter(const QString& str)
             ui->tabStackedWidget->setEnabledWifi(true);
             if(!isOfflineStart && (!enabledScanCopy))
             {
-                ui->tabStackedWidget->on_btn_WiFi_clicked();
+                ui->tabStackedWidget->initWiFi_clicked();
             }
         }
         else
@@ -477,7 +477,7 @@ void MainWindow::currentPrinterChanged(const QString& str)
         {
             if(!isOfflineStart && (!enabledScanCopy))
             {//refresh when change to LW machine
-                ui->tabStackedWidget->on_btn_WiFi_clicked();
+                ui->tabStackedWidget->initWiFi_clicked();
             }
         }
     }

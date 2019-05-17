@@ -178,12 +178,40 @@ void WiFiSettingWEPCell::on_btKey4_toggled(bool checked)
 void WiFiSettingWEPCell::on_btConnect_clicked()
 {
     int len = ui->lineEdit_Password->text().length();
-    if(len < 5)
+    char *cPassword = ui->lineEdit_Password->text().toLatin1().data();
+    bool bValidetePassWord = true;
+    switch(len)
+    {
+    case 5:
+    case 13:
+         break;
+    case 10:
+    case 26:
+//            foreach (char ch, password )
+        for(int i = 0;i <len;i++)
+        {
+            if(isdigit(cPassword[i]) ||(cPassword[i] >='a' && cPassword[i] <='f') || (cPassword[i] >='A' && cPassword[i] <='F'))
+            {
+                continue;
+            }
+            else
+            {
+                bValidetePassWord = false;
+                break;
+            }
+        }
+        break;
+    default:
+        bValidetePassWord = false; break;
+    }
+    if(!bValidetePassWord)
     {
         SettingWarming *warming = new SettingWarming(this, tr("ResStr_Msg_2"));
         warming->setWindowTitle(tr("ResStr_Warning"));
-        warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint );
+        warming->setWindowFlags(warming->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                & ~Qt::WindowMinimizeButtonHint);
         warming->exec();
+        return;
     }
     else
     {

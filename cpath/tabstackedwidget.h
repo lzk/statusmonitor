@@ -22,6 +22,7 @@ public:
 
 public slots:
     void on_btn_WiFi_clicked();
+    void initWiFi_clicked();
     void on_btn_PowerSave_clicked();
     bool getScrollAreaImageStatus();
     void set_copy_enabled(bool enabled);

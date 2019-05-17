@@ -34,8 +34,6 @@
   <property name="styleSheet">
    <string notr="true">#MoreSettingsForCopy{
 
-	background-image: url(:/Images/moreSettings_Copy_1.png);
-	background-repeat: repeat;
 }
 
 #MoreSettingsForCopy *{

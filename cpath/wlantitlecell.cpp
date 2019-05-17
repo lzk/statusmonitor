@@ -728,8 +728,7 @@ void WlanTitleCell::on_btConnect_clicked()
 
     QRegExp reg_Exp("[a-fA-F0-9]{4}");
     int len = ui->lineEdit_Password->text().length();
-    QString password = ui->lineEdit_Password->text();
-    char *cPassword = password.toLatin1().data();
+    char *cPassword = ui->lineEdit_Password->text().toLatin1().data();
     bool bValidetePassWord = true;
     if (ui->combox_encryption->currentIndex() == 1)
     {
