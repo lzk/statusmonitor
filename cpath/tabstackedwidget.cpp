@@ -56,6 +56,11 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     unSelectHover = "QPushButton::hover{color: rgb(52, 212, 34);}";
     unSelectPressed = "QPushButton::pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:white;}";
 
+
+    QString strStyleScrollBar="QScrollBar:vertical { background: rgb(205, 205, 205); } "
+            "QListWidget {background-image: url(); background-color:white;border-width:0px;}";
+    ui->scrollArea_ScanImage->setStyleSheet(strStyleScrollBar);
+
     timerCopyNum = new QTimer(this);
 
     timerClick = new QTimer(this);
