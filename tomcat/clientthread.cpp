@@ -74,8 +74,7 @@ void ClientThread::run(){
             LOGLOG("record to file list");
             Job_history job;
             job.id = jobid;
-            job.is_finger_enable = (finger_checked_result != Checked_Result_Disable);
-            job.is_finger_checked = (finger_checked_result == Checked_Result_OK);
+            job.result = finger_checked_result;
             Tomcat::save_job_history(&job);
         }else{
             LOGLOG("do not record to file list");
