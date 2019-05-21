@@ -133,7 +133,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Copy_Fail"),result);
             if(result == LShell::ERR_Do_not_support)
             {
-                SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_Unsupported"),2);
+                SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_Unsupported"));
                 busyWarning->setWindowTitle(tr("ResStr_Error"));
 
                 busyWarning->setWindowFlags(busyWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \

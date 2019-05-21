@@ -599,6 +599,7 @@ void MemberCenterWidget::on_btApply_clicked()
 void MemberCenterWidget::on_btProduct_clicked()
 {
     QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/home_abc.aspx"));
+//    QDesktopServices::openUrl(QUrl("http://vopapi.lenovoimage.com/index.html"));
 }
 
 /*disable btApply button if not all the le_name,le_email,le_addr have got value*/

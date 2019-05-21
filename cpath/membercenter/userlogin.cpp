@@ -204,7 +204,6 @@ void UserLogin::on_bt_getAuthCode_clicked()
         ui->labMsg->setText(tr("ResStr_Msg_7"));
     }
 
-
 }
 
 void UserLogin::showTimelimit()
