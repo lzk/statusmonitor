@@ -113,6 +113,7 @@ private slots:
     void on_bt9in1_clicked();
     void on_btID_clicked(bool checked);
     void on_btNInOne_clicked(bool checked);
+    void on_btn_duplex_clicked(bool checked);
 //    void on_btText_toggled(bool checked);
 //    void on_btPicture_toggled(bool checked);
     void on_docSizeList_currentIndexChanged(int index);

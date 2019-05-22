@@ -888,6 +888,7 @@ void MainWindow::scrollCaption()
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if(obj == ui->label_10 && event->type() == QEvent::MouseButtonRelease){
+//        QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
         QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
     }
     else if(obj == ui->deviceNameLabel_2 && event->type() == QEvent::Enter)
@@ -1048,6 +1049,7 @@ void MainWindow::updateStatusPanel(int displayStatus,int status)
                     || status == UIConfig::ScanDriverCalibrationFail
                     || status == UIConfig::NetWirelessDongleCfgFail)
             {
+//                QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
                 QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/service.aspx?province=北京市"));
             }
         }
@@ -1168,11 +1170,13 @@ void MainWindow::on_btCar_clicked()
         timerBlink->stop();
     if(ui->memberCenterWidget->loginPhone !="")
     {
+//        QString url = QString("http://ibase.lenovoimage.com/buy_abc2.aspx?id=%0").arg(ui->memberCenterWidget->loginPhone);
         QString url = QString("http://ibase.lenovoimage.com/buy_abc2.aspx?id=%0").arg(ui->memberCenterWidget->loginPhone);
         QDesktopServices::openUrl(QUrl(url));
     }
     else
     {
-        QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/buy_abc2.aspx"));
+//        QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/buy_abc2.aspx"));
+        QDesktopServices::openUrl(QUrl("http://vopapi.lenovoimage.com/index.html"));
     }
 }

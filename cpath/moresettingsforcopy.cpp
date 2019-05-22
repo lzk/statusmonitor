@@ -239,6 +239,9 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
+        ui->btn_duplex->setChecked(param->promptInfo.isDuplex);  //ParamForCopy->promptInfo.isMultible
+        on_btn_duplex_clicked(param->promptInfo.isDuplex);
+
         selectIDCardCopyMode(param->idCardCopyMode);
 
         ui->scaling->setText(text.setNum(param->scaling));
@@ -319,6 +322,9 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
+        ui->btn_duplex->setChecked(param->promptInfo.isDuplex);  //ParamForCopy->promptInfo.isMultible
+        on_btNInOne_clicked(param->promptInfo.isDuplex);
+
         selectIDCardCopyMode(param->idCardCopyMode);
         ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);
         param->scaling = getScalingValue(param->outputSize,param->docSize);
@@ -370,6 +376,9 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 //        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
+
+        ui->btn_duplex->setChecked(param->promptInfo.isDuplex);  //ParamForCopy->promptInfo.isMultible
+        on_btn_duplex_clicked(param->promptInfo.isDuplex);
 
         selectIDCardCopyMode(param->idCardCopyMode);
         ui->scaling->setText(text.setNum(param->scaling));
@@ -938,6 +947,19 @@ void MoreSettingsForCopy::on_btID_clicked(bool checked)
         ui->btID->setStyleSheet("#btID {border-image: url(:/Images/CheckBox_Close.png);}");
     }
 }
+void MoreSettingsForCopy::on_btn_duplex_clicked(bool checked)
+{
+    qDebug()<<"on_btn_duplex_clicked"<<checked;
+    if(checked)
+    {
+        ui->btn_duplex->setStyleSheet("#btn_duplex {border-image: url(:/Images/CheckBox_Open.png);}");
+    }
+    else
+    {
+        ui->btn_duplex->setStyleSheet("#btn_duplex {border-image: url(:/Images/CheckBox_Close.png);}");
+    }
+}
+
 
 void MoreSettingsForCopy::on_btNInOne_clicked(bool checked)
 {
