@@ -70,6 +70,8 @@ public:
 
     int poweroff();
     int get_counter_print_scan(Counter_printer_scan* para);
+    int wifi_set_enable(unsigned char* para);
+    int printer_reboot();
 public:
     static void copy_get_defaultPara(copycmdset* p);
     int open(Printer_struct* printer);

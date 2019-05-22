@@ -100,7 +100,9 @@ static int lshell_getCmdDirect(int cmd ,int sub_cmd ,int& direct ,int& data_buff
         case 0x19:  direct = 1;data_buffer_size = 1; break;//set toner reset
         case 0x1a:  direct = 1;data_buffer_size = 1; break;//set drum reset
         case 0x30:  direct = 1;data_buffer_size = 1; break;//power off
-        case 0x42:  direct = 0;data_buffer_size = 28; break;//set drum reset
+        case 0x42:  direct = 0;data_buffer_size = 28; break;//get counter print scan
+        case 0x0c:  direct = 1;data_buffer_size = 1; break;//wifi set enable
+        case 0x0d:  direct = 1;data_buffer_size = 0; break;//reboot
         default:ret=-1;break;
         }
         break;
@@ -233,6 +235,8 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
 
 #define lshell_poweroff(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x30 ,buffer ,bufsize)
 #define lshell_getCounterPrintScan(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x42 ,buffer ,bufsize)
+#define lshell_wifi_set_enable(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x0c ,buffer ,bufsize)
+#define lshell_prn_reboot(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x0d ,buffer ,bufsize)
 int LShell::copy(copycmdset* para)
 {
 //    LOGLOG("lshell cmd: copy set");
@@ -464,8 +468,8 @@ int LShell::printerinfo_get(fw_info_st* para)
 int LShell::poweroff()
 {
     int err;
-    int val = 0;
-    int* para = &val;
+    unsigned char val = 1;
+    unsigned char* para = &val;
     err = lshell_poweroff(para, sizeof(*para));
     return err;
 
@@ -477,6 +481,21 @@ int LShell::get_counter_print_scan(Counter_printer_scan* para)
     return err;
 }
 
+int LShell::wifi_set_enable(unsigned char* para)
+{
+    int err;
+    err = lshell_wifi_set_enable(para, sizeof(*para));
+    return err;
+}
+int LShell::printer_reboot()
+{
+    int err;
+//    unsigned char val = 0;
+//    unsigned char* para = &val;
+//    err = lshell_prn_reboot(para, sizeof(*para));
+    err = lshell_prn_reboot(NULL, 0);
+    return err;
+}
 
 void LShell::copy_get_defaultPara(copycmdset* p)
 {
