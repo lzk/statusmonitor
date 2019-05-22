@@ -154,6 +154,17 @@ typedef struct
     UINT8 DHCPv6;
 }net_ipv6_st;
 
+typedef struct
+{
+    UINT32 PrinterTotal;
+    UINT32 Printer;
+    UINT32 Copier;
+    UINT32 ScanTotal;
+    UINT32 DPrintTotal;
+    UINT32 DPrinter;
+    UINT32 DCopier;
+}
+    Counter_printer_scan;
 #pragma pack()
 #endif // LSHELLSTRUCT_H
 

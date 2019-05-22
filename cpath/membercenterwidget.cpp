@@ -480,6 +480,7 @@ void MemberCenterWidget::cmdResult(int cmd,int result,QVariant data)
         if(!result)
         {
             struct_user_center userCenter = data.value<struct_user_center>();
+            qDebug()<<"user center printertotal:"<<userCenter.counter_printer_scan.PrinterTotal;
             QString inkLevel = "0";
             QString printerDataStr = QString("[{{\"printermodel\":\"%0\",\"printerid\":\"%1\",\"tonerid\":\"%2\",\"totalprint\":\"%3\",\"inklevel\":\"%4\"}}]")
                     .arg(userCenter.strPrinterModel)
@@ -599,6 +600,7 @@ void MemberCenterWidget::on_btApply_clicked()
 void MemberCenterWidget::on_btProduct_clicked()
 {
     QDesktopServices::openUrl(QUrl("http://ibase.lenovoimage.com/home_abc.aspx"));
+//    QDesktopServices::openUrl(QUrl("http://vopapi.lenovoimage.com/index.html"));
 }
 
 /*disable btApply button if not all the le_name,le_email,le_addr have got value*/

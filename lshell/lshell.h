@@ -68,6 +68,8 @@ public:
 	int usercenterinfo_get(cmdst_user_center* para);
 	int printerinfo_get(fw_info_st* para);
 
+    int poweroff();
+    int get_counter_print_scan(Counter_printer_scan* para);
 public:
     static void copy_get_defaultPara(copycmdset* p);
     int open(Printer_struct* printer);

@@ -80,7 +80,6 @@ void UserLogin::loginAction(QString strPhoneNumber,QString strVerifyCode)
         if(result["success"].toBool())
         {
             m_loginSuccess = true;
-
             QSettings settings(g_config_file,QSettings::NativeFormat);
             settings.setValue("loginPhone",strPhoneNumber);
             settings.setValue("password",strVerifyCode);
@@ -204,7 +203,6 @@ void UserLogin::on_bt_getAuthCode_clicked()
     {
         ui->labMsg->setText(tr("ResStr_Msg_7"));
     }
-
 
 }
 

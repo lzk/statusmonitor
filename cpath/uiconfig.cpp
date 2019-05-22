@@ -27,7 +27,7 @@ static bool _isDeviceSupported(Printer_struct* ps)
 //    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
     if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
         return false;
-    if(QString(ps->deviceUri).toLower().startsWith("socket://[fe80"))
+    if(QString(ps->deviceUri).toLower().contains("://[fe80"))
         return false;
     return true;
 }
@@ -118,7 +118,7 @@ int UIConfig::initConfig()
     getpidvid = _getpidvid;
 
     log_app_name = "lenovo_cpath";
-    app_version = "1.0.0.22";
+    app_version = "1.0.0.23";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;

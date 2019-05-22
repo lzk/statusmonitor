@@ -156,7 +156,8 @@ void ImagePreviewDialog::on_zoom_out_clicked()
 
 void ImagePreviewDialog::on_turn_clicked()
 {
-    image_ask(weight ,++angle);
+    //image_ask(weight ,++angle);
+    image_ask(0 ,++angle);
 }
 
 #include <QMessageBox>

@@ -56,6 +56,11 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     unSelectHover = "QPushButton::hover{color: rgb(52, 212, 34);}";
     unSelectPressed = "QPushButton::pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:white;}";
 
+
+    QString strStyleScrollBar="QScrollBar:vertical { background: rgb(205, 205, 205); } "
+            "QListWidget {background-image: url(); background-color:white;border-width:0px;}";
+    ui->scrollArea_ScanImage->setStyleSheet(strStyleScrollBar);
+
     timerCopyNum = new QTimer(this);
 
     timerClick = new QTimer(this);
@@ -81,8 +86,21 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     connect(gUInterface,SIGNAL(signal_update_scan_progress(int)),this,SLOT(updateScanProcess(int)));
 
     m_oldJob = UIConfig::UnknowJob;
+
+    QSettings settings(g_config_file ,QSettings::NativeFormat);
+    paramCopy.promptInfo.isDuplex = settings.value("isDuplex" ,QVariant(1)).toInt();
+    paramCopy.promptInfo.isIDCard = settings.value("isIDCard" ,QVariant(true)).toBool();
+    paramCopy.promptInfo.isMultible = settings.value("isMultible" ,QVariant(true)).toBool();
 }
 
+TabStackedWidget::~TabStackedWidget()
+{
+    delete ui;
+    QSettings settings(g_config_file ,QSettings::NativeFormat);
+    settings.setValue("isDuplex",paramCopy.promptInfo.isDuplex);
+    settings.setValue("isIDCard",paramCopy.promptInfo.isIDCard);
+    settings.setValue("isMultible",paramCopy.promptInfo.isMultible);
+}
 void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
 {
     switch(cmd)
@@ -133,7 +151,7 @@ void TabStackedWidget::cmdResult(int cmd,int result,QVariant data)
             gUInterface->setDeviceMsgFrmUI(tr("ResStr_Copy_Fail"),result);
             if(result == LShell::ERR_Do_not_support)
             {
-                SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_Unsupported"),2);
+                SettingWarming *busyWarning = new SettingWarming(this, tr("ResStr_Unsupported"));
                 busyWarning->setWindowTitle(tr("ResStr_Error"));
 
                 busyWarning->setWindowFlags(busyWarning->windowFlags() & ~Qt::WindowMaximizeButtonHint \
@@ -289,11 +307,11 @@ void TabStackedWidget::setDefault_Copy(bool isExceptTips)
     paramCopy.multiMode = (MultiMode_Copy)p->nUp;
     paramCopy.idCardCopyMode = A4Mode1;
     paramCopy.duplexMode = Flip_Long_Edge;
-    paramCopy.promptInfo.isDuplex = 1;
+//    paramCopy.promptInfo.isDuplex = 1;
     if(isExceptTips == false)
     {
-        paramCopy.promptInfo.isIDCard = true;
-        paramCopy.promptInfo.isMultible = true;
+//        paramCopy.promptInfo.isIDCard = true;
+//        paramCopy.promptInfo.isMultible = true;
     }
     else
     {
@@ -344,10 +362,6 @@ void TabStackedWidget::on_scrollArea_ScanImage_itemSelectionChanged()
     timerClick->start(440);
 }
 
-TabStackedWidget::~TabStackedWidget()
-{
-    delete ui;
-}
 void TabStackedWidget::initWiFi_clicked()
 {
     ui->img_WiFi->setStyleSheet("border-image: url(:/Images/Wireless_Active.png)");

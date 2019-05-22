@@ -812,6 +812,27 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
             info_ipv4.GatewayAddress[i] = ipgateway.at(i).toInt();
             info_ipv4.SubnetMask[i] = ipsubmask.at(i).toInt();
         }
+        if(info_ipv4.IPAddress[0] >= 224 ||info_ipv4.IPAddress[0] == 127 )
+        {
+            SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_entered_IP_address__is_wrong__please_confirm_and_enter_again_"));
+            msgWarm->setWindowTitle(tr("ResStr_Warning"));
+            msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+            msgWarm->exec();
+
+            return;
+        }
+        if(info_ipv4.GatewayAddress[0] >= 224 ||info_ipv4.GatewayAddress[0] == 127 )
+        {
+            SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_entered_Gateway_is_wrong__please_confirm_and_enter_again_"));
+            msgWarm->setWindowTitle(tr("ResStr_Warning"));
+            msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+            msgWarm->exec();
+
+            return;
+        }
+
     }
     if(ui->btAuto->isChecked())
     {
@@ -824,6 +845,17 @@ void SettingsStackedWidget::on_btApply_IPConfig_clicked()
         {
             info_ipv4.DNSAddress[i] = serverAddress.at(i).toInt();
         }
+        if(info_ipv4.DNSAddress[0] >= 224 ||info_ipv4.DNSAddress[0] == 127 )
+        {
+            SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_The_entered_DNS_is_wrong__please_confirm_and_enter_again_"));
+            msgWarm->setWindowTitle(tr("ResStr_Warning"));
+            msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+            msgWarm->exec();
+
+            return;
+        }
+
     }
     if(!isLogn)
     {
@@ -1324,7 +1356,7 @@ void SettingsStackedWidget::on_btApply_clicked()
 void SettingsStackedWidget::on_lineEdit_IPAddressv4_textEdited(const QString &arg1)
 {
     QRegExp rx2("^([1]?\\d\\d?|2[0-1]\\d|22[0-3])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])$");
-    if( !rx2.exactMatch(arg1) )
+    if( !rx2.exactMatch(arg1) || (arg1.length() >= 3 && arg1.left(3) == "127"))
     {
          ui->label_ipaddr_error->show();
          ui->lineEdit_IPAddressv4->setStyleSheet("QLineEdit{\
@@ -1347,7 +1379,7 @@ void SettingsStackedWidget::on_lineEdit_IPAddressv4_textEdited(const QString &ar
 void SettingsStackedWidget::on_lineEdit_Gatewayv4_textEdited(const QString &arg1)
 {
     QRegExp rx2("^([1]?\\d\\d?|2[0-1]\\d|22[0-3])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])$");
-    if( !rx2.exactMatch(arg1) )
+    if( !rx2.exactMatch(arg1) || (arg1.length() >= 3 && arg1.left(3) == "127"))
     {
          ui->label_gateway_error->show();
          ui->lineEdit_Gatewayv4->setStyleSheet("QLineEdit{\
@@ -1393,7 +1425,7 @@ void SettingsStackedWidget::on_lineEdit_Submaskv4_textEdited(const QString &arg1
 void SettingsStackedWidget::on_lineEdit_server_textEdited(const QString &arg1)
 {
     QRegExp rx2("^([1]?\\d\\d?|2[0-1]\\d|22[0-3])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])$");
-    if( !rx2.exactMatch(arg1) )
+    if( !rx2.exactMatch(arg1) || (arg1.length() >= 3 && arg1.left(3) == "127"))
     {
          ui->label_server_error->show();
          ui->lineEdit_server->setStyleSheet("QLineEdit{\

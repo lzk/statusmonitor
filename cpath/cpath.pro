@@ -151,9 +151,9 @@ contains(CONFIG ,static){
 INCLUDEPATH += \
             $${PWD}/../libs/libtiff
 
-!contains(CONFIG ,static){
-LIBS += \
-    -ljpeg
+#!contains(CONFIG ,static){
+#LIBS += \
+#    -ljpeg
 
     mac{
         LIBS += \
@@ -173,4 +173,4 @@ LIBS += \
             }
         }
     }
-}
+#}

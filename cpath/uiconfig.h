@@ -51,9 +51,13 @@ typedef struct struct_user_center
 {
     QString strPrinterModel;
     struct _cmdst_user_center user_center;
+    Counter_printer_scan counter_printer_scan;
 }
     struct_user_center;
 Q_DECLARE_METATYPE(struct_user_center)
+
+
+Q_DECLARE_METATYPE(Counter_printer_scan)
 
 #include "smconfig.h"
 class UIConfig : public QObject ,SMConfig{
@@ -210,7 +214,9 @@ public:
         LS_CMD_PRN_FusingScReset,
         LS_CMD_PRN_TonerReset,
         LS_CMD_PRN_DrumReset,
-        LS_CMD_PRN_Get_UserCenterInfo
+        LS_CMD_PRN_Get_UserCenterInfo,
+        LS_CMD_PRN_poweroff,
+        LS_CMD_PRN_getCounterPrintScan,
     };
     Q_ENUMS(CmdType)
 };
