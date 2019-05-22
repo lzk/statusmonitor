@@ -611,14 +611,41 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
             if(cmd_status_validate(printer ,cmd)){
                 result = lshell->open(printer);
                 if(!result){
-                    cmdst_user_center device_data;
-                    result = lshell->usercenterinfo_get(&device_data);
                     struct_user_center user_center;
                     user_center.strPrinterModel = printer->name;
-                    qDebug()<<printer;
-                    user_center.user_center = device_data;
+                    result = lshell->usercenterinfo_get(&user_center.user_center);
+                    if(!result){
+                        result = lshell->get_counter_print_scan(&user_center.counter_printer_scan);
+                    }
                     lshell->close();
                     value.setValue(user_center);
+                }
+            }
+
+        }
+        cmdResult(cmd ,result ,value);
+        break;
+    case UIConfig::LS_CMD_PRN_poweroff:
+        if(printer){
+            if(cmd_status_validate(printer ,cmd)){
+                result = lshell->open(printer);
+                if(!result){
+                    result = lshell->poweroff();
+                    lshell->close();
+                }
+            }
+        }
+        cmdResult(cmd ,result ,value);
+        break;
+    case UIConfig::LS_CMD_PRN_getCounterPrintScan:
+        if(printer){
+            if(cmd_status_validate(printer ,cmd)){
+                result = lshell->open(printer);
+                if(!result){
+                    Counter_printer_scan device_data;
+                    result = lshell->get_counter_print_scan(&device_data);
+                    lshell->close();
+                    value.setValue(device_data);
                 }
             }
 

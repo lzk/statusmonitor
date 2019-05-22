@@ -99,6 +99,8 @@ static int lshell_getCmdDirect(int cmd ,int sub_cmd ,int& direct ,int& data_buff
         case 0x10:  direct = 0;data_buffer_size = 64; break;//get user center info
         case 0x19:  direct = 1;data_buffer_size = 1; break;//set toner reset
         case 0x1a:  direct = 1;data_buffer_size = 1; break;//set drum reset
+        case 0x30:  direct = 1;data_buffer_size = 1; break;//power off
+        case 0x42:  direct = 0;data_buffer_size = 28; break;//set drum reset
         default:ret=-1;break;
         }
         break;
@@ -229,6 +231,8 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
 #define lshell_getUserInfo(buffer ,bufsize)                 lshell_cmd(_LS_PRNCMD ,0x10 ,buffer ,bufsize)
 #define lshell_getFWInfo(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x04 ,buffer ,bufsize)
 
+#define lshell_poweroff(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x30 ,buffer ,bufsize)
+#define lshell_getCounterPrintScan(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x42 ,buffer ,bufsize)
 int LShell::copy(copycmdset* para)
 {
 //    LOGLOG("lshell cmd: copy set");
@@ -456,6 +460,23 @@ int LShell::printerinfo_get(fw_info_st* para)
 	err = lshell_getFWInfo(para, sizeof(*para));
 	return err;
 }
+
+int LShell::poweroff()
+{
+    int err;
+    int val = 0;
+    int* para = &val;
+    err = lshell_poweroff(para, sizeof(*para));
+    return err;
+
+}
+int LShell::get_counter_print_scan(Counter_printer_scan* para)
+{
+    int err;
+    err = lshell_getCounterPrintScan(para, sizeof(*para));
+    return err;
+}
+
 
 void LShell::copy_get_defaultPara(copycmdset* p)
 {
