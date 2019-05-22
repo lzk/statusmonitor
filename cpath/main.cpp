@@ -140,6 +140,8 @@ int main(int argc, char *argv[])
     splash->finish(&w);
     delete splash;
 
+    a.setStyleSheet("*{font-size: 12px}");
+
     int ret = a.exec();
 //    delete thread_server;
 //    delete statusThread;
