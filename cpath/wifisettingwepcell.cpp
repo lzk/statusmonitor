@@ -329,6 +329,7 @@ void WiFiSettingWEPCell::cmdResult(int cmd,int result ,QVariant data)
             ui->label_APStatus->setText(apInfo.APStatus);
             ui->label_APStatus_2->setText(apInfo.APStatus);
             ui->btConnect->setEnabled(true);
+            ui->label_StatusIcon->setStyleSheet("QLabel{border-image: url(:/Images/Signal_Connect_Disable.png);}");
             return;
         }
         QString deviceMsg = "";

@@ -171,6 +171,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
     ui->paperTypeList->removeItem(4);
     ui->paperTypeList->removeItem(3);
 
+    ui->btn_duplex->setChecked(param->promptInfo.isDuplex == 1);
     if(_idCardFlag)
     {
         ui->label_1->setDisabled(true);
@@ -237,7 +238,6 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
 //        ParamForCopy->promptInfo.isMultible = !ParamForCopy->promptInfo.isMultible;
         ui->btNInOne->setChecked(param->promptInfo.isMultible);  //ParamForCopy->promptInfo.isMultible
         on_btNInOne_clicked(param->promptInfo.isMultible);
-
 
         selectIDCardCopyMode(param->idCardCopyMode);
 

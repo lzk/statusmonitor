@@ -27,7 +27,7 @@ static bool _isDeviceSupported(Printer_struct* ps)
 //    LOGLOG("test found device name:%s \n\tmodel:%s" ,ps->name,ps->makeAndModel);
     if(UIConfig::ModelSerial_unknown == UIConfig::getModelSerial(ps))
         return false;
-    if(QString(ps->deviceUri).toLower().startsWith("socket://[fe80"))
+    if(QString(ps->deviceUri).toLower().contains("://[fe80"))
         return false;
     return true;
 }
