@@ -643,11 +643,7 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
                 result = lshell->open(printer);
                 if(!result){
                     Counter_printer_scan device_data;
-<<<<<<< HEAD
                     result = lshell->get_counter_print_scan(&device_data);
-=======
-                    result = lshell->usercenterinfo_get(&device_data);
->>>>>>> 323f20934197aa441d144ac99cd3f880df39a381
                     lshell->close();
                     value.setValue(device_data);
                 }
