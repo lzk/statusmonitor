@@ -1401,8 +1401,8 @@ void SettingsStackedWidget::on_lineEdit_Gatewayv4_textEdited(const QString &arg1
 
 void SettingsStackedWidget::on_lineEdit_Submaskv4_textEdited(const QString &arg1)
 {
-    QRegExp rx2("^([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-4])$");
-    if( !rx2.exactMatch(arg1) )
+    QRegExp rx2("^([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([1]?\\d\\d?|2[0-4]\\d|25[0-5])\\.0$");
+    if( !rx2.exactMatch(arg1) ||(arg1.length() >= 3 && arg1.left(3) != "255"))
     {
          ui->label_sumask_error->show();
          ui->lineEdit_Submaskv4->setStyleSheet("QLineEdit{\

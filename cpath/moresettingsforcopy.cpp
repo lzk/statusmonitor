@@ -250,7 +250,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
     }else if (_duplexCopyFlag)
     {
         ui->btn_duplex->setEnabled(true);
-        ui->btn_duplex->setChecked(param->promptInfo.isDuplex == 1);
+  //      ui->btn_duplex->setChecked(param->promptInfo.isDuplex == 1);
 
         if(param->docType == DocType_Copy_Photo)
         {
@@ -323,7 +323,7 @@ void MoreSettingsForCopy::showParam(Param_Copy *param)
         on_btNInOne_clicked(param->promptInfo.isMultible);
 
         ui->btn_duplex->setChecked(param->promptInfo.isDuplex);  //ParamForCopy->promptInfo.isMultible
-        on_btNInOne_clicked(param->promptInfo.isDuplex);
+        on_btn_duplex_clicked(param->promptInfo.isDuplex);
 
         selectIDCardCopyMode(param->idCardCopyMode);
         ui->duplexCopyModeList->setCurrentIndex(param->duplexMode);

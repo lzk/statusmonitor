@@ -138,6 +138,9 @@ color:white;
         <pointsize>11</pointsize>
        </font>
       </property>
+      <property name="tabletTracking">
+       <bool>false</bool>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>

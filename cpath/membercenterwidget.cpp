@@ -38,6 +38,7 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
         QSettings settings(g_config_file,QSettings::NativeFormat);
 
         QString CRM = settings.value("CRMTips").toString();
+        m_bCRM = settings.value("enableCRM").toBool();
         qDebug()<<"CRM"<<CRM;
         if(CRM != "true" )
         {
@@ -53,7 +54,6 @@ MemberCenterWidget::MemberCenterWidget(QWidget *parent) :
         }
 
         loginPhone = settings.value("loginPhone").toString();
-        m_bCRM = settings.value("enableCRM").toBool();
         if(loginPhone != NULL)
         {
             QString password = settings.value("password").toString();
