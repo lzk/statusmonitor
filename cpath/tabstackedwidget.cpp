@@ -57,7 +57,7 @@ TabStackedWidget::TabStackedWidget(QWidget *parent) :
     unSelectPressed = "QPushButton::pressed{border-image: url(:/Images/Btn_Gray_Pressed.png);color:white;}";
 
 
-    QString strStyleScrollBar="QScrollBar:vertical { background: rgb(205, 205, 205); } "
+    QString strStyleScrollBar="QScrollBar:vertical { background: rgb(127, 127, 127); } "
             "QListWidget {background-image: url(); background-color:white;border-width:0px;}";
     ui->scrollArea_ScanImage->setStyleSheet(strStyleScrollBar);
 
