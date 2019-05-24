@@ -52,7 +52,13 @@
     <string notr="true">
 #comboScanSize {
 	background: transparent;
-}</string>
+}
+
+#comboScanSize QAbstractItemView
+{
+    background: #7f7f7f;
+}
+</string>
    </property>
    <item>
     <property name="text">
@@ -102,6 +108,12 @@
 QComboBox{
 	background: transparent;
 }
+
+#comboDpi QAbstractItemView
+{
+    background: #7f7f7f;
+}
+
 </string>
    </property>
    <item>
