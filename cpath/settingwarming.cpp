@@ -46,3 +46,7 @@ void SettingWarming::paintEvent(QPaintEvent *)
     QPainter p(this);
     this->style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+void SettingWarming::on_btClose_clicked()
+{
+    this->close();
+}

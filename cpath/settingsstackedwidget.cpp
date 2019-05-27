@@ -102,6 +102,7 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     ui->lineEdit_Gatewayv4->setMaxLength(15);
     ui->lineEdit_Submaskv4->setMaxLength(15);
     ui->lineEdit_server->setMaxLength(15);
+    ui->lineEdit_timeout->setMaxLength(2);
 
     QRegExp regexp1("^[.0-9]+$");
     QValidator *validator1 = new QRegExpValidator(regexp1, this);
@@ -109,6 +110,10 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     ui->lineEdit_Gatewayv4->setValidator(validator1);
     ui->lineEdit_Submaskv4->setValidator(validator1);
     ui->lineEdit_server->setValidator(validator1);
+
+    QRegExp regexp2("[1-9][0-9]+$");
+    QValidator *validator2 = new QRegExpValidator(regexp2, this);
+    ui->lineEdit_timeout->setValidator(validator2);
 }
 
 SettingsStackedWidget::~SettingsStackedWidget()
@@ -626,7 +631,8 @@ void SettingsStackedWidget::initIP()
 void SettingsStackedWidget::initPowerSave()
 {
     ui->lineEdit_timeout->setText("1");
-    QRegExp rx4("^[0-9]{0,3}$");
+//    QRegExp rx4("^[0-9]{0,3}$");
+    QRegExp rx4("[1-9][0-9]+$");
     QRegExpValidator *validator4 = new QRegExpValidator(rx4, this);
     ui->lineEdit_timeout->setValidator(validator4);
     ui->lineEdit_timeout->installEventFilter(this);
@@ -1085,7 +1091,7 @@ void SettingsStackedWidget::on_btApply_Timeout_clicked()
 void SettingsStackedWidget::on_lineEdit_TopMargin_textEdited(const QString &arg1)
 {
     int val = arg1.toInt();
-    if(val>2 || val<-2 || arg1 == "")
+    if(val>2 || val<-2 || arg1 == ""|| arg1 =="-")
     {
 //        ui->label_setting_error->setGeometry(47,ui->lineEdit_TopMargin->y()+20,201,35);
 //        ui->label_setting_error->setText(tr("The valid range is from -2 to 2, please confirm and enter again"));
@@ -1110,7 +1116,7 @@ void SettingsStackedWidget::on_lineEdit_TopMargin_textEdited(const QString &arg1
 void SettingsStackedWidget::on_lineEdit_LeftMargin_textEdited(const QString &arg1)
 {
     int val = arg1.toInt();
-    if(val>6 || val<-6 || arg1 == "")
+    if(val>6 || val<-6 || arg1 == ""|| arg1 =="-")
     {
 //        ui->label_setting_error->setGeometry(47,ui->lineEdit_LeftMargin->y()+20,201,35);
 //        ui->label_setting_error->setText(tr("The valid range is from -6 to 6, please confirm and enter again"));
@@ -1135,7 +1141,7 @@ void SettingsStackedWidget::on_lineEdit_LeftMargin_textEdited(const QString &arg
 void SettingsStackedWidget::on_lineEdit_ImageDensity_textEdited(const QString &arg1)
 {
     int val = arg1.toInt();
-    if(val>3 || val<-3 || arg1 == "")
+    if(val>3 || val<-3 || arg1 == ""|| arg1 =="-")
     {
 //        ui->label_setting_error->setGeometry(47,ui->lineEdit_ImageDensity->y()+20,201,35);
 //        ui->label_setting_error->setText(tr("The valid range is from -3 to 3, please confirm and enter again"));

@@ -303,7 +303,7 @@ void WiFiSettingWEPCell::tryConnect(APInfo ap)
 
     QVariant value;
     value.setValue<cmdst_wifi_get>(wifi_para);
-//    gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
+    gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_WIFI_apply,value);
 
     emit doingConnect(this);
 }

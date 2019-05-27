@@ -20,6 +20,8 @@ public:
     Ui::SettingWarming *ui;
 protected:
     void paintEvent(QPaintEvent *);
+private slots:
+    void on_btClose_clicked();
 
 };
 
