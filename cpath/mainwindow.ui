@@ -417,9 +417,10 @@ background-image:url();</string>
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QComboBox#deviceNameBox {
+        <string notr="true">QComboBox{
+	color: transparent;
 background-image: url();
-background-color: qlineargradient(x1:0,y1:0,x2:0,y2:0.25,stop:0#E0E0E0,stop:1#FFFFFF);
+background-color:qlineargradient(x1:0,y1:0,x2:0,y2:0.25,stop:0#E0E0E0,stop:1#FFFFFF);
 border:0px solid white;
 border-radius: 5px;
 }
@@ -434,12 +435,6 @@ QComboBox:down-arrow {
 
 QComboBox:combobox-popup:0;
 </string>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>-1</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_10">
@@ -667,15 +662,12 @@ border-image: url(:/Images/shopCart_Disable.tif);
         <rect>
          <x>33</x>
          <y>51</y>
-         <width>119</width>
+         <width>110</width>
          <height>19</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 255, 255);</string>
-       </property>
-       <property name="text">
-        <string/>
+        <string notr="true">background-color:qlineargradient(x1:0,y1:0,x2:0,y2:0.25,stop:0#E0E0E0,stop:1#FFFFFF);</string>
        </property>
       </widget>
       <widget class="QLabel" name="deviceNameLabel_2">
@@ -686,12 +678,6 @@ border-image: url(:/Images/shopCart_Disable.tif);
          <width>119</width>
          <height>19</height>
         </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_3">

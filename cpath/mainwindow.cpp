@@ -42,7 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
     listView->setStyleSheet("QListView::item:selected:active{background-color:gray;color:white;}");
     ui->deviceNameBox->setView(listView);
 
-
     connect(gUInterface ,SIGNAL(cmdResult(int,int,QVariant)) ,this ,SLOT(cmdResult(int,int,QVariant)));
     connect(gUInterface, SIGNAL(setDeviceMsg(QString,int)),this, SLOT(setDeviceMsg(QString,int)));
 //    connect(gUInterface, SIGNAL(updateStatus(QVariant)),this,SLOT(updateStatus(QVariant)));
@@ -111,7 +110,9 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->loginButton->hide();
     }
     ui->deviceNameLabel_2->installEventFilter(this);
-    ui->deviceNameLabel->hide();
+//    ui->deviceNameLabel->hide();
+    strScrollCation = ui->deviceNameBox->currentText();
+    ui->deviceNameLabel->setText(strScrollCation);
 }
 
 MainWindow::~MainWindow()
@@ -408,6 +409,8 @@ void MainWindow::updatePrinter(const QVariant& data)
     }
     connect(ui->deviceNameBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_deviceNameBox_currentIndexChanged(int)));
 
+    strScrollCation = ui->deviceNameBox->currentText();
+    ui->deviceNameLabel->setText(strScrollCation);
 
 }
 
@@ -548,6 +551,8 @@ void MainWindow::updateOtherStatus(const QString&  ,const PrinterStatus_struct& 
 
 void MainWindow::on_deviceNameBox_currentIndexChanged(int index)
 {
+    strScrollCation = ui->deviceNameBox->currentText();
+    ui->deviceNameLabel->setText(strScrollCation);
 #ifndef DEBUG
     if(printers.at(index) != current_printer)
     {
@@ -876,7 +881,7 @@ void MainWindow::onStatusCh(PrinterStatus_struct& status)
 static int nPos = 0;
 void MainWindow::scrollCaption()
 {
-    if(fontMetrics().width(strScrollCation.mid(nPos)) < 119)
+    if(fontMetrics().width(strScrollCation.mid(nPos)) < ui->deviceNameLabel->width() + 2)
     {
         timerDeviceName->stop();
     }
@@ -894,7 +899,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     else if(obj == ui->deviceNameLabel_2 && event->type() == QEvent::Enter)
     {
         qDebug()<<fontMetrics().width(ui->deviceNameBox->currentText());
-        if(fontMetrics().width(ui->deviceNameBox->currentText())>107)
+        if(fontMetrics().width(ui->deviceNameBox->currentText())>ui->deviceNameLabel->width())
         {
             strScrollCation = ui->deviceNameBox->currentText();
             ui->deviceNameLabel->setText(ui->deviceNameBox->currentText());
@@ -905,8 +910,10 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
     else if(obj == ui->deviceNameLabel_2 && event->type() == QEvent::Leave)
     {
-        ui->deviceNameLabel->setText("");
-        ui->deviceNameLabel->hide();
+//        ui->deviceNameLabel->setText("");
+//        ui->deviceNameLabel->hide();
+        strScrollCation = ui->deviceNameBox->currentText();
+        ui->deviceNameLabel->setText(strScrollCation);
         if(timerDeviceName->isActive())
         {
             timerDeviceName->stop();
