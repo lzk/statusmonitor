@@ -27,7 +27,7 @@ protected:
     virtual const char* getDeviceAddress();
 
 private:
-    int open_with_mode(int port ,int mode ,bool claim = true);
+    int open_with_mode(int port ,int mode);
 private:
     UsbApi* usb;
 
