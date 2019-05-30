@@ -142,7 +142,7 @@ void SettingForIPv6::on_btApply_clicked()
 
             return;
         }
-        if(ui->lineEdit_SubMask->text().toInt(0,10) > 127 || ui->lineEdit_SubMask->text() == "")
+        if(ui->lineEdit_SubMask->text().toInt(0,10) < 1 ||ui->lineEdit_SubMask->text().toInt(0,10) > 128 || ui->lineEdit_SubMask->text() == "")
         {
             ui->lineEdit_SubMask->setFocus();
             ui->lineEdit_SubMask->setText("");

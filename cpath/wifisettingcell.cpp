@@ -286,7 +286,10 @@ void WiFiSettingCell::cmdResult(int cmd,int result ,QVariant data)
     if(UIConfig::LS_CMD_WIFI_apply == cmd)
     {
         cmdst_wifi_get wifi_para = data.value<cmdst_wifi_get>();
-        if(apInfo.SSID.compare(wifi_para.ssid)){
+        char str[256];
+        strcpy(str ,apInfo.SSID.toLatin1().constData());
+        if(memcmp(str ,wifi_para.ssid ,strlen(str))){
+ //       if(apInfo.SSID.compare(wifi_para.ssid)){
             switch(apInfo.encryType)
             {
             case NO_Securty:

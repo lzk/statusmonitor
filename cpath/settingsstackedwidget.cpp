@@ -114,6 +114,16 @@ SettingsStackedWidget::SettingsStackedWidget(QWidget *parent) :
     QRegExp regexp2("[1-9][0-9]+$");
     QValidator *validator2 = new QRegExpValidator(regexp2, this);
     ui->lineEdit_timeout->setValidator(validator2);
+
+    QRegExp regexp3("-{0,1}[0-2]{1,2}");
+    QRegExp regexp4("-{0,1}[0-6]{1,2}");
+    QRegExp regexp5("-{0,1}[0-3]{1,2}");
+    QRegExpValidator *validator3 = new QRegExpValidator(regexp3,this);
+    QRegExpValidator *validator4 = new QRegExpValidator(regexp4,this);
+    QRegExpValidator *validator5 = new QRegExpValidator(regexp5,this);
+    ui->lineEdit_TopMargin->setValidator(validator3);
+    ui->lineEdit_LeftMargin->setValidator(validator4);
+    ui->lineEdit_ImageDensity->setValidator(validator5);
 }
 
 SettingsStackedWidget::~SettingsStackedWidget()
@@ -436,11 +446,15 @@ void SettingsStackedWidget::changeStackIndex(int index)
             }
             else
             {
-                QRegExp rx1("-{0,1}[0-9]{1,2}");
-                QRegExpValidator *validator1 = new QRegExpValidator(rx1,this);
-                ui->lineEdit_TopMargin->setValidator(validator1);
-                ui->lineEdit_LeftMargin->setValidator(validator1);
-                ui->lineEdit_ImageDensity->setValidator(validator1);
+                QRegExp regexp3("-{0,1}[0-2]{1,2}");
+                QRegExp regexp4("-{0,1}[0-6]{1,2}");
+                QRegExp regexp5("-{0,1}[0-3]{1,2}");
+                QRegExpValidator *validator3 = new QRegExpValidator(regexp3,this);
+                QRegExpValidator *validator4 = new QRegExpValidator(regexp4,this);
+                QRegExpValidator *validator5 = new QRegExpValidator(regexp5,this);
+                ui->lineEdit_TopMargin->setValidator(validator3);
+                ui->lineEdit_LeftMargin->setValidator(validator4);
+                ui->lineEdit_ImageDensity->setValidator(validator5);
 
                 ui->lineEdit_TopMargin->setText("0");
                 ui->lineEdit_LeftMargin->setText("0");
@@ -697,11 +711,15 @@ void SettingsStackedWidget::initAdvanceSetting(cmdst_userconfig config, bool isF
 {
     if(isFirst)             //if ture, set the default value;
     {
-        QRegExp rx1("-{0,1}[0-9]{1,2}");
-        QRegExpValidator *validator1 = new QRegExpValidator(rx1,this);
-        ui->lineEdit_TopMargin->setValidator(validator1);
-        ui->lineEdit_LeftMargin->setValidator(validator1);
-        ui->lineEdit_ImageDensity->setValidator(validator1);
+        QRegExp regexp3("-{0,1}[0-2]{1,2}");
+        QRegExp regexp4("-{0,1}[0-6]{1,2}");
+        QRegExp regexp5("-{0,1}[0-3]{1,2}");
+        QRegExpValidator *validator3 = new QRegExpValidator(regexp3,this);
+        QRegExpValidator *validator4 = new QRegExpValidator(regexp4,this);
+        QRegExpValidator *validator5 = new QRegExpValidator(regexp5,this);
+        ui->lineEdit_TopMargin->setValidator(validator3);
+        ui->lineEdit_LeftMargin->setValidator(validator4);
+        ui->lineEdit_ImageDensity->setValidator(validator5);
 
         ui->lineEdit_TopMargin->setText("0");
         ui->lineEdit_LeftMargin->setText("0");
@@ -1104,6 +1122,13 @@ void SettingsStackedWidget::on_lineEdit_TopMargin_textEdited(const QString &arg1
     }
     else
     {
+        if(arg1 =="-0"||arg1 =="00")
+            ui->lineEdit_TopMargin->setText("0");
+        else if(arg1 =="01")
+            ui->lineEdit_TopMargin->setText("1");
+        else if(arg1 =="02")
+            ui->lineEdit_TopMargin->setText("2");
+
         ui->lineEdit_TopMargin->setStyleSheet("QLineEdit{border:transparent;}");
         ui->label_TopMargin_error->hide();
         //ui->label_setting_error->hide();
@@ -1129,6 +1154,21 @@ void SettingsStackedWidget::on_lineEdit_LeftMargin_textEdited(const QString &arg
     }
     else
     {
+        if(arg1 =="-0"||arg1 =="00")
+            ui->lineEdit_LeftMargin->setText("0");
+        else if(arg1 =="01")
+            ui->lineEdit_LeftMargin->setText("1");
+        else if(arg1 =="02")
+            ui->lineEdit_LeftMargin->setText("2");
+        else if(arg1 =="03")
+            ui->lineEdit_LeftMargin->setText("3");
+        else if(arg1 =="04")
+            ui->lineEdit_LeftMargin->setText("4");
+        else if(arg1 =="05")
+            ui->lineEdit_LeftMargin->setText("5");
+        else if(arg1 =="06")
+            ui->lineEdit_LeftMargin->setText("6");
+
         ui->lineEdit_LeftMargin->setStyleSheet("QLineEdit{border:transparent;}");
         ui->label_LeftMargin_error->hide();
         //ui->label_setting_error->hide();
@@ -1154,6 +1194,15 @@ void SettingsStackedWidget::on_lineEdit_ImageDensity_textEdited(const QString &a
     }
     else
     {
+        if(arg1 =="-0"||arg1 =="00")
+            ui->lineEdit_ImageDensity->setText("0");
+        else if(arg1 =="01")
+            ui->lineEdit_ImageDensity->setText("1");
+        else if(arg1 =="02")
+            ui->lineEdit_ImageDensity->setText("2");
+        else if(arg1 =="03")
+            ui->lineEdit_ImageDensity->setText("3");
+
         ui->lineEdit_ImageDensity->setStyleSheet("QLineEdit{border:transparent;}");
         ui->label_ImageDensity_error->hide();
         //ui->label_setting_error->hide();
