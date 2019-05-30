@@ -59,9 +59,9 @@ int NtdcmsApi::caculate_parameter(ImageTransInfo* info)
     int method = 0;
 //    method |= 1 << 15;//input 32 pixels align
 //    if(target->Resolution != info->source_dpi_x || target->Resolution != info->source_dpi_y){
-        method += 1 << 8;//Enable Bilinear Scaling algorithm
+//        method += 1 << 8;//Enable Bilinear Scaling algorithm
 //    }
-    method += 1 << 2;//Matrix color convert
+//    method += 1 << 2;//Matrix color convert
     int htWidth = info->source_pixelsOfWidth;
     float scalex =  (float)target->Resolution / info->source_dpi_x;
     float scaley = (float)target->Resolution / info->source_dpi_y;
@@ -88,16 +88,22 @@ int NtdcmsApi::caculate_parameter(ImageTransInfo* info)
     case 24:
         colorI = 2;
         colorO = 2;
+        method += 1 << 8;//Enable Bilinear Scaling algorithm
+        method += 1 << 2;//Matrix color convert
         method |= 1 << 1;//ICM color convert
         break;
     case 8:
         colorI = 1;
         colorO = 1;
+        method += 1 << 9;//De-screen
         method += 1 << 3;//special color convert
+        threshold = 1;
         break;
     case 1:
         colorI = 1;
         colorO = 1;
+        method += 1 << 8;//Enable Bilinear Scaling algorithm
+        method += 1 << 2;//Matrix color convert
         method += 1 << 3;//special color convert
         method += 1 << 5;//order dither
         threshold = 180;

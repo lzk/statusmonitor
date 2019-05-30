@@ -71,16 +71,17 @@ int UsbIO::resolve(Printer_struct* printer)
 static QMutex mutex;
 static QStringList locked_printers;
 #endif
-int UsbIO::open_with_mode(int port ,int mode)
+int UsbIO::open_with_mode(int port ,int mode ,bool claim)
 {
+    bool printing = false;
     if(device_is_open){
         LOGLOG("device is opened");
         return -1;
     }
-    if(port >= 0){
-        if(printer_is_printing(printer_name.toLatin1().constData())){
-            return usb_error_printing;
-        }
+    if(printer_is_printing(printer_name.toLatin1().constData())){
+        if(claim)
+        return usb_error_printing;
+        printing = true;
     }
 #if LOCK_USB
     if(mode == 0){
@@ -122,7 +123,7 @@ int UsbIO::open_with_mode(int port ,int mode)
             fl.unlock();
             return usb_error_scanning;
         }
-        if(port >= 0){
+        if(claim && !printing){
             ret = usb->config(port);
             if(ret){
                 usb->close();
@@ -193,7 +194,7 @@ int UsbIO::getDeviceId_without_open(char *buffer, int bufsize)
 int UsbIO::getDeviceId(char *buffer, int bufsize)
 {
 //    int ret = open_with_mode(interface ,0);
-    int ret = open_with_mode(-1 ,0);
+    int ret = open_with_mode(interface ,0 ,false);
     if(!ret){
         ret = usb->getDeviceId(buffer ,bufsize);
         close();
@@ -242,7 +243,7 @@ int UsbIO::resolveUrl(const char* url)
 
 bool UsbIO::isConnected()
 {
-    int ret = open_with_mode(-1 ,0);
+    int ret = open_with_mode(interface ,0 ,false);
     if(!ret){
         close();
     }
@@ -251,7 +252,7 @@ bool UsbIO::isConnected()
 
 const char* UsbIO::getDeviceAddress()
 {
-    int ret = open_with_mode(-1 ,0);
+    int ret = open_with_mode(interface ,0 ,false);
     if(!ret){
         ret = usb->getDeviceAddress(&address);
         close();

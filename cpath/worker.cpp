@@ -8,6 +8,7 @@
 #include <QDateTime>
 #include "lshell.h"
 #include <unistd.h>
+#include <QImage>
 Worker::Worker(QObject *parent) :
     QObject(parent)
   ,cmd_status(0)
@@ -94,6 +95,20 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
                 device_data.callback_para = this;
                 device_data.callback = scan_callback;
                 result = scanner->scan(printer ,&device_data);
+                if(!result){
+                    QFileInfo info(device_data.filename);
+                    QString previewFileName = info.absolutePath() + "/prvw_" + info.fileName();
+                    QImage image(device_data.filename);
+                    if(image.depth() != 1){
+                        QSize size = image.size();
+                        while(size.width() * size.height() > 30 * 1024 * 1024){
+                            size /= 2;
+                        }
+                        image.scaled(size).save(previewFileName);
+                    }else{
+                        QFile::copy(device_data.filename ,previewFileName);
+                    }
+                }
                 value.setValue(device_data);
             }
 

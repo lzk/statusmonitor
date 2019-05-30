@@ -352,13 +352,11 @@ int UsbApi::config(int interface)
     int ret = config(device.dev ,device.udev ,interface);
     if(ret){
         LOGLOG("libusb can not config");
-        libusb_close(device.udev);
         return ret;
     }
     ret = claimInterface(device.udev ,interface);
     if(ret){
         LOGLOG("libusb can not claim interface:%d" ,interface);
-        libusb_close(device.udev);
         return ret;
     }
     return ret;
