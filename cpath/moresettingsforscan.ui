@@ -56,7 +56,7 @@
 
 #comboScanSize QAbstractItemView
 {
-    background: #7f7f7f;
+    background: white;
 }
 </string>
    </property>
@@ -111,7 +111,7 @@ QComboBox{
 
 #comboDpi QAbstractItemView
 {
-    background: #7f7f7f;
+    background: white;
 }
 
 </string>

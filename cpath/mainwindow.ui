@@ -434,6 +434,12 @@ QComboBox:down-arrow {
 }
 
 QComboBox:combobox-popup:0;
+
+QComboBox#deviceNameBox QAbstractItemView
+{
+    background: white
+}
+
 </string>
        </property>
       </widget>

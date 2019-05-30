@@ -87,7 +87,7 @@
 }
 #docSizeList QAbstractItemView
 {
-    background: #7f7f7f;
+    background: white;
 }
 </string>
    </property>
@@ -975,7 +975,7 @@ background: transparent;
 }
 #dpiList QAbstractItemView
 {
-    background: #7f7f7f;
+    background: white;
 }
 </string>
    </property>
@@ -1054,7 +1054,7 @@ background: transparent;
 }
 #outPutSizeList QAbstractItemView
 {
-    background: #7f7f7f;
+    background: white;
 }</string>
    </property>
    <item>
@@ -1632,7 +1632,7 @@ QRadioButton::indicator::checked {
 
 #paperTypeList QAbstractItemView
 {
-    background: #7f7f7f;
+    background: white;
 }
 </string>
    </property>
@@ -1690,7 +1690,7 @@ QRadioButton::indicator::checked {
 
 #duplexCopyModeList QAbstractItemView
 {
-    background: #7f7f7f;
+    background: white;
 }
 
 
