@@ -71,25 +71,25 @@ void ThumbnailImage::listWidget_itemSelectionChanged()
 void ThumbnailImage::image_ask()
 {
     //get preview image
-    QString imageFileName = item->data(Qt::UserRole).toString();
-    QSize image_size = item->data(Qt::UserRole + 1).toSize();
-    QImage image(imageFileName);
-    QString previewFileName = get_preview_file_name(imageFileName);
-    qDebug()<<previewFileName<<" "<<image.depth();
-    if(image.depth() != 1){
-        QSize size = image_size;
-        while(size.width() * size.height() > 30 * 1024 * 1024){
-            size /= 2;
-        }
-        image.scaled(size).save(get_preview_file_name(imageFileName));
-//            while(size.width() * size.height() > 1 * 1024 * 1024){
-//                size /= 2;
-//            }
-//            image.scaled(size).save(get_thumbnail_file_name(imageFileName));
-    }else{
-        QFile::copy(imageFileName ,get_preview_file_name(imageFileName));
-//            QFile::copy(imageFileName ,get_thumbnail_file_name(imageFileName));
-    }
+//    QString imageFileName = item->data(Qt::UserRole).toString();
+//    QSize image_size = item->data(Qt::UserRole + 1).toSize();
+//    QImage image(imageFileName);
+//    QString previewFileName = get_preview_file_name(imageFileName);
+//    qDebug()<<previewFileName<<" "<<image.depth();
+//    if(image.depth() != 1){
+//        QSize size = image_size;
+//        while(size.width() * size.height() > 30 * 1024 * 1024){
+//            size /= 2;
+//        }
+//        image.scaled(size).save(get_preview_file_name(imageFileName));
+////            while(size.width() * size.height() > 1 * 1024 * 1024){
+////                size /= 2;
+////            }
+////            image.scaled(size).save(get_thumbnail_file_name(imageFileName));
+//    }else{
+//        QFile::copy(imageFileName ,get_preview_file_name(imageFileName));
+////            QFile::copy(imageFileName ,get_thumbnail_file_name(imageFileName));
+//    }
 
     emit image_ask(this ,item ,item->sizeHint() ,0 ,0);
 }

@@ -73,14 +73,15 @@ static QStringList locked_printers;
 #endif
 int UsbIO::open_with_mode(int port ,int mode)
 {
+    bool printing = false;
     if(device_is_open){
         LOGLOG("device is opened");
         return -1;
     }
-    if(port >= 0){
-        if(printer_is_printing(printer_name.toLatin1().constData())){
-            return usb_error_printing;
-        }
+    if(printer_is_printing(printer_name.toLatin1().constData())){
+        if(port >= 0)
+        return usb_error_printing;
+        printing = true;
     }
 #if LOCK_USB
     if(mode == 0){
@@ -122,7 +123,13 @@ int UsbIO::open_with_mode(int port ,int mode)
             fl.unlock();
             return usb_error_scanning;
         }
+#if 0
         if(port >= 0){
+#else
+        if(port >= 0 || !printing){
+            if(!printing && port < 0)
+                port = 0;
+#endif
             ret = usb->config(port);
             if(ret){
                 usb->close();

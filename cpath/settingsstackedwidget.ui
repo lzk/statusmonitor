@@ -1355,6 +1355,11 @@ QPushButton::pressed{
       <pointsize>9</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+font-size: 11px
+}</string>
+    </property>
     <property name="text">
      <string>ResStr_Low_Hunidity_Mode</string>
     </property>

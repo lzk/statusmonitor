@@ -86,8 +86,10 @@ selection-background-color: lightgray;
    </property>
    <property name="styleSheet">
     <string notr="true">
-#docSizeList {
-    background:transparent;
+
+#docSizeList QAbstractItemView
+{
+    background: white;
 }
 
 </string>
@@ -971,8 +973,12 @@ color:white;
     <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
-    <string notr="true">#dpiList {
-background: transparent;  
+    <string notr="true">
+
+
+#dpiList QAbstractItemView
+{
+    background: white;
 }
 
 </string>
@@ -1047,10 +1053,13 @@ background: transparent;
     <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
-    <string notr="true">#outPutSizeList {
-	background: transparent;  
-}
-</string>
+    <string notr="true">
+
+#outPutSizeList QAbstractItemView
+{
+    background: white;
+}</string>
+
    </property>
    <item>
     <property name="text">
@@ -1621,8 +1630,10 @@ QRadioButton::indicator::checked {
     <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
-    <string notr="true">#paperTypeList {
-	background: transparent;  
+    <string notr="true">
+#paperTypeList QAbstractItemView
+{
+    background: white;
 }
 
 </string>
@@ -1675,9 +1686,15 @@ QRadioButton::indicator::checked {
     <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
-    <string notr="true">#duplexCopyModeList {
-	background: transparent;  
+    <string notr="true">
+
+#duplexCopyModeList QAbstractItemView
+{
+    background: white;
 }
+
+
+
 </string>
    </property>
    <item>

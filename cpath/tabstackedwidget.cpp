@@ -1062,8 +1062,9 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
 #else
     QString picPath = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
 #endif
-    QString filename = QFileDialog::getSaveFileName(0 ,tr("Save File"), picPath,filter,&selectedFilter);
-    qDebug()<<filename<<selectedFilter;
+    QString savefilename = QFileDialog::getSaveFileName(0 ,tr("Save File"), picPath,filter,&selectedFilter);
+    QFileInfo fi = QFileInfo(savefilename);
+    QString filename = "/tmp/" + fi.fileName();
     QString temp_filename;
     if(!filename.isEmpty()){
 //        if(filename.endsWith(".pdf")){
@@ -1184,6 +1185,18 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
                 break;
             }
         }
+        QString dir = fi.absolutePath();
+        qint64 prefer_size = QFile(filename).size();
+        if(is_disk_no_space(dir.toLatin1().constData() ,prefer_size/(1024*1024) + 100)){
+            SettingWarming *msgWarm  = new SettingWarming(this, tr("ResStr_Operation_cannot_be_carried_out_due_to_insufficient_memory_or_hard_disk_space_Please_try_again_after_freeing_memory_or_hard_disk_space_"));
+            msgWarm->setWindowTitle(tr("ResStr_Warning"));
+            msgWarm->setWindowFlags(msgWarm->windowFlags() & ~Qt::WindowMaximizeButtonHint \
+                                    & ~Qt::WindowMinimizeButtonHint);
+            msgWarm->exec();
+            return;
+        }
+        QFile::copy(filename ,savefilename);
+        QFile::remove(filename);
     }
 }
 
