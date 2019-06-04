@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>589</width>
-    <height>649</height>
+    <height>629</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>589</width>
-    <height>649</height>
+    <height>629</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>589</width>
-    <height>649</height>
+    <height>629</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -38,13 +38,17 @@
 
 #MoreSettingsForCopy *{
 	border-image: url();
-}</string>
+}
+QComboBox QAbstractItemView {
+background: white;
+selection-background-color: lightgray;
+  }</string>
   </property>
   <widget class="QLabel" name="label_25">
    <property name="geometry">
     <rect>
      <x>510</x>
-     <y>310</y>
+     <y>290</y>
      <width>31</width>
      <height>19</height>
     </rect>
@@ -66,7 +70,7 @@
    <property name="geometry">
     <rect>
      <x>93</x>
-     <y>162</y>
+     <y>142</y>
      <width>131</width>
      <height>21</height>
     </rect>
@@ -85,10 +89,7 @@
 #docSizeList {
     background:transparent;
 }
-#docSizeList QAbstractItemView
-{
-    background: #7f7f7f;
-}
+
 </string>
    </property>
    <item>
@@ -121,7 +122,7 @@
    <property name="geometry">
     <rect>
      <x>87</x>
-     <y>205</y>
+     <y>185</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -143,7 +144,7 @@
    <property name="geometry">
     <rect>
      <x>406</x>
-     <y>276</y>
+     <y>256</y>
      <width>111</width>
      <height>20</height>
     </rect>
@@ -165,7 +166,7 @@
    <property name="geometry">
     <rect>
      <x>156</x>
-     <y>325</y>
+     <y>305</y>
      <width>61</width>
      <height>41</height>
     </rect>
@@ -184,7 +185,7 @@
    <property name="geometry">
     <rect>
      <x>69</x>
-     <y>325</y>
+     <y>305</y>
      <width>61</width>
      <height>41</height>
     </rect>
@@ -206,7 +207,7 @@
    <property name="geometry">
     <rect>
      <x>146</x>
-     <y>315</y>
+     <y>295</y>
      <width>80</width>
      <height>61</height>
     </rect>
@@ -240,7 +241,7 @@
    <property name="geometry">
     <rect>
      <x>214</x>
-     <y>78</y>
+     <y>58</y>
      <width>21</width>
      <height>23</height>
     </rect>
@@ -276,7 +277,7 @@
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>204</y>
+     <y>184</y>
      <width>121</width>
      <height>20</height>
     </rect>
@@ -298,7 +299,7 @@
    <property name="geometry">
     <rect>
      <x>243</x>
-     <y>325</y>
+     <y>305</y>
      <width>61</width>
      <height>41</height>
     </rect>
@@ -354,7 +355,7 @@
    <property name="geometry">
     <rect>
      <x>466</x>
-     <y>307</y>
+     <y>287</y>
      <width>40</width>
      <height>23</height>
     </rect>
@@ -383,7 +384,7 @@
    <property name="geometry">
     <rect>
      <x>510</x>
-     <y>340</y>
+     <y>320</y>
      <width>31</width>
      <height>20</height>
     </rect>
@@ -405,7 +406,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>133</y>
+     <y>113</y>
      <width>161</width>
      <height>20</height>
     </rect>
@@ -430,7 +431,7 @@
    <property name="geometry">
     <rect>
      <x>64</x>
-     <y>382</y>
+     <y>362</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -455,7 +456,7 @@
    <property name="geometry">
     <rect>
      <x>59</x>
-     <y>315</y>
+     <y>295</y>
      <width>80</width>
      <height>61</height>
     </rect>
@@ -492,7 +493,7 @@
    <property name="geometry">
     <rect>
      <x>237</x>
-     <y>382</y>
+     <y>362</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -514,7 +515,7 @@
    <property name="geometry">
     <rect>
      <x>98</x>
-     <y>43</y>
+     <y>23</y>
      <width>121</width>
      <height>20</height>
     </rect>
@@ -536,7 +537,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>29</y>
+     <y>9</y>
      <width>271</width>
      <height>41</height>
     </rect>
@@ -564,7 +565,7 @@
    <property name="geometry">
     <rect>
      <x>175</x>
-     <y>590</y>
+     <y>570</y>
      <width>121</width>
      <height>35</height>
     </rect>
@@ -610,7 +611,7 @@
    <property name="geometry">
     <rect>
      <x>116</x>
-     <y>75</y>
+     <y>55</y>
      <width>51</width>
      <height>31</height>
     </rect>
@@ -644,7 +645,7 @@
    <property name="geometry">
     <rect>
      <x>466</x>
-     <y>339</y>
+     <y>319</y>
      <width>40</width>
      <height>23</height>
     </rect>
@@ -675,7 +676,7 @@
    <property name="geometry">
     <rect>
      <x>233</x>
-     <y>315</y>
+     <y>295</y>
      <width>80</width>
      <height>61</height>
     </rect>
@@ -710,7 +711,7 @@
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>134</y>
+     <y>114</y>
      <width>81</width>
      <height>20</height>
     </rect>
@@ -732,7 +733,7 @@
    <property name="geometry">
     <rect>
      <x>84</x>
-     <y>78</y>
+     <y>58</y>
      <width>21</width>
      <height>23</height>
     </rect>
@@ -768,7 +769,7 @@
    <property name="geometry">
     <rect>
      <x>340</x>
-     <y>44</y>
+     <y>24</y>
      <width>161</width>
      <height>20</height>
     </rect>
@@ -790,7 +791,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>276</y>
+     <y>256</y>
      <width>161</width>
      <height>18</height>
     </rect>
@@ -822,7 +823,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>315</x>
-     <y>590</y>
+     <y>570</y>
      <width>121</width>
      <height>35</height>
     </rect>
@@ -909,7 +910,7 @@ color:white;
    <property name="geometry">
     <rect>
      <x>147</x>
-     <y>382</y>
+     <y>362</y>
      <width>81</width>
      <height>20</height>
     </rect>
@@ -931,7 +932,7 @@ color:white;
    <property name="geometry">
     <rect>
      <x>436</x>
-     <y>308</y>
+     <y>288</y>
      <width>29</width>
      <height>20</height>
     </rect>
@@ -953,7 +954,7 @@ color:white;
    <property name="geometry">
     <rect>
      <x>352</x>
-     <y>162</y>
+     <y>142</y>
      <width>141</width>
      <height>21</height>
     </rect>
@@ -973,10 +974,7 @@ color:white;
     <string notr="true">#dpiList {
 background: transparent;  
 }
-#dpiList QAbstractItemView
-{
-    background: #7f7f7f;
-}
+
 </string>
    </property>
    <item>
@@ -994,7 +992,7 @@ background: transparent;
    <property name="geometry">
     <rect>
      <x>365</x>
-     <y>309</y>
+     <y>289</y>
      <width>78</width>
      <height>19</height>
     </rect>
@@ -1016,7 +1014,7 @@ background: transparent;
    <property name="geometry">
     <rect>
      <x>175</x>
-     <y>75</y>
+     <y>55</y>
      <width>21</width>
      <height>31</height>
     </rect>
@@ -1034,7 +1032,7 @@ background: transparent;
    <property name="geometry">
     <rect>
      <x>93</x>
-     <y>234</y>
+     <y>214</y>
      <width>131</width>
      <height>21</height>
     </rect>
@@ -1052,10 +1050,7 @@ background: transparent;
     <string notr="true">#outPutSizeList {
 	background: transparent;  
 }
-#outPutSizeList QAbstractItemView
-{
-    background: #7f7f7f;
-}</string>
+</string>
    </property>
    <item>
     <property name="text">
@@ -1102,7 +1097,7 @@ background: transparent;
    <property name="geometry">
     <rect>
      <x>365</x>
-     <y>341</y>
+     <y>321</y>
      <width>78</width>
      <height>20</height>
     </rect>
@@ -1124,7 +1119,7 @@ background: transparent;
    <property name="geometry">
     <rect>
      <x>336</x>
-     <y>71</y>
+     <y>51</y>
      <width>201</width>
      <height>41</height>
     </rect>
@@ -1211,7 +1206,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>436</x>
-     <y>340</y>
+     <y>320</y>
      <width>29</width>
      <height>20</height>
     </rect>
@@ -1236,7 +1231,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>46</x>
-     <y>456</y>
+     <y>436</y>
      <width>61</width>
      <height>81</height>
     </rect>
@@ -1274,7 +1269,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>128</x>
-     <y>456</y>
+     <y>436</y>
      <width>61</width>
      <height>81</height>
     </rect>
@@ -1312,7 +1307,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>212</x>
-     <y>456</y>
+     <y>436</y>
      <width>61</width>
      <height>81</height>
     </rect>
@@ -1350,7 +1345,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>295</x>
-     <y>466</y>
+     <y>446</y>
      <width>71</width>
      <height>61</height>
     </rect>
@@ -1385,7 +1380,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>56</x>
-     <y>466</y>
+     <y>446</y>
      <width>41</width>
      <height>61</height>
     </rect>
@@ -1404,7 +1399,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>138</x>
-     <y>466</y>
+     <y>446</y>
      <width>41</width>
      <height>61</height>
     </rect>
@@ -1423,7 +1418,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>222</x>
-     <y>466</y>
+     <y>446</y>
      <width>41</width>
      <height>61</height>
     </rect>
@@ -1442,7 +1437,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>305</x>
-     <y>476</y>
+     <y>456</y>
      <width>51</width>
      <height>41</height>
     </rect>
@@ -1464,7 +1459,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>45</x>
-     <y>540</y>
+     <y>520</y>
      <width>61</width>
      <height>20</height>
     </rect>
@@ -1489,7 +1484,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>128</x>
-     <y>540</y>
+     <y>520</y>
      <width>61</width>
      <height>20</height>
     </rect>
@@ -1514,7 +1509,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>211</x>
-     <y>540</y>
+     <y>520</y>
      <width>61</width>
      <height>20</height>
     </rect>
@@ -1539,7 +1534,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>294</x>
-     <y>540</y>
+     <y>520</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -1564,7 +1559,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>423</y>
+     <y>403</y>
      <width>261</width>
      <height>20</height>
     </rect>
@@ -1589,7 +1584,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>405</x>
-     <y>423</y>
+     <y>403</y>
      <width>141</width>
      <height>20</height>
     </rect>
@@ -1611,7 +1606,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>352</x>
-     <y>234</y>
+     <y>214</y>
      <width>141</width>
      <height>21</height>
     </rect>
@@ -1630,10 +1625,6 @@ QRadioButton::indicator::checked {
 	background: transparent;  
 }
 
-#paperTypeList QAbstractItemView
-{
-    background: #7f7f7f;
-}
 </string>
    </property>
    <item>
@@ -1669,7 +1660,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>404</x>
-     <y>460</y>
+     <y>440</y>
      <width>141</width>
      <height>21</height>
     </rect>
@@ -1687,13 +1678,6 @@ QRadioButton::indicator::checked {
     <string notr="true">#duplexCopyModeList {
 	background: transparent;  
 }
-
-#duplexCopyModeList QAbstractItemView
-{
-    background: #7f7f7f;
-}
-
-
 </string>
    </property>
    <item>
@@ -1711,7 +1695,7 @@ QRadioButton::indicator::checked {
    <property name="geometry">
     <rect>
      <x>365</x>
-     <y>373</y>
+     <y>353</y>
      <width>185</width>
      <height>25</height>
     </rect>
