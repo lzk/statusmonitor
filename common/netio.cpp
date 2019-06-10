@@ -55,7 +55,7 @@ int NetIO::resolveUrl(const char* url)
     if(!url)
         return -1;
     QString str_url(url);
-    if((device_uri[0] != 0) && !str_url.compare(device_uri)){
+    if(!resolved_url.isEmpty() && ((device_uri[0] != 0) && !str_url.compare(device_uri))){
         return 0;
     }
     int ret = DeviceIO::resolveUrl(url);

@@ -167,9 +167,9 @@ INCLUDEPATH += \
                     $${PWD}/../libs/linux32/libtiff.a
 
             }else{
-                LIBS += \
-                    $${PWD}/../libs/linux64/libtiff.a \
-                    -lz \
+#                LIBS += \
+#                    $${PWD}/../libs/linux64/libtiff.a \
+#                    -lz \
             }
         }
     }

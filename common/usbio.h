@@ -28,6 +28,7 @@ protected:
 
 private:
     int open_with_mode(int port ,int mode);
+    int open_device(int port ,bool config);
 private:
     UsbApi* usb;
 

@@ -601,6 +601,7 @@ int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize
         usleep(sleep_time * 1000 * 1000);
 //            ret = device->writeThenRead(write_buffer ,wrSize ,rdBuffer ,rdSize);
         ret = device->write(write_buffer ,wrSize);
+        usleep(sleep_time * 2 * 1000 * 1000);
         if(ret == wrSize || device->type() == DeviceIO::Type_usb){
             for(int i = 0 ;i < 20 ;i++){
                 usleep(sleep_time  * 100 * 1000);

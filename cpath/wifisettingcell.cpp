@@ -286,15 +286,15 @@ void WiFiSettingCell::cmdResult(int cmd,int result ,QVariant data)
     if(UIConfig::LS_CMD_WIFI_apply == cmd)
     {
         cmdst_wifi_get wifi_para = data.value<cmdst_wifi_get>();
-        char str[256];
-        strcpy(str ,apInfo.SSID.toLatin1().constData());
-        if(memcmp(str ,wifi_para.ssid ,strlen(str))){
- //       if(apInfo.SSID.compare(wifi_para.ssid)){
+        char str[33];
+        memset(str ,0 ,33);
+        memcpy(str ,wifi_para.ssid ,32);
+        if(apInfo.SSID.compare(str)){
             switch(apInfo.encryType)
             {
             case NO_Securty:
                 apInfo.APStatus = tr("ResStr_No_Security"); break;
-            case WPA_PSK_TKIP:
+            case WEP:
                 apInfo.APStatus = tr("ResStr_Protected_by_WEP"); break;
             case WPA2_PSK_AES:
                 apInfo.APStatus = tr("ResStr_Protected_by_WPA2"); break;

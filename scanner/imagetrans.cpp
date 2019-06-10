@@ -239,6 +239,7 @@ int ImageTrans::process(ImageTransInfo* info)
     pNtdcmsApi->process((unsigned char*)jerry_buffer ,(unsigned char*)info->scan_buffer ,info->lines);
     target_buffer = jerry_buffer;
 #else
+    LOGLOG("process with no jerry library!");
     buffer_s = info->scan_buffer;
     for(int i = 0 ;i < target_lines ;i++){
         memcpy(buffer_t ,buffer_s ,info->target_line_buf_size);
