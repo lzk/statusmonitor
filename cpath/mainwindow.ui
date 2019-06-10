@@ -433,11 +433,9 @@ QComboBox:down-arrow {
 	image: url(:/Images/arrowdown.png);
 }
 
-QComboBox:combobox-popup:0;
-
-QComboBox#deviceNameBox QAbstractItemView
+QComboBox QAbstractItemView
 {
-    background: white
+      border: 1px solid darkgray;
 }
 
 </string>
@@ -480,7 +478,7 @@ QComboBox#deviceNameBox QAbstractItemView
          <x>20</x>
          <y>20</y>
          <width>149</width>
-         <height>23</height>
+         <height>31</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -564,7 +562,7 @@ QComboBox#deviceNameBox QAbstractItemView
          <x>20</x>
          <y>80</y>
          <width>125</width>
-         <height>26</height>
+         <height>28</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">

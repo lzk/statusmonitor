@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     deviceStatusString = "";
 
     QListView *listView = new QListView(ui->deviceNameBox);
-    listView->setStyleSheet("QListView{background-color:white;border-color:black;border-width:2px;border-radius:0px;}");
+//    listView->setStyleSheet("QListView{background-color:white;border-color:black;border-width:2px;border-radius:0px;}");
     //listView->setStyleSheet("QListView::item:!selected{background-color:white;color:black;}");
     //listView->setStyleSheet("QListView::item:selected:!active{background-color:gray;color:black;}");
     //listView->setStyleSheet("QListView::item:selected:active{background-color:gray;color:white;}");

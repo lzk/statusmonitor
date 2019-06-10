@@ -260,18 +260,23 @@ int ScannerApp::trans_process(ScanSettings* settings)
     int each_lines = 3;
     int each_source_size =  each_lines * info->source_line_buf_size;
     char* buffer = new char[each_source_size];
+//    char* buffer = new char[SCAN_BUFFER_SIZE];
     info->scan_buffer = buffer;
 
 //    int source_size = each_lines * info->source_line_buf_size;
-    char* jerry_buffer = new char[each_source_size * 3 + 0x10000];
+//    char* jerry_buffer = new char[each_source_size * 3 + 0x10000];
+//    info->resume_buf_size = each_source_size * 3 + 0x10000;
+    char* jerry_buffer = new char[SCAN_BUFFER_SIZE * 5];
+    info->resume_buf_size = SCAN_BUFFER_SIZE * 5;
     info->resume_buffer = jerry_buffer;
-    info->resume_buf_size = each_source_size * 3 + 0x10000;
 
     int target_lines = each_lines * 10 / info->source_lines_per_10_lines;
     int target_size = target_lines * info->target_line_buf_size;
     char* target_buffer = new char[target_size];
-    info->target_buffer = target_buffer;
     info->target_buf_size = target_size;
+//    char* target_buffer = new char[SCAN_BUFFER_SIZE];
+//    info->target_buf_size = SCAN_BUFFER_SIZE;
+    info->target_buffer = target_buffer;
 
     info->filename = (const char*)settings->filename;
     image_trans->init(info);
