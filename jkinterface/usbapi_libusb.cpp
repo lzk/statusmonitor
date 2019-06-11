@@ -340,12 +340,17 @@ int UsbApi::open(int vid, int pid, const char *serial)
     return 0;
 }
 
+int UsbApi::reset()
+{
+    int ret = libusb_reset_device(device.udev);
+    return ret;
+}
 int UsbApi::config(int interface)
 {
     g_interface = interface;
     if(interface < 0)
         return -1;
-    //libusb_reset_device(device.udev);//changed by gavin 20190429
+//    libusb_reset_device(device.udev);//changed by gavin 20190429
     int ret = config(device.dev ,device.udev ,interface);
     if(ret){
         LOGLOG("libusb can not config");

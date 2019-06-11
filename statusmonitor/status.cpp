@@ -149,6 +149,7 @@ int getStatusFromDevice(DeviceIO* device ,Printer_struct* printer ,PRINTER_STATU
     if(!ret){
 //        LOGLOG("device get device id size:%d :%s" ,strlen(buffer) ,buffer);
         ret = DecodeStatusFromDeviceID(buffer ,ps);
+        LOGLOG("get device status:0x%02x" ,ps->PrinterStatus);
     }
     return ret;
 }

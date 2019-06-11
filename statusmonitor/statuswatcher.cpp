@@ -10,6 +10,7 @@ WatcherStatusThread::WatcherStatusThread(const QString& printername ,QObject *pa
     : QThread(parent)
     , abort(false)
     ,current_printer(printername)
+    ,first_delay(false)
 {
 }
 
@@ -30,6 +31,9 @@ void WatcherStatusThread::run()
     PrinterInfo_struct printerinfo;
     int index;
 
+    if(first_delay){
+        sleep(6);
+    }
     forever {
         if (abort)
             break;
@@ -198,6 +202,7 @@ void StatusWatcher::set_current_printer(const QString& printer)
         statusThread = new WatcherStatusThread(printer ,this);
         statusThread->device = DeviceManager::new_device(&printerinfo.printer);
         if(statusThread->device){
+            statusThread->first_delay = true;
             statusThread->work(&printerinfo);
             statusThread->start();
         }

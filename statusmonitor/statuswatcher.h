@@ -21,6 +21,7 @@ private:
     bool abort;
     DeviceIO* device;
     QString current_printer;
+    bool first_delay;
 
     friend class StatusWatcher;
 };

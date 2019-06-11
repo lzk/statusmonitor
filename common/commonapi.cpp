@@ -134,8 +134,8 @@ bool printer_is_printing(const QString& printer_name)
 {
     QString str("LANG=en lpstat -l -o ");
     str += printer_name;
-    str += " 2>>";
-    str += log_file;
+    str += " 2>>/dev/null";
+//    str += log_file;
     str += "|grep -w ";
     str += printer_name;
     QString printer_jobs = get_string_from_shell_cmd(str ,0);

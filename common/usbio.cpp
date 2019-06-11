@@ -103,6 +103,8 @@ int UsbIO::open_with_mode(int port ,int mode)
         LOGLOG("device is opened");
         return -1;
     }
+    if(port < 0)
+        port = 0;
     if(port >= 0 && mode >= 0){
         if(printer_is_printing(printer_name.toLatin1().constData())){
             return usb_error_printing;
@@ -297,11 +299,26 @@ int UsbIO::getDeviceId(char *buffer, int bufsize)
         fl.unlock();
         return usb_error_busy;
     }
-    ret = open_with_mode(0 ,0);//will change to -1
-    if(!ret){
-        ret = usb->getDeviceId(buffer ,bufsize);
-        close();
+    for(int i = 0 ;i < 3 ;i++){
+        ret = open_with_mode(0 ,0);//will change to -1
+        if(!ret){
+            ret = usb->getDeviceId(buffer ,bufsize);
+            close();
+        }
+        if(!ret)
+            break;
+        sleep(1);
     }
+    if(ret){
+        ret = open_with_mode(0 ,0);//will change to -1
+        if(!ret){
+            LOGLOG("can not get device id,reset usb to retry");
+            usb->reset();
+            ret = usb->getDeviceId(buffer ,bufsize);
+            close();
+        }
+    }
+
     fl.unlock();
     return ret;
 }

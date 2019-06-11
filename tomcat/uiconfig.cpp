@@ -55,7 +55,7 @@ UIConfig::UIConfig(QObject *parent) :
 int UIConfig::initConfig()
 {
     log_app_name = "tjgd1zsmui";
-    app_version = "1.0.19";
+    app_version = "1.0.20";
     log_init();
     LOGLOG("--------%s v%s-------" ,log_app_name ,app_version);
     QString str;
