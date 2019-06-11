@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>441</height>
+    <height>421</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>530</width>
-    <height>441</height>
+    <height>421</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>530</width>
-    <height>441</height>
+    <height>421</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
    <property name="geometry">
     <rect>
      <x>73</x>
-     <y>257</y>
+     <y>237</y>
      <width>161</width>
      <height>22</height>
     </rect>
@@ -90,7 +90,7 @@
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>84</y>
+     <y>64</y>
      <width>131</width>
      <height>22</height>
     </rect>
@@ -146,7 +146,7 @@ QComboBox{
    <property name="geometry">
     <rect>
      <x>353</x>
-     <y>198</y>
+     <y>178</y>
      <width>50</width>
      <height>31</height>
     </rect>
@@ -202,7 +202,7 @@ QComboBox{
     <property name="geometry">
      <rect>
       <x>304</x>
-      <y>151</y>
+      <y>131</y>
       <width>156</width>
       <height>22</height>
      </rect>
@@ -243,7 +243,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>21</y>
+      <y>1</y>
       <width>211</width>
       <height>20</height>
      </rect>
@@ -265,7 +265,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>304</x>
-      <y>270</y>
+      <y>250</y>
       <width>156</width>
       <height>22</height>
      </rect>
@@ -307,7 +307,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>204</y>
+      <y>184</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -329,7 +329,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>319</x>
-      <y>108</y>
+      <y>88</y>
       <width>131</width>
       <height>20</height>
      </rect>
@@ -351,7 +351,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>226</y>
+      <y>206</y>
       <width>141</width>
       <height>20</height>
      </rect>
@@ -373,7 +373,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>59</x>
-      <y>140</y>
+      <y>120</y>
       <width>51</width>
       <height>38</height>
      </rect>
@@ -396,7 +396,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>128</x>
-      <y>140</y>
+      <y>120</y>
       <width>51</width>
       <height>38</height>
      </rect>
@@ -419,7 +419,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>194</x>
-      <y>140</y>
+      <y>120</y>
       <width>51</width>
       <height>38</height>
      </rect>
@@ -442,7 +442,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>68</x>
-      <y>143</y>
+      <y>123</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -465,7 +465,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>138</x>
-      <y>143</y>
+      <y>123</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -488,7 +488,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>204</x>
-      <y>143</y>
+      <y>123</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -510,7 +510,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>439</x>
-      <y>173</y>
+      <y>153</y>
       <width>26</width>
       <height>26</height>
      </rect>
@@ -547,7 +547,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>302</x>
-      <y>173</y>
+      <y>153</y>
       <width>26</width>
       <height>26</height>
      </rect>
@@ -584,7 +584,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>439</x>
-      <y>293</y>
+      <y>273</y>
       <width>26</width>
       <height>26</height>
      </rect>
@@ -621,7 +621,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>302</x>
-      <y>293</y>
+      <y>273</y>
       <width>26</width>
       <height>26</height>
      </rect>
@@ -658,7 +658,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>357</x>
-      <y>290</y>
+      <y>270</y>
       <width>51</width>
       <height>31</height>
      </rect>
@@ -698,7 +698,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>282</x>
-      <y>350</y>
+      <y>330</y>
       <width>130</width>
       <height>35</height>
      </rect>
@@ -742,7 +742,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>117</x>
-      <y>350</y>
+      <y>330</y>
       <width>130</width>
       <height>35</height>
      </rect>
@@ -780,7 +780,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>200</y>
+      <y>180</y>
       <width>331</width>
       <height>20</height>
      </rect>
@@ -810,7 +810,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>304</x>
-      <y>138</y>
+      <y>118</y>
       <width>156</width>
       <height>11</height>
      </rect>
@@ -829,7 +829,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>304</x>
-      <y>257</y>
+      <y>237</y>
       <width>156</width>
       <height>11</height>
      </rect>
@@ -848,7 +848,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>68</x>
-      <y>274</y>
+      <y>254</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -870,7 +870,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>60</y>
+      <y>40</y>
       <width>241</width>
       <height>21</height>
      </rect>
@@ -1009,7 +1009,7 @@ QRadioButton::indicator::checked {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>290</y>
+      <y>270</y>
       <width>211</width>
       <height>41</height>
      </rect>
@@ -1106,7 +1106,7 @@ QRadioButton::indicator::checked {
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>21</y>
+      <y>1</y>
       <width>101</width>
       <height>20</height>
      </rect>
@@ -1128,7 +1128,7 @@ QRadioButton::indicator::checked {
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>110</y>
+      <y>90</y>
       <width>171</width>
       <height>20</height>
      </rect>
