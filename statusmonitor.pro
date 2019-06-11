@@ -1,10 +1,10 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    jklib \
+#    jklib \
     cpath \
 #    test_cpath
-    test_combobox
+#    test_combobox
 
 
 #first unzip libs/cups*.zip

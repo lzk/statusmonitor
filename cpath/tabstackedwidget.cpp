@@ -1051,27 +1051,29 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
         return;
     }
     QList<QListWidgetItem*> item_list = ui->scrollArea_ScanImage->selectedItems();
-    QString filter = tr("TIF(*.tiff);;PDF(*pdf);;JPG(*jpg)");
+    QString filter = "TIF(*.tiff);;PDF(*.pdf);;JPG(*.jpg)";
     QString selectedFilter;
     if(item_list.count() > 1){
-        filter = tr("TIF(*.tiff);;PDF(*pdf)");
+        filter = "TIF(*.tiff);;PDF(*.pdf)";
     }
 #if QT_VERSION > 0x050000
     QStringList pathlist = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
-    QString picPath = pathlist.isEmpty() ?QString() :pathlist.at(0);
+    static QString picPath = pathlist.isEmpty() ?QString() :pathlist.at(0);
 #else
-    QString picPath = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
+    static QString picPath = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
 #endif
     QString savefilename = QFileDialog::getSaveFileName(0 ,tr("Save File"), picPath,filter,&selectedFilter);
     QFileInfo fi = QFileInfo(savefilename);
+    picPath = fi.absoluteFilePath();
     QString filename = "/tmp/" + fi.fileName();
     QString temp_filename;
-    if(!filename.isEmpty()){
+    if(!savefilename.isEmpty()){
 //        if(filename.endsWith(".pdf")){
-        if(selectedFilter == tr("PDF(*pdf)")){
+        if(selectedFilter == "PDF(*.pdf)"){
             if(filename.endsWith(".pdf") == false)
             {
                 filename = filename.append(".pdf");
+                savefilename = savefilename.append(".pdf");
             }
 
             qDebug()<<filename;
@@ -1083,10 +1085,12 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
                 j++;
             }
             saveMultiPagePdfImageRelease();
-        }else if(selectedFilter == tr("TIF(*.tiff)")){
+//        }else if(filename.endsWith(".tiff")){
+        }else if(selectedFilter == "TIF(*.tiff)"){
             if(filename.endsWith(".tiff") == false)
             {
                 filename = filename.append(".tiff");
+                savefilename = savefilename.append(".tiff");
             }
             qDebug()<<filename;
             int image_width,image_height;
@@ -1176,6 +1180,7 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
             if(filename.endsWith(".jpg") == false)
             {
                 filename = filename.append(".jpg");
+                savefilename = savefilename.append(".jpg");
             }
             qDebug()<<filename;
             foreach (QListWidgetItem* item, item_list) {
@@ -1194,6 +1199,9 @@ void TabStackedWidget::on_btn_ScanSave_clicked()
                                     & ~Qt::WindowMinimizeButtonHint);
             msgWarm->exec();
             return;
+        }
+        if(QFile::exists(savefilename)){
+            QFile::remove(savefilename);
         }
         QFile::copy(filename ,savefilename);
         QFile::remove(filename);
