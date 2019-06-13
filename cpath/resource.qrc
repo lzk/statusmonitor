@@ -124,9 +124,7 @@
         <file>Images/Position.png</file>
         <file>Images/PowerSave.png</file>
         <file>Images/PowerSave_Active.png</file>
-        <file>Images/printer.ico</file>
         <file>Images/Printer.png</file>
-        <file>Images/printerGray.ico</file>
         <file>Images/PrinterMsgBackground.png</file>
         <file>Images/Refresh_Disable.png</file>
         <file>Images/Refresh_Enable.png</file>
@@ -144,7 +142,6 @@
         <file>Images/silderLine.png</file>
         <file>Images/SoftAP.png</file>
         <file>Images/SoftAP_Active.png</file>
-        <file>Images/Startup.tif</file>
         <file>Images/Status_RefreshDisable.tif</file>
         <file>Images/Status_RefreshEnable.tif</file>
         <file>Images/TCPIP.png</file>
@@ -179,8 +176,6 @@
         <file>Images/Video/SimplifiedChinese/03_NofeedJam1_zh.gif</file>
         <file>Images/Video/SimplifiedChinese/05_IDCardCopy1_zh.gif</file>
         <file>Images/Video/SimplifiedChinese/06_NIn1Copy1_zh.gif</file>
-        <file>Images/Startup_ch.tif</file>
-        <file>Images/Startup_en.tif</file>
         <file>Images/A4(1).tif</file>
         <file>Images/A4(2).tif</file>
         <file>Images/A4(3).tif</file>
@@ -193,5 +188,9 @@
         <file>Images/moreSettings_Copy_2.png</file>
         <file>Images/Video/English/04_PaperNotReachDuplexEntrySensor_en.gif</file>
         <file>Images/Video/SimplifiedChinese/04_PaperNotReachDuplexEntrySensor_zh.gif</file>
+        <file>Images/logo.png</file>
+        <file>Images/logo_gray.png</file>
+        <file>Images/splash_en.PNG</file>
+        <file>Images/splash_zh.PNG</file>
     </qresource>
 </RCC>

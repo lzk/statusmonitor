@@ -167,24 +167,34 @@ void SettingForIPv6::on_btApply_clicked()
     }
     if(*islogin)
     {
+        memset(&info_ipv6 ,0 ,sizeof(info_ipv6));
         info_ipv6.DHCPv6 = ui->checkBox_isDHCP->isChecked() ? 1 : 0;
         info_ipv6.UseManualAddress = ui->checkBox_isManualAddress->isChecked() ? 1 : 0 ;
-        if(ui->lineEdit_address->text().length() > 40)
-            memcpy(info_ipv6.ManualAddress, ui->lineEdit_address->text().left(40).toLatin1(), 40);
-        else
-        {
-            memset(info_ipv6.ManualAddress, 0, 40);
-            memcpy(info_ipv6.ManualAddress, ui->lineEdit_address->text().left(40).toLatin1(), 40);
-        }
+        char tmp_char[41];
+        memset(tmp_char ,0 ,41);
+        strcpy(tmp_char ,ui->lineEdit_address->text().left(40).toLatin1().constData());
+        memcpy(info_ipv6.ManualAddress ,tmp_char ,40);
+//        if(ui->lineEdit_address->text().length() > 40)
+//        {
+//            memcpy(info_ipv6.ManualAddress, ui->lineEdit_address->text().left(40).toLatin1().constData(), 40);
+//        }
+//        else
+//        {
+//            memset(info_ipv6.ManualAddress, 0, 40);
+//            memcpy(info_ipv6.ManualAddress, ui->lineEdit_address->text().left(40).toLatin1().constData(), 40);
+//        }
         info_ipv6.ManualMask = ui->lineEdit_SubMask->text().toInt();
 
-        if(ui->lineEdit_GateAddress->text().length() > 40)
-            memcpy(info_ipv6.IPv6ManualGatewayAddress, ui->lineEdit_GateAddress->text().left(40).toLatin1(), 40);
-        else
-        {
-            memset(info_ipv6.IPv6ManualGatewayAddress, 0, 40);
-            memcpy(info_ipv6.IPv6ManualGatewayAddress, ui->lineEdit_GateAddress->text().left(40).toLatin1(), 40);
-        }
+        memset(tmp_char ,0 ,41);
+        strcpy(tmp_char ,ui->lineEdit_GateAddress->text().left(40).toLatin1().constData());
+        memcpy(info_ipv6.IPv6ManualGatewayAddress ,tmp_char ,40);
+//        if(ui->lineEdit_GateAddress->text().length() > 40)
+//            memcpy(info_ipv6.IPv6ManualGatewayAddress, ui->lineEdit_GateAddress->text().left(40).toLatin1().constData(), 40);
+//        else
+//        {
+//            memset(info_ipv6.IPv6ManualGatewayAddress, 0, 40);
+//            memcpy(info_ipv6.IPv6ManualGatewayAddress, ui->lineEdit_GateAddress->text().left(40).toLatin1().constData(), 40);
+//        }
 
         cycle->startAnimation(20);
         QVariant data;

@@ -134,7 +134,7 @@ void MainWindow::createSysTray()
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":/Images/printerGray.ico"));
+    trayIcon->setIcon(QIcon(":/Images/logo_gray.png"));
 
 //    connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 //    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
@@ -746,11 +746,11 @@ void MainWindow::updateTonerCarStatus(int toner)
 
     if(toner<11)
     {
-        trayIcon->setIcon(QIcon(":/Images/printerGray.ico"));
+        trayIcon->setIcon(QIcon(":/Images/logo_gray.png"));
     }
     else
     {
-        trayIcon->setIcon(QIcon(":/Images/printer.ico"));
+        trayIcon->setIcon(QIcon(":/Images/logo.png"));
     }
 }
 

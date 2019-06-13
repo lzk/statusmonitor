@@ -272,24 +272,31 @@ void WiFiSettingWEPCell::tryConnect(APInfo ap)
     cmdst_wifi_get wifi_para;
     QString ssid;
     QString passwd;
+    char tmp_char[65];
 
     ssid = ap.SSID;
     passwd = ap.Password;
     //ssid
-    if(strlen(ssid.toUtf8()) >= 32)
-        memcpy(wifi_para.ssid ,ssid.toUtf8() ,32);
-    else{
-        memset(wifi_para.ssid ,0 ,32);
-        strcpy(wifi_para.ssid ,ssid.toUtf8());
-    }
+    memset(tmp_char ,0 ,65);
+    strcpy(tmp_char ,ssid.toUtf8().constData());
+    memcpy(wifi_para.ssid ,tmp_char ,32);
+//    if(strlen(ssid.toUtf8()) >= 32)
+//        memcpy(wifi_para.ssid ,ssid.toUtf8() ,32);
+//    else{
+//        memset(wifi_para.ssid ,0 ,32);
+//        strcpy(wifi_para.ssid ,ssid.toUtf8());
+//    }
 
     //passwd
-    if(strlen(passwd.toLatin1()) >= 64)
-        memcpy(wifi_para.pwd ,passwd.toLatin1() ,64);
-    else{
-        memset(wifi_para.pwd ,0 ,64);
-        strcpy(wifi_para.pwd ,passwd.toLatin1());
-    }
+    memset(tmp_char ,0 ,65);
+    strcpy(tmp_char ,passwd.toLatin1().constData());
+    memcpy(wifi_para.pwd ,tmp_char ,64);
+//    if(strlen(passwd.toLatin1()) >= 64)
+//        memcpy(wifi_para.pwd ,passwd.toLatin1() ,64);
+//    else{
+//        memset(wifi_para.pwd ,0 ,64);
+//        strcpy(wifi_para.pwd ,passwd.toLatin1());
+//    }
 
     //encryption type
     wifi_para.encryption = ap.encryType;

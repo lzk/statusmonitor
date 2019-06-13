@@ -108,20 +108,20 @@ int main(int argc, char *argv[])
     QString lan = QLocale::system().name();
     if(lan == "en_US")
     {
-       splash->setPixmap(QPixmap(":/Images/Startup_en.tif"));
+       splash->setPixmap(QPixmap(":/Images/splash_en.PNG"));
     }else if (lan == "zh_CN")
     {
-       splash->setPixmap(QPixmap(":/Images/Startup_ch.tif"));
+       splash->setPixmap(QPixmap(":/Images/splash_zh.PNG"));
     }else
     {
-       splash->setPixmap(QPixmap(":/Images/Startup.tif"));
+       splash->setPixmap(QPixmap(":/Images/splash_en.PNG"));
     }
     splash->setEnabled(false);
     splash->show();
 
     MainWindow w;
     w.setGeometry(splash->geometry());
-    w.setWindowIcon(QIcon(":/Images/printer.ico"));
+    w.setWindowIcon(QIcon(":/Images/logo.png"));
 
 //    QTranslator trans1;
 //    trans1.load("qt_" + QLocale::system().name() ,":/translations");

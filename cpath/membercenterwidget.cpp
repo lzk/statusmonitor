@@ -472,6 +472,7 @@ void MemberCenterWidget::uploadCRM()
     gUInterface->setCurrentPrinterCmd(UIConfig::LS_CMD_PRN_Get_UserCenterInfo);
 }
 
+#include "commonapi.h"
 void MemberCenterWidget::cmdResult(int cmd,int result,QVariant data)
 {
     switch(cmd)
@@ -494,7 +495,7 @@ void MemberCenterWidget::cmdResult(int cmd,int result,QVariant data)
             QString time = dateTime.currentDateTime().toString("yyyyMMddHHmmss");
             QString md5_str = QString("%0%1%2").arg(strMacAddr).arg(time).arg(m_strKey);
 
-            QString strPlatform = "MacPC";
+            QString strPlatform = get_string_from_shell_cmd("cat /etc/issue");
             QString strVersion = "1.0.0.1";
 
 

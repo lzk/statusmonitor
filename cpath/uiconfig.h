@@ -190,7 +190,6 @@ public:
         LS_CMD_GetCopy,
         LS_CMD_COPY,
         LS_CMD_WIFI_apply,
-        LS_CMD_WIFI_apply_noread,
         LS_CMD_WIFI_get,
         LS_CMD_WIFI_getAplist,
         LS_CMD_PASSWD_set,

@@ -175,15 +175,8 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
         memcpy(buffer + sizeof(COMM_HEADER) ,data ,data_size);
     }
 
-    if(cmd == _LS_WIFICMD  && sub_cmd == 0xff)
-    {
-        err = writeNoRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct);
-    }
-    else
-    {
-        err = writeThenRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct
-                                               ,buffer ,sizeof(COMM_HEADER)+data_buffer_size * (1 - direct));
-    }
+    err = writeThenRead(buffer ,sizeof(COMM_HEADER)+data_buffer_size * direct
+                                           ,buffer ,sizeof(COMM_HEADER)+data_buffer_size * (1 - direct));
     //check result
     if(!err && MAGIC_NUM == ppkg->magic){//ACK
         if(!direct){//get
@@ -191,10 +184,7 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
                 memcpy(data ,buffer + sizeof(COMM_HEADER) ,data_size);
             }
         }else{//set
-            if(cmd == _LS_WIFICMD  && sub_cmd == 0xff)
-                err = 0;//ERR_WIFI_SET_SSID;
-            else
-                err = ppkg->subcmd;
+            err = ppkg->subcmd;
         }
     }else
         err = -1;
@@ -206,7 +196,6 @@ int LShell::lshell_cmd(int cmd ,int sub_cmd, void* data ,int data_size)
 #define lshell_copy(buffer ,bufsize)                        lshell_cmd(_LS_CPYCMD ,1 ,buffer ,bufsize)
 #define lshell_getWifiInfo(buffer ,bufsize)                 lshell_cmd(_LS_WIFICMD ,0 ,buffer ,bufsize)
 #define lshell_setWifiInfo(buffer ,bufsize)                 lshell_cmd(_LS_WIFICMD ,1 ,buffer ,bufsize)
-#define lshell_setWifiInfo_noread(buffer ,bufsize)          lshell_cmd(_LS_WIFICMD ,0xff ,buffer ,bufsize)
 #define lshell_getApList(buffer ,bufsize)                   lshell_cmd(_LS_WIFICMD ,0x07 ,buffer ,bufsize)
 #define lshell_getWifiStatus(buffer ,bufsize)               lshell_cmd(_LS_WIFICMD ,0x08 ,buffer ,bufsize)
 #define lshell_setPasswd(buffer ,bufsize)                   lshell_cmd(_LS_PRNCMD ,0x06 ,buffer ,bufsize)
@@ -560,26 +549,6 @@ int device_init(DeviceIO* device)
 }
 
 #include <unistd.h>
-int LShell::writeNoRead(char* wrBuffer ,int wrSize)
-{
-    if(!device)
-        return -1;
-    int ret;
-//    for(int i = 0 ;i < 3 ;i++)
-    {
-        ret = device_init(device);
-        if(!ret){
-            ret = device->write(wrBuffer ,wrSize);
-            if(ret == wrSize)
-                ret = 0;
-        }
-//        if(!ret)
-//            break;
-        usleep(2  * 100 * 1000);
-    }
-    return ret;
-}
-#if 1
 int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
 {
     if(!device)
@@ -598,13 +567,10 @@ int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize
 //               ,write_buffer[0] ,write_buffer[1] ,write_buffer[2] ,write_buffer[3] ,write_buffer[4] ,write_buffer[5]
 //                ,write_buffer[6] ,write_buffer[7] ,write_buffer[8] ,write_buffer[9] ,write_buffer[10]);
 
-        usleep(sleep_time * 1000 * 1000);
-//            ret = device->writeThenRead(write_buffer ,wrSize ,rdBuffer ,rdSize);
         ret = device->write(write_buffer ,wrSize);
-        usleep(sleep_time * 2 * 1000 * 1000);
+
         if(ret == wrSize || device->type() == DeviceIO::Type_usb){
             for(int i = 0 ;i < 20 ;i++){
-                usleep(sleep_time  * 100 * 1000);
                 ret = device->read(rdBuffer ,rdSize);
                 if(ret == rdSize){
                     if( (rdBuffer[0] == 0x4d)
@@ -619,6 +585,7 @@ int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize
 //                    LOGLOG("read wrong");
                     ret = -1;
                 }
+                usleep(sleep_time  * 250 * 1000);
             }
         }
     }
@@ -629,66 +596,3 @@ int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize
 //            ,rdBuffer[6] ,rdBuffer[7] ,rdBuffer[8] ,rdBuffer[9] ,rdBuffer[10]);
     return ret;
 }
-#else
-#include <time.h>
-#define sleep100ms(x ,y) {if(y) usleep((x)  * 100 * 1000);}
-int LShell::writeThenRead(char* wrBuffer ,int wrSize ,char* rdBuffer ,int rdSize)
-{
-    bool ifdelay = false;
-    if(device->type() == DeviceIO::Type_usb)
-        ifdelay = true;
-    int err = device->write(wrBuffer ,wrSize);
-    if(err == wrSize || device->type() == Type_usb)
-    {
-        int j;
-        int _read_size = 0;
-        int nocheck=0;
-
-        sleep100ms(9 ,ifdelay);
-        time_t first_time = time(NULL);
-        time_t second_time;
-        for(j = 0 ;j < 50 ;j++){
-            second_time = time(NULL);
-            if(second_time - first_time > 10){
-                LOGLOG("usb try %d times timeout" ,j + 1);
-                break;
-            }
-            if(!nocheck){
-                if(1 == device->read(rdBuffer,1)){
-                    if(0x4d != rdBuffer[0]){
-//                        LOGLOG("waiting for 0x4d:%#.2x" ,rdBuffer[0]);
-                        sleep100ms (1 ,ifdelay);
-                        continue;
-                    }
-                }else{
-//                    LOGLOG("cannot read now,wait 100 ms read again");
-                    sleep100ms (1 ,ifdelay);
-                    continue;
-                }
-            }
-            nocheck = 0;
-            sleep100ms (1 ,ifdelay);
-            if(1 == device->read(rdBuffer+1,1)){
-                if(0x3c == rdBuffer[1]){
-                    sleep100ms (1 ,ifdelay);
-                    _read_size = device->read(rdBuffer+2 ,rdSize-2);
-//                    LOGLOG("read size:%d" ,_read_size == -1 ?-1 : _read_size + 2);
-                    j++;
-                    break;
-                }else if(0x4d == rdBuffer[1]){
-                    nocheck = 1;
-                }
-            }
-            sleep100ms (1 ,ifdelay);
-        }
-
-        if(_read_size == rdSize -2){
-            err = 0;
-        }else{
-            LOGLOG("read wrong");
-            err = -1;
-        }
-    }
-    return err;
-}
-#endif

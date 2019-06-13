@@ -145,7 +145,6 @@ void Worker::cmdFromUi(int cmd ,const QString& printer_name ,QVariant data)
         cmdResult(cmd ,result ,value);
         break;
     case UIConfig::LS_CMD_WIFI_apply:
-    case UIConfig::LS_CMD_WIFI_apply_noread:
         if(printer){
             if(cmd_status_validate(printer ,cmd)){
                 cmdst_wifi_get device_data = data.value<cmdst_wifi_get>();

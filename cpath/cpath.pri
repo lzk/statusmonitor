@@ -31,10 +31,15 @@ LIBS += \
                     $${PWD}/../libs/linux32/libnetsnmp.a \
 
         }else{
+            CONFIG(debug ,debug|release){
+                LIBS += \
+                    -lnetsnmp
+
+            }else{
                 LIBS += \
                     -L$${PWD}/../libs/linux64 \
                     $${PWD}/../libs/linux64/libnetsnmp.a \
-#                    -lnetsnmp
+            }
 
         }
     }

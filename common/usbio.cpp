@@ -6,6 +6,13 @@
 #include "commonapi.h"
 #include <unistd.h>
 
+#include "filelocker.h"
+#include <QSettings>
+#include <QMutex>
+static QMutex mutex;
+int sane_locked_address=0 ,sane_locked_bus=0;
+FileLocker fl;
+
 const char* lock_scan_file = "/tmp/.scanner_lock";
 const char* lock_scan_info_file = "/tmp/.scanner_info_lock";
 int usb_error_printing = -100;
@@ -22,9 +29,6 @@ static int _getpidvid(const QString& ,int& pid ,int& vid ,int& interface)
 
 int (* getpidvid)(const QString& modelname ,int& pid ,int& vid ,int& interface) = _getpidvid;
 
-#include "filelocker.h"
-#include <QSettings>
-FileLocker fl;
 bool get_locked_sane_scanner(int& address ,int& bus)
 {
     address = 0;
@@ -64,56 +68,10 @@ int UsbIO::resolve(Printer_struct* printer)
     return resolveUrl(printer->deviceUri);
 }
 
-#define LOCK_USB 1
-#if LOCK_USB
-#include <QMutex>
-#include <QStringList>
-static QMutex mutex;
-static QStringList locked_printers;
-#endif
-int UsbIO::open_with_mode(int port ,int mode)
+int UsbIO::open_device(int port ,bool config)
 {
-    bool printing = false;
-    if(device_is_open){
-        LOGLOG("device is opened");
-        return -1;
-    }
-    if(printer_is_printing(printer_name.toLatin1().constData())){
-        if(port >= 0)
-        return usb_error_printing;
-        printing = true;
-    }
-    if(port < 0)
-        port = 0;
-#if LOCK_USB
-    if(mode == 0){
-        while (true) {
-            mutex.lock();
-            if(locked_printers.isEmpty()){//lock all usb device
-//            if(!locked_printers.contains(device_uri)){//lock same device uri
-                break;
-            }
-            mutex.unlock();
-            usleep(10*1000);
-        }
-    }else{
-        mutex.lock();
-        if(!locked_printers.isEmpty()){//lock all usb device
-//        if(locked_printers.contains(device_uri)){//lock same device uri
-            mutex.unlock();
-            LOGLOG("usb device:%s locked" ,printer_name.toLatin1().constData());
-            return usb_error_usb_locked;
-        }
-    }
-    mutex.unlock();
-#endif
-    int ret = fl.trylock(lock_scan_file);
-    int sane_locked_address ,sane_locked_bus;
-    if(ret){
-        if(get_locked_sane_scanner(sane_locked_address ,sane_locked_bus)){
-
-        }
-    }
+    int ret;
+    mutex.lock();
     usb->init();
     ret = usb->open(vid ,pid ,serial);
     if(!ret){
@@ -122,54 +80,26 @@ int UsbIO::open_with_mode(int port ,int mode)
             LOGLOG("usb locked by sane bus:%d ,address:%d" ,bus ,address);
             usb->close();
             usb->exit();
-            fl.unlock();
+            mutex.unlock();
             return usb_error_scanning;
         }
-        if(!printing){
-            ret = usb->config(port);
-            if(ret){
-                usb->close();
-            }
-        }
-    }
-    if(!ret){
-        device_is_open = true;
-#if LOCK_USB
-        mutex.lock();
-        locked_printers << QString(device_uri);
-        mutex.unlock();
-#endif
-    }else{
-        device_is_open = false;
-        usb->exit();
-        fl.unlock();
-    }
-    return ret;
-}
-
-int UsbIO::open_device(int port ,bool config)
-{
-    int ret;
-    usb->init();
-    ret = usb->open(vid ,pid ,serial);
-    if(!ret){
         if(config){
             ret = usb->config(port);
             if(ret){
                 usb->close();
                 usb->exit();
+                mutex.unlock();
             }
         }
     }else{
         usb->exit();
+        mutex.unlock();
     }
     return ret;
 }
+
 int UsbIO::open(int port)
 {
-#if 1
-    return open_with_mode(port ,0);
-#else
     bool config = true;
     if(printer_is_printing(printer_name.toLatin1().constData())){
         if(port >= 0)
@@ -180,14 +110,12 @@ int UsbIO::open(int port)
         port = 0;
     }
     int ret = fl.trylock(lock_scan_file);
-    int sane_locked_address ,sane_locked_bus;
     if(ret){// xsane locked
         if(get_locked_sane_scanner(sane_locked_address ,sane_locked_bus)){
-            return usb_error_scanning;
+//            return usb_error_scanning;
         }
-    }else{
-        ret = open_device(port ,config);
     }
+    ret = open_device(port ,config);
     if(!ret){
         device_is_open = true;
     }else{
@@ -195,7 +123,6 @@ int UsbIO::open(int port)
         fl.unlock();
     }
     return ret;
-#endif
 }
 
 int UsbIO::close(void)
@@ -204,12 +131,8 @@ int UsbIO::close(void)
         device_is_open = false;
         usb->close();
         usb->exit();
-        fl.unlock();
-#if LOCK_USB
-        mutex.lock();
-        locked_printers.removeAll(QString(device_uri));
         mutex.unlock();
-#endif
+        fl.unlock();
     }
     return 0;
 }
