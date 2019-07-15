@@ -78,7 +78,7 @@ void callback_getJob(void* para,Job_struct* js)
                 ,sm->username ,sm->filename);
         tc.writeThenRead(buffer ,sizeof(buffer));
         if(!strcmp(buffer ,"resultok")){
-            LOGLOG("gavin: result ok");
+            LOGLOG("no finger module: result ok");
            // break;
         }
         return;

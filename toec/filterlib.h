@@ -25,7 +25,7 @@ int checkFinger(int jobid ,const char* username ,const char* filename ,int use_f
 
 int get_device_id_via_filter(const char* printer_name ,const char* printer_uri);
 
-void finger_abort(int id);
+void finger_abort(int id ,const char* username ,const char* filename , const char* printname ,int use_finger_checking);
 //typedef struct
 //{
 //    char printer[512];

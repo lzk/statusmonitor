@@ -1206,7 +1206,15 @@ void MainWindow::updateJobHistory(const QVariant& data)
             str_is_enable = "-";
             str_is_checked = "-";
         }else{
-            str_is_enable = result != Checked_Result_Disable?"是":"否";
+            switch (result) {
+            case Checked_Result_Fail:
+            case Checked_Result_OK:
+                str_is_enable = "是";
+                break;
+            default:
+                str_is_enable = "否";
+                break;
+            }
             str_is_checked = result == Checked_Result_OK?"是":"否";
         }
         ui->tableWidget_jobs->setItem(i ,base+6,item);

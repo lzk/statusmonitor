@@ -1,3 +1,4 @@
+#include "filterlib.h"
 #include "fingermanager.h"
 #include "jkinterface.h"
 #include <QString>
@@ -39,7 +40,7 @@ int get_device_id_via_filter(const char* printer_name ,const char* printer_uri)
     return result;
 }
 
-void finger_abort(int id ,const char* username ,const char* filename , const char* printname)
+void finger_abort(int id ,const char* username ,const char* filename , const char* printname ,int use_finger_checking)
 {
 
 //    FingerManager fm;
@@ -51,8 +52,13 @@ void finger_abort(int id ,const char* username ,const char* filename , const cha
     print_cancel =true;
     Trans_Client tc(ui_server_path);
     char buffer[256];
-    sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",printname ,id, 9
-            ,username ,filename);
+    if(use_finger_checking){
+        sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",printname ,id, Checked_Result_Abort_Print
+                ,username ,filename);
+    }else{
+        sprintf(buffer ,"result://%s?jobid=%d&status=%d&username=%s&filename=%s",printname ,id, Checked_Result_noFingerModule
+                ,username ,filename);
+    }
     tc.writeThenRead(buffer ,sizeof(buffer));
     if(!strcmp(buffer ,"resultok"))
     {
